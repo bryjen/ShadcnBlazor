@@ -30,7 +30,7 @@ public class ComponentDependencyTree
                 throw new ArgumentException($"Component '{componentName}' not found in the provided components.");
 
             var componentDependencies = componentData.ComponentMetadata.Dependencies;
-            var expectedLocation = Path.Combine(outputProjectConfig.ComponentOutputPath, componentData.ComponentMetadata.Name);
+            var expectedLocation = Path.Combine(outputProjectConfig.ComponentsOutputDir, componentData.ComponentMetadata.Name);
             var resolvedDependencies = componentDependencies.Select(BuildComponentDependencyNode).ToList();
             
             return new ComponentDependencyNode

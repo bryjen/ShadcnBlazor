@@ -2,6 +2,6 @@
 
 public class OutputProjectConfig
 {
-    public string ComponentOutputPath { get; set; } = string.Empty;
-    public string ServiceOutputPath { get; set; } = string.Empty;
+    public string ComponentsOutputDir { get; set; } = string.Empty;
+    public string ServicesOutputDir { get; set; } = string.Empty;
 }

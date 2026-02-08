@@ -1,28 +1,29 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.Extensions.DependencyInjection;
+using ShadcnBlazor.Cli.Args;
+using Spectre.Console;
+using Spectre.Console.Cli;
 
-using System.Reflection;
-using ShadcnBlazor.Cli;
-using ShadcnBlazor.Cli.Models;
-using ShadcnBlazor.ComponentDependencies;
 
-Console.WriteLine("Hello, World!");
-
-var executingAssembly = Assembly.GetExecutingAssembly();
-var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) ?? throw new NotImplementedException();
-var componentsAssemblyPath = Path.Join(assemblyDir, "ShadcnBlazor.dll");
-var assembly = Assembly.LoadFrom(componentsAssemblyPath);
-
-var componentsWithMetadata = ComponentData.GetComponents(assembly);
-
-foreach (var comp in componentsWithMetadata)
+var services = new ServiceCollection();
+services.AddSingleton<GreetingService>();
+  
+var registrar = new TypeRegistrar(services);
+var app = new CommandApp(registrar);
+app.Configure(conf =>
 {
-    Console.WriteLine($"Name: {comp.ComponentMetadata.Name}");
-    Console.WriteLine($"Namespace: {comp.Namespace}");
-    Console.WriteLine($"FullName: {comp.FullName}");
-    Console.WriteLine($"Dependencies: {string.Join(", ", comp.ComponentMetadata.Dependencies)}");
+    conf.AddCommand<GreetCommand>("greet");
+    conf.AddCommand<InitCommand>("init");
+});
+return app.Run(args);
 
-    var componentDir = Path.Join(assemblyDir, "Components", comp.ComponentMetadata.Name);
-    Console.WriteLine(componentDir);
-    
-    Console.WriteLine();
+  
+public class GreetingService
+{
+    public string GetGreeting(string name, bool formal)
+    {
+        return formal
+            ? $"Good day, {name}."
+            : $"Hello, {name}!";
+    }
 }
+

@@ -11,4 +11,13 @@
       <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Spectre.Console.Cli" Version="0.53.1" />
+      <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Exception\" />
+    </ItemGroup>
+
 </Project>
