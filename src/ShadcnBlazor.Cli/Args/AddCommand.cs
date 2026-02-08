@@ -1,21 +1,21 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Text.Json;
-using ShadcnBlazor.Cli.Files;
+using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
+using ShadcnBlazor.Cli.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
-
-using static ShadcnBlazor.Cli.PromptUtils;
 
 namespace ShadcnBlazor.Cli.Args;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class AddCommand(
-    GreetingService greetingService, 
+    FileSystemService fileSystemService,
+    ConfigService configService,
+    ProjectValidator projectValidator,
+    ComponentService componentService,
+    NamespaceService namespaceService,
+    UsingService usingService,
     IAnsiConsole console) 
     : Command<AddCommand.AddSettings>
 {
@@ -38,110 +38,57 @@ public class AddCommand(
 
     public override int Execute(CommandContext context, AddSettings settings, CancellationToken cancellation)
     {
-        const string configFileName = "shadcn-blazor.yaml";
-        
-        var cwd = Directory.GetCurrentDirectory();
-        var cwdInfo = new DirectoryInfo(cwd);
-        
-        // config file shit
-        var configFileInfo = cwdInfo.EnumerateFiles().FirstOrDefault(f => f.Name == configFileName);
-        if (configFileInfo is null)
+        try
         {
-            console.MarkupLine($"Couldn't find a `[yellow]{configFileName}[/]` file in the current directory.");
+            var cwd = Directory.GetCurrentDirectory();
+            var cwdInfo = new DirectoryInfo(cwd);
+            
+            var outputProjectConfig = configService.LoadConfig(cwdInfo);
+            projectValidator.ValidateBlazorProject(projectValidator.ValidateAndGetCsproj(cwdInfo));
+            
+            var componentsWithMetadata = componentService.LoadComponents();
+            var componentToAdd = componentService.FindComponent(componentsWithMetadata, settings.Name);
+            
+            var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
+                outputProjectConfig, componentsWithMetadata, componentToAdd.ComponentMetadata.Name.Trim().ToLower());
+            
+            var srcDirInfo = componentService.GetComponentsSourceDirectory();
+            
+            // Ensure ComponentDependencies folder exists
+            EnsureComponentDependencies(outputProjectConfig, cwdInfo);
+            
+            AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree);
+            
+            return 0;
+        }
+        catch (CliException ex)
+        {
+            console.MarkupLine($"[red]{ex.Message}[/]");
             console.MarkupLine("Component addition cancelled.");
             return 1;
         }
-        
-        var configFileContents = File.ReadAllText(configFileInfo.FullName);
-        var deserializer = new DeserializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
-        var outputProjectConfig = deserializer.Deserialize<OutputProjectConfig>(configFileContents);
-        Console.WriteLine(JsonSerializer.Serialize(outputProjectConfig, new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
-        }));
-        
-        // csproj shit
-        var csprojFile = CsprojUtils.GetCsproj(new DirectoryInfo(cwd));
-        if (csprojFile is null)
-        {
-            console.MarkupLine("Couldn't find a [yellow].csproj[/] file in the current directory.");
-            console.MarkupLine("Component addition cancelled.");
-            return 1;
-        }
-
-        var blazorProjectType = CsprojUtils.GetBlazorProjectType(csprojFile.FullName);
-        if (blazorProjectType is null)
-        {
-            console.MarkupLine("The current project isn't configured as a Blazor-compatible project.");
-            console.MarkupLine("Component addition cancelled.");
-            return 1;
-        }
-        
-        // component shit
-        var executingAssembly = Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) ?? throw new NotImplementedException();
-        var componentsAssemblyPath = Path.Join(assemblyDir, "ShadcnBlazor.dll");
-        var assembly = Assembly.LoadFrom(componentsAssemblyPath);
-        var componentsWithMetadata = ComponentData.GetComponents(assembly).ToList();
-        
-        var componentToAdd = componentsWithMetadata.FirstOrDefault(c =>
-            string.Equals(settings.Name.Trim(), c.ComponentMetadata.Name, StringComparison.InvariantCultureIgnoreCase));
-        if (componentToAdd is null)
-        {
-            console.MarkupLine($"Couldn't find the component `[yellow]{settings.Name}[/]`.");
-            console.MarkupLine("Component addition cancelled.");
-            return 1;
-        }
-
-        var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
-            outputProjectConfig, componentsWithMetadata, settings.Name.Trim().ToLower());
-        var exitCode = AddComponentWithDependencies(
-            outputProjectConfig, cwdInfo, new DirectoryInfo(Path.Join(assemblyDir, "components")), dependencyTree);
-        if (exitCode != 0)
-        {
-            console.MarkupLine("Component addition failed.");
-            return exitCode;
-        }
-        
-        return 0;
     }
 
-    private int AddComponentWithDependencies(
+    private void AddComponentWithDependencies(
         OutputProjectConfig outputProjectConfig,
         DirectoryInfo cwdInfo, 
         DirectoryInfo srcDirInfo, 
         ComponentDependencyTree componentDependencyTree)
     {
-        int AddComponentWithDependenciesCore(ComponentDependencyNode componentDependencyNode)
+        void AddComponentWithDependenciesCore(ComponentDependencyNode componentDependencyNode)
         {
-            var exitCodes = componentDependencyNode.ResolvedDependencies
-                .Select(AddComponentWithDependenciesCore)
-                .ToList();
-            
-            if (exitCodes.Any(c => c != 0))
+            foreach (var dependency in componentDependencyNode.ResolvedDependencies)
             {
-                console.MarkupLine($"Failed to add dependencies for component `[yellow]{componentDependencyNode.Component.ComponentMetadata.Name}[/]`.");
-                return 1;
+                AddComponentWithDependenciesCore(dependency);
             }
 
-            var exitCoe = AddComponent(outputProjectConfig, cwdInfo, srcDirInfo, componentDependencyNode.Component);
-            if (exitCoe != 0)
-            {
-                console.MarkupLine($"Failed to add component `[yellow]{componentDependencyNode.Component.ComponentMetadata.Name}[/]`.");
-                return 1;
-            }
-
-            return 0;
+            AddComponent(outputProjectConfig, cwdInfo, srcDirInfo, componentDependencyNode.Component);
         }
 
         AddComponentWithDependenciesCore(componentDependencyTree.RootNode);
-        return 0;
     }
     
-    private int AddComponent(
+    private void AddComponent(
         OutputProjectConfig outputProjectConfig,
         DirectoryInfo cwdInfo, 
         DirectoryInfo srcDirInfo, 
@@ -150,39 +97,85 @@ public class AddCommand(
         var destinationDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, outputProjectConfig.ComponentsOutputDir, componentData.ComponentMetadata.Name));
         if (destinationDir.Exists)
         {
-            console.MarkupLine($"Component `[yellow]{componentData.ComponentMetadata.Name}[/]` already exists at the destination.");
-            return 1;
+            throw new ComponentAlreadyExistsException(componentData.ComponentMetadata.Name);
         }
         
         var sourceDir = new DirectoryInfo(Path.Join(srcDirInfo.FullName, componentData.ComponentMetadata.Name));
         if (!sourceDir.Exists)
         {
-            console.MarkupLine($"Source files for component `[yellow]{componentData.ComponentMetadata.Name}[/]` not found.");
-            return 1;
+            throw new ComponentSourceNotFoundException(componentData.ComponentMetadata.Name);
         }
 
-        CopyDirectory(sourceDir.FullName, destinationDir.FullName);
+        fileSystemService.CopyDirectory(sourceDir.FullName, destinationDir.FullName);
+        
+        // Update namespaces in copied files
+        var targetNamespace = BuildTargetNamespace(outputProjectConfig, componentData.ComponentMetadata.Name);
+        UpdateNamespacesInComponent(destinationDir, targetNamespace, outputProjectConfig);
+        
         console.MarkupLine($"Component `[green]{componentData.ComponentMetadata.Name}[/]` added successfully.");
-        return 0;
     }
     
-    /// Recursively copies all contents from a directory to another
-    private static void CopyDirectory(string sourceDir, string destDir)
+    private string BuildTargetNamespace(OutputProjectConfig config, string componentName)
     {
-        Directory.CreateDirectory(destDir);
+        // Convert path-like ComponentsOutputDir to namespace segment
+        // e.g., "./Components" -> "Components", "Components/Sub" -> "Components.Sub"
+        var componentsDir = config.ComponentsOutputDir
+            .TrimStart('.', '/', '\\')
+            .Replace('/', '.')
+            .Replace('\\', '.')
+            .Trim('.');
+        
+        return $"{config.RootNamespace}.{componentsDir}.{componentName}";
+    }
     
-        // Copy files
-        foreach (var file in Directory.GetFiles(sourceDir))
+    private void EnsureComponentDependencies(OutputProjectConfig config, DirectoryInfo cwdInfo)
+    {
+        var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
+            ?? throw new InvalidOperationException("Could not determine assembly directory.");
+        
+        var sourceComponentDependenciesDir = new DirectoryInfo(Path.Join(assemblyDir, "ComponentDependencies"));
+        var targetComponentDependenciesDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, "ComponentDependencies"));
+        
+        if (!targetComponentDependenciesDir.Exists && sourceComponentDependenciesDir.Exists)
         {
-            var fileName = Path.GetFileName(file);
-            File.Copy(file, Path.Combine(destDir, fileName), overwrite: true);
+            fileSystemService.CopyDirectory(sourceComponentDependenciesDir.FullName, targetComponentDependenciesDir.FullName);
+            
+            // Update namespaces and usings in ComponentDependencies
+            var targetNamespace = $"{config.RootNamespace}.ComponentDependencies";
+            UpdateNamespacesInDirectory(targetComponentDependenciesDir, targetNamespace, config);
+            
+            console.MarkupLine($"Added `[green]ComponentDependencies[/]` folder.");
         }
+    }
     
-        // Copy subdirectories recursively
-        foreach (var subDir in Directory.GetDirectories(sourceDir))
+    private void UpdateNamespacesInComponent(DirectoryInfo componentDir, string targetNamespace, OutputProjectConfig config)
+    {
+        UpdateNamespacesInDirectory(componentDir, targetNamespace, config);
+    }
+    
+    private void UpdateNamespacesInDirectory(DirectoryInfo directory, string targetNamespace, OutputProjectConfig config)
+    {
+        const string sourceNamespacePrefix = "ShadcnBlazor";
+        var targetNamespacePrefix = config.RootNamespace;
+        
+        // Process all .razor files
+        foreach (var razorFile in directory.EnumerateFiles("*.razor", SearchOption.AllDirectories))
         {
-            var dirName = Path.GetFileName(subDir);
-            CopyDirectory(subDir, Path.Combine(destDir, dirName));
+            var content = File.ReadAllText(razorFile.FullName);
+            content = namespaceService.ReplaceNamespaceInRazor(content, targetNamespace);
+            content = usingService.ReplaceUsingsInRazor(content, sourceNamespacePrefix, targetNamespacePrefix);
+            File.WriteAllText(razorFile.FullName, content);
+        }
+        
+        // Process all .razor.cs and .cs files
+        foreach (var csFile in directory.EnumerateFiles("*.razor.cs", SearchOption.AllDirectories)
+            .Concat(directory.EnumerateFiles("*.cs", SearchOption.AllDirectories)))
+        {
+            var content = File.ReadAllText(csFile.FullName);
+            content = namespaceService.ReplaceNamespaceInCs(content, targetNamespace);
+            content = usingService.ReplaceUsingsInCs(content, sourceNamespacePrefix, targetNamespacePrefix);
+            File.WriteAllText(csFile.FullName, content);
         }
     }
 }

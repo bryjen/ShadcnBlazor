@@ -1,21 +1,28 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Text.Json;
-using ShadcnBlazor.Cli.Files;
+using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
+using ShadcnBlazor.Cli.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
-
 using static ShadcnBlazor.Cli.PromptUtils;
+
+#if DEBUG
+#pragma warning disable CS9113 // Parameter is unread.
+#endif
 
 namespace ShadcnBlazor.Cli.Args;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class InitCommand(
-    GreetingService greetingService, 
+    FileSystemService fileSystemService,
+    ConfigService configService,
+    ProjectValidator projectValidator,
+    ProjectNamespaceService projectNamespaceService,
+    CsprojService csprojService,
     IAnsiConsole console) 
     : Command<InitCommand.InitSettings>
 {
@@ -44,55 +51,44 @@ public class InitCommand(
 
     public override int Execute(CommandContext context, InitSettings settings, CancellationToken cancellation)
     {
-        var cwd = Directory.GetCurrentDirectory();
-        var cwdInfo = new DirectoryInfo(cwd);
-        var csprojFile = CsprojUtils.GetCsproj(new DirectoryInfo(cwd));
-        if (csprojFile is null)
+        try
         {
-            console.MarkupLine("Couldn't find a [yellow].csproj[/] file in the current directory.");
-            console.MarkupLine("Initialization cancelled.");
-            return 1;
-        }
+            var cwd = Directory.GetCurrentDirectory();
+            var cwdInfo = new DirectoryInfo(cwd);
+            
+            var csprojFile = projectValidator.ValidateAndGetCsproj(cwdInfo);
+            var blazorProjectType = projectValidator.ValidateBlazorProject(csprojFile);
+            
+            var projectConf = InitProjectConfig(settings, cwdInfo, csprojFile);
+            if (projectConf is null)
+            {
+                console.MarkupLine("Initialization cancelled.");
+                return 0;
+            }
 
-        var blazorProjectType = CsprojUtils.GetBlazorProjectType(csprojFile.FullName);
-        if (blazorProjectType is null)
-        {
-            console.MarkupLine("The current project isn't configured as a Blazor-compatible project.");
-            console.MarkupLine("Initialization cancelled.");
-            return 1;
-        }
-        
-        var projectConf = InitProjectConfig(settings, cwdInfo);
-        if (projectConf is null)
-        {
-            console.MarkupLine("Initialization cancelled.");
+            CopyRequiredFiles(cwdInfo);
+            ModifyExistingFiles(cwdInfo, blazorProjectType);
+            EnsureTwMergePackage(csprojFile);
+            
             return 0;
         }
-
-        var copyFilesResult = CopyRequiredFiles(cwdInfo);
-        if (copyFilesResult != 0)
+        catch (CliException ex)
         {
+            console.MarkupLine($"[red]{ex.Message}[/]");
             console.MarkupLine("Initialization cancelled.");
-            return copyFilesResult;
+            return 1;
         }
-        
-        var modifyFilesResult = ModifyExistingFiles(cwdInfo, blazorProjectType.Value);
-        if (modifyFilesResult != 0)
-        {
-            console.MarkupLine("Initialization cancelled.");
-            return copyFilesResult;
-        }
-        
-        return 0;
     }
 
-    private OutputProjectConfig? InitProjectConfig(InitSettings settings, DirectoryInfo cwdInfo)
+    private OutputProjectConfig? InitProjectConfig(InitSettings settings, DirectoryInfo cwdInfo, FileInfo csprojFile)
     {
         const string configFileName = "shadcn-blazor.yaml";
+        var rootNamespace = projectNamespaceService.GetRootNamespace(csprojFile);
         var projectConfig = new OutputProjectConfig
         {
             ComponentsOutputDir = settings.ComponentsOutputDir,
-            ServicesOutputDir = settings.ServicesOutputDir
+            ServicesOutputDir = settings.ServicesOutputDir,
+            RootNamespace = rootNamespace
         };
         
         var serializer = new SerializerBuilder()
@@ -112,31 +108,31 @@ public class InitCommand(
         return projectConfig;
     }
 
-    private int CopyRequiredFiles(DirectoryInfo cwdInfo)
+    private void CopyRequiredFiles(DirectoryInfo cwdInfo)
     {
         var executingAssembly = Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) ?? throw new NotImplementedException();
+        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
+            ?? throw new InvalidOperationException("Could not determine assembly directory.");
         var assemblyDirInfo = new DirectoryInfo(assemblyDir);
         
         // copy css files
         var srcCssFiles = new DirectoryInfo(Path.Join(assemblyDirInfo.FullName, "wwwroot", "css"));
         var outCssFiles = new DirectoryInfo(Path.Join(cwdInfo.FullName, "wwwroot", "css"));
-        CopyDirectory(srcCssFiles.FullName, outCssFiles.FullName);
+        fileSystemService.CopyDirectory(srcCssFiles.FullName, outCssFiles.FullName);
         console.MarkupLine("Copied .css files to [yellow]wwwroot/css[/].");
         
         // copy js files
         var srcJsFiles = new DirectoryInfo(Path.Join(assemblyDirInfo.FullName, "wwwroot", "js"));
         var outJsFiles = new DirectoryInfo(Path.Join(cwdInfo.FullName, "wwwroot", "js"));
-        CopyDirectory(srcJsFiles.FullName, outJsFiles.FullName);
+        fileSystemService.CopyDirectory(srcJsFiles.FullName, outJsFiles.FullName);
         console.MarkupLine("Copied .js files to [yellow]wwwroot/css[/].");
-        
-        return 0;
     }
 
-    private int ModifyExistingFiles(DirectoryInfo cwdInfo, BlazorProjectType projectType)
+    private void ModifyExistingFiles(DirectoryInfo cwdInfo, BlazorProjectType projectType)
     {
         var executingAssembly = Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) ?? throw new NotImplementedException();
+        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
+            ?? throw new InvalidOperationException("Could not determine assembly directory.");
         var assemblyDirInfo = new DirectoryInfo(assemblyDir);
         
         // _Imports.razor
@@ -163,8 +159,6 @@ public class InitCommand(
         var srcJsFiles = new DirectoryInfo(Path.Join(assemblyDirInfo.FullName, "wwwroot", "js")).EnumerateFiles();
         
         ModifyRootFile(targetFileInfo, srcCssFiles, srcJsFiles);
-        
-        return 0;
     }
 
     private void ModifyRootFile(FileInfo targetFileInfo, IEnumerable<FileInfo> cssFiles, IEnumerable<FileInfo> jsFiles)
@@ -209,24 +203,14 @@ public class InitCommand(
         }
     }
     
-    
-    /// Recursively copies all contents from a directory to another
-    private static void CopyDirectory(string sourceDir, string destDir)
+    private void EnsureTwMergePackage(FileInfo csprojFile)
     {
-        Directory.CreateDirectory(destDir);
-    
-        // Copy files
-        foreach (var file in Directory.GetFiles(sourceDir))
+        const string packageName = "TwMerge";
+        const string packageVersion = "1.0.7";
+        
+        if (csprojService.EnsurePackageReference(csprojFile, packageName, packageVersion))
         {
-            var fileName = Path.GetFileName(file);
-            File.Copy(file, Path.Combine(destDir, fileName), overwrite: true);
-        }
-    
-        // Copy subdirectories recursively
-        foreach (var subDir in Directory.GetDirectories(sourceDir))
-        {
-            var dirName = Path.GetFileName(subDir);
-            CopyDirectory(subDir, Path.Combine(destDir, dirName));
+            console.MarkupLine($"Added `[green]{packageName}[/]` package reference (v{packageVersion}) to project file.");
         }
     }
 }

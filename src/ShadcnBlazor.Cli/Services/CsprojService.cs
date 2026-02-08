@@ -1,15 +1,15 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
-namespace ShadcnBlazor.Cli.Files;
+namespace ShadcnBlazor.Cli.Services;
 
-public class CsprojUtils
+public class CsprojService
 {
-    public static FileInfo? GetCsproj(DirectoryInfo directoryInfo)
+    public FileInfo? GetCsproj(DirectoryInfo directoryInfo)
         => directoryInfo.EnumerateFiles("*.csproj").FirstOrDefault();
     
-    public static BlazorProjectType? GetBlazorProjectType(string csprojPath)
+    public BlazorProjectType? GetBlazorProjectType(string csprojPath)
     {
         var doc = XDocument.Load(csprojPath);
         var project = doc.Root;
@@ -31,6 +31,7 @@ public class CsprojUtils
         var packages = doc.Descendants("PackageReference")
             .Select(p => p.Attribute("Include")?.Value)
             .Where(p => p != null)
+            .Cast<string>()
             .ToList();
     
         // Check for Blazor packages
@@ -48,6 +49,51 @@ public class CsprojUtils
         
         // Blazor Server
         return BlazorProjectType.Server;
+    }
+    
+    public string GetRootNamespace(FileInfo csprojFile)
+    {
+        var doc = XDocument.Load(csprojFile.FullName);
+        var rootNamespace = doc.Descendants("RootNamespace").FirstOrDefault()?.Value;
+        
+        return rootNamespace ?? Path.GetFileNameWithoutExtension(csprojFile.Name);
+    }
+    
+    public bool EnsurePackageReference(FileInfo csprojFile, string packageName, string version)
+    {
+        var doc = XDocument.Load(csprojFile.FullName);
+        var root = doc.Root ?? throw new InvalidOperationException("Invalid csproj file structure.");
+        
+        // Check if package already exists
+        var existingPackage = doc.Descendants("PackageReference")
+            .FirstOrDefault(p => p.Attribute("Include")?.Value == packageName);
+        
+        if (existingPackage != null)
+        {
+            return false; // Package already exists
+        }
+        
+        // Find or create ItemGroup for PackageReference
+        var itemGroup = root.Elements("ItemGroup")
+            .FirstOrDefault(ig => ig.Elements("PackageReference").Any());
+        
+        if (itemGroup == null)
+        {
+            // Create new ItemGroup if none exists
+            itemGroup = new XElement("ItemGroup");
+            root.Add(itemGroup);
+        }
+        
+        // Add the package reference
+        var packageRef = new XElement("PackageReference");
+        packageRef.SetAttributeValue("Include", packageName);
+        packageRef.SetAttributeValue("Version", version);
+        itemGroup.Add(packageRef);
+        
+        // Save the file
+        doc.Save(csprojFile.FullName);
+        
+        return true; // Package was added
     }
 }
 
