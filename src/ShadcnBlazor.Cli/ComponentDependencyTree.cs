@@ -22,7 +22,8 @@ public class ComponentDependencyTree
         IEnumerable<ComponentData> components, 
         string rootComponentName)
     {
-        var componentDict = components.ToDictionary(c => c.ComponentMetadata.Name, c => c);
+        var componentDict = components.ToDictionary(c => 
+            c.ComponentMetadata.Name.Trim().ToLower(), c => c);
 
         ComponentDependencyNode BuildComponentDependencyNode(string componentName)
         {

@@ -11,7 +11,7 @@ var registrar = new TypeRegistrar(services);
 var app = new CommandApp(registrar);
 app.Configure(conf =>
 {
-    conf.AddCommand<GreetCommand>("greet");
+    conf.AddCommand<AddCommand>("add");
     conf.AddCommand<InitCommand>("init");
 });
 return app.Run(args);
