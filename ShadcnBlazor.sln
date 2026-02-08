@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadcnBlazor", "src\ShadcnBlazor\ShadcnBlazor.csproj", "{BC034C3F-0A8F-4604-86FE-D9451B147528}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ShadcnBlazor.Cli", "src\ShadcnBlazor.Cli\ShadcnBlazor.Cli.fsproj", "{8CF17E87-DE7F-4E28-9B63-71818AABFADD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5C8BF2D3-623B-4AB3-8A8B-30B120939AF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC034C3F-0A8F-4604-86FE-D9451B147528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC034C3F-0A8F-4604-86FE-D9451B147528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC034C3F-0A8F-4604-86FE-D9451B147528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC034C3F-0A8F-4604-86FE-D9451B147528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CF17E87-DE7F-4E28-9B63-71818AABFADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF17E87-DE7F-4E28-9B63-71818AABFADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF17E87-DE7F-4E28-9B63-71818AABFADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF17E87-DE7F-4E28-9B63-71818AABFADD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BC034C3F-0A8F-4604-86FE-D9451B147528} = {5C8BF2D3-623B-4AB3-8A8B-30B120939AF3}
+		{8CF17E87-DE7F-4E28-9B63-71818AABFADD} = {5C8BF2D3-623B-4AB3-8A8B-30B120939AF3}
+	EndGlobalSection
+EndGlobal
