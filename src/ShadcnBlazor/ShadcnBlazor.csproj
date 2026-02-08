@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
-
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
-
 
     <ItemGroup>
         <SupportedPlatform Include="browser"/>
@@ -13,6 +11,36 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6"/>
+        <PackageReference Include="TwMerge" Version="1.0.7" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Folder Include="Components\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Components/**/*.razor" />
+        <EmbeddedResource Include="Components/**/*.razor.cs" />
+        <EmbeddedResource Include="Components/**/*.razor.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="Components/**/*" CopyToOutputDirectory="Always" />
+        <None Include="ComponentDependencies/**/*" CopyToOutputDirectory="Always" />
+    </ItemGroup>
+
+    <!-- 
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Combobox\Combobox.razor" />
+      <UpToDateCheckInput Remove="Components\Alert\Alert.razor" />
+      <UpToDateCheckInput Remove="Components\Alert\AlertDescription.razor" />
+      <UpToDateCheckInput Remove="Components\Alert\AlertTitle.razor" />
+      <UpToDateCheckInput Remove="Components\Accordion\Accordion.razor" />
+      <UpToDateCheckInput Remove="Components\Accordion\AccordionContent.razor" />
+      <UpToDateCheckInput Remove="Components\Accordion\AccordionItem.razor" />
+      <UpToDateCheckInput Remove="Components\Accordion\AccordionTrigger.razor" />
+      <UpToDateCheckInput Remove="Components\Checkbox\Checkbox.razor" />
+      <UpToDateCheckInput Remove="Components\Textarea\Textarea.razor" />
+    </ItemGroup>
+    -->
 </Project>
