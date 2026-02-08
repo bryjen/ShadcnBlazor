@@ -1,0 +1,1 @@
+﻿git checkout abdbac3 -- tests/SampleBlazorProject && git clean -fd tests/SampleBlazorProject
