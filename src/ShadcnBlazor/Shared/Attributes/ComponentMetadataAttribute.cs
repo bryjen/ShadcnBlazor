@@ -1,4 +1,4 @@
-﻿namespace ShadcnBlazor.ComponentDependencies;
+﻿namespace ShadcnBlazor.Shared.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class ComponentMetadataAttribute : Attribute

@@ -23,7 +23,9 @@ public class InitCommand(
     ProjectValidator projectValidator,
     ProjectNamespaceService projectNamespaceService,
     CsprojService csprojService,
-    IAnsiConsole console) 
+    NamespaceService namespaceService,
+    UsingService usingService,
+    IAnsiConsole console)
     : Command<InitCommand.InitSettings>
 {
     public class InitSettings : CommandSettings
@@ -67,7 +69,8 @@ public class InitCommand(
             }
 
             CopyRequiredFiles(cwdInfo);
-            ModifyExistingFiles(cwdInfo, blazorProjectType);
+            EnsureComponentDependencies(projectConf, cwdInfo);
+            ModifyExistingFiles(cwdInfo, blazorProjectType, projectConf);
             EnsureTwMergePackage(csprojFile);
             
             return 0;
@@ -128,19 +131,25 @@ public class InitCommand(
         console.MarkupLine("Copied .js files to [yellow]wwwroot/css[/].");
     }
 
-    private void ModifyExistingFiles(DirectoryInfo cwdInfo, BlazorProjectType projectType)
+    private void ModifyExistingFiles(DirectoryInfo cwdInfo, BlazorProjectType projectType, OutputProjectConfig config)
     {
         var executingAssembly = Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
+        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location)
             ?? throw new InvalidOperationException("Could not determine assembly directory.");
         var assemblyDirInfo = new DirectoryInfo(assemblyDir);
-        
+
         // _Imports.razor
         var srcImportsFile = new FileInfo(Path.Join(assemblyDirInfo.FullName, "_Imports.razor"));
         var outImportsFile = new FileInfo(Path.Join(cwdInfo.FullName, projectType.GetImportsPath()));
         if (srcImportsFile.Exists && outImportsFile.Exists)
         {
+            const string sourceNamespacePrefix = "ShadcnBlazor";
+            var targetNamespacePrefix = config.RootNamespace;
+
             var srcImportsContent = File.ReadAllText(srcImportsFile.FullName);
+            // Replace usings in source imports to use the target project's namespace
+            srcImportsContent = usingService.ReplaceUsingsInRazor(srcImportsContent, sourceNamespacePrefix, targetNamespacePrefix);
+
             var outImportsContent = File.ReadAllText(outImportsFile.FullName);
             var mergedImportsContent = $"{srcImportsContent}\n\n{outImportsContent}";
             File.WriteAllText(outImportsFile.FullName, mergedImportsContent);
@@ -207,10 +216,56 @@ public class InitCommand(
     {
         const string packageName = "TwMerge";
         const string packageVersion = "1.0.7";
-        
+
         if (csprojService.EnsurePackageReference(csprojFile, packageName, packageVersion))
         {
             console.MarkupLine($"Added `[green]{packageName}[/]` package reference (v{packageVersion}) to project file.");
+        }
+    }
+
+    private void EnsureComponentDependencies(OutputProjectConfig config, DirectoryInfo cwdInfo)
+    {
+        var executingAssembly = Assembly.GetExecutingAssembly();
+        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location)
+            ?? throw new InvalidOperationException("Could not determine assembly directory.");
+
+        var sourceComponentDependenciesDir = new DirectoryInfo(Path.Join(assemblyDir, "ComponentDependencies"));
+        var targetComponentDependenciesDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, "ComponentDependencies"));
+
+        if (!targetComponentDependenciesDir.Exists && sourceComponentDependenciesDir.Exists)
+        {
+            fileSystemService.CopyDirectory(sourceComponentDependenciesDir.FullName, targetComponentDependenciesDir.FullName);
+
+            // Update namespaces and usings in ComponentDependencies
+            var targetNamespace = $"{config.RootNamespace}.ComponentDependencies";
+            UpdateNamespacesInDirectory(targetComponentDependenciesDir, targetNamespace, config);
+
+            console.MarkupLine($"Added `[green]ComponentDependencies[/]` folder.");
+        }
+    }
+
+    private void UpdateNamespacesInDirectory(DirectoryInfo directory, string targetNamespace, OutputProjectConfig config)
+    {
+        const string sourceNamespacePrefix = "ShadcnBlazor";
+        var targetNamespacePrefix = config.RootNamespace;
+
+        // Process all .razor files
+        foreach (var razorFile in directory.EnumerateFiles("*.razor", SearchOption.AllDirectories))
+        {
+            var content = File.ReadAllText(razorFile.FullName);
+            content = namespaceService.ReplaceNamespaceInRazor(content, targetNamespace);
+            content = usingService.ReplaceUsingsInRazor(content, sourceNamespacePrefix, targetNamespacePrefix);
+            File.WriteAllText(razorFile.FullName, content);
+        }
+
+        // Process all .razor.cs and .cs files
+        foreach (var csFile in directory.EnumerateFiles("*.razor.cs", SearchOption.AllDirectories)
+            .Concat(directory.EnumerateFiles("*.cs", SearchOption.AllDirectories)))
+        {
+            var content = File.ReadAllText(csFile.FullName);
+            content = namespaceService.ReplaceNamespaceInCs(content, targetNamespace);
+            content = usingService.ReplaceUsingsInCs(content, sourceNamespacePrefix, targetNamespacePrefix);
+            File.WriteAllText(csFile.FullName, content);
         }
     }
 }

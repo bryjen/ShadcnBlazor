@@ -53,10 +53,7 @@ public class AddCommand(
                 outputProjectConfig, componentsWithMetadata, componentToAdd.ComponentMetadata.Name.Trim().ToLower());
             
             var srcDirInfo = componentService.GetComponentsSourceDirectory();
-            
-            // Ensure ComponentDependencies folder exists
-            EnsureComponentDependencies(outputProjectConfig, cwdInfo);
-            
+
             AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree);
             
             return 0;
@@ -124,31 +121,10 @@ public class AddCommand(
             .Replace('/', '.')
             .Replace('\\', '.')
             .Trim('.');
-        
+
         return $"{config.RootNamespace}.{componentsDir}.{componentName}";
     }
-    
-    private void EnsureComponentDependencies(OutputProjectConfig config, DirectoryInfo cwdInfo)
-    {
-        var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
-            ?? throw new InvalidOperationException("Could not determine assembly directory.");
-        
-        var sourceComponentDependenciesDir = new DirectoryInfo(Path.Join(assemblyDir, "ComponentDependencies"));
-        var targetComponentDependenciesDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, "ComponentDependencies"));
-        
-        if (!targetComponentDependenciesDir.Exists && sourceComponentDependenciesDir.Exists)
-        {
-            fileSystemService.CopyDirectory(sourceComponentDependenciesDir.FullName, targetComponentDependenciesDir.FullName);
-            
-            // Update namespaces and usings in ComponentDependencies
-            var targetNamespace = $"{config.RootNamespace}.ComponentDependencies";
-            UpdateNamespacesInDirectory(targetComponentDependenciesDir, targetNamespace, config);
-            
-            console.MarkupLine($"Added `[green]ComponentDependencies[/]` folder.");
-        }
-    }
-    
+
     private void UpdateNamespacesInComponent(DirectoryInfo componentDir, string targetNamespace, OutputProjectConfig config)
     {
         UpdateNamespacesInDirectory(componentDir, targetNamespace, config);

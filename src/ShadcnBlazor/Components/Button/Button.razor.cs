@@ -1,31 +1,33 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using ShadcnBlazor.ComponentDependencies;
+using ShadcnBlazor.Shared;
+using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Button;
 
 [ComponentMetadata(Name = nameof(Button), Description = "", Dependencies = [])]
 public partial class Button : ComponentBase
 {
-    [Parameter] 
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    [Parameter] 
-    public string Variant { get; set; } = "default";
+    [Parameter]
+    public Variant Variant { get; set; } = Variant.Default;
 
-    [Parameter] 
-    public string Size { get; set; } = "default";
+    [Parameter]
+    public Size Size { get; set; } = Size.Md;
 
-    [Parameter] 
+    [Parameter]
     public string? Class { get; set; }
 
-    [Parameter] 
+    [Parameter]
     public bool Disabled { get; set; }
 
-    [Parameter] 
-    public string Type { get; set; } = "button";
+    [Parameter]
+    public ButtonType Type { get; set; } = ButtonType.Button;
 
-    [Parameter] 
+    [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]

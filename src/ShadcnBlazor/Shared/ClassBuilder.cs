@@ -1,6 +1,6 @@
 using TailwindMerge;
 
-namespace ShadcnBlazor.ComponentDependencies;
+namespace ShadcnBlazor.Shared;
 
 /// <summary>
 /// Utility class for building CSS class strings with variant support, similar to class-variance-authority.

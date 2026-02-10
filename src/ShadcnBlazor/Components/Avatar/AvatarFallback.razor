@@ -1,0 +1,17 @@
+@* Avatar fallback component (shown when image fails to load) *@
+@if (ParentAvatar?.ShowFallback == true || string.IsNullOrEmpty(ParentAvatar?.GetImageSrc()))
+{
+    <div
+        data-slot="avatar-fallback"
+        class="@ClassBuilder.Merge("bg-muted text-muted-foreground flex size-full items-center justify-center rounded-full text-sm group-data-[size=sm]/avatar:text-xs", Class)"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Avatar? ParentAvatar { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

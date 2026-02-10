@@ -1,0 +1,46 @@
+@* Avatar image component *@
+@if (!ParentAvatar?.ShowFallback == true && !string.IsNullOrEmpty(Src))
+{
+    <img
+        data-slot="avatar-image"
+        src="@Src"
+        alt="@Alt"
+        class="@ClassBuilder.Merge("aspect-square size-full", Class)"
+        @onerror="HandleError"
+        @onload="HandleLoad"
+        @attributes="AdditionalAttributes" />
+}
+
+@code {
+    [CascadingParameter] public Avatar? ParentAvatar { get; set; }
+    [Parameter] public string? Src { get; set; }
+    [Parameter] public string? Alt { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback OnError { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (ParentAvatar != null && !string.IsNullOrEmpty(Src))
+        {
+            ParentAvatar.SetImageSrc(Src);
+        }
+    }
+
+    private void HandleLoad()
+    {
+        if (ParentAvatar != null)
+        {
+            ParentAvatar.ShowFallback = false;
+        }
+    }
+
+    private async Task HandleError()
+    {
+        if (ParentAvatar != null)
+        {
+            ParentAvatar.OnImageError();
+        }
+        await OnError.InvokeAsync();
+    }
+}

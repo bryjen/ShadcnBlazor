@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
-using ShadcnBlazor.ComponentDependencies;
+using ShadcnBlazor.Shared;
+using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Cli.Models;
 

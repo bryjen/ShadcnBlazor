@@ -1,42 +1,43 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using ShadcnBlazor.ComponentDependencies;
+using ShadcnBlazor.Shared;
+using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Button;
 
 public partial class ToggleButton : ComponentBase
 {
-    [Parameter] 
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    
-    [Parameter] 
-    public string VariantUntoggled { get; set; } = "outline";
-    
-    [Parameter] 
-    public string VariantToggled { get; set; } = "default";
-    
-    [Parameter] 
-    public string Size { get; set; } = "default";
-    
-    [Parameter] 
-    public string Type { get; set; } = "button";
-    
-    [Parameter] 
+
+    [Parameter]
+    public Variant VariantUntoggled { get; set; } = Variant.Outline;
+
+    [Parameter]
+    public Variant VariantToggled { get; set; } = Variant.Default;
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Md;
+
+    [Parameter]
+    public ButtonType Type { get; set; } = ButtonType.Button;
+
+    [Parameter]
     public bool Disabled { get; set; }
-    
-    [Parameter] 
+
+    [Parameter]
     public string? Class { get; set; }
-    
-    [Parameter] 
+
+    [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
-    
-    [Parameter] 
+
+    [Parameter]
     public bool IsToggled { get; set; }
-    
-    [Parameter] 
+
+    [Parameter]
     public EventCallback<bool> IsToggledChanged { get; set; }
-    
-    [Parameter(CaptureUnmatchedValues = true)] 
+
+    [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     private bool _localToggled;
@@ -61,13 +62,13 @@ public partial class ToggleButton : ComponentBase
 
     private bool CurrentState => IsControlled ? IsToggled : _localToggled;
 
-    private string CurrentVariant => CurrentState ? VariantToggled : VariantUntoggled;
+    private Variant CurrentVariant => CurrentState ? VariantToggled : VariantUntoggled;
 
     private string CurrentClass
     {
         get
         {
-            if (VariantUntoggled == "outline")
+            if (VariantUntoggled == Variant.Outline)
             {
                 var borderClass = CurrentState ? "border border-primary" : "border border-input/60";
                 return ClassBuilder.Merge(Class, borderClass);

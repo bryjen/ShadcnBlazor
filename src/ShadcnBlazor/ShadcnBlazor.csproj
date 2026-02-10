@@ -31,19 +31,4 @@
         <None Include="wwwroot/**/*" CopyToOutputDirectory="Always" />
         <None Include="_Imports.razor" CopyToOutputDirectory="Always" />
     </ItemGroup>
-
-    <!-- 
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Components\Combobox\Combobox.razor" />
-      <UpToDateCheckInput Remove="Components\Alert\Alert.razor" />
-      <UpToDateCheckInput Remove="Components\Alert\AlertDescription.razor" />
-      <UpToDateCheckInput Remove="Components\Alert\AlertTitle.razor" />
-      <UpToDateCheckInput Remove="Components\Accordion\Accordion.razor" />
-      <UpToDateCheckInput Remove="Components\Accordion\AccordionContent.razor" />
-      <UpToDateCheckInput Remove="Components\Accordion\AccordionItem.razor" />
-      <UpToDateCheckInput Remove="Components\Accordion\AccordionTrigger.razor" />
-      <UpToDateCheckInput Remove="Components\Checkbox\Checkbox.razor" />
-      <UpToDateCheckInput Remove="Components\Textarea\Textarea.razor" />
-    </ItemGroup>
-    -->
 </Project>
