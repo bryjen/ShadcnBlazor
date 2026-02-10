@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace ShadcnBlazor.Cli.Args;
+namespace ShadcnBlazor.Cli.Utils;
 
 public sealed class TypeRegistrar(IServiceCollection services) : ITypeRegistrar
 {

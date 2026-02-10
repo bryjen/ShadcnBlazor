@@ -1,6 +1,6 @@
-﻿using ShadcnBlazor.Cli.Models;
+﻿using Spectre.Console;
 
-namespace ShadcnBlazor.Cli;
+namespace ShadcnBlazor.Cli.Models;
 
 /// <summary>
 /// 
@@ -47,6 +47,26 @@ public class ComponentDependencyTree
         {
             RootNode = rootNode
         };
+    }
+
+    public Tree AsSpectreConsoleTree()
+    {
+        var name = RootNode.Component.ComponentMetadata.Name;
+        var tree = new Tree(name);
+        var treeInterface = (IHasTreeNodes)tree;
+        
+        void AddNodeRecursively(List<ComponentDependencyNode> children, IHasTreeNodes printNode)
+        {
+            foreach (var child in children)
+            {
+                var nodeName = child.Component.ComponentMetadata.Name;
+                var subNode = printNode.AddNode(nodeName);
+                AddNodeRecursively(child.ResolvedDependencies, subNode);
+            }
+        }
+        
+        AddNodeRecursively(RootNode.ResolvedDependencies, treeInterface);
+        return tree;
     }
 }
 

@@ -14,7 +14,7 @@ using static ShadcnBlazor.Cli.PromptUtils;
 #pragma warning disable CS9113 // Parameter is unread.
 #endif
 
-namespace ShadcnBlazor.Cli.Args;
+namespace ShadcnBlazor.Cli.Commands;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class InitCommand(

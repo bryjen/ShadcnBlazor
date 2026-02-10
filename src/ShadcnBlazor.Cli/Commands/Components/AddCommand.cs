@@ -6,7 +6,7 @@ using ShadcnBlazor.Cli.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace ShadcnBlazor.Cli.Args;
+namespace ShadcnBlazor.Cli.Commands.Components;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class AddCommand(
