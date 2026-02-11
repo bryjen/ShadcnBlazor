@@ -5,39 +5,36 @@ using ShadcnBlazor.Shared.Attributes;
 namespace ShadcnBlazor.Components.Input;
 
 [ComponentMetadata(Name = nameof(Input), Description = "", Dependencies = [])]
-public partial class Input
+public partial class Input : ShadcnComponentBase
 {
     [Parameter]
     public string? Type { get; set; } = "text";
-    
+
     [Parameter]
     public string? Value { get; set; }
-    
+
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
-    
-    [Parameter]
-    public string? Class { get; set; }
-    
+
     [Parameter]
     public string Size { get; set; } = "default";
-    
+
     [Parameter]
     public bool Disabled { get; set; }
-    
+
     [Parameter]
     public string? Placeholder { get; set; }
-    
+
     [Parameter]
     public EventCallback<ChangeEventArgs> OnChange { get; set; }
-    
-    [Parameter(CaptureUnmatchedValues = true)] 
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     private string GetClass()
     {
-        var baseClasses = "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground bg-input/30 border-input w-full min-w-0 rounded-md border bg-transparent shadow-xs transition-all duration-200 outline-none file:inline-flex file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/40 aria-invalid:border-destructive";
-
+        var baseClasses = "placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground " +
+                          "bg-input/30 border-input w-full min-w-0 rounded-md border shadow-xs transition-all duration-200 " +
+                          "outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 " +
+                          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] " +
+                          "aria-invalid:ring-destructive/40 aria-invalid:border-destructive";
         var sizeClasses = Size switch
         {
             "sm" => "h-8 px-2.5 py-1 text-sm",
@@ -45,7 +42,7 @@ public partial class Input
             _ => "h-9 px-3 py-1.5 text-base md:text-sm"
         };
 
-        return ClassBuilder.Merge(baseClasses, sizeClasses, Class);
+        return MergeCss(baseClasses, sizeClasses, Class ?? "");
     }
 
     private async Task HandleInput(ChangeEventArgs e)

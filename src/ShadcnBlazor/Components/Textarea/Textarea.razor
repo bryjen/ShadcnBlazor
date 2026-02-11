@@ -1,0 +1,14 @@
+@inherits ShadcnComponentBase
+
+@* Textarea wrapper styled like shadcn textarea *@
+<textarea
+    data-slot="textarea"
+    class='@(GetClass())'
+    value="@Value"
+    @onchange="OnChange"
+    rows="@Rows"
+    disabled="@Disabled"
+    placeholder="@Placeholder"
+    @attributes="AdditionalAttributes">
+</textarea>
+

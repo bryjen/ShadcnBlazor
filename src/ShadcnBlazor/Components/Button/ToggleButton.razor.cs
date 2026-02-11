@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Components.Web;
 using ShadcnBlazor.Shared;
 using ShadcnBlazor.Shared.Enums;
+using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Button;
 
-public partial class ToggleButton : ComponentBase
+public partial class ToggleButton : ShadcnComponentBase
 {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -26,9 +27,6 @@ public partial class ToggleButton : ComponentBase
     public bool Disabled { get; set; }
 
     [Parameter]
-    public string? Class { get; set; }
-
-    [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     [Parameter]
@@ -36,9 +34,6 @@ public partial class ToggleButton : ComponentBase
 
     [Parameter]
     public EventCallback<bool> IsToggledChanged { get; set; }
-
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     private bool _localToggled;
 
@@ -60,10 +55,10 @@ public partial class ToggleButton : ComponentBase
             if (VariantUntoggled == Variant.Outline)
             {
                 var borderClass = CurrentState ? "border border-primary" : "border border-input/60";
-                return ClassBuilder.Merge(Class, borderClass);
+                return MergeCss(Class ?? "", borderClass);
             }
 
-            return ClassBuilder.Merge(Class);
+            return Class ?? "";
         }
     }
 

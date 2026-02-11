@@ -1,0 +1,73 @@
+﻿@using ShadcnBlazor.Components.Checkbox
+@using ShadcnBlazor.Components.Textarea
+
+<Card Variant="@CardVariant.Outline" Class="gap-4">
+    <div class="flex flex-col">
+        <span class="text-sm font-bold">Shipping</span>
+        <span class="text-xs text-muted-foreground">
+            Shipping fees will be calculated at checkout
+        </span>
+    </div>
+    
+    <div class="flex flex-col gap-1">
+        <span class="text-xs font-bold text-muted-foreground">Address:</span>
+        <Input Placeholder="309-11211 85 ST NW"></Input>
+    </div>
+    
+    <div class="grid grid-cols-[1fr_1fr] gap-x-4">
+        <div class="flex flex-col gap-1">
+            <span class="text-xs font-bold text-muted-foreground">City:</span>
+            <Input Placeholder="Calgary"></Input>
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <span class="text-xs font-bold text-muted-foreground">Province:</span>
+            <Input Placeholder="Alberta"></Input>
+        </div>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="flex flex-col">
+        <span class="text-sm font-bold">Payment Method</span>
+        <span class="text-xs text-muted-foreground">
+            All transactions are secure and encrypted
+        </span>
+    </div>
+
+    <div class="flex flex-col gap-1">
+        <span class="text-xs font-bold text-muted-foreground">Cardholder Name:</span>
+        <Input Placeholder="John Doe"></Input>
+    </div>
+
+    <div class="grid grid-cols-[3fr_1fr] gap-x-4">
+        <div class="flex flex-col gap-1">
+            <span class="text-xs font-bold text-muted-foreground">Card Number:</span>
+            <Input Placeholder="4242 4242 4242 4242"></Input>
+        </div>
+
+        <div class="flex flex-col gap-1">
+            <span class="text-xs font-bold text-muted-foreground">CVV:</span>
+            <Input Placeholder="676"></Input>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-2 w-fit">
+        <span class="text-xs font-bold text-muted-foreground">Billing Address:</span>
+        <Checkbox Size="@Size.Lg">
+            <span class="text-sm">Same as shipping address</span>
+        </Checkbox>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="flex flex-col gap-1">
+        <span class="text-xs font-bold text-muted-foreground">Other:</span>
+        <Textarea Class="min-h-[7rem]" Placeholder="Add any additional comments"></Textarea>
+    </div>
+    
+    <div class="flex gap-2">
+        <Button Size="@Size.Sm" Variant="@Variant.Default">Submit</Button>
+        <Button Size="@Size.Sm" Variant="@Variant.Outline">Cancel</Button>
+    </div>
+</Card>

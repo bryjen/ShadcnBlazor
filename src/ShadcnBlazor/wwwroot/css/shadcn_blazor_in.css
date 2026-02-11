@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @source "../../";
+@source "../../Components/";
 @source "../../Layout/";
 @source "../../Pages/";
+@source "../../Shared/";
 @source "../../App.razor";
 
 @layer base {

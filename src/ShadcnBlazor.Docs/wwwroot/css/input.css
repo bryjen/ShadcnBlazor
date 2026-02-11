@@ -3,7 +3,12 @@
 @source "../../";
 @source "../../Layout/";
 @source "../../Pages/";
+@source "../../Components/";
 @source "../../App.razor";
+
+/* Scan the component library source files */
+@source "../../../ShadcnBlazor/Components/";
+@source "../../../ShadcnBlazor/Shared/";
 
 @layer base {
     :root {

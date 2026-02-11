@@ -1,5 +1,5 @@
-using ShadcnBlazor.Shared;
 using ShadcnBlazor.Shared.Enums;
+using TailwindMerge;
 
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
@@ -7,7 +7,7 @@ namespace ShadcnBlazor.Components.Button;
 
 internal static class ButtonStyles
 {
-    public static string Build(Variant variant, Size size, string? additional)
+    public static string Build(Func<string[], string> mergeCallback, Variant variant, Size size, string @class)
     {
         var baseClasses = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/40 aria-invalid:border-destructive active:scale-95 cursor-pointer";
 
@@ -29,7 +29,7 @@ internal static class ButtonStyles
             Size.Lg => "h-10 rounded-md px-6 has-[>svg]:px-4",
         };
 
-        return ClassBuilder.Merge(baseClasses, variantClasses, sizeClasses, additional);
+        return mergeCallback([baseClasses, variantClasses, sizeClasses, @class]);
     }
 }
 
