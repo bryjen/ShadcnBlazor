@@ -89,7 +89,7 @@ public class InitCommand(
         var rootNamespace = projectNamespaceService.GetRootNamespace(csprojFile);
         var projectConfig = new OutputProjectConfig
         {
-            ComponentsOutputDir = settings.ComponentsOutputDir,
+            ComponentsOutputDir = Path.Join(settings.ComponentsOutputDir, "Core"),
             ServicesOutputDir = settings.ServicesOutputDir,
             RootNamespace = rootNamespace
         };
@@ -229,18 +229,18 @@ public class InitCommand(
         var assemblyDir = Path.GetDirectoryName(executingAssembly.Location)
             ?? throw new InvalidOperationException("Could not determine assembly directory.");
 
-        var sourceComponentDependenciesDir = new DirectoryInfo(Path.Join(assemblyDir, "ComponentDependencies"));
-        var targetComponentDependenciesDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, "ComponentDependencies"));
+        var sourceSharedDir = new DirectoryInfo(Path.Join(assemblyDir, "Shared"));
+        var targetSharedDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, "Shared"));
 
-        if (!targetComponentDependenciesDir.Exists && sourceComponentDependenciesDir.Exists)
+        if (!targetSharedDir.Exists && sourceSharedDir.Exists)
         {
-            fileSystemService.CopyDirectory(sourceComponentDependenciesDir.FullName, targetComponentDependenciesDir.FullName);
+            fileSystemService.CopyDirectory(sourceSharedDir.FullName, targetSharedDir.FullName);
 
-            // Update namespaces and usings in ComponentDependencies
-            var targetNamespace = $"{config.RootNamespace}.ComponentDependencies";
-            UpdateNamespacesInDirectory(targetComponentDependenciesDir, targetNamespace, config);
+            // Update namespaces and usings in Shared
+            var targetNamespace = $"{config.RootNamespace}.Shared";
+            UpdateNamespacesInDirectory(targetSharedDir, targetNamespace, config);
 
-            console.MarkupLine($"Added `[green]ComponentDependencies[/]` folder.");
+            console.MarkupLine($"Added `[green]Shared[/]` folder.");
         }
     }
 

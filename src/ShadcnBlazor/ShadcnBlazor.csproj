@@ -27,7 +27,7 @@
 
     <ItemGroup>
         <None Include="Components/**/*" CopyToOutputDirectory="Always" />
-        <None Include="ComponentDependencies/**/*" CopyToOutputDirectory="Always" />
+        <None Include="Shared/**/*" CopyToOutputDirectory="Always" />
         <None Include="wwwroot/**/*" CopyToOutputDirectory="Always" />
         <None Include="_Imports.razor" CopyToOutputDirectory="Always" />
     </ItemGroup>

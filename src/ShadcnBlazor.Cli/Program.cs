@@ -37,3 +37,8 @@ app.Configure(conf =>
 
 return app.Run(args);
 
+/*
+Todo:
+- change to darkmode by adding dark to html
+- remove all backing css files and stuff like that idk (maybe)
+ */

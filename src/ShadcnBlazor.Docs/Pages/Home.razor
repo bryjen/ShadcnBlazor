@@ -1,0 +1,36 @@
+﻿@page "/"
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Shared.Enums
+@layout NoNavMenuLayout
+
+<PageTitle>A shadcn/ui inspired Blazor component library</PageTitle>
+
+<HeadContent>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</HeadContent>
+
+<div class="h-full w-full flex flex-col items-center pt-20">
+    <div class="w-full flex flex-col items-center gap-4">
+        <h1 class="font-bold text-5xl w-5xl text-center">
+            A
+            <span class="bg-card px-1 rounded rounded-xl" style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>
+            inspired Blazor component library
+        </h1>
+
+        <p class="text-lg w-2xl text-center">
+            A Blazor component library that offers simple, customizable, and extensible components.
+            Similar to <span style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>, open source, and open code.
+        </p>
+        
+        <p class="text-sm w-2xl text-center text-muted-foreground/50">
+            * everything you see here was built solely using 
+            <span style="font-family: 'JetBrains Mono', monospace;">ShadcnBlazor</span>
+        </p>
+        
+        <Button Variant="@Variant.Outline">
+            something
+        </Button>
+    </div>
+</div>

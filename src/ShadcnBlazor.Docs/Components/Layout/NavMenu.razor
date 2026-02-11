@@ -1,0 +1,72 @@
+﻿<div class="relative py-20 px-12 w-full h-screen-minus-header w-max-full flex flex-col overflow-x-hidden overflow-y-scroll scrollbar-hide">
+
+    <div class="w-full flex flex-col gap-1">
+        @RenderSectionHeader("Sections", includeTopMargin: false)
+        @RenderNavButton("Introduction", "intro")
+        @RenderNavButton("Components", "intro")
+        @RenderNavButton("Installation", "intro")
+        @RenderNavButton("Changelog", "intro")
+        @RenderNavButton("Roadmap", "intro")
+
+        @RenderSectionHeader("Getting Started")
+        @RenderNavButton("CLI & Installation", "intro")
+        @RenderNavButton("Theming", "intro")
+        @RenderNavButton("CSS & Tailwind", "intro")
+
+        @RenderSectionHeader("Components")
+        @RenderNavButton("Alert", "")
+        @RenderNavButton("Avatar", "")
+        @RenderNavButton("Badge", "")
+        @RenderNavButton("Button", "")
+        @RenderNavButton("Card", "")
+        @RenderNavButton("Input", "")
+
+        @RenderNavButton("Alert", "")
+        @RenderNavButton("Avatar", "")
+        @RenderNavButton("Badge", "")
+        @RenderNavButton("Button", "")
+        @RenderNavButton("Card", "")
+        @RenderNavButton("Input", "")
+
+        @RenderNavButton("Alert", "")
+        @RenderNavButton("Avatar", "")
+        @RenderNavButton("Badge", "")
+        @RenderNavButton("Button", "")
+        @RenderNavButton("Card", "")
+        @RenderNavButton("Input", "")
+
+        @RenderNavButton("Alert", "")
+        @RenderNavButton("Avatar", "")
+        @RenderNavButton("Badge", "")
+        @RenderNavButton("Button", "")
+        @RenderNavButton("Card", "")
+        @RenderNavButton("Input", "")
+    </div>
+
+</div>
+
+@code {
+    private RenderFragment RenderSectionHeader(string text, bool includeTopMargin = true) => __builder =>
+    {
+        var extraClasses = includeTopMargin ? "mt-8" : "";
+        <span class="text-[0.67rem] font-bold uppercase text-foreground/35 px-2 @extraClasses">
+            @text
+        </span>
+    };
+    
+    @*TODO: MERGE THIS WITH THAT IN HEADER*@
+    private RenderFragment RenderNavButton(string text, string href) => __builder =>
+    {
+        <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 px-2 font-semibold text-sm antialiased group" 
+           href="@href"
+           @onclick="@(_ => HandleNav(href))"
+           @onclick:preventDefault="true">
+            <span class="text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors">@text</span>
+        </a>
+
+    };
+    
+    
+    [Inject] public required NavigationManager Nav { get; set; }
+    private void HandleNav(string href) => Nav.NavigateTo(href);
+}

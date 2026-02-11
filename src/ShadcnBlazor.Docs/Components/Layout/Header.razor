@@ -1,0 +1,20 @@
+﻿<div class="h-full w-full px-6 flex items-center gap-2">
+    @RenderNavButton("Docs", "docs")
+    @RenderNavButton("Components", "components")
+    @RenderNavButton("Blocks", "blocks")
+    @RenderNavButton("Charts", "charts")
+    @RenderNavButton("Directory", "directory")
+    @RenderNavButton("Create", "create")
+</div>
+
+@code {
+    @*TODO: MERGE THIS WITH THAT IN MAVMENU*@
+    private RenderFragment RenderNavButton(string text, string href) => __builder =>
+    {
+        <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-3 font-semibold text-sm 
+          text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100" 
+           href="@href">
+            @text
+        </a>
+    };
+}
