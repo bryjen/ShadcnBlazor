@@ -1,6 +1,4 @@
 ﻿@page "/"
-@using ShadcnBlazor.Components.Button
-@using ShadcnBlazor.Shared.Enums
 @layout NoNavMenuLayout
 
 <PageTitle>A shadcn/ui inspired Blazor component library</PageTitle>
@@ -11,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </HeadContent>
 
-<div class="h-full w-full flex flex-col items-center pt-20">
+<div class="h-full w-full flex flex-col items-center pt-20 gap-25">
     <div class="w-full flex flex-col items-center gap-4">
         <h1 class="font-bold text-5xl w-5xl text-center">
             A
@@ -29,8 +27,98 @@
             <span style="font-family: 'JetBrains Mono', monospace;">ShadcnBlazor</span>
         </p>
         
-        <Button Variant="@Variant.Outline">
-            something
-        </Button>
+        <div class="flex gap-4">
+            <Button Variant="@Variant.Default">
+                Getting Started
+            </Button>
+        
+            <Button Variant="@Variant.Outline">
+                View Components
+            </Button>
+        </div>
+    </div>
+    
+    <div id="examples" class="px-24 w-full flex flex-col items-center gap-6">
+        <div id="examples-selector" class="w-full flex justify-start gap-4">
+            @foreach (var tab in Enum.GetValues<Tab>())
+            {
+                @RenderTabOption(tab)
+            }
+        </div>
+
+        @switch (_selectedTab)
+        {
+            case Tab.Examples:
+                @RenderExamplesTab()
+                break;
+            case Tab.MarkdownEditor:
+                @RenderMarkdownEditorTab()
+                break;
+            case Tab.AiChat:
+                @RenderAiChatTab()
+                break;
+            case Tab.Authentication:
+                @RenderAuthenticationTab()
+                break;
+        }
     </div>
 </div>
+
+@code {
+    private RenderFragment RenderTabOption(Tab tab) => __builder =>
+    {
+        var tabString = TabToString(tab);
+        <ToggleButton IsToggled="@(_selectedTab == tab)" OnClick="@(_ => _selectedTab = tab)"
+                      Size="@Size.Sm" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default">
+            <span class="font-bold">@tabString</span>
+        </ToggleButton>
+    };
+    
+    private RenderFragment RenderExamplesTab() => __builder =>
+    {
+        <div class="grid grid-cols-4 gap-x-4 w-full">
+            @* col 1 *@
+            <div class="w-full">
+                <Card Variant="@CardVariant.Outline" Class="gap-4">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold">Payment Method</span>
+                        <span class="text-xs text-muted-foreground">
+                            All transactions are secure and encrypted
+                        </span>
+                    </div>
+                    
+                    <div class="flex flex-col">
+                        <Input Placeholder="John Doe"></Input>
+                    </div>
+                </Card>
+            </div>
+            
+            @* col 2 *@
+            <div>
+                sm
+            </div>
+            
+            @* col 3 *@
+            <div>
+                sm
+            </div>
+            
+            @* col 4 *@
+            <div>
+                sm
+            </div>
+        </div>
+    };
+    
+    private RenderFragment RenderMarkdownEditorTab() => __builder =>
+    {
+    };
+    
+    private RenderFragment RenderAiChatTab() => __builder =>
+    {
+    };
+    
+    private RenderFragment RenderAuthenticationTab() => __builder =>
+    {
+    };
+}

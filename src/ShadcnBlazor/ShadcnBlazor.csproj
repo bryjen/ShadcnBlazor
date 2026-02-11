@@ -16,19 +16,14 @@
 
     <ItemGroup>
         <Folder Include="Components\" />
-        <Folder Include="wwwroot\js\" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Components/**/*.razor" />
-        <EmbeddedResource Include="Components/**/*.razor.cs" />
-        <EmbeddedResource Include="Components/**/*.razor.css" />
-    </ItemGroup>
-
-    <ItemGroup>
+        <!-- For CLI tool to extract components -->
         <None Include="Components/**/*" CopyToOutputDirectory="Always" />
         <None Include="Shared/**/*" CopyToOutputDirectory="Always" />
-        <None Include="wwwroot/**/*" CopyToOutputDirectory="Always" />
         <None Include="_Imports.razor" CopyToOutputDirectory="Always" />
     </ItemGroup>
+
+    <!-- wwwroot content is automatically included as static web assets by the Razor SDK -->
 </Project>

@@ -41,21 +41,10 @@ public partial class ToggleButton : ComponentBase
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     private bool _localToggled;
-    private bool _initialized;
 
     protected override void OnParametersSet()
     {
-        if (!_initialized)
-        {
-            _localToggled = IsToggled;
-            _initialized = true;
-            return;
-        }
-
-        if (IsControlled)
-        {
-            _localToggled = IsToggled;
-        }
+        _localToggled = IsToggled;
     }
 
     private bool IsControlled => IsToggledChanged.HasDelegate;
