@@ -296,6 +296,33 @@
         display: contents;
     }
 
+    /* Popover system */
+    .popover-provider {
+        position: relative;
+    }
+
+    .popover-content {
+        position: fixed;
+        left: -9999px;
+        top: -9999px;
+    }
+
+    .popover-anchor {
+        display: inline-flex;
+        width: fit-content;
+        max-width: max-content;
+    }
+
+    .popover-top-left { transform-origin: top left; }
+    .popover-top-center { transform-origin: top center; }
+    .popover-top-right { transform-origin: top right; }
+    .popover-center-left { transform-origin: center left; }
+    .popover-center-center { transform-origin: center; }
+    .popover-center-right { transform-origin: center right; }
+    .popover-bottom-left { transform-origin: bottom left; }
+    .popover-bottom-center { transform-origin: bottom center; }
+    .popover-bottom-right { transform-origin: bottom right; }
+
     .chat-input-divider {
         height: 1px;
         margin: 0 2rem;

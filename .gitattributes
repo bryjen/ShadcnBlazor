@@ -1,0 +1,5 @@
+﻿*.cshtml linguist-language=C#
+*.razor linguist-language=C#
+wwwroot/* linguist-vendored
+bin/* linguist-generated
+obj/* linguist-generated

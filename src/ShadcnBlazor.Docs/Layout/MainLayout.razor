@@ -1,22 +1,24 @@
-﻿@using ShadcnBlazor.Docs.Components.Layout
+@using ShadcnBlazor.Docs.Components.Layout
 @inherits LayoutComponentBase
 
+<PopoverProvider RepositionDebounceMilliseconds="1" />
+
 <div class="absolute bg-background text-foreground w-screen h-screen grid grid-cols-[17.5%_82.5%]">
-    
     <div id="nav-area" class="relative pt-14 h-full w-full">
         <div class="absolute top-0 right-0 w-[1px] h-full z-20" 
              style="background: linear-gradient(to bottom, transparent 0%, transparent 5%, var(--border) 50%, transparent 95%, transparent 100%);"></div>
-    
+
         <div class="absolute top-14 left-0 right-0 h-24 bg-gradient-to-b from-background via-background to-transparent pointer-events-none z-10"></div>
         <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background via-background to-transparent pointer-events-none z-10"></div>
         <NavMenu></NavMenu>
     </div>
 
     <div id="main-content" class="pt-14 h-full w-full">
+        @Body
     </div>
-
-    <header class="absolute z-50 h-14 w-full bg-background">
-        <Header></Header>
-    </header>
 </div>
+
+<header class="absolute z-50 h-14 w-full bg-background">
+    <Header></Header>
+</header>
 

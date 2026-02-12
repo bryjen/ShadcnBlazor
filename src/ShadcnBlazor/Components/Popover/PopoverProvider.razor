@@ -1,0 +1,24 @@
+<div class="@RootClass" @attributes="AdditionalAttributes">
+    @foreach (var popover in _registrations.Values)
+    {
+        if (!popover.Open)
+        {
+            continue;
+        }
+
+        <div id="@popover.PopoverId"
+             class="@GetPopoverClass(popover)"
+             @attributes="GetPopoverAttributes(popover)">
+            @if (popover.ClampList)
+            {
+                <div class="popover-list">
+                    @popover.Content
+                </div>
+            }
+            else
+            {
+                @popover.Content
+            }
+        </div>
+    }
+</div>

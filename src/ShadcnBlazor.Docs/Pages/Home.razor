@@ -72,6 +72,7 @@
     private double _demoSliderValue = 62;
     private double _demoRangeStart = 25;
     private double _demoRangeEnd = 75;
+    private bool _popoverOpen;
     
     private RenderFragment RenderTabOption(Tab tab) => __builder =>
     {
@@ -208,6 +209,40 @@
     
     private RenderFragment RenderMarkdownEditorTab() => __builder =>
     {
+        <div class="w-full">
+            <div class="p-6 rounded-xl border bg-card flex items-center justify-between">
+                <div class="flex flex-col gap-1">
+                    <span class="text-sm font-semibold">Popover Demo</span>
+                    <span class="text-xs text-muted-foreground">Adaptive width + list clamping</span>
+                </div>
+                <Popover Open="@_popoverOpen"
+                         AnchorOrigin="PopoverPlacement.BottomLeft"
+                         TransformOrigin="PopoverPlacement.TopLeft"
+                         WidthMode="PopoverWidthMode.Adaptive"
+                         ClampList="true">
+                    <Anchor>
+                        <Button Size="@Size.Sm" Variant="@Variant.Default" OnClick="TogglePopover">
+                            @(_popoverOpen ? "Close" : "Open") Popover
+                        </Button>
+                    </Anchor>
+                    <ChildContent>
+                        <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg">
+                            <div class="px-4 py-3 border-b text-sm font-semibold">Popover Content</div>
+                            <ul class="flex flex-col gap-1 px-3 py-2 text-sm">
+                                @for (var i = 1; i <= 16; i++)
+                                {
+                                    <li class="rounded-md px-2 py-1 hover:bg-accent/40">Item @i</li>
+                                }
+                            </ul>
+                        </div>
+                    </ChildContent>
+                </Popover>
+            </div>
+        </div>
+        
+        <div class="pt-[100rem]">
+            bait
+        </div>
     };
     
     private RenderFragment RenderAiChatTab() => __builder =>
@@ -217,6 +252,11 @@
     private RenderFragment RenderAuthenticationTab() => __builder =>
     {
     };
+
+    private void TogglePopover()
+    {
+        _popoverOpen = !_popoverOpen;
+    }
 }
 
 
