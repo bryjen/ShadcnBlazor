@@ -1,8 +1,7 @@
-using ShadcnBlazor.Components.Popover;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Docs;
-using TailwindMerge;
 using TailwindMerge.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

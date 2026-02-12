@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using ShadcnBlazor.Components.Popover.Models;
+using ShadcnBlazor.Components.Popover.Services;
 
 namespace ShadcnBlazor.Components.Popover;
 
@@ -71,6 +73,7 @@ public partial class PopoverProvider : ComponentBase, IDisposable
         return left.PopoverId == right.PopoverId
             && left.AnchorId == right.AnchorId
             && left.Content == right.Content
+            && left.Render == right.Render
             && left.Open == right.Open
             && left.AnchorOrigin == right.AnchorOrigin
             && left.TransformOrigin == right.TransformOrigin
@@ -82,23 +85,14 @@ public partial class PopoverProvider : ComponentBase, IDisposable
 
     private Dictionary<string, object> GetPopoverAttributes(PopoverRegistration registration)
     {
-        if (registration.PopoverAttributes is null)
-        {
-            return new Dictionary<string, object>(StringComparer.Ordinal)
-            {
-                ["data-anchor-id"] = registration.AnchorId
-            };
-        }
+        var merged = registration.PopoverAttributes is null
+            ? new Dictionary<string, object>(StringComparer.Ordinal)
+            : new Dictionary<string, object>(registration.PopoverAttributes, StringComparer.Ordinal);
 
-        if (registration.PopoverAttributes.ContainsKey("data-anchor-id"))
-        {
-            return registration.PopoverAttributes;
-        }
-
-        var merged = new Dictionary<string, object>(registration.PopoverAttributes, StringComparer.Ordinal)
-        {
-            ["data-anchor-id"] = registration.AnchorId
-        };
+        merged["data-anchor-id"] = registration.AnchorId;
+        merged["data-state"] = registration.Open ? "open" : "closed";
+        merged["data-side"] = ToSide(registration.AnchorOrigin);
+        merged["aria-hidden"] = registration.Open ? "false" : "true";
 
         return merged;
     }
@@ -121,10 +115,14 @@ public partial class PopoverProvider : ComponentBase, IDisposable
         var classes = new List<string>
         {
             "popover-content",
-            "popover-open",
             ToTransformClass(registration.TransformOrigin),
             ToAnchorClass(registration.AnchorOrigin)
         };
+
+        if (registration.Open)
+        {
+            classes.Add("popover-open");
+        }
 
         switch (registration.WidthMode)
         {
@@ -175,6 +173,22 @@ public partial class PopoverProvider : ComponentBase, IDisposable
             PopoverPlacement.BottomCenter => "popover-anchor-bottom-center",
             PopoverPlacement.BottomRight => "popover-anchor-bottom-right",
             _ => "popover-anchor-bottom-left"
+        };
+    }
+
+    private static string ToSide(PopoverPlacement placement)
+    {
+        return placement switch
+        {
+            PopoverPlacement.TopLeft => "top",
+            PopoverPlacement.TopCenter => "top",
+            PopoverPlacement.TopRight => "top",
+            PopoverPlacement.BottomLeft => "bottom",
+            PopoverPlacement.BottomCenter => "bottom",
+            PopoverPlacement.BottomRight => "bottom",
+            PopoverPlacement.CenterLeft => "left",
+            PopoverPlacement.CenterRight => "right",
+            _ => "bottom"
         };
     }
 }

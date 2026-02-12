@@ -42,14 +42,12 @@ window.popoverHelper = {
         requestAnimationFrame(() => this.placePopover(anchorId, popoverId));
     },
 
-    // Position calculations based on anchor/transform origins
     calculatePosition: function (classList, anchorRect, popoverRect) {
         let top = anchorRect.top;
         let left = anchorRect.left;
         let offsetX = 0;
         let offsetY = 0;
 
-        // Transform origin (where on popover aligns with anchor)
         if (classList.contains('popover-top-left')) {
             offsetX = 0; offsetY = 0;
         } else if (classList.contains('popover-top-center')) {
@@ -70,7 +68,6 @@ window.popoverHelper = {
             offsetX = -popoverRect.width; offsetY = -popoverRect.height;
         }
 
-        // Anchor origin (where on parent to attach)
         if (classList.contains('popover-anchor-top-left')) {
             left = anchorRect.left; top = anchorRect.top;
         } else if (classList.contains('popover-anchor-top-center')) {
@@ -94,13 +91,11 @@ window.popoverHelper = {
         return { top, left, offsetX, offsetY, anchorX: left, anchorY: top };
     },
 
-    // Auto-flip logic when popover would go off-screen
     shouldFlip: function (classList, anchorX, anchorY, popoverWidth, popoverHeight) {
         const margin = this.flipMargin;
         let flipVertical = false;
         let flipHorizontal = false;
 
-        // Top-aligned popovers
         if (classList.contains('popover-top-left') ||
             classList.contains('popover-top-center') ||
             classList.contains('popover-top-right')) {
@@ -111,7 +106,6 @@ window.popoverHelper = {
             }
         }
 
-        // Bottom-aligned popovers
         if (classList.contains('popover-bottom-left') ||
             classList.contains('popover-bottom-center') ||
             classList.contains('popover-bottom-right')) {
@@ -122,7 +116,6 @@ window.popoverHelper = {
             }
         }
 
-        // Left-aligned popovers
         if (classList.contains('popover-top-left') ||
             classList.contains('popover-center-left') ||
             classList.contains('popover-bottom-left')) {
@@ -133,7 +126,6 @@ window.popoverHelper = {
             }
         }
 
-        // Right-aligned popovers
         if (classList.contains('popover-top-right') ||
             classList.contains('popover-center-right') ||
             classList.contains('popover-bottom-right')) {
@@ -147,7 +139,6 @@ window.popoverHelper = {
         return { flipVertical, flipHorizontal };
     },
 
-    // Apply flip by swapping classes
     applyFlip: function (classList, flipVertical, flipHorizontal) {
         const classArray = Array.from(classList);
 
@@ -170,7 +161,6 @@ window.popoverHelper = {
         return classArray;
     },
 
-    // Main positioning function
     placePopover: function (anchorId, popoverId) {
         const anchor = document.getElementById(anchorId);
         const popover = document.getElementById(popoverId);
@@ -189,7 +179,6 @@ window.popoverHelper = {
             return;
         }
 
-        // Width modes
         const isRelativeWidth = classList.contains('popover-relative-width');
         const isAdaptiveWidth = classList.contains('popover-adaptive-width');
 
@@ -202,10 +191,8 @@ window.popoverHelper = {
             popover.style.minWidth = anchorRect.width + 'px';
         }
 
-        // Calculate position
         let position = this.calculatePosition(classList, anchorRect, popoverRect);
 
-        // Auto-flip if needed
         const shouldFlip = this.shouldFlip(classList, position.anchorX, position.anchorY,
             popoverRect.width, popoverRect.height);
 
@@ -216,7 +203,6 @@ window.popoverHelper = {
             position = this.calculatePosition(tempDiv.classList, anchorRect, popoverRect);
         }
 
-        // List height clamping
         const firstChild = popover.firstElementChild;
         if (firstChild && firstChild.classList.contains('popover-list')) {
             const popoverTop = position.top + position.offsetY;
@@ -230,7 +216,6 @@ window.popoverHelper = {
             }
         }
 
-        // Bounds checking
         let left = position.left + position.offsetX;
         let top = position.top + position.offsetY;
 
@@ -246,24 +231,19 @@ window.popoverHelper = {
             top = this.overflowPadding;
         }
 
-        // Apply position
         popover.style.left = left + 'px';
         popover.style.top = top + 'px';
         popover.removeAttribute('data-popover-retry');
 
-        // Z-index (simple stacking for now - room for expansion)
         this.updateZIndex(popover);
     },
 
-    // Simple z-index management (placeholder for future nested support)
     updateZIndex: function (popover) {
         if (!popover.style.zIndex || parseInt(popover.style.zIndex) < this.baseZIndex) {
             popover.style.zIndex = this.baseZIndex + 1;
         }
-        // TODO: Handle nested popovers, dialogs, appbars
     },
 
-    // Reposition all open popovers
     repositionAll: function () {
         const provider = document.querySelector('.' + this.containerClass);
         if (!provider) return;
@@ -277,9 +257,6 @@ window.popoverHelper = {
     }
 };
 
-/**
- * Popover lifecycle manager
- */
 class PopoverManager {
     constructor() {
         this.popovers = new Map();
@@ -287,6 +264,7 @@ class PopoverManager {
         this.repositionDebounceMilliseconds = 25;
         this.onResize = null;
         this.onScroll = null;
+        this.outsideClickSubscriptions = new Map();
     }
 
     bindWindowListeners() {
@@ -384,26 +362,62 @@ class PopoverManager {
         }
     }
 
+    enableOutsideClickClose(anchorId, popoverId, callbackReference) {
+        this.disableOutsideClickClose(popoverId);
+
+        const handler = event => {
+            const popover = document.getElementById(popoverId);
+            const anchor = document.getElementById(anchorId);
+            if (!popover || !anchor) {
+                return;
+            }
+
+            if (!popover.classList.contains('popover-open')) {
+                return;
+            }
+
+            const target = event.target;
+            if (popover.contains(target) || anchor.contains(target)) {
+                return;
+            }
+
+            callbackReference.invokeMethodAsync('HandleOutsidePointerDown');
+        };
+
+        document.addEventListener('pointerdown', handler, true);
+        this.outsideClickSubscriptions.set(popoverId, {
+            handler,
+            callbackReference
+        });
+    }
+
+    disableOutsideClickClose(popoverId) {
+        const subscription = this.outsideClickSubscriptions.get(popoverId);
+        if (!subscription) {
+            return;
+        }
+
+        document.removeEventListener('pointerdown', subscription.handler, true);
+        this.outsideClickSubscriptions.delete(popoverId);
+    }
+
     disconnect(popoverId) {
         this.popovers.delete(popoverId);
+        this.disableOutsideClickClose(popoverId);
     }
 
     dispose() {
         if (this.observer) {
             this.observer.disconnect();
         }
+
+        for (const key of this.outsideClickSubscriptions.keys()) {
+            this.disableOutsideClickClose(key);
+        }
+
         this.unbindWindowListeners();
         this.popovers.clear();
     }
 }
 
 window.popoverManager = new PopoverManager();
-
-
-
-
-
-
-
-
-

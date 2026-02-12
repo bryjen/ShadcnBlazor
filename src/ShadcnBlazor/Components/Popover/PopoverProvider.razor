@@ -1,7 +1,7 @@
 <div class="@RootClass" @attributes="AdditionalAttributes">
     @foreach (var popover in _registrations.Values)
     {
-        if (!popover.Open)
+        if (!popover.Render)
         {
             continue;
         }

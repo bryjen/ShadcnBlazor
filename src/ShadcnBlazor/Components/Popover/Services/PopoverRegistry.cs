@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Components.Popover;
+namespace ShadcnBlazor.Components.Popover.Services;
 
 public sealed class PopoverRegistry : IPopoverRegistry
 {

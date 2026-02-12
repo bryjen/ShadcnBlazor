@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Components.Popover;
+namespace ShadcnBlazor.Components.Popover.Models;
 
 public enum PopoverPlacement
 {

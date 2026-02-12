@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Popover.Models;
 
-namespace ShadcnBlazor.Components.Popover;
+namespace ShadcnBlazor.Components.Popover.Services;
 
 public class PopoverService : IPopoverService, IAsyncDisposable
 {
@@ -48,6 +49,27 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         {
             await _jsInterop.SetRepositionDebounceAsync(normalized);
         }
+    }
+
+    public async Task EnableOutsideClickCloseAsync(string anchorId, string popoverId, DotNetObjectReference<Popover> callbackReference)
+    {
+        await InitializeAsync(
+            _options.ContainerClass,
+            _options.FlipMargin,
+            _options.OverflowPadding,
+            _options.BaseZIndex);
+
+        await _jsInterop.EnableOutsideClickCloseAsync(anchorId, popoverId, callbackReference);
+    }
+
+    public async Task DisableOutsideClickCloseAsync(string popoverId)
+    {
+        if (!_isInitialized)
+        {
+            return;
+        }
+
+        await _jsInterop.DisableOutsideClickCloseAsync(popoverId);
     }
 
     public async Task ConnectAsync(string anchorId, string popoverId)

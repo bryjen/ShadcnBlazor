@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ShadcnBlazor.Components.Popover;
+namespace ShadcnBlazor.Components.Popover.Models;
 
 internal sealed class PopoverRegistration
 {
     public required string PopoverId { get; init; }
     public required string AnchorId { get; init; }
     public RenderFragment? Content { get; init; }
+    public bool Render { get; init; }
     public bool Open { get; init; }
     public PopoverPlacement AnchorOrigin { get; init; }
     public PopoverPlacement TransformOrigin { get; init; }

@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace ShadcnBlazor.Components.Popover;
+namespace ShadcnBlazor.Components.Popover.Services;
 
 internal class PopoverJsInterop
 {
@@ -33,6 +33,24 @@ internal class PopoverJsInterop
             "popoverManager.setRepositionDebounce",
             cancellationToken,
             debounceMilliseconds);
+    }
+
+    public ValueTask EnableOutsideClickCloseAsync(string anchorId, string popoverId, DotNetObjectReference<Popover> callbackReference, CancellationToken cancellationToken = default)
+    {
+        return _jsRuntime.InvokeVoidAsync(
+            "popoverManager.enableOutsideClickClose",
+            cancellationToken,
+            anchorId,
+            popoverId,
+            callbackReference);
+    }
+
+    public ValueTask DisableOutsideClickCloseAsync(string popoverId, CancellationToken cancellationToken = default)
+    {
+        return _jsRuntime.InvokeVoidAsync(
+            "popoverManager.disableOutsideClickClose",
+            cancellationToken,
+            popoverId);
     }
 
     public ValueTask ConnectAsync(
