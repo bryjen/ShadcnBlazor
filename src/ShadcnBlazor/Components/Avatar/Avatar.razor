@@ -4,12 +4,21 @@
     data-slot="avatar"
     class="@GetClass()"
     @attributes="AdditionalAttributes">
-    @if (!string.IsNullOrWhiteSpace(Text))
+    @if (ShouldRenderImage)
     {
-        @Text
+        <img
+            data-slot="avatar-image"
+            src="@Src"
+            alt="@Alt"
+            class="@GetImageClass()"
+            @onerror="HandleImageError" />
+    }
+    else if (ChildContent is not null)
+    {
+        @ChildContent
     }
     else
     {
-        @ChildContent
+        @GetFallbackText()
     }
 </div>

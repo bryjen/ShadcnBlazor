@@ -1,0 +1,130 @@
+﻿@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Components.Checkbox
+@layout NoNavMenuLayout
+
+<div class="flex flex-col gap-4 w-full">
+    <div class="flex flex-col">
+        <span class="text-lg font-bold">Deployment Settings</span>
+        <span class="text-sm text-muted-foreground">Configure how your application is deployed.</span>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-xs text-muted-foreground font-bold">Instance Information</span>
+        
+        <div>
+            <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
+            <Input Size="@Size.Sm" Placeholder="Calgary"></Input>
+        </div>
+        
+        <div class="grid grid-cols-[1fr_1fr] gap-x-4">
+            <div>
+                <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
+                <Input Placeholder="Calgary"></Input>
+            </div>
+            <div>
+                <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
+                <Input Placeholder="Calgary"></Input>
+            </div>
+        </div>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="flex flex-col gap-2 w-full">
+        <span class="text-xs text-muted-foreground font-bold">Application Source</span>
+        <RadioGroup @bind-Value="_appSource" Size="@Size.Md" Class="w-full">
+            <RadioCard Value="repo">
+                <span class="text-sm font-semibold">Pull from a Repository</span>
+                <span class="text-xs text-muted-foreground">
+                    Deploy directly from source control with automatic builds. Best for CI/CD workflows and frequent updates.
+                </span>
+            </RadioCard>
+            <RadioCard Value="docker">
+                <span class="text-sm font-semibold">Docker Image</span>
+                <span class="text-xs text-muted-foreground">
+                    Run a prebuilt container with predictable dependencies. Ideal for portable, single-service deployments.
+                </span>
+            </RadioCard>
+            <RadioCard Value="vm">
+                <span class="text-sm font-semibold">Virtual Machine</span>
+                <span class="text-xs text-muted-foreground">
+                    Provision a full OS environment with maximum control. Suitable for custom runtimes and legacy setups.
+                </span>
+            </RadioCard>
+        </RadioGroup>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="grid grid-cols-[3fr_1fr] gap-x-4">
+        <div class="flex flex-col">
+            <span class="text-sm font-semibold">Number of Cores</span>
+            <span class="text-xs text-muted-foreground">
+                Adjust the number allocated CPU cores. This can be adjusted later.
+            </span>
+        </div>
+        <div class="flex flex-col justify-center item-center w-full">
+            <ButtonGroup Role="toolbar" Class="w-fit">
+                <div class="px-4">@(_count)</div>
+                <Button Size="@Size.Sm" Class="px-2.5" OnClick="@(_ => DecCount())"><LuMinus/></Button>
+                <Button Size="@Size.Sm" Class="px-2.5" OnClick="@(_ => IncCount())"><LuPlus/></Button>
+            </ButtonGroup>
+        </div>
+    </div>
+    
+    <div class="flex flex-col gap-2 w-fit mt-4">
+        <Checkbox Size="@Size.Lg">
+            <div class="flex flex-col">
+                <span class="text-sm">Limit the VM's CPU frequency to all-core turbo</span>
+                <span class="text-xs text-muted-foreground">Allows more consistent performance</span>
+            </div>
+        </Checkbox>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col">
+            <span class="text-xs text-muted-foreground font-bold">Backups</span>
+        </div>
+
+        <RadioGroup @bind-Value="_backupMethod" Size="@Size.Md" Class="w-full">
+            <Radio Value="planb">
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold">Backup Plan</span>
+                    <span class="text-xs text-muted-foreground">Back up the full VM. These immutable backups are secured by backup vault against accidental or malicious deletion. </span>
+                </div>
+            </Radio>
+            <Radio Value="snapshots">
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold">Scheduled Snapshots</span>
+                    <span class="text-xs text-muted-foreground">Back up disks only. This provides foundational protection at a lower cost.</span>
+                </div>
+            </Radio>
+            <Radio Value="rawdoggingit">
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold">No Backups</span>
+                    <span class="text-xs text-muted-foreground">Neither VM nor disks will be backed up. If data is deleted or corrupted for any reason, you won't be able to recover it.</span>
+                </div>
+            </Radio>
+        </RadioGroup>
+    </div>
+    
+    <div class="h-px bg-border"></div>
+    
+    <div class="flex gap-2">
+        <Button Size="@Size.Sm" Variant="@Variant.Default">Create</Button>
+        <Button Size="@Size.Sm" Variant="@Variant.Outline">Cancel</Button>
+    </div>
+</div>
+
+@code {
+    private string? _appSource = null;
+    private string? _backupMethod = null;
+    private int _count = 8;
+
+    private void IncCount() => _count += 1;
+    private void DecCount() => _count -= (_count <= 0 ? 0 : 1);
+}

@@ -1,0 +1,53 @@
+﻿@using EasyAppDev.Blazor.Icons.Lucide
+
+<Card Variant="@CardVariant.Outline" Class="w-full gap-4 justify-center items-center">
+    <div class="flex flex-col gap-3 w-full">
+        <div class="flex justify-between items-center">
+            <span class="text-base font-bold">Manage API Keys</span>
+            <Button Size="@Size.Sm" Variant="@Variant.Default"><LuPlus/>New</Button>
+        </div>
+        <span class="text-xs text-muted-foreground">Do not share your API key. We reserve the right to automatically disable any key that has leaked publicly.</span>
+    </div>
+    
+    @* TODO: REPLACE WITH TABLE COMPONENT *@
+    <div class="w-full grid grid-cols-[1fr_1.5fr_1fr_1fr] gap-y-2 text-xs">
+        <span class="font-semibold uppercase">Name</span>
+        <span class="font-semibold uppercase">Value</span>
+        <span class="font-semibold uppercase">Issued</span>
+        <span class="font-semibold uppercase">Last used</span>
+    </div>
+    
+    <div class="h-px -my-2 bg-border w-full"></div>
+    
+    <div class="w-full grid grid-cols-[1fr_1.5fr_1fr_1fr] gap-y-2 text-xs">
+        @foreach (var key in _apiKeys)
+        {
+            <span class="text-muted-foreground">@key.Name</span>
+
+            <div class="flex items-center gap-2 text-muted-foreground">
+                <code class="text-xs px-2 py-1 rounded-md bg-muted">@key.Value</code>
+            </div>
+
+            <span class="text-xs text-muted-foreground">
+                @key.Issued.ToString("yyyy-MM-dd")
+            </span>
+
+            <span class="text-xs text-muted-foreground">
+                @key.LastUsed.ToString("yyyy-MM-dd")
+            </span>
+        }
+    </div>
+</Card>
+
+@code {
+
+    private record ApiKey(string Name, string Value, DateTime Issued, DateTime LastUsed);
+    private List<ApiKey> _apiKeys =
+    [
+        new("prod", "sk-...Do0A", new DateTime(2025, 12, 03), new DateTime(2026, 02, 10)),
+        new("staging", "sk-...K9xQ", new DateTime(2025, 11, 18), new DateTime(2026, 02, 08)),
+        new("local", "sk-...P2Lm", new DateTime(2026, 01, 12), new DateTime(2026, 02, 11)),
+        new("ci/cd", "sk-...T7Rw", new DateTime(2025, 10, 27), new DateTime(2026, 02, 09))
+    ];
+
+}

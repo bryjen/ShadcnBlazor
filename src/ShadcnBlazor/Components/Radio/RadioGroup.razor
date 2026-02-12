@@ -1,0 +1,12 @@
+@inherits ShadcnComponentBase
+
+<CascadingValue Value="this">
+    <div
+        role="radiogroup"
+        data-slot="radio-group"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+

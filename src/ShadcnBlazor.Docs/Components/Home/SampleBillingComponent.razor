@@ -1,0 +1,58 @@
+﻿@using ShadcnBlazor.Components.Checkbox
+
+<Card Variant="@CardVariant.Outline" Class="w-full gap-4 justify-center items-center">
+    <div class="flex flex-col w-full">
+        <span class="text-base font-bold">Credit Balance</span>
+        <span class="text-xs text-muted-foreground">Usage of models via API or the web will consume credits.</span>
+    </div>
+    
+    <div class="flex items-center justify-between w-full px-3 py-2 rounded rounded-md border border-primary bg-primary/15 text-xs">
+        <span class="text-muted-foreground font-bold">Remaining Balance</span>
+        <span class="font-bold">$3.69</span>
+    </div>
+    
+    <div class="flex flex-col gap-2 w-full">
+        <Checkbox>
+            <div class="flex flex-col">
+                <span class="text-xs">Enable on-demand pricing</span>
+                <span class="text-xs text-muted-foreground">Allows credit usage past that normally allocated by your subscription.</span>
+            </div>
+        </Checkbox>
+    </div>
+    
+    @* TODO: REPLACE WITH TABLE COMPONENT *@
+    <div class="flex flex-col w-full mt-2">
+        <span class="text-xs font-bold text-muted-foreground">Invoice History</span>
+        <div class="w-full grid grid-cols-[1.5fr_1.5fr_1fr] gap-y-2 text-xs">
+            <span class="font-semibold uppercase">Date</span>
+            <span class="font-semibold uppercase">Type</span>
+            <span class="font-semibold uppercase">Cost</span>
+        </div>
+        
+        <div class="h-px my-2 bg-border w-full"></div>
+    
+        <div class="w-full grid grid-cols-[1.5fr_1.5fr_1fr] gap-y-2 text-xs gap-y-4">
+            @foreach (var invoice in _invoices)
+            {
+                <span class="text-xs text-muted-foreground">
+                    @invoice.InvoiceDate.ToString("MMM dd, yyyy")
+                </span>
+                
+                <span class="text-muted-foreground">@invoice.Type</span>
+                <span class="text-muted-foreground">@($"${invoice.Cost:F2}")</span>
+            }
+        </div>
+    </div>
+</Card>
+
+@code {
+
+    private record Invoice(DateTime InvoiceDate, string Type, double Cost);
+    private List<Invoice> _invoices =
+    [
+        new(new DateTime(2026, 02, 01), "Monthly invoice", 48.50),
+        new(new DateTime(2026, 01, 15), "Extra Usage", 12.99),
+        new(new DateTime(2026, 01, 01), "Monthly invoice", 29.00),
+        new(new DateTime(2025, 12, 18), "Enterprise Features", 7.42)
+    ];
+}

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Shared;
 using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Input;
 
@@ -17,7 +18,7 @@ public partial class Input : ShadcnComponentBase
     public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
-    public string Size { get; set; } = "default";
+    public Size Size { get; set; } = Size.Md;
 
     [Parameter]
     public bool Disabled { get; set; }
@@ -37,12 +38,14 @@ public partial class Input : ShadcnComponentBase
                           "aria-invalid:ring-destructive/40 aria-invalid:border-destructive";
         var sizeClasses = Size switch
         {
-            "sm" => "h-8 px-2.5 py-1 text-sm",
-            "lg" => "h-10 px-3.5 py-2 text-base",
-            _ => "h-9 px-3 py-1.5 text-base md:text-sm"
+            Size.Xs => "h-7 px-2 py-1 text-xs",
+            Size.Sm => "h-8 px-2.75 py-1.25 text-sm",
+            Size.Md => "h-9 px-3 py-1.5 text-base md:text-sm",
+            Size.Lg => "h-10 px-3.5 py-2 text-base",
+            _ => "h-9 px-3 py-1.5 text-base md:text-sm",
         };
 
-        return MergeCss(baseClasses, sizeClasses, Class ?? "");
+        return MergeCss(baseClasses, sizeClasses, Class ?? string.Empty);
     }
 
     private async Task HandleInput(ChangeEventArgs e)
@@ -56,4 +59,3 @@ public partial class Input : ShadcnComponentBase
         await OnChange.InvokeAsync(e);
     }
 }
-
