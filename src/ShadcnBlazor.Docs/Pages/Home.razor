@@ -1,7 +1,6 @@
 @page "/"
 @using EasyAppDev.Blazor.Icons.Lucide
-@using ShadcnBlazor.Components.Checkbox
-@using ShadcnBlazor.Components.Textarea
+@using ShadcnBlazor.Components.ComposableTextArea
 @using ShadcnBlazor.Docs.Components.Home
 @layout NoNavMenuLayout
 
@@ -69,6 +68,11 @@
 </div>
 
 @code {
+    private bool _extendedThinkingToggle = true;
+    private double _demoSliderValue = 62;
+    private double _demoRangeStart = 25;
+    private double _demoRangeEnd = 75;
+    
     private RenderFragment RenderTabOption(Tab tab) => __builder =>
     {
         var tabString = TabToString(tab);
@@ -132,15 +136,72 @@
                 <div class="flex flex-col w-full gap-2">
                     <span class="text-xs text-muted-foreground font-bold">Actions</span>
                 </div>
+                
+                @* slider demo *@
+                <Card Variant="@CardVariant.Outline" Class="gap-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-muted-foreground font-bold">Volume</span>
+                        <span class="text-xs text-muted-foreground">@_demoSliderValue</span>
+                    </div>
+                    <Slider Value="@_demoSliderValue" ValueChanged="@(v => _demoSliderValue = v)" Min="0" Max="100" Step="1" />
+                </Card>
+                
+                @* range slider demo *@
+                <Card Variant="@CardVariant.Outline" Class="gap-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-muted-foreground font-bold">Window</span>
+                        <span class="text-xs text-muted-foreground">@_demoRangeStart - @_demoRangeEnd</span>
+                    </div>
+                    <RangeSlider
+                        LowerValue="@_demoRangeStart"
+                        LowerValueChanged="@(v => _demoRangeStart = v)"
+                        UpperValue="@_demoRangeEnd"
+                        UpperValueChanged="@(v => _demoRangeEnd = v)"
+                        Min="0"
+                        Max="100"
+                        Step="1" />
+                </Card>
             </div>
+            
             
             @* col 3 *@
             <SampleInstanceCreateForm />
             
             @* col 4 *@
             <div class="w-full flex flex-col gap-4">
-                <SampleApiKeysView />
-                <SampleBillingComponent />
+                <ComposableTextArea Class="w-full" Rows="4" Placeholder="Write your prompt here...">
+                    <Header>
+                        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="text-xs text-muted-foreground">
+                            <LuAtSign Class="h-3 w-3"/>
+                            Add Context
+                        </Button>
+                    </Header>
+                    <Footer>
+                        <div class="flex items-center justify-between text-xs text-muted-foreground">
+                            <div class="flex gap-2">
+                                <ToggleButton @bind-IsToggled="@_extendedThinkingToggle" Size="@Size.Sm" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default" Class="rounded-xl">
+                                    <LuBrain/>
+                                </ToggleButton>
+
+                                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
+                                    <span>Auto</span>
+                                </Button>
+
+                                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
+                                    <LuGlobe/>
+                                    <span>Sources</span>
+                                </Button>
+                            </div>
+
+                            <Button Size="@Size.Sm" Variant="@Variant.Default" Class="font-medium rounded-xl">
+                                <LuArrowUp/>
+                            </Button>
+                        </div>
+                    </Footer>
+                </ComposableTextArea>
+
+                <SampleApiKeysView/>
+                <SampleBillingComponent/>
             </div>
         </div>
     };
@@ -157,6 +218,15 @@
     {
     };
 }
+
+
+
+
+
+
+
+
+
 
 
 
