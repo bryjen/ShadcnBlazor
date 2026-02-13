@@ -71,7 +71,7 @@ public class InitCommand(
             CopyRequiredFiles(cwdInfo);
             EnsureComponentDependencies(projectConf, cwdInfo);
             ModifyExistingFiles(cwdInfo, blazorProjectType, projectConf);
-            EnsureTwMergePackage(csprojFile);
+            EnsureTailwindMergePackage(csprojFile);
             
             return 0;
         }
@@ -212,10 +212,10 @@ public class InitCommand(
         }
     }
     
-    private void EnsureTwMergePackage(FileInfo csprojFile)
+    private void EnsureTailwindMergePackage(FileInfo csprojFile)
     {
-        const string packageName = "TwMerge";
-        const string packageVersion = "1.0.7";
+        const string packageName = "TailwindMerge.NET";
+        const string packageVersion = "1.2.0";
 
         if (csprojService.EnsurePackageReference(csprojFile, packageName, packageVersion))
         {
