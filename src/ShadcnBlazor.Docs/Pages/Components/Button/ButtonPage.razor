@@ -28,43 +28,41 @@
         </ComponentPreview>
     </DocsSection>
 
-    <DocsSection Title="Size" Id="size">
-        <p class="mb-3">Use the <code>Size</code> parameter for compact (Sm), default (Md), or larger (Lg) buttons. Sizing affects padding and text scale.</p>
-        <ComponentPreview Code="@Snippets.ButtonSizeExample" Language="razor">
-            <ButtonSizeExample />
-        </ComponentPreview>
-    </DocsSection>
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Size" Id="size">
+            <p class="mb-3">Use the <code>Size</code> parameter for compact (Sm), default (Md), or larger (Lg) buttons. Sizing affects padding and text scale.</p>
+            <ComponentPreview Code="@Snippets.ButtonSizeExample" Language="razor">
+                <ButtonSizeExample />
+            </ComponentPreview>
+        </DocsSubSection>
 
-    <DocsSection Title="Variants" Id="variants">
-        <p class="mb-3">Choose a <code>Variant</code> to convey hierarchy: Default for primary actions, Outline for secondary, Ghost for minimal emphasis, Destructive for dangerous actions, and Link for inline-style buttons.</p>
-        <ComponentPreview Code="@Snippets.ButtonVariantExample" Language="razor">
-            <ButtonVariantExample />
-        </ComponentPreview>
-    </DocsSection>
+        <DocsSubSection Title="Variants" Id="variants">
+            <p class="mb-3">Choose a <code>Variant</code> to convey hierarchy: Default for primary actions, Outline for secondary, Ghost for minimal emphasis, Destructive for dangerous actions, and Link for inline-style buttons.</p>
+            <ComponentPreview Code="@Snippets.ButtonVariantExample" Language="razor">
+                <ButtonVariantExample />
+            </ComponentPreview>
+        </DocsSubSection>
 
-    <DocsSection Title="Content" Id="content">
-        <p class="mb-3">The button accepts any content via <code>ChildContent</code>. Mix text with inline elements, or use dynamic content. The component handles layout and spacing automatically.</p>
-        <ComponentPreview Code="@_contentSnippet" Language="razor">
-            <div class="flex flex-wrap gap-4">
-                <Button>Plain text</Button>
-                <Button Variant="@Variant.Outline"><strong>Bold</strong> text</Button>
-                <Button Variant="@Variant.Secondary">Click <em>here</em></Button>
-            </div>
-        </ComponentPreview>
-    </DocsSection>
+        <DocsSubSection Title="Content" Id="content">
+            <p class="mb-3">The button accepts any content via <code>ChildContent</code>. Mix text with inline elements, or use dynamic content. The component handles layout and spacing automatically.</p>
+            <ComponentPreview Code="@Snippets.ButtonContentExample" Language="razor">
+                <ButtonContentExample />
+            </ComponentPreview>
+        </DocsSubSection>
 
-    <DocsSection Title="Icons" Id="icons">
-        <p class="mb-3">Use Lucide icons (or any SVG) inside the button. Add the icon package and place it alongside text—spacing is handled by the button's built-in gap. Icon-only buttons work with smaller sizes and padding.</p>
-        <ComponentPreview Code="@Snippets.ButtonIconExample" Language="razor">
-            <ButtonIconExample />
-        </ComponentPreview>
-    </DocsSection>
+        <DocsSubSection Title="Icons" Id="icons">
+            <p class="mb-3">Use Lucide icons (or any SVG) inside the button. Add the icon package and place it alongside text—spacing is handled by the button's built-in gap. Icon-only buttons work with smaller sizes and padding.</p>
+            <ComponentPreview Code="@Snippets.ButtonIconExample" Language="razor">
+                <ButtonIconExample />
+            </ComponentPreview>
+        </DocsSubSection>
 
-    <DocsSection Title="Interactivity" Id="interactivity">
-        <p class="mb-3">Wire up <code>OnClick</code> to handle user actions. The handler receives <code>MouseEventArgs</code>. Use component state to drive dynamic labels or behavior.</p>
-        <ComponentPreview Code="@Snippets.ButtonCounterExample" Language="razor">
-            <ButtonCounterExample />
-        </ComponentPreview>
+        <DocsSubSection Title="Interactivity" Id="interactivity">
+            <p class="mb-3">Wire up <code>OnClick</code> to handle user actions. The handler receives <code>MouseEventArgs</code>. Use component state to drive dynamic labels or behavior.</p>
+            <ComponentPreview Code="@Snippets.ButtonCounterExample" Language="razor">
+                <ButtonCounterExample />
+            </ComponentPreview>
+        </DocsSubSection>
     </DocsSection>
 </div>
 
@@ -74,14 +72,8 @@
 
     private static readonly Dictionary<string, string> _installOptions = new()
     {
-        ["bash"] = "shadcn-blazor component add button",
-        ["powershell"] = "shadcn-blazor component add button",
-        ["cmd"] = "shadcn-blazor component add button",
+        ["dotnet"] = "shadcn-blazor component add button",
     };
-
-    private const string _contentSnippet = @"<Button>Plain text</Button>
-<Button Variant=""@Variant.Outline""><strong>Bold</strong> text</Button>
-<Button Variant=""@Variant.Secondary"">Click <em>here</em></Button>";
 
     protected override void OnParametersSet()
     {

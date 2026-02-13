@@ -1,9 +1,12 @@
-<section class="flex flex-col gap-4 scroll-mt-20" id="@SectionId">
+<section class="flex flex-col gap-2 scroll-mt-20 mb-6" id="@SectionId">
     @if (!string.IsNullOrEmpty(Title))
     {
-        <h3 class="text-lg font-semibold">@Title</h3>
+        <h3 class="text-lg font-semibold text-foreground">@Title</h3>
     }
-    @ChildContent
+    
+    <div class="text-sm text-muted-foreground">
+        @ChildContent
+    </div>
 </section>
 
 @inject ShadcnBlazor.Docs.Services.PageTocService TocService

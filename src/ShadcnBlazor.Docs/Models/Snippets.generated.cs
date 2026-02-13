@@ -12,6 +12,12 @@ namespace ShadcnBlazor.Docs.Models
     {
         public const string ButtonBasicExample = @"<Button>Click Me</Button>";
 
+        public const string ButtonContentExample = @"<div class=""flex flex-wrap gap-4"">
+    <Button>Plain text</Button>
+    <Button Variant=""@Variant.Outline""><strong>Bold</strong> text</Button>
+    <Button Variant=""@Variant.Secondary"">Click <em>here</em></Button>
+</div>";
+
         public const string ButtonCounterExample = @"<Button OnClick=""IncrementCount"">Clicked @_count times</Button>
 
 @code {

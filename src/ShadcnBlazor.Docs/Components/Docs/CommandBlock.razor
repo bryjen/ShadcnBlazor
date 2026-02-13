@@ -46,8 +46,8 @@
     </div>
     @if (SelectedKey != null && Options.TryGetValue(SelectedKey, out var value))
     {
-        <div class="px-4 py-3 overflow-x-auto">
-            <code class="text-sm font-mono text-foreground whitespace-nowrap">@value</code>
+        <div class="px-4 py-3 overflow-x-auto bg-card font-['JetBrains_Mono']">
+            @value
         </div>
     }
 </div>
