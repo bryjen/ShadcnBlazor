@@ -20,11 +20,10 @@ public partial class Avatar : ShadcnComponentBase
 
     private string GetSizeClass() => Size switch
     {
-        Size.Xs => "size-5 text-[10px]",
-        Size.Sm => "size-6 text-xs",
-        Size.Md => "size-8 text-sm",
-        Size.Lg => "size-10 text-base",
-        _ => "size-8 text-sm",
+        Size.Sm => "size-4 text-[9px]",
+        Size.Md => "size-5 text-[10px]",
+        Size.Lg => "size-6 text-xs",
+        _ => "size-5 text-[10px]",
     };
 
     private string GetClass()

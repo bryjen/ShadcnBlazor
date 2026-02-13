@@ -20,8 +20,7 @@ public partial class RadioCard : RadioSelectableComponentBase
     {
         var sizeClasses = EffectiveSize switch
         {
-            Size.Xs => "size-4",
-            Size.Sm => "size-4.5",
+            Size.Sm => "size-4",
             Size.Md => "size-5",
             Size.Lg => "size-6",
         };
@@ -44,7 +43,6 @@ public partial class RadioCard : RadioSelectableComponentBase
     {
         var sizeClasses = EffectiveSize switch
         {
-            Size.Xs => "size-1",
             Size.Sm => "size-1.5",
             Size.Md => "size-2",
             Size.Lg => "size-2.5",

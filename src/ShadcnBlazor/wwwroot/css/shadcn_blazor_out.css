@@ -581,6 +581,9 @@
   .object-cover {
     object-fit: cover;
   }
+  .p-0 {
+    padding: calc(var(--spacing) * 0);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
@@ -590,11 +593,17 @@
   .px-1\.5 {
     padding-inline: calc(var(--spacing) * 1.5);
   }
+  .px-1\.25 {
+    padding-inline: calc(var(--spacing) * 1.25);
+  }
   .px-1\.75 {
     padding-inline: calc(var(--spacing) * 1.75);
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
+  }
+  .px-2\.5 {
+    padding-inline: calc(var(--spacing) * 2.5);
   }
   .px-2\.25 {
     padding-inline: calc(var(--spacing) * 2.25);
@@ -620,6 +629,9 @@
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
   }
+  .py-0\.25 {
+    padding-block: calc(var(--spacing) * 0.25);
+  }
   .py-0\.75 {
     padding-block: calc(var(--spacing) * 0.75);
   }
@@ -631,6 +643,9 @@
   }
   .py-1\.25 {
     padding-block: calc(var(--spacing) * 1.25);
+  }
+  .py-1\.75 {
+    padding-block: calc(var(--spacing) * 1.75);
   }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
@@ -671,8 +686,14 @@
   .text-\[0\.6rem\] {
     font-size: 0.6rem;
   }
+  .text-\[0\.55rem\] {
+    font-size: 0.55rem;
+  }
   .text-\[0\.65rem\] {
     font-size: 0.65rem;
+  }
+  .text-\[9px\] {
+    font-size: 9px;
   }
   .text-\[10px\] {
     font-size: 10px;
@@ -1032,6 +1053,16 @@
       padding-inline: calc(var(--spacing) * 2.5);
     }
   }
+  .has-\[\>svg\]\:px-2\.25 {
+    &:has(>svg) {
+      padding-inline: calc(var(--spacing) * 2.25);
+    }
+  }
+  .has-\[\>svg\]\:px-2\.75 {
+    &:has(>svg) {
+      padding-inline: calc(var(--spacing) * 2.75);
+    }
+  }
   .has-\[\>svg\]\:px-3 {
     &:has(>svg) {
       padding-inline: calc(var(--spacing) * 3);
@@ -1145,10 +1176,22 @@
       flex-shrink: 0;
     }
   }
+  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-2\.5 {
+    & svg:not([class*='size-']) {
+      width: calc(var(--spacing) * 2.5);
+      height: calc(var(--spacing) * 2.5);
+    }
+  }
   .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-3 {
     & svg:not([class*='size-']) {
       width: calc(var(--spacing) * 3);
       height: calc(var(--spacing) * 3);
+    }
+  }
+  .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-3\.5 {
+    & svg:not([class*='size-']) {
+      width: calc(var(--spacing) * 3.5);
+      height: calc(var(--spacing) * 3.5);
     }
   }
   .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-4 {
@@ -1405,6 +1448,12 @@
   .\[\&\>svg\]\:pointer-events-none {
     &>svg {
       pointer-events: none;
+    }
+  }
+  .\[\&\>svg\]\:size-1\.5 {
+    &>svg {
+      width: calc(var(--spacing) * 1.5);
+      height: calc(var(--spacing) * 1.5);
     }
   }
   .\[\&\>svg\]\:size-2 {

@@ -25,7 +25,6 @@ namespace ShadcnBlazor.Docs.Models
 </div>";
 
         public const string ButtonSizeExample = @"<div class=""flex flex-wrap items-center gap-4"">
-    <Button Size=""@Size.Xs"">Extra Small</Button>
     <Button Size=""@Size.Sm"">Small</Button>
     <Button Size=""@Size.Md"">Medium</Button>
     <Button Size=""@Size.Lg"">Large</Button>

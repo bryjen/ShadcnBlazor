@@ -1,29 +1,19 @@
-<div class="relative group">
-    <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="docs-codeblock border-t border-border relative overflow-hidden bg-[hsl(var(--background-dark))]">
+    <div class="flex items-center justify-between px-4 py-2 border-b border-border bg-[hsl(var(--chat-sidebar))]">
+        <span class="text-xs font-medium text-muted-foreground uppercase">@Language</span>
         <button type="button"
-                class="px-2 py-1 text-xs rounded bg-muted hover:bg-muted/80"
+                class="px-2.5 py-1 text-xs rounded-md border border-border bg-background/50 hover:bg-muted/50 text-foreground/70 transition-colors"
                 @onclick="CopyToClipboard">
             Copy
         </button>
     </div>
-    <pre class="rounded-lg border bg-muted/50 p-4 overflow-x-auto text-sm"><code class="language-@Language" id="@_id">@Code</code></pre>
+    <div class="flex overflow-x-auto">
+        <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right text-xs text-muted-foreground/50 leading-[1.65]">
+            @foreach (var lineNum in _lineNumbers)
+            {
+                <div>@lineNum</div>
+            }
+        </div>
+        <pre class="flex-1 py-4 pr-4 pl-0 overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0"><code class="language-@Language" id="@_id">@Code</code></pre>
+    </div>
 </div>
-
-@code {
-    private string _id = Guid.NewGuid().ToString("N")[..8];
-
-    [Parameter] public string Code { get; set; } = "";
-    [Parameter] public string Language { get; set; } = "razor";
-
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await JSRuntime.InvokeVoidAsync("shadcnDocsCodeblock.highlightAll");
-    }
-
-    private async Task CopyToClipboard()
-    {
-        await JSRuntime.InvokeVoidAsync("shadcnDocsCodeblock.copyToClipboard", Code);
-    }
-}

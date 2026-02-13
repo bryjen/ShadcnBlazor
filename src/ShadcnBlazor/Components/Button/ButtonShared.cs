@@ -23,10 +23,9 @@ internal static class ButtonStyles
 
         var sizeClasses = size switch
         {
-            Size.Xs => "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
-            Size.Sm => "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-            Size.Md => "h-9 px-4 py-2 has-[>svg]:px-3",
-            Size.Lg => "h-10 rounded-md px-6 has-[>svg]:px-4",
+            Size.Sm => "h-5 gap-1 rounded-md px-1.75 py-0.75 text-[0.6rem] has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-2.5",
+            Size.Md => "h-7 rounded-md gap-1.5 px-2.75 py-1.25 has-[>svg]:px-2.25 [&_svg:not([class*='size-'])]:size-3",
+            Size.Lg => "h-8 rounded-md px-3.5 py-1.75 has-[>svg]:px-2.75 [&_svg:not([class*='size-'])]:size-3.5",
         };
 
         return mergeCallback([baseClasses, variantClasses, sizeClasses, @class]);

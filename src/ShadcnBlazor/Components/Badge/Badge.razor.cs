@@ -25,10 +25,9 @@ public partial class Badge : ShadcnComponentBase
 
         var sizeClasses = Size switch
         {
-            Size.Xs => "px-1.5 py-0 text-[0.6rem] [&>svg]:size-2",
-            Size.Sm => "px-1.75 py-0.5 text-[0.65rem] [&>svg]:size-2.5",
-            Size.Md => "px-2 py-0.75 text-xs [&>svg]:size-3",
-            Size.Lg => "px-2.25 py-1 text-sm [&>svg]:size-3.5",
+            Size.Sm => "px-1.5 py-0 text-[0.55rem] [&>svg]:size-1.5",
+            Size.Md => "px-1.5 py-0.25 text-[0.6rem] [&>svg]:size-2",
+            Size.Lg => "px-1.75 py-0.5 text-[0.65rem] [&>svg]:size-2.5",
         };
 
         var variantClasses = Variant switch
