@@ -25,12 +25,18 @@ jobs:
         with:
           dotnet-version: 9.0.x
           cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+
+      - name: Restore
+        run: dotnet restore src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj
 
       - name: Publish
-        run: dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj \
-          -c Release \
-          -o publish \
-          -p:StaticWebAssetBasePath=ShadcnBlazor
+        run: |
+          dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj \
+            -c Release \
+            -o publish \
+            -p:StaticWebAssetBasePath=ShadcnBlazor
 
       - uses: actions/configure-pages@v5
 
