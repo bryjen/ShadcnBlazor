@@ -1,0 +1,12 @@
+@inherits ShadcnComponentBase
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<div class="text-xs italic text-muted-foreground border-l-2 border-border pl-3">
+    @Component.Content
+</div>
+
+@code
+{
+    [Parameter]
+    public required ThinkingMessageComponent Component { get; set; }
+}

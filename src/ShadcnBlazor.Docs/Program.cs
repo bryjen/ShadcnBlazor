@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Docs;
+using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using TailwindMerge.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddAiChat();
 
 // builder.Services.AddSingleton<TwMerge>();
 builder.Services.AddTailwindMerge();

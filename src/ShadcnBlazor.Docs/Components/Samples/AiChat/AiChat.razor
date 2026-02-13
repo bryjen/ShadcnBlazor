@@ -1,0 +1,28 @@
+﻿@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+@using UserChatMessageView = ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages.UserChatMessageView
+@inherits ShadcnComponentBase
+
+<div class="px-40">
+    <div class="flex flex-col gap-4">
+        @foreach(var chatMsg in ChatOrchestrator.Messages)
+        {
+            @switch (chatMsg)
+            {
+                case UserChatMessage userChatMessage:
+                    <UserChatMessageView Message="@userChatMessage"/>
+                    break;
+                case AiChatMessage aiChatMessage:
+                    <AiChatMessageView Message="@aiChatMessage"/>
+                    break;
+            }
+        }
+    </div>
+    <div>
+        @(ChatOrchestrator.Messages.Count)
+    </div>
+
+    <Button OnClick="@(_ => SendPrompt())">
+        Send
+    </Button>
+</div>

@@ -1,0 +1,12 @@
+@inherits ShadcnComponentBase
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<div class="text-xs text-muted-foreground whitespace-pre-wrap">
+    @Component.Content
+</div>
+
+@code
+{
+    [Parameter]
+    public required WebSearchMessageComponent Component { get; set; }
+}

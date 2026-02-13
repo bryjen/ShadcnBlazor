@@ -1,0 +1,12 @@
+@inherits ShadcnComponentBase
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<div class="text-sm leading-relaxed">
+    @Component.Content
+</div>
+
+@code
+{
+    [Parameter]
+    public required TextMessageComponent Component { get; set; }
+}

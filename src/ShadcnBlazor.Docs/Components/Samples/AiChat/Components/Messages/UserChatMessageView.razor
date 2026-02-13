@@ -1,0 +1,14 @@
+﻿@inherits ShadcnComponentBase
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<div class="w-full flex justify-end">
+    <div class="w-fit p-2 bg-primary/50 border border border-primary/20 rounded-lg">
+        @Message.GetRawContent()
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public required UserChatMessage Message { get; set; }
+}

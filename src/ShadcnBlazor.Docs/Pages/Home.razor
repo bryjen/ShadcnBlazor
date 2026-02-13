@@ -3,6 +3,7 @@
 @using ShadcnBlazor.Components.ComposableTextArea
 @using ShadcnBlazor.Components.Popover.Models
 @using ShadcnBlazor.Docs.Components.Home
+@using ShadcnBlazor.Docs.Components.Samples.AiChat
 @layout NoNavMenuLayout
 
 <PageTitle>A shadcn/ui inspired Blazor component library</PageTitle>
@@ -279,6 +280,9 @@
     
     private RenderFragment RenderAiChatTab() => __builder =>
     {
+        <Card Variant="@CardVariant.Outline" Class="w-full h-[55rem] h-max-[55rem]">
+            <AiChat></AiChat>
+        </Card>
     };
     
     private RenderFragment RenderAuthenticationTab() => __builder =>
