@@ -1,0 +1,58 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+@using Markdig
+
+<div class="my-10 flex w-full items-stretch gap-4">
+    <div class="flex w-[6%] min-w-[2.5rem] justify-center">
+        @AvatarRenderFragment
+    </div>
+    <div class="w-[94%]">
+        <div class="relative">
+            <div class="pointer-events-none absolute left-4 top-0 z-0 h-[calc(100%+2.5rem)] w-px bg-border/70"></div>
+
+            <div class="relative z-10 overflow-hidden rounded-lg border border-border bg-muted/30 shadow-sm">
+                <div class="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-1.5">
+                    <div class="flex items-center gap-1 text-sm">
+                        <span class="font-semibold">@TimelineItemModel.ItemAuthor</span>
+                        <span class="text-muted-foreground">·</span>
+                        <span class="text-xs text-muted-foreground">commented @PublishTimespanToString(DateTime.Now - TimelineItemModel.PublishDate) ago</span>
+                    </div>
+
+                    <div class="flex items-center">
+                        @if (IsAuthorRepoOwner)
+                        {
+                            <Badge Size="@Size.Sm" Variant="@Variant.Outline" Class="mx-1">Owner</Badge>
+                        }
+
+                        @if (IsAuthorIssueAuthor)
+                        {
+                            <Badge Size="@Size.Sm" Variant="@Variant.Outline" Class="mx-1">Author</Badge>
+                        }
+
+                        <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="text-muted-foreground hover:text-foreground" title="More">
+                            <LuEllipsisVertical class="h-4 w-4" />
+                        </Button>
+                    </div>
+                </div>
+
+                <div class="px-3 py-3">
+                    <div class="markdown-content text-sm">
+                        @((MarkupString)Markdown.ToHtml(TimelineItemModel.Contents ?? string.Empty))
+                    </div>
+                </div>
+
+                <div class="border-t border-border bg-muted/30 px-3 py-2">
+                    <div class="inline-flex items-center gap-1 rounded-md border border-border bg-muted/40 p-1">
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">👍</button>
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">🎉</button>
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">😄</button>
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">😕</button>
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">❤️</button>
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">🚀</button>
+                        <button class="rounded px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">👀</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

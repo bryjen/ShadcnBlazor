@@ -1,0 +1,75 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<div class="w-full overflow-hidden rounded-lg border border-border bg-muted/30">
+    <div class="flex h-10 items-center border-b border-border bg-muted/40">
+        <button class="@GetTabClass(ViewType.Edit)" @onclick="@(() => SwitchView(ViewType.Edit))">
+            Write
+        </button>
+        <button class="@GetTabClass(ViewType.Preview)" @onclick="@(() => SwitchView(ViewType.Preview))">
+            Preview
+        </button>
+
+        @if (_viewType == ViewType.Edit)
+        {
+            <div class="ml-auto flex items-center gap-1 px-2">
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@HeaderButtonPressed" title="Heading">
+                    <LuHeading1 class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@BoldButtonPressed" title="Bold">
+                    <LuBold class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@ItalicButtonPressed" title="Italic">
+                    <LuItalic class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@QuoteButtonPressed" title="Quote">
+                    <LuQuote class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@CodeButtonPressed" title="Inline code">
+                    <LuCode class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@LinkButtonPressed" title="Link">
+                    <LuLink class="h-4 w-4"/>
+                </Button>
+                <div class="mx-1 h-5 w-px bg-border"></div>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@NumberedListButtonPressed" title="Numbered list">
+                    <LuListOrdered class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@UnorderedListButtonPressed" title="Unordered list">
+                    <LuList class="h-4 w-4"/>
+                </Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="@ToolbarButtonClass" OnClick="@TaskListButtonPressed" title="Task list">
+                    <LuListChecks class="h-4 w-4"/>
+                </Button>
+            </div>
+        }
+    </div>
+
+    <div class="p-3">
+        @if (_viewType == ViewType.Edit)
+        {
+            <textarea
+                id="@_textAreaId"
+                class="min-h-[120px] w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                style="@($"height: {_textAreaHeightPx}px")"
+                @bind-value="_markdown"
+                @bind-value:event="oninput"
+                placeholder="Write your markdown here..."></textarea>
+        }
+        else
+        {
+            <div class="markdown-content text-sm">
+                @((MarkupString)_previewHtml)
+            </div>
+        }
+    </div>
+
+    <div class="flex items-center gap-2 border-t border-border px-3 py-2 text-xs text-muted-foreground">
+        <LuInfo class="h-4 w-4"/>
+        <span>Markdown is supported</span>
+    </div>
+</div>
+
+
+
+
+

@@ -13,6 +13,7 @@
     <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Components\Samples\MarkdownEditor\Services\" />
     <Folder Include="Pages\Components\" />
   </ItemGroup>
   <ItemGroup>

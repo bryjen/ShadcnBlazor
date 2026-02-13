@@ -1,0 +1,156 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Components.Badge
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor
+@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor.Components
+@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor.Models
+
+<div class="w-full">
+    <GithubIssuesAppBar />
+
+    <div class="px-6 py-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-2xl font-semibold text-foreground">Speeding up processes related to the WRS2.json file</h2>
+                <span class="text-xl text-muted-foreground">#3</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="border-border text-xs font-semibold">Edit</Button>
+                <Button Size="@Size.Sm" Variant="@Variant.Default" Class="bg-emerald-600 text-xs font-semibold hover:bg-emerald-600/90">New Issue</Button>
+            </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-center gap-3 text-sm">
+            <Badge Variant="@Variant.Default" Class="gap-2 bg-emerald-700 text-white">
+                <LuCircleDot class="h-4 w-4" />
+                <span>Open</span>
+            </Badge>
+
+            <Badge Variant="@Variant.Outline" Class="gap-2 border-border bg-muted/40 text-foreground">
+                <LuCheckSquare class="h-4 w-4" />
+                <span>7 Tasks</span>
+            </Badge>
+
+            <span class="text-muted-foreground">
+                <span class="font-semibold text-foreground">bryjen</span> opened this issue @DaysSinceOpened days ago · 2 comments
+            </span>
+        </div>
+
+        <div class="mt-4 border-b border-border"></div>
+
+        <div class="mt-6 flex flex-col gap-6 lg:flex-row">
+            <div class="w-full lg:w-3/4">
+                <div class="space-y-6">
+                    @for (var i = 0; i < TimelineItemModels.Length; i++)
+                    {
+                        var model = TimelineItemModels[i];
+                        var author = model.ItemAuthor;
+
+                        <TimelineItem TimelineItemModel="@model"
+                                      IsHeaderItem="@(i == 0)"
+                                      IsAuthorRepoOwner="@(string.Equals(author, RepoOwner, StringComparison.InvariantCultureIgnoreCase))"
+                                      IsAuthorIssueAuthor="@(string.Equals(author, IssueAuthor, StringComparison.InvariantCultureIgnoreCase))">
+                            <AvatarRenderFragment>
+                                <Avatar Src="@GetAvatarSrcFromAuthor(author)" Alt="@author" Size="@Size.Lg" />
+                            </AvatarRenderFragment>
+                        </TimelineItem>
+                    }
+
+                    <div class="border-b border-border"></div>
+
+                    <MarkdownEditor />
+                </div>
+            </div>
+
+            <div class="w-full lg:w-1/4">
+                <div class="space-y-6 lg:pt-8">
+                    <SidebarItem Header="Assignees">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <Avatar Src="https://i.pravatar.cc/64?img=8" Alt="bryjen" Size="@Size.Sm" />
+                                <span class="text-xs font-semibold">bryjen</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <Avatar Src="https://i.pravatar.cc/64?img=11" Alt="rima1881" Size="@Size.Sm" />
+                                <span class="text-xs font-semibold">rima1881</span>
+                            </div>
+                            <div class="border-b border-border"></div>
+                        </div>
+                    </SidebarItem>
+
+                    <SidebarItem Header="Labels">
+                        <p class="text-xs text-muted-foreground">None yet</p>
+                        <div class="border-b border-border"></div>
+                    </SidebarItem>
+
+                    <SidebarItem Header="Projects">
+                        <p class="text-xs text-muted-foreground">None yet</p>
+                        <div class="border-b border-border"></div>
+                    </SidebarItem>
+
+                    <SidebarItem Header="Milestone">
+                        <p class="text-xs text-muted-foreground">No milestone</p>
+                        <div class="border-b border-border"></div>
+                    </SidebarItem>
+
+                    <SidebarItem Header="Milestone">
+                        <p class="text-xs text-muted-foreground">
+                            <a href="/" class="text-sky-400 hover:underline">Create a branch</a> for this issue or link a pull request.
+                        </p>
+                        <div class="border-b border-border"></div>
+                    </SidebarItem>
+
+                    <div class="space-y-2">
+                        <button class="flex w-full items-center justify-between text-sm font-semibold text-foreground">
+                            <span>Notifications</span>
+                            <span class="text-xs text-muted-foreground">Customize</span>
+                        </button>
+
+                        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="w-full justify-start gap-2 border-border bg-muted/40 text-xs">
+                            <LuBellOff class="h-4 w-4" />
+                            Unsubscribe
+                        </Button>
+
+                        <p class="text-xs text-muted-foreground">You're receiving notifications because you're watching this repository.</p>
+                        <div class="border-b border-border"></div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <p class="text-xs text-muted-foreground">4 Participants</p>
+                        <div class="flex -space-x-2">
+                            <Avatar Src="https://i.pravatar.cc/64?img=8" Alt="bryjen" Size="@Size.Sm" />
+                            <Avatar Src="https://i.pravatar.cc/64?img=11" Alt="rima1881" Size="@Size.Sm" />
+                            <Avatar Src="https://i.pravatar.cc/64?img=12" Alt="joyal99" Size="@Size.Sm" />
+                            <Avatar Src="https://i.pravatar.cc/64?img=420" Alt="genericlearner" Size="@Size.Sm" />
+                        </div>
+                        <div class="border-b border-border"></div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="w-full justify-start border-border bg-muted/40 text-xs">
+                            <LuLock class="h-4 w-4" />
+                            Lock conversation
+                        </Button>
+                        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="w-full justify-start border-border bg-muted/40 text-xs">
+                            <LuPin class="h-4 w-4" />
+                            Pin issue
+                        </Button>
+                        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="w-full justify-start border-border bg-muted/40 text-xs">
+                            <LuArrowRight class="h-4 w-4" />
+                            Transfer issue
+                        </Button>
+                        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="w-full justify-start border-border bg-muted/40 text-xs">
+                            <LuTrash2 class="h-4 w-4" />
+                            Delete issue
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

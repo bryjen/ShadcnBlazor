@@ -1,0 +1,103 @@
+@using ShadcnBlazor.Components.Badge
+@using ShadcnBlazor.Components.Button
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<div class="w-full border-b border-border bg-muted/40" style="height: 6.45rem;">
+    <div class="flex h-full flex-col">
+        <div class="flex h-[60%] items-center px-4">
+            <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="mr-5 h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
+                <LuMenu class="h-4 w-4" />
+            </Button>
+
+            <div class="mr-2 flex h-6 w-6 items-center justify-center">
+                <LuGithub class="h-5 w-5" />
+            </div>
+
+            <Button Variant="@Variant.Ghost" Size="@Size.Sm" Class="px-2 text-sm text-foreground">
+                bryjen
+            </Button>
+            <span class="text-muted-foreground">/</span>
+            <Button Variant="@Variant.Ghost" Size="@Size.Sm" Class="px-2 text-sm font-semibold text-foreground">
+                LandsatReflectance-Alt
+            </Button>
+            <LuLock class="ml-1 h-4 w-4 text-muted-foreground" />
+
+            <div class="flex-1"></div>
+
+            <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="mx-4 h-8 w-[15rem] justify-start gap-2 px-2 text-sm text-muted-foreground">
+                <LuSearch class="h-4 w-4" />
+                <span>Type</span>
+                <span class="rounded border border-muted-foreground px-1 text-xs">/</span>
+                <span>to search</span>
+            </Button>
+
+            <div class="flex items-center gap-4">
+                <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="h-8 w-8 p-0">
+                    <LuPlus class="h-4 w-4" />
+                </Button>
+
+                <div class="h-4 w-px bg-border"></div>
+
+                <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="h-8 w-8 p-0">
+                    <LuCircleDot class="h-4 w-4" />
+                </Button>
+
+                <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="h-8 w-8 p-0">
+                    <LuGitPullRequest class="h-4 w-4" />
+                </Button>
+
+                <div class="relative">
+                    <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="h-8 w-8 p-0">
+                        <LuInbox class="h-4 w-4" />
+                    </Button>
+                    <span class="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-sky-400"></span>
+                </div>
+            </div>
+
+            <Avatar Src="https://i.pravatar.cc/64?img=8" Alt="bryjen" Size="@Size.Md" Class="ml-6" />
+        </div>
+
+        <div class="flex h-[40%] items-center gap-2 px-4">
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuCode class="h-4 w-4" />
+                <span>Code</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 border-b-2 border-primary px-2 text-sm font-semibold text-foreground">
+                <LuCircleDot class="h-4 w-4" />
+                <span>Issues</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuGitPullRequest class="h-4 w-4" />
+                <span>Pull requests</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuPlay class="h-4 w-4" />
+                <span>Actions</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuLayoutGrid class="h-4 w-4" />
+                <span>Projects</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuShield class="h-4 w-4" />
+                <span>Security</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuLineChart class="h-4 w-4" />
+                <span>Insights</span>
+            </button>
+
+            <button class="flex h-full items-center gap-2 px-2 text-sm text-muted-foreground hover:text-foreground">
+                <LuSettings class="h-4 w-4" />
+                <span>Settings</span>
+            </button>
+        </div>
+    </div>
+</div>
+

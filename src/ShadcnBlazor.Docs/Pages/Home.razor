@@ -1,9 +1,13 @@
 @page "/"
+
+@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor.Components
 @using EasyAppDev.Blazor.Icons.Lucide
 @using ShadcnBlazor.Components.ComposableTextArea
 @using ShadcnBlazor.Components.Popover.Models
 @using ShadcnBlazor.Docs.Components.Home
 @using ShadcnBlazor.Docs.Components.Samples.AiChat
+@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor
+
 @layout NoNavMenuLayout
 
 <PageTitle>A shadcn/ui inspired Blazor component library</PageTitle>
@@ -61,9 +65,6 @@
                 break;
             case Tab.AiChat:
                 @RenderAiChatTab()
-                break;
-            case Tab.Authentication:
-                @RenderAuthenticationTab()
                 break;
         }
     </div>
@@ -231,69 +232,9 @@
     
     private RenderFragment RenderMarkdownEditorTab() => __builder =>
     {
-        <div class="w-full flex flex-col gap-4">
-            <div class="p-6 rounded-xl border bg-card flex items-center justify-between">
-                <div class="flex flex-col gap-1">
-                    <span class="text-sm font-semibold">Popover Demo</span>
-                    <span class="text-xs text-muted-foreground">Adaptive width + list clamping</span>
-                </div>
-                <Popover @bind-Open="_popoverOpen"
-                         CloseOnOutsideClick="true"
-                         AnchorOrigin="PopoverPlacement.BottomLeft"
-                         TransformOrigin="PopoverPlacement.TopLeft"
-                         WidthMode="PopoverWidthMode.Adaptive"
-                         ClampList="true">
-                    <Anchor>
-                        <Button Size="@Size.Sm" Variant="@Variant.Default" OnClick="TogglePopover">
-                            @(_popoverOpen ? "Close" : "Open") Popover
-                        </Button>
-                    </Anchor>
-                    <ChildContent>
-                        <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg">
-                            <div class="px-4 py-3 border-b text-sm font-semibold">Popover Content</div>
-                            <ul class="flex flex-col gap-1 px-3 py-2 text-sm">
-                                @for (var i = 1; i <= 16; i++)
-                                {
-                                    <li class="rounded-md px-2 py-1 hover:bg-accent/40">Item @i</li>
-                                }
-                            </ul>
-                        </div>
-                    </ChildContent>
-                </Popover>
-            </div>
-
-            <div class="p-6 rounded-xl border bg-card flex items-center justify-between gap-4">
-                <div class="flex flex-col gap-2">
-                    <span class="text-sm font-semibold">Conditional Outside Click</span>
-                    <span class="text-xs text-muted-foreground">Toggle whether clicking outside closes this popover</span>
-                    <Button Size="@Size.Sm" Variant="@Variant.Outline" OnClick="ToggleOutsideClickBehavior">
-                        CloseOnOutsideClick: @(_closeOnOutsideClick ? "On" : "Off")
-                    </Button>
-                </div>
-                <Popover @bind-Open="_conditionalPopoverOpen"
-                         CloseOnOutsideClick="@_closeOnOutsideClick"
-                         AnchorOrigin="PopoverPlacement.BottomRight"
-                         TransformOrigin="PopoverPlacement.TopRight"
-                         WidthMode="PopoverWidthMode.Adaptive"
-                         ClampList="true">
-                    <Anchor>
-                        <Button Size="@Size.Sm" Variant="@Variant.Default" OnClick="ToggleConditionalPopover">
-                            @(_conditionalPopoverOpen ? "Close" : "Open") Conditional Popover
-                        </Button>
-                    </Anchor>
-                    <ChildContent>
-                        <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg p-4 text-sm">
-                            <p class="font-semibold">Outside click is @(_closeOnOutsideClick ? "enabled" : "disabled")</p>
-                            <p class="text-muted-foreground">Try clicking outside this popover.</p>
-                        </div>
-                    </ChildContent>
-                </Popover>
-            </div>
-        </div>
-
-        <div class="pt-[100rem]">
-            bait
-        </div>
+        <Card Variant="@CardVariant.Outline" Class="w-full h-[55rem] h-max-[55rem] overflow-y-scroll scrollbar-hide">
+            <ViewIssue />
+        </Card>
     };
     
     private RenderFragment RenderAiChatTab() => __builder =>
@@ -303,10 +244,6 @@
         </Card>
     };
     
-    private RenderFragment RenderAuthenticationTab() => __builder =>
-    {
-    };
-
     private void TogglePopover()
     {
         _popoverOpen = !_popoverOpen;
@@ -323,22 +260,68 @@
     }
 }
 
+@*
+<div class="w-full flex flex-col gap-4">
+    <div class="p-6 rounded-xl border bg-card flex items-center justify-between">
+        <div class="flex flex-col gap-1">
+            <span class="text-sm font-semibold">Popover Demo</span>
+            <span class="text-xs text-muted-foreground">Adaptive width + list clamping</span>
+        </div>
+        <Popover @bind-Open="_popoverOpen"
+                 CloseOnOutsideClick="true"
+                 AnchorOrigin="PopoverPlacement.BottomLeft"
+                 TransformOrigin="PopoverPlacement.TopLeft"
+                 WidthMode="PopoverWidthMode.Adaptive"
+                 ClampList="true">
+            <Anchor>
+                <Button Size="@Size.Sm" Variant="@Variant.Default" OnClick="TogglePopover">
+                    @(_popoverOpen ? "Close" : "Open") Popover
+                </Button>
+            </Anchor>
+            <ChildContent>
+                <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg">
+                    <div class="px-4 py-3 border-b text-sm font-semibold">Popover Content</div>
+                    <ul class="flex flex-col gap-1 px-3 py-2 text-sm">
+                        @for (var i = 1; i <= 16; i++)
+                        {
+                            <li class="rounded-md px-2 py-1 hover:bg-accent/40">Item @i</li>
+                        }
+                    </ul>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
 
+    <div class="p-6 rounded-xl border bg-card flex items-center justify-between gap-4">
+        <div class="flex flex-col gap-2">
+            <span class="text-sm font-semibold">Conditional Outside Click</span>
+            <span class="text-xs text-muted-foreground">Toggle whether clicking outside closes this popover</span>
+            <Button Size="@Size.Sm" Variant="@Variant.Outline" OnClick="ToggleOutsideClickBehavior">
+                CloseOnOutsideClick: @(_closeOnOutsideClick ? "On" : "Off")
+            </Button>
+        </div>
+        <Popover @bind-Open="_conditionalPopoverOpen"
+                 CloseOnOutsideClick="@_closeOnOutsideClick"
+                 AnchorOrigin="PopoverPlacement.BottomRight"
+                 TransformOrigin="PopoverPlacement.TopRight"
+                 WidthMode="PopoverWidthMode.Adaptive"
+                 ClampList="true">
+            <Anchor>
+                <Button Size="@Size.Sm" Variant="@Variant.Default" OnClick="ToggleConditionalPopover">
+                    @(_conditionalPopoverOpen ? "Close" : "Open") Conditional Popover
+                </Button>
+            </Anchor>
+            <ChildContent>
+                <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg p-4 text-sm">
+                    <p class="font-semibold">Outside click is @(_closeOnOutsideClick ? "enabled" : "disabled")</p>
+                    <p class="text-muted-foreground">Try clicking outside this popover.</p>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div class="pt-[100rem]">
+    bait
+</div>
+*@

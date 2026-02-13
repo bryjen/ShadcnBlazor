@@ -4,14 +4,13 @@ namespace ShadcnBlazor.Docs.Pages;
 
 public partial class Home : ComponentBase
 {
-    private Tab _selectedTab = Tab.Examples;
+    private Tab _selectedTab = Tab.MarkdownEditor;
     
     private enum Tab
     {
         Examples,
         MarkdownEditor,
         AiChat,
-        Authentication
     }
     
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
@@ -20,7 +19,6 @@ public partial class Home : ComponentBase
         Tab.Examples => "Examples",
         Tab.MarkdownEditor => "Markdown Editor",
         Tab.AiChat => "AI Chat",
-        Tab.Authentication => "Authentication",
     };
     
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
@@ -29,6 +27,5 @@ public partial class Home : ComponentBase
         "Examples" => Tab.Examples,
         "Markdown Editor" => Tab.MarkdownEditor,
         "AI Chat" => Tab.AiChat,
-        "Authentication" => Tab.Authentication,
     };
 }
