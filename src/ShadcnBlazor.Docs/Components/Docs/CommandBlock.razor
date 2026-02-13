@@ -1,0 +1,53 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+@inherits ShadcnComponentBase
+
+<div class="@(MergeCss("w-full rounded-lg overflow-hidden border border-border bg-[hsl(var(--background-dark))]", Class))">
+    <div class="flex items-center justify-between px-4 py-2.5 border-b border-[hsl(var(--border-dark))]">
+        <div class="flex items-center gap-3">
+            <span class="text-muted-foreground/70" aria-hidden="true">
+                <LuTerminal class="size-3.5" />
+            </span>
+            @if (Options.Count > 0)
+            {
+                <div class="command-block-toggle-group inline-flex h-7 overflow-hidden rounded-md border border-input/70 bg-transparent"
+                     role="group">
+                    @foreach (var kvp in Options)
+                    {
+                        var key = kvp.Key;
+                        var isSelected = SelectedKey == key;
+                        <ToggleButton Size="@Size.Sm"
+                                      VariantToggled="@Variant.Default"
+                                      VariantUntoggled="@Variant.Ghost"
+                                      IsToggled="@isSelected"
+                                      IsToggledChanged="@(toggled => { if (toggled) SelectOption(key); })"
+                                      Class="px-2.5 py-0 text-xs font-medium"
+                                      AdditionalAttributes="@(new Dictionary<string, object> { ["data-state"] = isSelected ? "on" : "off", ["data-option"] = key })">
+                            @key
+                        </ToggleButton>
+                    }
+                </div>
+            }
+        </div>
+        <Button Size="@Size.Sm"
+                Variant="@Variant.Ghost"
+                Class="h-7 w-7 p-0 text-muted-foreground hover:text-foreground transition-colors duration-200"
+                OnClick="CopyCommandAsync"
+                title="@(_copied ? "Copied!" : "Copy command")">
+            @if (_copied)
+            {
+                <LuCheck class="size-4 transition-colors duration-200 text-emerald-600" />
+            }
+            else
+            {
+                <LuCopy class="size-4 transition-colors duration-200" />
+            }
+        </Button>
+    </div>
+    @if (SelectedKey != null && Options.TryGetValue(SelectedKey, out var value))
+    {
+        <div class="px-4 py-3 overflow-x-auto">
+            <code class="text-sm font-mono text-foreground whitespace-nowrap">@value</code>
+        </div>
+    }
+</div>

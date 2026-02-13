@@ -1,19 +1,35 @@
-<div class="docs-codeblock border-t border-border relative overflow-hidden bg-[hsl(var(--background-dark))]">
-    <div class="flex items-center justify-between px-4 py-2 border-b border-border bg-[hsl(var(--chat-sidebar))]">
-        <span class="text-xs font-medium text-muted-foreground uppercase">@Language</span>
-        <button type="button"
-                class="px-2.5 py-1 text-xs rounded-md border border-border bg-background/50 hover:bg-muted/50 text-foreground/70 transition-colors"
-                @onclick="CopyToClipboard">
-            Copy
-        </button>
+@using EasyAppDev.Blazor.Icons.Lucide
+
+@inherits ShadcnComponentBase
+
+<div class="@GetWrapperClass()">
+    <div class="@GetCodeBlockClass() flex overflow-x-auto">
+        @if (ShowLineNumbers)
+        {
+            <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right text-xs text-muted-foreground/50 leading-[1.65]">
+                @foreach (var lineNum in _lineNumbers)
+                {
+                    <div>@lineNum</div>
+                }
+            </div>
+        }
+        <pre class="flex-1 pr-4 @(ShowLineNumbers ? "pl-0" : "pl-4") overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0"><code class="language-@Language" id="@_id">@Code</code></pre>
     </div>
-    <div class="flex overflow-x-auto">
-        <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right text-xs text-muted-foreground/50 leading-[1.65]">
-            @foreach (var lineNum in _lineNumbers)
+    @if (ShowCopyButton)
+    {
+        <Button Size="@Size.Sm"
+                Variant="@Variant.Ghost"
+                Class="@GetCopyButtonClass()"
+                OnClick="CopyCodeAsync"
+                title="@(_copied ? "Copied!" : "Copy code")">
+            @if (_copied)
             {
-                <div>@lineNum</div>
+                <LuCheck class="size-4 transition-colors duration-200" />
             }
-        </div>
-        <pre class="flex-1 py-4 pr-4 pl-0 overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0"><code class="language-@Language" id="@_id">@Code</code></pre>
-    </div>
+            else
+            {
+                <LuCopy class="size-4 transition-colors duration-200" />
+            }
+        </Button>
+    }
 </div>

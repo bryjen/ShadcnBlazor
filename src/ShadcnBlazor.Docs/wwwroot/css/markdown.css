@@ -103,6 +103,17 @@
     border-bottom-left-radius: var(--radius-lg);
     border-bottom-right-radius: var(--radius-lg);
 }
+/* Solo: standalone, full rounded corners, no border */
+.docs-codeblock--solo {
+    border-radius: var(--radius-lg);
+}
+/* Embedded: bottom rounded only (top border from parent context) */
+.docs-codeblock--embedded {
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
 .docs-codeblock pre {
     background: transparent !important;
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -111,12 +122,30 @@
     background: transparent !important;
     color: #d4d4d4;
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 400;
 }
+/* Override github-dark.min.css padding - p-4 equivalent (1rem). Scoped to docs-codeblock only. */
 .docs-codeblock pre code.hljs {
     background: transparent !important;
+    padding: 1rem !important;
 }
 .docs-codeblock-linenos div {
     min-height: 1.65em;
+}
+
+/* Component preview code block accordion - matches AccordionContent animation */
+.docs-codeblock-accordion {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+.docs-codeblock-accordion-expanded {
+    max-height: 2000px;
+    opacity: 1;
+    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+.docs-codeblock-accordion-inner {
+    overflow: hidden;
 }
 
 /* VS Code Dark+ color scheme for docs codeblock */
@@ -178,6 +207,25 @@
 .docs-codeblock .hljs-punctuation,
 .docs-codeblock .hljs-subst {
     color: #d4d4d4;
+}
+
+/* CommandBlock toggle group - structural only, does not override button variants */
+.command-block-toggle-group [data-slot="button"] {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    height: 100%;
+}
+.command-block-toggle-group [data-slot="button"]:not(:first-child) {
+    border-left: 1px solid hsl(var(--input) / 0.7);
+}
+.command-block-toggle-group [data-slot="button"]:first-child {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+.command-block-toggle-group [data-slot="button"]:last-child {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
 }
 
 .markdown-content hr {

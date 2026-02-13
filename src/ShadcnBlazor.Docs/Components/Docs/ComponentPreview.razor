@@ -1,40 +1,47 @@
-@Render
+@using EasyAppDev.Blazor.Icons.Lucide
+
+@inherits ShadcnComponentBase
+
+<div class="w-full rounded-lg border border-border">
+    <div class="@(MergeCss("relative p-12 flex justify-center items-center", Class))">
+        @ChildContent
+        
+        @if (HasCode)
+        {
+            <Button Size="@Size.Md"
+                    Variant="@Variant.Ghost"
+                    Class="absolute top-2 right-2 text-xs text-muted-foreground hover:text-foreground"
+                    OnClick="ToggleShowCode">
+                @if (_showCode)
+                {
+                    <LuChevronUp class="size-3.5" />
+                    @("Hide code")
+                }
+                else
+                {
+                    <LuCode class="size-3.5" />
+                    @("Show code")
+                }
+            </Button>
+        }
+    </div>
+
+    @if (HasCode)
+    {
+        <div class="docs-codeblock-accordion @(_showCode ? "docs-codeblock-accordion-expanded" : "") overflow-hidden @(_showCode ? "border-t border-border" : "") relative">
+            <div class="docs-codeblock-accordion-inner">
+                <CodeBlock Code="@Code" Language="@Language" Style="@CodeBlockStyle.Embedded" />
+            </div>
+        </div>
+    }
+</div>
 
 @code {
-    private RenderFragment Render => __builder =>
+    private bool _showCode;
+    private bool HasCode => !string.IsNullOrWhiteSpace(Code);
+
+    private void ToggleShowCode()
     {
-        <div class="w-full rounded-lg border border-border">
-            <div class="p-6">
-                @ChildContent
-            </div>
-
-            @RenderCodeBlock
-        </div>
-    };
-
-    private RenderFragment RenderCodeBlock => __builder =>
-    {
-        <div class="docs-codeblock border-t border-border relative overflow-hidden bg-card">
-            @*
-            <div class="flex items-center justify-between px-4 py-2 border-b border-border bg-[hsl(var(--chat-sidebar))]">
-                <span class="text-xs font-medium text-muted-foreground uppercase">@Language</span>
-                <button type="button"
-                        class="px-2.5 py-1 text-xs rounded-md border border-border bg-background/50 hover:bg-muted/50 text-foreground/70 transition-colors"
-                        @onclick="CopyToClipboard">
-                    Copy
-                </button>
-            </div>
-*@
-            <div class="flex overflow-x-auto">
-                <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right text-xs text-muted-foreground/50 leading-[1.65]">
-                    @foreach (var lineNum in _lineNumbers)
-                    {
-                        <div>@lineNum</div>
-                    }
-                </div>
-                <pre class="flex-1 pr-4 pl-0 overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0"><code class="language-@Language" id="@_id">@Code</code></pre>
-            </div>
-        </div>
-    };
-
+        _showCode = !_showCode;
+    }
 }

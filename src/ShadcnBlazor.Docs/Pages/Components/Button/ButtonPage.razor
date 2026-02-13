@@ -1,67 +1,101 @@
 @page "/components/button"
+@using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Button.Examples
+@using ShadcnBlazor.Docs.Services
+@using ShadcnBlazor.Shared.Attributes
+@using ShadcnBlazor.Shared.Enums
+@inject PageTocService TocService
+@implements IDisposable
+@implements IHandleAfterRender
 
-<PageTitle>Button - ShadcnBlazor</PageTitle>
+<PageTitle>@_metadata.Name - ShadcnBlazor</PageTitle>
 
-<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-8">
     <div class="flex flex-col gap-1">
-        <h1 class="text-3xl font-semibold">Button</h1>
-        <p class="text-lg text-foreground/70">Clickable button with variants and sizes for triggering actions.</p>
+        <h1 class="text-3xl font-bold">@_metadata.Name</h1>
+        <p class="text-base text-muted-foreground">@_metadata.Description</p>
     </div>
 
-    <DocsSection Title="Installation">
-        <p class="mb-4">Add the Button component using the CLI:</p>
-        <CodeBlock Code="shadcn-blazor component add button" Language="bash" />
-        <p class="mt-4">Or manually add the package and copy component files.</p>
+    <DocsSection Title="Installation" Id="installation">
+        <p class="mb-3">Add the Button component using the CLI:</p>
+        <CommandBlock Options="@_installOptions" DefaultOption="bash" />
     </DocsSection>
 
-    <DocsSection Title="Usage">
-        <p class="mb-4">Basic button with text content.</p>
-        
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components.</p>
         <ComponentPreview Code="@Snippets.ButtonBasicExample" Language="razor">
             <ButtonBasicExample />
         </ComponentPreview>
     </DocsSection>
-    
-    <DocsSection Title="Variants">
-        <p class="mb-4">Buttons come in different visual styles to indicate hierarchy and purpose.</p>
-        
+
+    <DocsSection Title="Size" Id="size">
+        <p class="mb-3">Use the <code>Size</code> parameter for compact (Sm), default (Md), or larger (Lg) buttons. Sizing affects padding and text scale.</p>
+        <ComponentPreview Code="@Snippets.ButtonSizeExample" Language="razor">
+            <ButtonSizeExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Variants" Id="variants">
+        <p class="mb-3">Choose a <code>Variant</code> to convey hierarchy: Default for primary actions, Outline for secondary, Ghost for minimal emphasis, Destructive for dangerous actions, and Link for inline-style buttons.</p>
         <ComponentPreview Code="@Snippets.ButtonVariantExample" Language="razor">
             <ButtonVariantExample />
         </ComponentPreview>
     </DocsSection>
 
-    @*
-    <DocsSection Title="Variants">
-        <p class="mb-4">Buttons come in different visual styles to indicate hierarchy and purpose.</p>
-        <ComponentPreview>
-            <ButtonVariantExample />
+    <DocsSection Title="Content" Id="content">
+        <p class="mb-3">The button accepts any content via <code>ChildContent</code>. Mix text with inline elements, or use dynamic content. The component handles layout and spacing automatically.</p>
+        <ComponentPreview Code="@_contentSnippet" Language="razor">
+            <div class="flex flex-wrap gap-4">
+                <Button>Plain text</Button>
+                <Button Variant="@Variant.Outline"><strong>Bold</strong> text</Button>
+                <Button Variant="@Variant.Secondary">Click <em>here</em></Button>
+            </div>
         </ComponentPreview>
-        <CodeBlock Code="@Snippets.ButtonVariantExample" Language="razor" />
     </DocsSection>
 
-    <DocsSection Title="Sizes">
-        <p class="mb-4">Control button size with the Size parameter.</p>
-        <ComponentPreview>
-            <ButtonSizeExample />
-        </ComponentPreview>
-        <CodeBlock Code="@Snippets.ButtonSizeExample" Language="razor" />
-    </DocsSection>
-
-    <DocsSection Title="With Icon">
-        <p class="mb-4">Add icons inside the button using Lucide or other icon libraries.</p>
-        <ComponentPreview>
+    <DocsSection Title="Icons" Id="icons">
+        <p class="mb-3">Use Lucide icons (or any SVG) inside the button. Add the icon package and place it alongside text—spacing is handled by the button's built-in gap. Icon-only buttons work with smaller sizes and padding.</p>
+        <ComponentPreview Code="@Snippets.ButtonIconExample" Language="razor">
             <ButtonIconExample />
         </ComponentPreview>
-        <CodeBlock Code="@Snippets.ButtonIconExample" Language="razor" />
     </DocsSection>
 
-    <DocsSection Title="Disabled">
-        <p class="mb-4">Disable user interaction with the Disabled parameter.</p>
-        <ComponentPreview>
-            <ButtonDisabledExample />
+    <DocsSection Title="Interactivity" Id="interactivity">
+        <p class="mb-3">Wire up <code>OnClick</code> to handle user actions. The handler receives <code>MouseEventArgs</code>. Use component state to drive dynamic labels or behavior.</p>
+        <ComponentPreview Code="@Snippets.ButtonCounterExample" Language="razor">
+            <ButtonCounterExample />
         </ComponentPreview>
-        <CodeBlock Code="@Snippets.ButtonDisabledExample" Language="razor" />
     </DocsSection>
-*@
 </div>
+
+@code {
+    private static readonly ComponentMetadataAttribute _metadata = typeof(ShadcnBlazor.Components.Button.Button)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> _installOptions = new()
+    {
+        ["bash"] = "shadcn-blazor component add button",
+        ["powershell"] = "shadcn-blazor component add button",
+        ["cmd"] = "shadcn-blazor component add button",
+    };
+
+    private const string _contentSnippet = @"<Button>Plain text</Button>
+<Button Variant=""@Variant.Outline""><strong>Bold</strong> text</Button>
+<Button Variant=""@Variant.Secondary"">Click <em>here</em></Button>";
+
+    protected override void OnParametersSet()
+    {
+        TocService.Clear();
+    }
+
+    Task IHandleAfterRender.OnAfterRenderAsync()
+    {
+        TocService.Flush();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        TocService.Clear();
+    }
+}

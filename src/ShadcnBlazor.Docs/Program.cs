@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ShadcnBlazor.Components.Popover.Services;
+using ShadcnBlazor.Docs.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using TailwindMerge.Extensions;
@@ -13,6 +14,7 @@ builder.Services.AddAiChat();
 
 // builder.Services.AddSingleton<TwMerge>();
 builder.Services.AddTailwindMerge();
+builder.Services.AddScoped<PageTocService>();
 builder.Services.AddScoped<IPopoverRegistry, PopoverRegistry>();
 builder.Services.AddScoped<IPopoverService, PopoverService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

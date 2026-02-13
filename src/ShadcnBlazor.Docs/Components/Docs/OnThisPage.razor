@@ -1,0 +1,42 @@
+@using ShadcnBlazor.Docs.Services
+@inject PageTocService TocService
+@inject NavigationManager Navigation
+@implements IDisposable
+
+@if (TocService.Items.Count > 0)
+{
+    <nav class="space-y-1" aria-label="On this page">
+        <h4 class="text-sm font-semibold text-muted-foreground mb-3">
+            On This Page
+        </h4>
+        <ul class="space-y-1.5 text-sm font-medium">
+            @foreach (var item in TocService.Items)
+            {
+                <li style="padding-left: @(item.Level * 12)px">
+                    <a href="@GetHref(item.Id)"
+                       class="text-muted-foreground hover:text-foreground duration-300 transition-colors block py-0.5">
+                        @item.Title
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@code {
+    private string GetHref(string id)
+    {
+        var path = new Uri(Navigation.Uri).PathAndQuery;
+        return $"{path}#{id}";
+    }
+
+    protected override void OnInitialized()
+    {
+        TocService.Subscribe(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        TocService.Unsubscribe(StateHasChanged);
+    }
+}
