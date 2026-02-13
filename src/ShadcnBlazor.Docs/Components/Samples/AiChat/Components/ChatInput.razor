@@ -1,0 +1,41 @@
+﻿@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Components.ComposableTextArea
+
+<ComposableTextArea @bind-Value="@_prompt" Class="w-full" Rows="3" Placeholder="Write your prompt here...">
+    <Header>
+        <Button Size="@Size.Sm" Variant="@Variant.Outline" Class="text-xs text-muted-foreground">
+            <LuAtSign Class="h-3 w-3"/>
+            Add Context
+        </Button>
+    </Header>
+    <Footer>
+        <div class="flex items-center justify-between text-xs text-muted-foreground">
+            <div class="flex gap-2">
+                <ToggleButton @bind-IsToggled="@_extendedThinkingToggle" Size="@Size.Sm" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default" Class="rounded-xl">
+                    <LuBrain/>
+                </ToggleButton>
+
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
+                    <span>Auto</span>
+                </Button>
+
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
+                    <LuGlobe/>
+                    <span>Sources</span>
+                </Button>
+            </div>
+
+            <Button Size="@Size.Sm" Variant="@Variant.Default" Class="font-medium rounded-xl" OnClick="@(_ => SubmitPrompt.InvokeAsync(_prompt))">
+                <LuArrowUp/>
+            </Button>
+        </div>
+    </Footer>
+</ComposableTextArea>
+
+@code {
+    [Parameter] 
+    public EventCallback<string> SubmitPrompt { get; set; }
+
+    private string _prompt = string.Empty;
+    private bool _extendedThinkingToggle = true;
+}

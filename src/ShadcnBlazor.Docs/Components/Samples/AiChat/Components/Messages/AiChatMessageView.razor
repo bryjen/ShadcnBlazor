@@ -3,21 +3,20 @@
 @using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.MessageComponents
 
 <div class="flex flex-col gap-2">
-    @for (int i = 0; i < Message.Components.Count; i++)
+    @for (var i = 0; i < Message.Components.Count; i++)
     {
         var component = Message.Components[i];
-        var isLast = i >= Message.Components.Count - 1;
-        
-        switch (component)
+        var isLast = i == Message.Components.Count - 1;
+        @switch (component)
         {
             case ThinkingMessageComponent thinking:
-                <ThinkingMessageComponentView Component="@thinking" AccordionExpanded="@isLast" />
+                <ThinkingMessageComponentView Component="@thinking" IsLast="@isLast" />
                 break;
             case WebSearchMessageComponent webSearch:
-                <WebSearchMessageComponentView Component="@webSearch" AccordionExpanded="@isLast" />
+                <WebSearchMessageComponentView Component="@webSearch" />
                 break;
             case TextMessageComponent text:
-                <TextMessageComponentView Component="@text"/>
+                <TextMessageComponentView Component="@text" />
                 break;
         }
     }

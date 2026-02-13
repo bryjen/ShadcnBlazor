@@ -1,25 +1,20 @@
 @inherits ShadcnComponentBase
-@using EasyAppDev.Blazor.Icons.Lucide
 @using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+@using Markdig
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
 
-<Accordion Collapsible DefaultValue="@(AccordionDefaultValue())" Class="w-full">
+<Accordion Collapsible Value="@_accordionValue" ValueChanged="OnValueChanged" Class="w-full">
     <AccordionItem Value="thinking" Class="border-0">
         <AccordionTrigger Class="py-2 text-xs text-muted-foreground hover:no-underline">
-            <div class="flex items-center gap-2 font-bold">
-                <LuBrain class="h-4 w-4" />
-                @if (Component.ThinkingTime.HasValue)
-                {
-                    <span>Thought for @(Component.ThinkingTime.Value)    seconds</span>
-                }
-                else
-                {
-                    <span>Thinking...</span>
-                }
+            <div class="flex items-center gap-2">
+                <span class="text-base">{}</span>
+                <span>Thought for 12 seconds</span>
             </div>
         </AccordionTrigger>
         <AccordionContent>
-            <div class="text-sm text-muted-foreground leading-relaxed">
-                @Component.Content
+            <div class="markdown-content text-muted-foreground">
+                @((MarkupString)_html)
             </div>
         </AccordionContent>
     </AccordionItem>
@@ -29,9 +24,51 @@
 {
     [Parameter]
     public required ThinkingMessageComponent Component { get; set; }
-    
-    [Parameter]
-    public required bool AccordionExpanded { get; set; }
 
-    private string AccordionDefaultValue() => AccordionExpanded ? "thinking" : string.Empty;
+    [Parameter]
+    public bool IsLast { get; set; }
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = null!;
+
+    private string? _accordionValue;
+    private bool _hasInitialized;
+    private bool _wasLast;
+    private string _html = string.Empty;
+    private string _lastContent = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        _html = Markdown.ToHtml(Component.Content ?? string.Empty);
+
+        if (!_hasInitialized)
+        {
+            _accordionValue = IsLast ? "thinking" : null;
+            _hasInitialized = true;
+            _wasLast = IsLast;
+            return;
+        }
+
+        if (_wasLast && !IsLast)
+        {
+            _accordionValue = null;
+        }
+
+        _wasLast = IsLast;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Component.Content == _lastContent)
+            return;
+
+        _lastContent = Component.Content ?? string.Empty;
+        await JSRuntime.InvokeVoidAsync("shadcnMarkdownHighlight.highlightAll");
+    }
+
+    private Task OnValueChanged(string? value)
+    {
+        _accordionValue = value;
+        return Task.CompletedTask;
+    }
 }

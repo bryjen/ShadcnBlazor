@@ -1,0 +1,129 @@
+.markdown-content {
+    color: hsl(var(--foreground));
+    line-height: 1.65;
+    font-size: 0.9rem;
+}
+
+.markdown-content > :first-child {
+    margin-top: 0;
+}
+
+.markdown-content > :last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content p {
+    margin: 0.75rem 0;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+    margin: 1.2rem 0 0.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.markdown-content h1 { font-size: 1.25rem; }
+.markdown-content h2 { font-size: 1.15rem; }
+.markdown-content h3 { font-size: 1.05rem; }
+.markdown-content h4 { font-size: 1rem; }
+
+.markdown-content ul,
+.markdown-content ol {
+    margin: 0.75rem 0 0.75rem 1.25rem;
+    padding-left: 1.1rem;
+    list-style-position: outside;
+}
+
+.markdown-content ul {
+    list-style-type: disc;
+}
+
+.markdown-content ol {
+    list-style-type: decimal;
+}
+
+.markdown-content li {
+    margin: 0.25rem 0;
+}
+
+.markdown-content li::marker {
+    color: hsl(var(--muted-foreground));
+}
+
+.markdown-content blockquote {
+    border-left: 2px solid hsl(var(--border));
+    padding-left: 0.75rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0.75rem 0;
+}
+
+.markdown-content code {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.85em;
+    background: hsl(var(--muted));
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.35rem;
+    border: 1px solid hsl(var(--border));
+}
+
+.markdown-content pre {
+    background: hsl(var(--chat-sidebar)) !important;
+    border: 1px solid hsl(var(--chat-border));
+    padding: 0.95rem 1.1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 0.85rem 0;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+.markdown-content pre code {
+    background: transparent !important;
+    border: 0;
+    padding: 0;
+    font-size: 0.85rem;
+    color: hsl(var(--foreground));
+    display: block;
+    white-space: pre;
+}
+
+.markdown-content pre code.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.markdown-content hr {
+    border: 0;
+    border-top: 1px solid hsl(var(--border));
+    margin: 1rem 0;
+}
+
+.markdown-content a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+}
+
+.markdown-content th,
+.markdown-content td {
+    border: 1px solid hsl(var(--border));
+    padding: 0.45rem 0.6rem;
+    text-align: left;
+}
+
+.markdown-content th {
+    background: hsl(var(--muted));
+    font-weight: 600;
+}

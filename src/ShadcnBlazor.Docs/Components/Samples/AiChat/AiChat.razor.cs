@@ -9,6 +9,7 @@ public partial class AiChat : ShadcnComponentBase
     [Inject]
     public required ChatOrchestrator ChatOrchestrator { get; set; }
     
+    
     protected override void OnInitialized()
     {
         ChatOrchestrator.OnStateChange += OnChatStateChange;
@@ -19,13 +20,13 @@ public partial class AiChat : ShadcnComponentBase
         ChatOrchestrator.OnStateChange -= OnChatStateChange;
     }
 
-    private void SendPrompt()
-    {
-        _ = ChatOrchestrator.SendPromptAsync("hello ai chat how are yo udoing");
-    }
-
     private async Task OnChatStateChange()
     {
         await InvokeAsync(StateHasChanged);
+    }
+
+    private void SubmitPrompt(string prompt)
+    {
+        _ = ChatOrchestrator.SendPromptAsync(prompt);
     }
 }

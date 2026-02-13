@@ -1,28 +1,36 @@
-﻿@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
+﻿@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
 @using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
 @using UserChatMessageView = ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages.UserChatMessageView
 @inherits ShadcnComponentBase
 
-<div class="px-40">
-    <div class="flex flex-col gap-4">
-        @foreach(var chatMsg in ChatOrchestrator.Messages)
+<div class="grid grid-rows-[1fr_auto] h-full">
+    <div id="chat-feed" class="px-40 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
+        
+        @if (ChatOrchestrator.Messages.Count == 0)
         {
-            @switch (chatMsg)
+            <div class="w-full h-full flex items-center justify-center text-muted-foreground">
+                No messages yet. Start the conversation!
+            </div>
+        }
+        else
+        {
+            foreach (var chatMsg in ChatOrchestrator.Messages)
             {
-                case UserChatMessage userChatMessage:
-                    <UserChatMessageView Message="@userChatMessage"/>
-                    break;
-                case AiChatMessage aiChatMessage:
-                    <AiChatMessageView Message="@aiChatMessage"/>
-                    break;
+                @switch (chatMsg)
+                {
+                    case UserChatMessage userChatMessage:
+                        <UserChatMessageView Message="@userChatMessage"/>
+                        break;
+                    case AiChatMessage aiChatMessage:
+                        <AiChatMessageView Message="@aiChatMessage"/>
+                        break;
+                }
             }
         }
     </div>
-    <div>
-        @(ChatOrchestrator.Messages.Count)
+    
+    <div id="chat-input" class="px-40">
+        <ChatInput SubmitPrompt="SubmitPrompt" />
     </div>
-
-    <Button OnClick="@(_ => SendPrompt())">
-        Send
-    </Button>
 </div>
