@@ -41,6 +41,9 @@ jobs:
         run: |
           sed -i 's|<base href="/" />|<base href="/ShadcnBlazor/" />|g' publish/wwwroot/index.html
 
+      - name: Add 404.html for SPA routing
+        run: cp publish/wwwroot/index.html publish/wwwroot/404.html
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

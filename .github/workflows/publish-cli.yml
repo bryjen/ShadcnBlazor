@@ -5,13 +5,25 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Package version (e.g. 0.1.0). Required when run manually."
+        required: true
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          fi
 
       - uses: actions/setup-dotnet@v4
         with:
@@ -21,7 +33,7 @@ jobs:
         run: dotnet restore
 
       - name: Pack tool
-        run: dotnet pack src/ShadcnBlazor.Cli/ShadcnBlazor.Cli.csproj --configuration Release --output artifacts
+        run: dotnet pack src/ShadcnBlazor.Cli/ShadcnBlazor.Cli.csproj --configuration Release --output artifacts -p:PackageVersion=${{ steps.version.outputs.version }}
 
       - name: Publish to NuGet
         env:
