@@ -5,7 +5,7 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Alert;
 
-[ComponentMetadata(Name = nameof(Alert), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Alert), Description = "Displays important messages or notifications with variant styling (default, destructive).", Dependencies = [])]
 public partial class Alert : ShadcnComponentBase
 {
     [Parameter]

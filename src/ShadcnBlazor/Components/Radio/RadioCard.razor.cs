@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
 using ShadcnBlazor.Shared.Enums;
 
 #pragma warning disable CS8524
 
 namespace ShadcnBlazor.Components.Radio;
 
-[ComponentMetadata(Name = nameof(RadioCard), Description = "", Dependencies = [nameof(RadioGroup)])]
 public partial class RadioCard : RadioSelectableComponentBase
 {
     [Parameter]

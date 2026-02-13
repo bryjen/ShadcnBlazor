@@ -7,7 +7,7 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Badge;
 
-[ComponentMetadata(Name = nameof(Badge), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Badge), Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", Dependencies = [])]
 public partial class Badge : ShadcnComponentBase
 {
     [Parameter]

@@ -6,7 +6,7 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Radio;
 
-[ComponentMetadata(Name = nameof(Radio), Description = "", Dependencies = [nameof(RadioGroup)])]
+[ComponentMetadata(Name = nameof(Radio), Description = "Radio and RadioCard options for single selection within a RadioGroup.", Dependencies = [])]
 public partial class Radio : RadioSelectableComponentBase
 {
     [Parameter]

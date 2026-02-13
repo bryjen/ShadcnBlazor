@@ -5,7 +5,7 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Input;
 
-[ComponentMetadata(Name = nameof(Input), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Input), Description = "Single-line text input with variant styling.", Dependencies = [])]
 public partial class Input : ShadcnComponentBase
 {
     [Parameter]

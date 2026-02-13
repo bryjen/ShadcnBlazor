@@ -8,7 +8,7 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Checkbox;
 
-[ComponentMetadata(Name = nameof(Checkbox), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Checkbox), Description = "Checkbox input for boolean or multi-select form values.", Dependencies = [])]
 public partial class Checkbox : ShadcnComponentBase
 {
     [Parameter]

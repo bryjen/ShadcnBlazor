@@ -6,7 +6,7 @@ using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.Popover;
 
-[ComponentMetadata(Name = nameof(Popover), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Popover), Description = "Floating panel anchored to a trigger element; requires PopoverProvider in layout.", Dependencies = [])]
 public partial class Popover : ComponentBase, IAsyncDisposable
 {
     private readonly string _popoverId = $"popover-{Guid.NewGuid():N}";

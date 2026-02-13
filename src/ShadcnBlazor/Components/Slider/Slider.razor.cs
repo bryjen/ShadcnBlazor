@@ -3,7 +3,7 @@ using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.Slider;
 
-[ComponentMetadata(Name = nameof(Slider), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Slider), Description = "Single-thumb slider for selecting a value within a min/max range.", Dependencies = [])]
 public partial class Slider : SliderBase
 {
     [Parameter]

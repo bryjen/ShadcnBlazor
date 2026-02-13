@@ -5,7 +5,7 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Textarea;
 
-[ComponentMetadata(Name = nameof(Textarea), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Textarea), Description = "Multi-line text input for longer form content.", Dependencies = [])]
 public partial class Textarea : ShadcnComponentBase
 {
     [Parameter] 

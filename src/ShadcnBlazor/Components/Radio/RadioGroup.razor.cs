@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
 using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Radio;
 
-[ComponentMetadata(Name = nameof(RadioGroup), Description = "", Dependencies = [nameof(Radio), nameof(RadioCard)])]
 public partial class RadioGroup : ShadcnComponentBase
 {
     [Parameter]

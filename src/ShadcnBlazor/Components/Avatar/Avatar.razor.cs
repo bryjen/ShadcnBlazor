@@ -5,7 +5,7 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Avatar;
 
-[ComponentMetadata(Name = nameof(Avatar), Description = "Display image avatars with text fallback", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Avatar), Description = "Displays image avatars with text fallback for missing or loading images.", Dependencies = [])]
 public partial class Avatar : ShadcnComponentBase
 {
     [Parameter] public string? Src { get; set; }
