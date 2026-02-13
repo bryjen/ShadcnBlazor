@@ -1,0 +1,124 @@
+@using ShadcnBlazor.Docs.Models
+
+<div class="w-full min-w-0">
+    @if (ShowHeader)
+    {
+        <div class="flex flex-col gap-4 mb-6">
+            <h2 class="text-3xl font-bold text-foreground">API Reference</h2>
+            <h3 class="text-2xl font-bold text-foreground">@Doc.Name</h3>
+            @if (!string.IsNullOrEmpty(Doc.Summary))
+            {
+                <p class="text-base text-muted-foreground leading-relaxed">
+                    @Doc.Summary
+                </p>
+            }
+        </div>
+    }
+
+    @if (Doc.Properties.Length > 0)
+    {
+        <div class="mb-8">
+            <h4 class="text-xl font-semibold text-foreground mb-3">Properties</h4>
+            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg">
+                <table class="w-full table-auto">
+                    <thead>
+                        <tr>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Name</th>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Type</th>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var prop in Doc.Properties.OrderBy(p => p.Category).ThenBy(p => p.Name))
+                        {
+                            <tr class="border-b border-border last:border-b-0">
+                                <td class="p-3 text-sm align-top min-w-24">
+                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@prop.Name</code>
+                                </td>
+                                <td class="p-3 text-sm align-top min-w-24 break-words">
+                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@prop.Type</code>
+                                </td>
+                                <td class="p-3 text-sm align-top min-w-0 text-muted-foreground">@prop.Summary</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @if (Doc.Events.Length > 0)
+    {
+        <div class="mb-8">
+            <h4 class="text-xl font-semibold text-foreground mb-3">Events</h4>
+            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg">
+                <table class="w-full table-auto">
+                    <thead>
+                        <tr>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Name</th>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Type</th>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var evt in Doc.Events)
+                        {
+                            <tr class="border-b border-border last:border-b-0">
+                                <td class="p-3 text-sm align-top min-w-24">
+                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@evt.Name</code>
+                                </td>
+                                <td class="p-3 text-sm align-top min-w-24 break-words">
+                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@evt.Type</code>
+                                </td>
+                                <td class="p-3 text-sm align-top min-w-0 text-muted-foreground">@evt.Summary</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @if (Doc.Methods.Length > 0)
+    {
+        <div>
+            <h4 class="text-xl font-semibold text-foreground mb-3">Methods</h4>
+            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg">
+                <table class="w-full table-auto">
+                    <thead>
+                        <tr>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Method</th>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Returns</th>
+                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var method in Doc.Methods)
+                        {
+                            <tr class="border-b border-border last:border-b-0">
+                                <td class="p-3 text-sm align-top min-w-24">
+                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@method.Name</code>
+                                </td>
+                                <td class="p-3 text-sm align-top min-w-24 break-words">
+                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@method.ReturnType</code>
+                                </td>
+                                <td class="p-3 text-sm align-top min-w-0 text-muted-foreground">@method.Summary</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public DocumentedType Doc { get; set; } = null!;
+
+    /// <summary>
+    /// When true, shows the "API Reference" heading, component name, and description. Set to false when embedded in a page that already provides this context.
+    /// </summary>
+    [Parameter]
+    public bool ShowHeader { get; set; } = true;
+}

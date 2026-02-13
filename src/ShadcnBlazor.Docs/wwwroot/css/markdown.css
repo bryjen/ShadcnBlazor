@@ -123,6 +123,7 @@
     color: #d4d4d4;
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-weight: 400;
+    white-space: pre;
 }
 /* Override github-dark.min.css padding - p-4 equivalent (1rem). Scoped to docs-codeblock only. */
 .docs-codeblock pre code.hljs {

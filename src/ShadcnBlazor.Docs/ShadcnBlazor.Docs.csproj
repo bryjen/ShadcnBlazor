@@ -7,24 +7,30 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
-    <!-- Run snippet generator before build (build compiler first, then run) -->
-    <Target Name="GenerateDocs" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
-        <Message Text="Generating Docs snippets" Importance="high" />
+    <!-- Run docs compiler before build (build ShadcnBlazor and compiler first, then run) -->
+    <Target Name="GenerateDocs" BeforeTargets="BeforeBuild" DependsOnTargets="ResolveProjectReferences" Condition="'$(DesignTimeBuild)' != 'true'">
+        <Message Text="Generating Docs (API + Snippets)" Importance="high" />
+        <MSBuild Projects="$(MSBuildProjectDirectory)\..\ShadcnBlazor\ShadcnBlazor.csproj" Targets="Build" Properties="Configuration=$(Configuration)" />
         <MSBuild Projects="$(MSBuildProjectDirectory)\..\ShadcnBlazor.Docs.Compiler\ShadcnBlazor.Docs.Compiler.csproj" Targets="Build" Properties="Configuration=$(Configuration)" />
-        <Exec Command="dotnet run --configuration $(Configuration) --no-build --project &quot;$(MSBuildProjectDirectory)\..\ShadcnBlazor.Docs.Compiler\ShadcnBlazor.Docs.Compiler.csproj&quot;"
+        <Exec Command="dotnet run --configuration $(Configuration) --no-build --project &quot;$(MSBuildProjectDirectory)\..\ShadcnBlazor.Docs.Compiler\ShadcnBlazor.Docs.Compiler.csproj&quot; -- --assembly-path &quot;$(MSBuildProjectDirectory)\..\ShadcnBlazor\bin\$(Configuration)\net9.0\ShadcnBlazor.dll&quot;"
               WorkingDirectory="$(MSBuildProjectDirectory)" />
     </Target>
 
     <!-- Include generated files in compilation -->
     <Target Name="IncludeGeneratedFiles" BeforeTargets="BeforeBuild" DependsOnTargets="GenerateDocs">
         <ItemGroup>
+            <Compile Remove="Models\Generated\ApiDocumentation.generated.cs" />
+            <Compile Remove="Models\Generated\Snippets.generated.cs" />
             <Compile Remove="Models\Snippets.generated.cs" />
-            <Compile Include="Models\Snippets.generated.cs" />
+            <Compile Include="Models\Generated\ApiDocumentation.generated.cs" />
+            <Compile Include="Models\Generated\Snippets.generated.cs" />
         </ItemGroup>
     </Target>
 
     <!-- Clean generated files when cleaning -->
     <Target Name="CleanGeneratedFiles" BeforeTargets="Clean">
+        <Delete Files="Models\Generated\ApiDocumentation.generated.cs" Condition="Exists('Models\Generated\ApiDocumentation.generated.cs')" />
+        <Delete Files="Models\Generated\Snippets.generated.cs" Condition="Exists('Models\Generated\Snippets.generated.cs')" />
         <Delete Files="Models\Snippets.generated.cs" Condition="Exists('Models\Snippets.generated.cs')" />
     </Target>
     

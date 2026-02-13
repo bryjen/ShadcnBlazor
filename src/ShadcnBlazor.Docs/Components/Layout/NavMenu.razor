@@ -2,12 +2,18 @@
 
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Components", includeTopMargin: false)
-        @RenderNavButton("Button", "/components/button")
+        @foreach (var component in ComponentRegistry.Components)
+        {
+            @RenderNavButton(component.Name, $"/components/{component.Slug}")
+        }
     </div>
 
 </div>
 
 @code {
+    [Inject] public required ComponentRegistryService ComponentRegistry { get; set; }
+    [Inject] public required NavigationManager Nav { get; set; }
+
     private RenderFragment RenderSectionHeader(string text, bool includeTopMargin = true) => __builder =>
     {
         var extraClasses = includeTopMargin ? "mt-8" : "";
@@ -15,8 +21,7 @@
             @text
         </span>
     };
-    
-    @*TODO: MERGE THIS WITH THAT IN HEADER*@
+
     private RenderFragment RenderNavButton(string text, string href) => __builder =>
     {
         <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 px-2 font-semibold text-sm antialiased group" 
@@ -25,10 +30,7 @@
            @onclick:preventDefault="true">
             <span class="text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors">@text</span>
         </a>
-
     };
-    
-    
-    [Inject] public required NavigationManager Nav { get; set; }
+
     private void HandleNav(string href) => Nav.NavigateTo(href);
 }

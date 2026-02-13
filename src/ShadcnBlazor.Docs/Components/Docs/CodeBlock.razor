@@ -3,7 +3,7 @@
 @inherits ShadcnComponentBase
 
 <div class="@GetWrapperClass()">
-    <div class="@GetCodeBlockClass() flex overflow-x-auto">
+    <div class="@GetCodeBlockClass() flex min-w-0 overflow-x-auto">
         @if (ShowLineNumbers)
         {
             <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right text-xs text-muted-foreground/50 leading-[1.65]">
@@ -13,7 +13,7 @@
                 }
             </div>
         }
-        <pre class="flex-1 pr-4 @(ShowLineNumbers ? "pl-0" : "pl-4") overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0"><code class="language-@Language" id="@_id">@Code</code></pre>
+        <pre class="flex-1 min-w-0 pr-4 @(ShowLineNumbers ? "pl-0" : "pl-4") overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0"><code class="language-@Language" id="@_id">@Code</code></pre>
     </div>
     @if (ShowCopyButton)
     {

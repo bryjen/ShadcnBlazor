@@ -53,37 +53,27 @@ namespace ShadcnBlazor.Docs.Models
     <Button Variant=""@Variant.Link"">Link</Button>
 </div>";
 
-        public const string PopoverBasicExample = @"@using ShadcnBlazor.Components.Popover.Models
+        public const string CardBasicExample = @"<Card>
+    <div class=""space-y-2"">
+        <h3 class=""text-lg font-semibold"">Card Title</h3>
+        <p class=""text-sm text-muted-foreground"">Card content goes here. Use the Card component as a container for related content with optional header, body, and footer sections.</p>
+    </div>
+</Card>";
 
-<Popover Open=""@_open""
-         AnchorOrigin=""PopoverPlacement.BottomLeft""
-         TransformOrigin=""PopoverPlacement.TopLeft""
-         WidthMode=""PopoverWidthMode.Adaptive""
-         ClampList=""true"">
-    <Anchor>
-        <Button OnClick=""TogglePopover"">@(_open ? ""Close"" : ""Open"") Popover</Button>
-    </Anchor>
-    <ChildContent>
-        <div class=""w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg"">
-            <div class=""px-4 py-3 border-b text-sm font-semibold"">Popover Content</div>
-            <ul class=""flex flex-col gap-1 px-3 py-2 text-sm"">
-                @for (var i = 1; i <= 20; i++)
-                {
-                    <li class=""rounded-md px-2 py-1 hover:bg-accent/40"">Item @i</li>
-                }
-            </ul>
+        public const string CardVariantExample = @"<div class=""flex flex-col gap-4 w-fit"">
+    <Card Variant=""@CardVariant.Default"" Class=""w-full"">
+        <div class=""space-y-2"">
+            <h3 class=""text-lg font-semibold"">Default</h3>
+            <p class=""text-sm text-muted-foreground"">Uses the card background color.</p>
         </div>
-    </ChildContent>
-</Popover>
-
-@code {
-    private bool _open;
-
-    private void TogglePopover()
-    {
-        _open = !_open;
-    }
-}";
+    </Card>
+    <Card Variant=""@CardVariant.Outline"" Class=""w-fit"">
+        <div class=""space-y-2"">
+            <h3 class=""text-lg font-semibold"">Outline</h3>
+            <p class=""text-sm text-muted-foreground"">Transparent background with border.</p>
+        </div>
+    </Card>
+</div>";
 
     }
 }

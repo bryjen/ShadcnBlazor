@@ -51,11 +51,12 @@ public partial class CodeBlock : ShadcnComponentBase
 
     private string GetWrapperClass()
     {
-        var baseClasses = Style switch
+        var baseClasses = "bg-card relative w-full max-w-full min-w-0 overflow-x-auto ";
+        baseClasses += Style switch
         {
-            CodeBlockStyle.Solo => "rounded-lg overflow-hidden bg-card relative",
-            CodeBlockStyle.Embedded => "rounded-b-lg overflow-hidden bg-card relative",
-            _ => "rounded-lg overflow-hidden bg-card relative"
+            CodeBlockStyle.Solo => "rounded-lg",
+            CodeBlockStyle.Embedded => "rounded-b-lg",
+            _ => "rounded-lg"
         };
         return MergeCss(baseClasses);
     }

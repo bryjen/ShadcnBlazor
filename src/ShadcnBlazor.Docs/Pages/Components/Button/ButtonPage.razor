@@ -1,26 +1,11 @@
 @page "/components/button"
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Button.Examples
-@using ShadcnBlazor.Docs.Services
 @using ShadcnBlazor.Shared.Attributes
-@using ShadcnBlazor.Shared.Enums
-@inject PageTocService TocService
-@implements IDisposable
-@implements IHandleAfterRender
 
-<PageTitle>@_metadata.Name - ShadcnBlazor</PageTitle>
-
-<div class="flex flex-col gap-8">
-    <div class="flex flex-col gap-1">
-        <h1 class="text-3xl font-bold">@_metadata.Name</h1>
-        <p class="text-base text-muted-foreground">@_metadata.Description</p>
-    </div>
-
-    <DocsSection Title="Installation" Id="installation">
-        <p class="mb-3">Add the Button component using the CLI:</p>
-        <CommandBlock Options="@_installOptions" DefaultOption="bash" />
-    </DocsSection>
-
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Button">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components.</p>
         <ComponentPreview Code="@Snippets.ButtonBasicExample" Language="razor">
@@ -64,30 +49,14 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
-</div>
+</ComponentDocPage>
 
 @code {
-    private static readonly ComponentMetadataAttribute _metadata = typeof(ShadcnBlazor.Components.Button.Button)
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Button.Button)
         .GetCustomAttribute<ComponentMetadataAttribute>()!;
 
-    private static readonly Dictionary<string, string> _installOptions = new()
+    private static readonly Dictionary<string, string> InstallOptions = new()
     {
         ["dotnet"] = "shadcn-blazor component add button",
     };
-
-    protected override void OnParametersSet()
-    {
-        TocService.Clear();
-    }
-
-    Task IHandleAfterRender.OnAfterRenderAsync()
-    {
-        TocService.Flush();
-        return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        TocService.Clear();
-    }
 }

@@ -7,4 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.6" />
+    <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
+  </ItemGroup>
+
 </Project>
