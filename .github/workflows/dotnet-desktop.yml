@@ -36,7 +36,7 @@ jobs:
           dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj \
             -c Release \
             -o publish \
-            -p:StaticWebAssetBasePath=ShadcnBlazor
+            -p:BaseHref=/ShadcnBlazor/
 
       - uses: actions/configure-pages@v5
 
