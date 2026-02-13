@@ -1,0 +1,12 @@
+<section class="flex flex-col gap-4">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <h2 class="text-xl font-semibold">@Title</h2>
+    }
+    @ChildContent
+</section>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,29 @@
+<div class="relative group">
+    <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button type="button"
+                class="px-2 py-1 text-xs rounded bg-muted hover:bg-muted/80"
+                @onclick="CopyToClipboard">
+            Copy
+        </button>
+    </div>
+    <pre class="rounded-lg border bg-muted/50 p-4 overflow-x-auto text-sm"><code class="language-@Language" id="@_id">@Code</code></pre>
+</div>
+
+@code {
+    private string _id = Guid.NewGuid().ToString("N")[..8];
+
+    [Parameter] public string Code { get; set; } = "";
+    [Parameter] public string Language { get; set; } = "razor";
+
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("shadcnDocsCodeblock.highlightAll");
+    }
+
+    private async Task CopyToClipboard()
+    {
+        await JSRuntime.InvokeVoidAsync("shadcnDocsCodeblock.copyToClipboard", Code);
+    }
+}

@@ -1,0 +1,7 @@
+<div class="rounded-lg border bg-muted/30 p-6">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

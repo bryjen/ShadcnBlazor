@@ -1,0 +1,57 @@
+@page "/components/button"
+@using ShadcnBlazor.Docs.Pages.Components.Button.Examples
+
+<PageTitle>Button - ShadcnBlazor</PageTitle>
+
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-semibold">Button</h1>
+        <p class="text-lg text-foreground/70">Clickable button with variants and sizes for triggering actions.</p>
+    </div>
+
+    <DocsSection Title="Installation">
+        <p class="mb-4">Add the Button component using the CLI:</p>
+        <CodeBlock Code="shadcn-blazor component add button" Language="bash" />
+        <p class="mt-4">Or manually add the package and copy component files.</p>
+    </DocsSection>
+
+    <DocsSection Title="Usage">
+        <p class="mb-4">Basic button with text content.</p>
+        <ExamplePreview>
+            <ButtonBasicExample />
+        </ExamplePreview>
+        <CodeBlock Code="@Snippets.ButtonBasicExample" Language="razor" />
+    </DocsSection>
+
+    <DocsSection Title="Variants">
+        <p class="mb-4">Buttons come in different visual styles to indicate hierarchy and purpose.</p>
+        <ExamplePreview>
+            <ButtonVariantExample />
+        </ExamplePreview>
+        <CodeBlock Code="@Snippets.ButtonVariantExample" Language="razor" />
+    </DocsSection>
+
+    <DocsSection Title="Sizes">
+        <p class="mb-4">Control button size with the Size parameter.</p>
+        <ExamplePreview>
+            <ButtonSizeExample />
+        </ExamplePreview>
+        <CodeBlock Code="@Snippets.ButtonSizeExample" Language="razor" />
+    </DocsSection>
+
+    <DocsSection Title="With Icon">
+        <p class="mb-4">Add icons inside the button using Lucide or other icon libraries.</p>
+        <ExamplePreview>
+            <ButtonIconExample />
+        </ExamplePreview>
+        <CodeBlock Code="@Snippets.ButtonIconExample" Language="razor" />
+    </DocsSection>
+
+    <DocsSection Title="Disabled">
+        <p class="mb-4">Disable user interaction with the Disabled parameter.</p>
+        <ExamplePreview>
+            <ButtonDisabledExample />
+        </ExamplePreview>
+        <CodeBlock Code="@Snippets.ButtonDisabledExample" Language="razor" />
+    </DocsSection>
+</div>

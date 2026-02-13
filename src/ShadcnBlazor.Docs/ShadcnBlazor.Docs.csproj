@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
@@ -6,6 +6,27 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
+
+    <!-- Run snippet generator before build (build compiler first, then run) -->
+    <Target Name="GenerateDocs" BeforeTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+        <Message Text="Generating Docs snippets" Importance="high" />
+        <MSBuild Projects="$(MSBuildProjectDirectory)\..\ShadcnBlazor.Docs.Compiler\ShadcnBlazor.Docs.Compiler.csproj" Targets="Build" Properties="Configuration=$(Configuration)" />
+        <Exec Command="dotnet run --configuration $(Configuration) --no-build --project &quot;$(MSBuildProjectDirectory)\..\ShadcnBlazor.Docs.Compiler\ShadcnBlazor.Docs.Compiler.csproj&quot;"
+              WorkingDirectory="$(MSBuildProjectDirectory)" />
+    </Target>
+
+    <!-- Include generated files in compilation -->
+    <Target Name="IncludeGeneratedFiles" BeforeTargets="BeforeBuild" DependsOnTargets="GenerateDocs">
+        <ItemGroup>
+            <Compile Remove="Models\Snippets.generated.cs" />
+            <Compile Include="Models\Snippets.generated.cs" />
+        </ItemGroup>
+    </Target>
+
+    <!-- Clean generated files when cleaning -->
+    <Target Name="CleanGeneratedFiles" BeforeTargets="Clean">
+        <Delete Files="Models\Snippets.generated.cs" Condition="Exists('Models\Snippets.generated.cs')" />
+    </Target>
     
     <ItemGroup>
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
@@ -17,7 +38,6 @@
     
     <ItemGroup>
         <Folder Include="Components\Samples\MarkdownEditor\Services\" />
-        <Folder Include="Pages\Components\" />
     </ItemGroup>
     
     <ItemGroup>
