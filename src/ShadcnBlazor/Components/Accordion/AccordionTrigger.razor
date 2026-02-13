@@ -1,0 +1,47 @@
+@namespace ShadcnBlazor.Components.Accordion
+@inherits ShadcnBlazor.Shared.ShadcnComponentBase
+
+<button
+    type="button"
+    data-slot="accordion-trigger"
+    data-state="@(IsOpen ? "open" : "closed")"
+    class="@GetClass()"
+    @onclick="ToggleAsync">
+    <span class="text-left">
+        @ChildContent
+    </span>
+    <svg
+        class="h-4 w-4 shrink-0 transition-transform duration-200 @(IsOpen ? "rotate-180" : "")"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+</button>
+
+@code {
+    [CascadingParameter]
+    private AccordionItem.AccordionItemContext? ItemContext { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private bool IsOpen => ItemContext?.IsOpen ?? false;
+
+    private async Task ToggleAsync()
+    {
+        if (ItemContext is null)
+            throw new InvalidOperationException("AccordionTrigger must be used inside an AccordionItem.");
+
+        await ItemContext.ToggleAsync();
+    }
+
+    private string GetClass()
+    {
+        var baseClasses = "flex w-full items-center justify-between py-4 text-sm font-medium transition-all hover:underline";
+        return MergeCss(baseClasses, Class);
+    }
+}

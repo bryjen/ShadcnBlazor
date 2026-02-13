@@ -90,6 +90,13 @@ public class StreamResponseParser(List<MessageComponent> components)
 
     private void ResetMode()
     {
+        if (_mode == ParseMode.Thinking && _activeComponent is ThinkingMessageComponent thinking)
+        {
+            var rand = new Random();
+            const int min = 5, max = 10;
+            thinking.ThinkingTime = rand.Next(min, max + 1);
+        }
+        
         _mode = ParseMode.None;
         _activeComponent = null;
     }

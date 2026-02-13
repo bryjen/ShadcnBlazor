@@ -1,0 +1,109 @@
+@namespace ShadcnBlazor.Components.Accordion
+@inherits ShadcnBlazor.Shared.ShadcnComponentBase
+
+<CascadingValue Value="_context">
+    <div
+        data-slot="accordion"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public AccordionType Type { get; set; } = AccordionType.Single;
+
+    [Parameter]
+    public bool Collapsible { get; set; }
+
+    [Parameter]
+    public string? DefaultValue { get; set; }
+
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    private string? _localValue;
+    private AccordionContext _context = null!;
+
+    protected override void OnInitialized()
+    {
+        _localValue = DefaultValue;
+        _context = new AccordionContext(this);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (IsControlled)
+            _localValue = Value;
+    }
+
+    private bool IsControlled => ValueChanged.HasDelegate;
+
+    private string? CurrentValue => IsControlled ? Value : _localValue;
+
+    internal bool IsItemOpen(string value) => string.Equals(CurrentValue, value, StringComparison.Ordinal);
+
+    internal async Task ToggleItemAsync(string value)
+    {
+        if (Type == AccordionType.Single)
+        {
+            if (IsItemOpen(value))
+            {
+                if (Collapsible)
+                    await SetValueAsync(null);
+
+                return;
+            }
+
+            await SetValueAsync(value);
+            return;
+        }
+    }
+
+    private async Task SetValueAsync(string? value)
+    {
+        if (IsControlled)
+        {
+            await ValueChanged.InvokeAsync(value);
+        }
+        else
+        {
+            _localValue = value;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private string GetClass()
+    {
+        var baseClasses = "w-full";
+        return MergeCss(baseClasses, Class);
+    }
+
+    internal sealed class AccordionContext
+    {
+        private readonly Accordion _owner;
+
+        public AccordionContext(Accordion owner)
+        {
+            _owner = owner;
+        }
+
+        public bool IsItemOpen(string value) => _owner.IsItemOpen(value);
+
+        public Task ToggleItemAsync(string value) => _owner.ToggleItemAsync(value);
+    }
+
+    public enum AccordionType
+    {
+        Single,
+        Multiple
+    }
+}

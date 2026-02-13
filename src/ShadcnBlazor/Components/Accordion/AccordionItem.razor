@@ -1,0 +1,60 @@
+@namespace ShadcnBlazor.Components.Accordion
+@inherits ShadcnBlazor.Shared.ShadcnComponentBase
+
+<CascadingValue Value="_itemContext">
+    <div
+        data-slot="accordion-item"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    private Accordion.AccordionContext? AccordionContext { get; set; }
+
+    [Parameter]
+    public required string Value { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private AccordionItemContext _itemContext = null!;
+
+    protected override void OnInitialized()
+    {
+        if (AccordionContext is null)
+            throw new InvalidOperationException("AccordionItem must be used inside an Accordion.");
+
+        _itemContext = new AccordionItemContext(AccordionContext, Value);
+    }
+
+    protected override void OnParametersSet()
+    {
+        _itemContext = new AccordionItemContext(AccordionContext!, Value);
+    }
+
+    private string GetClass()
+    {
+        var baseClasses = "border-b border-border";
+        return MergeCss(baseClasses, Class);
+    }
+
+    internal sealed class AccordionItemContext
+    {
+        private readonly Accordion.AccordionContext _accordion;
+
+        public AccordionItemContext(Accordion.AccordionContext accordion, string value)
+        {
+            _accordion = accordion;
+            Value = value;
+        }
+
+        public string Value { get; }
+
+        public bool IsOpen => _accordion.IsItemOpen(Value);
+
+        public Task ToggleAsync() => _accordion.ToggleItemAsync(Value);
+    }
+}

@@ -1,12 +1,77 @@
 @inherits ShadcnComponentBase
+@using EasyAppDev.Blazor.Icons.Lucide
 @using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
 
-<div class="text-xs text-muted-foreground whitespace-pre-wrap">
-    @Component.Content
-</div>
+<Accordion Collapsible DefaultValue="@(AccordionDefaultValue())" Class="w-full">
+    <AccordionItem Value="search" Class="border-0">
+        <AccordionTrigger Class="py-2 text-xs text-muted-foreground hover:no-underline">
+            <div class="flex items-center gap-2">
+                <LuGlobe class="h-4 w-4" />
+                <span class="font-medium">Searched the web</span>
+                <span class="text-muted-foreground/70">@(_links.Count) results</span>
+            </div>
+        </AccordionTrigger>
+        <AccordionContent>
+            <div class="rounded-lg border border-border bg-muted/40 p-2 mt-2">
+                <div class="flex flex-col gap-1 max-h-64 overflow-auto">
+                    @foreach (var link in _links)
+                    {
+                        <div class="flex items-center justify-between gap-3 rounded-md px-2 py-2 hover:bg-accent/30">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <div class="h-6 w-6 rounded bg-background/60 border border-border flex items-center justify-center text-[10px] text-muted-foreground">
+                                    LINK
+                                </div>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="text-sm text-foreground truncate">@link.Display</span>
+                                    <span class="text-xs text-muted-foreground truncate">@link.Host</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-muted-foreground">@link.Host</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </AccordionContent>
+    </AccordionItem>
+</Accordion>
 
 @code
 {
     [Parameter]
     public required WebSearchMessageComponent Component { get; set; }
+    
+    [Parameter]
+    public required bool AccordionExpanded { get; set; }
+
+    private readonly List<LinkItem> _links = new();
+    
+    private string AccordionDefaultValue() => AccordionExpanded ? "search" : string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        _links.Clear();
+
+        if (string.IsNullOrWhiteSpace(Component.Content))
+            return;
+
+        var lines = Component.Content.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var line in lines)
+        {
+            var trimmed = line.Trim();
+            if (string.IsNullOrEmpty(trimmed))
+                continue;
+
+            if (Uri.TryCreate(trimmed, UriKind.Absolute, out var uri))
+            {
+                _links.Add(new LinkItem(uri.Host, uri.ToString()));
+            }
+            else
+            {
+                _links.Add(new LinkItem("", trimmed));
+            }
+        }
+    }
+
+    private record LinkItem(string Host, string Display);
 }

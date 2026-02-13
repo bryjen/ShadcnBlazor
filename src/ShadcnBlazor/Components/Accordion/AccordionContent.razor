@@ -1,0 +1,31 @@
+@namespace ShadcnBlazor.Components.Accordion
+@inherits ShadcnBlazor.Shared.ShadcnComponentBase
+
+<div
+    data-slot="accordion-content"
+    data-state="@(IsOpen ? "open" : "closed")"
+    class="@GetClass()"
+    style="max-height: @(IsOpen ? "2000px" : "0")">
+    <div class="pb-4 pt-0 text-sm text-muted-foreground">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private AccordionItem.AccordionItemContext? ItemContext { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private bool IsOpen => ItemContext?.IsOpen ?? false;
+
+    private string GetClass()
+    {
+        var baseClasses = "overflow-hidden transition-[max-height,opacity] duration-[300ms] ease-in-out";
+        var stateClasses = IsOpen
+            ? "opacity-100"
+            : "opacity-0";
+        return MergeCss(baseClasses, stateClasses, Class);
+    }
+}
