@@ -21,11 +21,9 @@ jobs:
         run: dotnet restore
 
       - name: Pack tool
-        run: dotnet pack src/YourCliProject/YourCliProject.csproj \
-          -c Release \
-          -o artifacts
+        run: dotnet pack src/ShadcnBlazor.Cli/ShadcnBlazor.Cli.csproj --configuration Release --output artifacts
 
       - name: Publish to NuGet
-        run: dotnet nuget push "artifacts/*.nupkg" \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
-          --source https://api.nuget.org/v3/index.json
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "artifacts/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY --skip-duplicate
