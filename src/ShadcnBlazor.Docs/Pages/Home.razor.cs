@@ -4,7 +4,7 @@ namespace ShadcnBlazor.Docs.Pages;
 
 public partial class Home : ComponentBase
 {
-    private Tab _selectedTab = Tab.MarkdownEditor;
+    private Tab _selectedTab = Tab.Examples;
     
     private enum Tab
     {
