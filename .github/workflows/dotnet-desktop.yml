@@ -35,8 +35,11 @@ jobs:
         run: |
           dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj \
             -c Release \
-            -o publish \
-            -p:BaseHref=/ShadcnBlazor/
+            -o publish
+
+      - name: Fix base href
+        run: |
+          sed -i 's|<base href="/" />|<base href="/ShadcnBlazor/" />|g' publish/wwwroot/index.html
 
       - uses: actions/configure-pages@v5
 
