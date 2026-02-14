@@ -1,5 +1,27 @@
-<div class="relative py-20 px-12 w-full h-screen-minus-header w-max-full flex flex-col overflow-x-hidden overflow-y-scroll scrollbar-hide">
+@implements IDisposable
 
+<div class="relative py-20 px-12 w-full h-screen-minus-header w-max-full flex flex-col gap-12 overflow-x-hidden overflow-y-scroll scrollbar-hide">
+
+    <div class="w-full flex flex-col gap-1">
+        @RenderSectionHeader("Sections", includeTopMargin: false)
+        @RenderNavButton("Introduction", string.Empty)
+        @RenderNavButton("Installation", string.Empty)
+        @RenderSubNavButton("From existing project", string.Empty)
+        @RenderSubNavButton("From new project", string.Empty)
+        @RenderNavButton("Components", string.Empty)
+        @RenderNavButton("Samples", string.Empty)
+        @RenderNavButton("Forms", string.Empty)
+    </div>
+    
+    <div class="w-full flex flex-col gap-1">
+        @RenderSectionHeader("Getting Started", includeTopMargin: false)
+        @RenderNavButton("Installation", string.Empty)
+        @RenderSubNavButton("From existing project", string.Empty)
+        @RenderSubNavButton("From new project", string.Empty)
+        @RenderNavButton("shadcn-blazor.yaml", string.Empty)
+        @RenderNavButton("CLI tool", string.Empty)
+    </div>
+    
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Components", includeTopMargin: false)
         @foreach (var component in ComponentRegistry.Components)
@@ -11,8 +33,10 @@
 </div>
 
 @code {
-    [Inject] public required ComponentRegistryService ComponentRegistry { get; set; }
-    [Inject] public required NavigationManager Nav { get; set; }
+    [Inject] 
+    public required ComponentRegistryService ComponentRegistry { get; set; }
+    [Inject] 
+    public required NavigationManager Nav { get; set; }
 
     private RenderFragment RenderSectionHeader(string text, bool includeTopMargin = true) => __builder =>
     {
@@ -24,13 +48,53 @@
 
     private RenderFragment RenderNavButton(string text, string href) => __builder =>
     {
+        var active = IsActive(href);
+        var spanClass = active
+            ? "bg-accent text-white rounded-md px-2 py-1"
+            : "text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors";
         <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 px-2 font-semibold text-sm antialiased group" 
            href="@href"
            @onclick="@(_ => HandleNav(href))"
            @onclick:preventDefault="true">
-            <span class="text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors">@text</span>
+            <span class="@spanClass">@text</span>
+        </a>
+    };
+    
+    private RenderFragment RenderSubNavButton(string text, string href) => __builder =>
+    {
+        var active = IsActive(href);
+        var spanClass = active
+            ? "bg-accent text-white rounded-md px-2 py-1"
+            : "text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors";
+        <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 ml-4 px-2 text-[0.8rem] antialiased group" 
+           href="@href"
+           @onclick="@(_ => HandleNav(href))"
+           @onclick:preventDefault="true">
+            <span class="@spanClass">@text</span>
         </a>
     };
 
+    private string CurrentPath => new Uri(Nav.Uri).AbsolutePath;
+
+    private bool IsActive(string href) =>
+        !string.IsNullOrEmpty(href) &&
+        (string.Equals(CurrentPath, href, StringComparison.OrdinalIgnoreCase) ||
+         CurrentPath.StartsWith(href.TrimEnd('/') + "/", StringComparison.OrdinalIgnoreCase));
+
     private void HandleNav(string href) => Nav.NavigateTo(href);
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs _)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+    }
 }

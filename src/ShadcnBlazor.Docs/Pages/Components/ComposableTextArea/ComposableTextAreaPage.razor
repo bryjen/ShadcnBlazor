@@ -1,0 +1,34 @@
+@page "/components/composabletextarea"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.ComposableTextArea.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.ComposableTextArea">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The ComposableTextArea is a multi-line text input with optional <code>Header</code> and <code>Footer</code> slots. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding.</p>
+        <ComponentPreview Code="@Snippets.ComposableTextAreaBasicExample" Language="razor">
+            <ComposableTextAreaBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="With Header and Footer" Id="with-header-footer">
+            <p class="mb-3">Use the <code>Header</code> and <code>Footer</code> render fragments to add content above and below the textarea.</p>
+            <ComponentPreview Code="@Snippets.ComposableTextAreaWithSlotsExample" Language="razor">
+                <ComposableTextAreaWithSlotsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.ComposableTextArea.ComposableTextArea)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add composabletextarea",
+    };
+}

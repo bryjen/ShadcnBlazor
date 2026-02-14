@@ -15,6 +15,8 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Id { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>When false, this section is not added to the On This Page TOC. Use when the parent will add it later (e.g. API Reference).</summary>
+    [Parameter] public bool AddToToc { get; set; } = true;
 
     private string SectionId => !string.IsNullOrEmpty(Id)
         ? Id
@@ -22,7 +24,7 @@
 
     protected override void OnParametersSet()
     {
-        if (!string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(SectionId))
+        if (AddToToc && !string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(SectionId))
             TocService.AddSection(Title, SectionId, 0);
     }
 }

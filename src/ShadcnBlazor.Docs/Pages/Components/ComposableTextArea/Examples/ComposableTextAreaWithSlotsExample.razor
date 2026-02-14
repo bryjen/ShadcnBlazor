@@ -1,0 +1,12 @@
+<ComposableTextArea @bind-Value="_content" Rows="4">
+    <Header>
+        <span class="text-sm font-medium">Description</span>
+    </Header>
+    <Footer>
+        <span class="text-xs text-muted-foreground">@(_content?.Length ?? 0) characters</span>
+    </Footer>
+</ComposableTextArea>
+
+@code {
+    private string? _content;
+}

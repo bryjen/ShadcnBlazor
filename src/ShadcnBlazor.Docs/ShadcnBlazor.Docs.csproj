@@ -49,4 +49,5 @@
     <ItemGroup>
         <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
     </ItemGroup>
+    
 </Project>

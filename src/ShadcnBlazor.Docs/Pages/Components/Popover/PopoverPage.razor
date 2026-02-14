@@ -1,0 +1,34 @@
+@page "/components/popover"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Popover.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Popover">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Popover component displays a floating panel anchored to a trigger. Use <code>Anchor</code> for the trigger element and <code>ChildContent</code> for the panel. Requires <code>PopoverProvider</code> in your layout (already present in the docs). Bind <code>Open</code> for controlled state.</p>
+        <ComponentPreview Code="@Snippets.PopoverBasicExample" Language="razor">
+            <PopoverBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Placement" Id="placement">
+            <p class="mb-3">Use <code>AnchorOrigin</code> and <code>TransformOrigin</code> to control where the popover appears relative to the trigger.</p>
+            <ComponentPreview Code="@Snippets.PopoverPlacementExample" Language="razor">
+                <PopoverPlacementExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Popover.Popover)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add popover",
+    };
+}

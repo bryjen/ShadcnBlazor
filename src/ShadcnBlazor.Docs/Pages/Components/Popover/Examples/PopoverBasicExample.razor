@@ -1,0 +1,19 @@
+<Popover @bind-Open="_open" CloseOnOutsideClick="true">
+    <Anchor>
+        <Button Variant="@Variant.Default" OnClick="Toggle">
+            @(_open ? "Close" : "Open") Popover
+        </Button>
+    </Anchor>
+    <ChildContent>
+        <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg p-4 text-sm">
+            <p class="font-semibold">Popover content</p>
+            <p class="text-muted-foreground">This panel is anchored to the trigger button.</p>
+        </div>
+    </ChildContent>
+</Popover>
+
+@code {
+    private bool _open;
+
+    private void Toggle() => _open = !_open;
+}

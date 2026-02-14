@@ -1,0 +1,34 @@
+@page "/components/checkbox"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Checkbox.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Checkbox">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Checkbox component provides a boolean or multi-select form input. Use <code>ChildContent</code> for the label. Bind <code>Checked</code> for two-way state, or use <code>CheckedChanged</code> for one-way updates.</p>
+        <ComponentPreview Code="@Snippets.CheckboxBasicExample" Language="razor">
+            <CheckboxBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="With Label" Id="with-label">
+            <p class="mb-3">Place the label text in <code>ChildContent</code>. The entire label is clickable to toggle the checkbox.</p>
+            <ComponentPreview Code="@Snippets.CheckboxLabelExample" Language="razor">
+                <CheckboxLabelExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Checkbox.Checkbox)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add checkbox",
+    };
+}

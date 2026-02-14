@@ -1,0 +1,34 @@
+@page "/components/radio"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Radio.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Radio">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Radio component provides single selection within a <code>RadioGroup</code>. Place <code>Radio</code> options inside a <code>RadioGroup</code> and bind <code>Value</code> for the selected option. Each <code>Radio</code> needs a unique <code>Value</code> and <code>ChildContent</code> for the label.</p>
+        <ComponentPreview Code="@Snippets.RadioBasicExample" Language="razor">
+            <RadioBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Horizontal" Id="horizontal">
+            <p class="mb-3">Set <code>Vertical="false"</code> on RadioGroup to display options horizontally.</p>
+            <ComponentPreview Code="@Snippets.RadioHorizontalExample" Language="razor">
+                <RadioHorizontalExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Radio.Radio)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add radio",
+    };
+}

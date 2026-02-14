@@ -9,6 +9,101 @@ namespace ShadcnBlazor.Docs.Models;
 [System.CodeDom.Compiler.GeneratedCodeAttribute("ShadcnBlazor.Docs.Compiler", "0.0.0.0")]
 public static class ApiDocumentation
 {
+    public static readonly DocumentedType Accordion = new()
+    {
+        Name = "Accordion",
+        FullName = "ShadcnBlazor.Components.Accordion.Accordion",
+        Summary = @"A vertically stacked set of interactive headings that each reveal a section of content.
+            Use with , , and .",
+        Properties = new[]
+        {
+            new DocumentedProperty
+            {
+                Name = "AdditionalAttributes",
+                Type = "Dictionary<string, Object>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "ChildContent",
+                Type = "RenderFragment",
+                Summary = @"The content of the accordion, typically one or more  components.",
+                Remarks = @"",
+                Category = "Content",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Class",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "Collapsible",
+                Type = "bool",
+                Summary = @"When , allows the open item to be collapsed so that no item is open.",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "false",
+            },
+            new DocumentedProperty
+            {
+                Name = "DefaultValue",
+                Type = "string",
+                Summary = @"The value of the item to open by default when uncontrolled.
+            Must match the Value of an .",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Type",
+                Type = "AccordionType",
+                Summary = @"Whether only one item can be open at a time () or multiple items ().",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "AccordionType.Single",
+            },
+            new DocumentedProperty
+            {
+                Name = "Value",
+                Type = "string",
+                Summary = @"The value of the currently open item when controlled.
+            Use with  for two-way binding.",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "ValueChanged",
+                Type = "EventCallback<string>",
+                Summary = @"Callback fired when the open item changes. Use with  for two-way binding.",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.String]",
+            },
+        },
+        Methods = Array.Empty<DocumentedMethod>(),
+        Events = new[]
+        {
+            new DocumentedEvent
+            {
+                Name = "ValueChanged",
+                Type = "EventCallback<string>",
+                Summary = @"Callback fired when the open item changes. Use with  for two-way binding.",
+            },
+        },
+    };
+
     public static readonly DocumentedType Alert = new()
     {
         Name = "Alert",
@@ -1144,6 +1239,7 @@ public static class ApiDocumentation
 
     public static IReadOnlyDictionary<string, DocumentedType> All => new Dictionary<string, DocumentedType>
     {
+        { "Accordion", Accordion },
         { "Alert", Alert },
         { "Avatar", Avatar },
         { "Badge", Badge },

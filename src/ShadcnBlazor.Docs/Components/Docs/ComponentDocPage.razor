@@ -24,7 +24,7 @@
 
     @if (ApiDoc is not null)
     {
-        <DocsSection Title="API Reference" Id="api">
+        <DocsSection Title="API Reference" Id="api" AddToToc="false">
             <ApiReference Doc="@ApiDoc" ShowHeader="false" />
         </DocsSection>
     }
@@ -53,6 +53,8 @@
 
     Task IHandleAfterRender.OnAfterRenderAsync()
     {
+        if (ApiDoc is not null)
+            TocService.AddSection("API Reference", "api", 0);
         TocService.Flush();
         return Task.CompletedTask;
     }

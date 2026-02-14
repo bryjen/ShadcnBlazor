@@ -1,3 +1,4 @@
+@* AccordionItem: A single expandable section within an Accordion. Must contain AccordionTrigger and AccordionContent. *@
 @namespace ShadcnBlazor.Components.Accordion
 @inherits ShadcnBlazor.Shared.ShadcnComponentBase
 
@@ -14,9 +15,15 @@
     [CascadingParameter]
     private Accordion.AccordionContext? AccordionContext { get; set; }
 
+    /// <summary>
+    /// A unique value that identifies this item. Used to control which item is open and for two-way binding.
+    /// </summary>
     [Parameter]
     public required string Value { get; set; }
 
+    /// <summary>
+    /// The content of the item, typically an <see cref="AccordionTrigger"/> followed by <see cref="AccordionContent"/>.
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

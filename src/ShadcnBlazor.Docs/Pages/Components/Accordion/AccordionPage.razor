@@ -1,0 +1,34 @@
+@page "/components/accordion"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Accordion.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Accordion">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
+        <ComponentPreview Code="@Snippets.AccordionBasicExample" Language="razor">
+            <AccordionBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Collapsible" Id="collapsible">
+            <p class="mb-3">Set <code>Collapsible="true"</code> to allow closing the open item so that no item is expanded. By default, one item must remain open when <code>Type</code> is Single.</p>
+            <ComponentPreview Code="@Snippets.AccordionCollapsibleExample" Language="razor">
+                <AccordionCollapsibleExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Accordion.Accordion)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add accordion",
+    };
+}
