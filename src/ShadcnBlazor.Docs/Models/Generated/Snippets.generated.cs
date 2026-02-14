@@ -284,6 +284,62 @@ namespace ShadcnBlazor.Docs.Models
     <Textarea Placeholder=""6 rows"" Rows=""6"" />
 </div>";
 
+        public const string IconsCommonExample = @"@using EasyAppDev.Blazor.Icons.Lucide
+
+<div class=""flex flex-wrap gap-6"">
+    <div class=""flex flex-col items-center gap-2 text-sm text-muted-foreground"">
+        <LuHome class=""h-6 w-6 text-foreground"" />
+        <span>LuHome</span>
+    </div>
+    <div class=""flex flex-col items-center gap-2 text-sm text-muted-foreground"">
+        <LuUser class=""h-6 w-6 text-foreground"" />
+        <span>LuUser</span>
+    </div>
+    <div class=""flex flex-col items-center gap-2 text-sm text-muted-foreground"">
+        <LuSearch class=""h-6 w-6 text-foreground"" />
+        <span>LuSearch</span>
+    </div>
+    <div class=""flex flex-col items-center gap-2 text-sm text-muted-foreground"">
+        <LuChevronRight class=""h-6 w-6 text-foreground"" />
+        <span>LuChevronRight</span>
+    </div>
+    <div class=""flex flex-col items-center gap-2 text-sm text-muted-foreground"">
+        <LuCheck class=""h-6 w-6 text-foreground"" />
+        <span>LuCheck</span>
+    </div>
+</div>";
+
+        public const string IconsInButtonsExample = @"@using EasyAppDev.Blazor.Icons.Lucide
+
+<div class=""flex flex-wrap gap-4"">
+    <Button><LuDownload class=""h-4 w-4"" /> Download</Button>
+    <Button Variant=""@Variant.Outline""><LuMail class=""h-4 w-4"" /> Email</Button>
+    <Button Variant=""@Variant.Ghost"" Size=""@Size.Sm""><LuSettings class=""h-4 w-4"" /></Button>
+</div>";
+
+        public const string TypographyHeadingsExample = @"<div class=""flex flex-col gap-2"">
+    <h1 class=""text-3xl font-bold"">Heading 1</h1>
+    <h2 class=""text-2xl font-semibold"">Heading 2</h2>
+    <h3 class=""text-xl font-medium"">Heading 3</h3>
+    <p class=""text-base text-muted-foreground"">Body text with muted color.</p>
+    <p class=""text-sm text-muted-foreground"">Smaller text for captions or secondary content.</p>
+</div>";
+
+        public const string TypographyListsExample = @"<div class=""flex flex-col gap-2"">
+    <ul class=""list-disc list-inside space-y-1 text-sm"">
+        <li>First item</li>
+        <li>Second item</li>
+        <li>Third item</li>
+    </ul>
+    <a href=""#"" class=""text-primary hover:underline"">Link example</a>
+</div>";
+
+        public const string TypographyMutedExample = @"<div class=""flex flex-col gap-2"">
+    <p class=""text-foreground"">Primary foreground text.</p>
+    <p class=""text-muted-foreground"">Muted text for less emphasis.</p>
+    <p class=""text-primary"">Accent/primary colored text.</p>
+</div>";
+
         public const string AiChatMessageViewExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
 @using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
 

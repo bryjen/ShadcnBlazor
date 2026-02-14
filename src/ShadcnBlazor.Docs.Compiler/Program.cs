@@ -250,12 +250,15 @@ void GenerateSnippets(string docsDirPath, string outputPath)
 {
     var componentsPath = Path.Combine(docsDirPath, "Pages", "Components");
     var samplesPath = Path.Combine(docsDirPath, "Pages", "Samples");
+    var pseudoComponentsPath = Path.Combine(docsDirPath, "Pages", "PseudoComponents");
 
     var exampleFiles = new List<string>();
     if (Directory.Exists(componentsPath))
         exampleFiles.AddRange(Directory.EnumerateFiles(componentsPath, "*Example.razor", SearchOption.AllDirectories));
     if (Directory.Exists(samplesPath))
         exampleFiles.AddRange(Directory.EnumerateFiles(samplesPath, "*Example.razor", SearchOption.AllDirectories));
+    if (Directory.Exists(pseudoComponentsPath))
+        exampleFiles.AddRange(Directory.EnumerateFiles(pseudoComponentsPath, "*Example.razor", SearchOption.AllDirectories));
     exampleFiles = exampleFiles.OrderBy(f => f.Replace("\\", "/"), StringComparer.Ordinal).ToList();
 
     if (exampleFiles.Count == 0)

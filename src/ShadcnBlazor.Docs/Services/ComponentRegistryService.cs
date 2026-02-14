@@ -22,11 +22,17 @@ public class ComponentRegistryService
     /// </summary>
     public IReadOnlyList<ComponentRegistryEntry> Components => _components.Value;
 
+    private static readonly IReadOnlyList<ComponentRegistryEntry> PseudoComponents =
+    [
+        new ComponentRegistryEntry("Icons", "icons"),
+        new ComponentRegistryEntry("Typography", "typography"),
+    ];
+
     private static IReadOnlyList<ComponentRegistryEntry> DiscoverComponents()
     {
         var assembly = typeof(ShadcnBlazor.Components.Button.Button).Assembly;
 
-        return assembly.GetTypes()
+        var libraryComponents = assembly.GetTypes()
             .Where(t => t.IsPublic && !t.IsAbstract)
             .Where(t => typeof(ComponentBase).IsAssignableFrom(t))
             .Where(t => t.GetCustomAttribute<ComponentMetadataAttribute>() is not null)
@@ -34,7 +40,10 @@ public class ComponentRegistryService
             {
                 var metadata = t.GetCustomAttribute<ComponentMetadataAttribute>()!;
                 return new ComponentRegistryEntry(metadata.Name, ToSlug(metadata.Name));
-            })
+            });
+
+        return libraryComponents
+            .Concat(PseudoComponents)
             .OrderBy(c => c.Name, StringComparer.OrdinalIgnoreCase)
             .ToArray();
     }
