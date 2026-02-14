@@ -14,11 +14,10 @@
 
     private string GetOverlapClass() => Size switch
     {
-        Size.Xs => "-space-x-1.5",
-        Size.Sm => "-space-x-2",
-        Size.Md => "-space-x-2.5",
-        Size.Lg => "-space-x-3",
-        _ => "-space-x-2.5",
+        Size.Sm => "-space-x-1",
+        Size.Md => "-space-x-1.5",
+        Size.Lg => "-space-x-2",
+        _ => "-space-x-1.5",
     };
 
     private string GetClass()

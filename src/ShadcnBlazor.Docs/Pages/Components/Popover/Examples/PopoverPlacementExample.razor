@@ -1,0 +1,19 @@
+<Popover @bind-Open="_open"
+         AnchorOrigin="PopoverPlacement.BottomLeft"
+         TransformOrigin="PopoverPlacement.TopLeft"
+         CloseOnOutsideClick="true">
+    <Anchor>
+        <Button Variant="@Variant.Outline" OnClick="Toggle">Bottom-left placement</Button>
+    </Anchor>
+    <ChildContent>
+        <div class="w-48 rounded-lg border bg-popover text-popover-foreground shadow-lg p-3 text-sm">
+            Popover anchored to bottom-left of trigger.
+        </div>
+    </ChildContent>
+</Popover>
+
+@code {
+    private bool _open;
+
+    private void Toggle() => _open = !_open;
+}

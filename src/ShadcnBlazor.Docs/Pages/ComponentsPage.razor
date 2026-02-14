@@ -1,0 +1,28 @@
+@* We already have a `Components` directory, so we have to name this file `ComponentsPage` *@
+@page "/components"
+
+<PageTitle>Components - ShadcnBlazor</PageTitle>
+
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-bold">Components</h1>
+        <p class="text-base text-muted-foreground">
+            Here you can find all the components available in the library. We are working on adding more components.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-x-12 gap-y-6">
+        @foreach (var component in ComponentRegistry.Components)
+        {
+            <a href="/components/@component.Slug"
+               class="block w-full text-left text-base font-medium text-foreground/70 hover:text-foreground hover:underline py-1 transition-colors">
+                @component.Name
+            </a>
+        }
+    </div>
+</div>
+
+@code {
+    [Inject]
+    public required ComponentRegistryService ComponentRegistry { get; set; }
+}

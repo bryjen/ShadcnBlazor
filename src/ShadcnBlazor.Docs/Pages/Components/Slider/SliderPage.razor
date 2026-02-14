@@ -1,0 +1,34 @@
+@page "/components/slider"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Slider.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Slider">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for two-way binding.</p>
+        <ComponentPreview Code="@Snippets.SliderBasicExample" Language="razor">
+            <SliderBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Range" Id="range">
+            <p class="mb-3">Customize <code>Min</code>, <code>Max</code>, and <code>Step</code> for different value ranges.</p>
+            <ComponentPreview Code="@Snippets.SliderRangeExample" Language="razor">
+                <SliderRangeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Slider.Slider)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add slider",
+    };
+}

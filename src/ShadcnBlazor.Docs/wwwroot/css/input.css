@@ -71,7 +71,8 @@
     }
 
     .dark {
-        --background: oklch(0.141 0.005 285.823);
+        --background: oklch(0.1448 0 0);
+        /* --background: oklch(0.141 0.005 285.823); */
         --foreground: oklch(0.985 0 0);
         --card: oklch(0.21 0.006 285.885);
         --card-foreground: oklch(0.985 0 0);
@@ -130,6 +131,16 @@
         color: var(--foreground);
         padding: 0.125rem 0.25rem;
         border-radius: 0.25rem;
+    }
+
+    /* DocsSection: inline code in doc prose only (excludes pre/code blocks) */
+    .docs-section p code {
+        border-radius: 0.25rem;
+        font-weight: 600;
+        background-color: var(--muted);
+        padding-inline: 0.25rem;
+        padding-block: 0.0625rem;
+        font-size: 0.75rem;
     }
 }
 

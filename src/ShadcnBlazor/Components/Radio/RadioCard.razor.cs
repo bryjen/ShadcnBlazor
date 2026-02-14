@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
 using ShadcnBlazor.Shared.Enums;
 
 #pragma warning disable CS8524
 
 namespace ShadcnBlazor.Components.Radio;
 
-[ComponentMetadata(Name = nameof(RadioCard), Description = "", Dependencies = [nameof(RadioGroup)])]
 public partial class RadioCard : RadioSelectableComponentBase
 {
     [Parameter]
@@ -22,8 +20,7 @@ public partial class RadioCard : RadioSelectableComponentBase
     {
         var sizeClasses = EffectiveSize switch
         {
-            Size.Xs => "size-4",
-            Size.Sm => "size-4.5",
+            Size.Sm => "size-4",
             Size.Md => "size-5",
             Size.Lg => "size-6",
         };
@@ -46,7 +43,6 @@ public partial class RadioCard : RadioSelectableComponentBase
     {
         var sizeClasses = EffectiveSize switch
         {
-            Size.Xs => "size-1",
             Size.Sm => "size-1.5",
             Size.Md => "size-2",
             Size.Lg => "size-2.5",

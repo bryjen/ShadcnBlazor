@@ -1,3 +1,4 @@
+@* AccordionTrigger: The clickable header that expands/collapses the associated AccordionContent. *@
 @namespace ShadcnBlazor.Components.Accordion
 @inherits ShadcnBlazor.Shared.ShadcnComponentBase
 
@@ -26,6 +27,9 @@
     [CascadingParameter]
     private AccordionItem.AccordionItemContext? ItemContext { get; set; }
 
+    /// <summary>
+    /// The content of the trigger, typically the heading text. Clicking toggles the associated content visibility.
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

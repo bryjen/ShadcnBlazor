@@ -1,0 +1,96 @@
+@inject PageTocService TocService
+@inject NavigationManager Navigation
+@inject IJSRuntime JsRuntime
+
+@implements IDisposable
+@implements IHandleAfterRender
+
+@if (TocService.Items.Count > 0)
+{
+    <nav class="space-y-1 bg-transparent" aria-label="On this page">
+        <h4 class="text-sm font-semibold text-muted-foreground mb-3">
+            On This Page
+        </h4>
+        <ul class="space-y-1.5 text-[0.8rem] font-medium">
+            @foreach (var item in TocService.Items)
+            {
+                <li class="@(item.Level > 0 ? "pl-4" : "")">
+                    <a href="@GetHref(item.Id)"
+                       class="@GetLinkClass(item.Id)">
+                        @item.Title
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@code {
+    private string _instanceId = Guid.NewGuid().ToString("N")[..8];
+    private string? _activeSectionId;
+    private DotNetObjectReference<OnThisPage>? _dotNetRef;
+    private string[] _lastSectionIds = [];
+
+    private string GetHref(string id)
+    {
+        var path = new Uri(Navigation.Uri).PathAndQuery;
+        return $"{path}#{id}";
+    }
+
+    private string GetLinkClass(string id) =>
+        id == _activeSectionId
+            ? "text-foreground font-semibold block py-0.5"
+            : "text-muted-foreground hover:text-foreground duration-300 transition-colors block py-0.5";
+
+    [JSInvokable]
+    public void SetActiveSection(string id)
+    {
+        if (_activeSectionId != id)
+        {
+            _activeSectionId = id;
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        TocService.Subscribe(StateHasChanged);
+    }
+
+    async Task IHandleAfterRender.OnAfterRenderAsync()
+    {
+        if (TocService.Items.Count == 0)
+        {
+            _lastSectionIds = [];
+            return;
+        }
+
+        var sectionIds = TocService.Items.Select(i => i.Id).ToArray();
+        if (sectionIds.SequenceEqual(_lastSectionIds))
+            return;
+
+        _lastSectionIds = sectionIds;
+        _activeSectionId = null;
+        _dotNetRef ??= DotNetObjectReference.Create(this);
+
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("shadcnDocsOnThisPage.observe", _instanceId, sectionIds, _dotNetRef);
+        }
+        catch
+        {
+            // JS may not be loaded yet or elements not in DOM
+        }
+    }
+
+    public void Dispose()
+    {
+        TocService.Unsubscribe(StateHasChanged);
+        try
+        {
+            _ = JsRuntime.InvokeVoidAsync("shadcnDocsOnThisPage.disconnect", _instanceId);
+        }
+        catch { /* JS may be torn down */ }
+        _dotNetRef?.Dispose();
+    }
+}

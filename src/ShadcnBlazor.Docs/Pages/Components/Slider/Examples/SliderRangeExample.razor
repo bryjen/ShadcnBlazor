@@ -1,0 +1,11 @@
+<div class="space-y-4">
+    <div>
+        <p class="text-sm font-medium mb-1">0–10 (step 0.5)</p>
+        <Slider @bind-Value="_rating" Min="0" Max="10" Step="0.5" AriaLabel="Rating" />
+        <p class="text-xs text-muted-foreground">@_rating</p>
+    </div>
+</div>
+
+@code {
+    private double _rating = 5;
+}

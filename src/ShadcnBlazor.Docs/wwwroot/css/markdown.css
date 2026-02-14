@@ -97,6 +97,138 @@
     padding: 0 !important;
 }
 
+/* Docs codeblock - VS Code Dark+ theme. JetBrains Mono ONLY on the code itself. */
+.docs-codeblock {
+    background: var(--card) !important;
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+}
+/* Solo: standalone, full rounded corners, no border */
+.docs-codeblock--solo {
+    border-radius: var(--radius-lg);
+}
+/* Embedded: bottom rounded only (top border from parent context) */
+.docs-codeblock--embedded {
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.docs-codeblock pre {
+    background: transparent !important;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.docs-codeblock pre code {
+    background: transparent !important;
+    color: #d4d4d4;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 400;
+    white-space: pre;
+}
+/* Override github-dark.min.css padding - p-4 equivalent (1rem). Scoped to docs-codeblock only. */
+.docs-codeblock pre code.hljs {
+    background: transparent !important;
+    padding: 1rem !important;
+}
+.docs-codeblock-linenos div {
+    min-height: 1.65em;
+}
+
+/* Component preview code block accordion - matches AccordionContent animation */
+.docs-codeblock-accordion {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+.docs-codeblock-accordion-expanded {
+    max-height: 2000px;
+    opacity: 1;
+    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+}
+.docs-codeblock-accordion-inner {
+    overflow: hidden;
+}
+
+/* VS Code Dark+ color scheme for docs codeblock */
+.docs-codeblock .hljs {
+    color: #d4d4d4;
+    background: transparent !important;
+}
+.docs-codeblock .hljs-keyword,
+.docs-codeblock .hljs-selector-tag,
+.docs-codeblock .hljs-addition {
+    color: #c586c0;
+}
+.docs-codeblock .hljs-string,
+.docs-codeblock .hljs-template-variable,
+.docs-codeblock .hljs-section,
+.docs-codeblock .hljs-link,
+.docs-codeblock .hljs-meta .hljs-meta-string {
+    color: #ce9178;
+}
+.docs-codeblock .hljs-title,
+.docs-codeblock .hljs-title.class_,
+.docs-codeblock .hljs-title.class_.inherited__,
+.docs-codeblock .hljs-title.function_,
+.docs-codeblock .hljs-title.function_.invoke__ {
+    color: #dcdcaa;
+}
+.docs-codeblock .hljs-built_in,
+.docs-codeblock .hljs-variable,
+.docs-codeblock .hljs-variable.language_,
+.docs-codeblock .hljs-template-tag,
+.docs-codeblock .hljs-params {
+    color: #9cdcfe;
+}
+.docs-codeblock .hljs-type,
+.docs-codeblock .hljs-attribute {
+    color: #4ec9b0;
+}
+.docs-codeblock .hljs-tag,
+.docs-codeblock .hljs-name,
+.docs-codeblock .hljs-regexp,
+.docs-codeblock .hljs-meta,
+.docs-codeblock .hljs-meta .hljs-keyword {
+    color: #569cd6;
+}
+.docs-codeblock .hljs-attr {
+    color: #9cdcfe;
+}
+.docs-codeblock .hljs-number,
+.docs-codeblock .hljs-literal,
+.docs-codeblock .hljs-symbol {
+    color: #b5cea8;
+}
+.docs-codeblock .hljs-comment,
+.docs-codeblock .hljs-quote,
+.docs-codeblock .hljs-doctag {
+    color: #6a9955;
+}
+.docs-codeblock .hljs-operator,
+.docs-codeblock .hljs-punctuation,
+.docs-codeblock .hljs-subst {
+    color: #d4d4d4;
+}
+
+/* CommandBlock toggle group - structural only, does not override button variants */
+.command-block-toggle-group [data-slot="button"] {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    height: 100%;
+}
+.command-block-toggle-group [data-slot="button"]:not(:first-child) {
+    border-left: 1px solid hsl(var(--input) / 0.7);
+}
+.command-block-toggle-group [data-slot="button"]:first-child {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+.command-block-toggle-group [data-slot="button"]:last-child {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
 .markdown-content hr {
     border: 0;
     border-top: 1px solid hsl(var(--border));

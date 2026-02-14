@@ -1,0 +1,34 @@
+@page "/components/textarea"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Textarea.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Textarea">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
+        <ComponentPreview Code="@Snippets.TextareaBasicExample" Language="razor">
+            <TextareaBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Rows" Id="rows">
+            <p class="mb-3">Use the <code>Rows</code> parameter to control the initial height of the textarea.</p>
+            <ComponentPreview Code="@Snippets.TextareaRowsExample" Language="razor">
+                <TextareaRowsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Textarea.Textarea)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add textarea",
+    };
+}

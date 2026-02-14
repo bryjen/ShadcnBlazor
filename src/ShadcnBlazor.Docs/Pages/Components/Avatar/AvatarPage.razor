@@ -1,0 +1,34 @@
+@page "/components/avatar"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Avatar.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Avatar">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg.</p>
+        <ComponentPreview Code="@Snippets.AvatarBasicExample" Language="razor">
+            <AvatarBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Fallback" Id="fallback">
+            <p class="mb-3">When <code>Src</code> is not set or the image fails to load, the Avatar shows <code>ChildContent</code> or initials derived from <code>Alt</code>.</p>
+            <ComponentPreview Code="@Snippets.AvatarFallbackExample" Language="razor">
+                <AvatarFallbackExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Avatar.Avatar)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add avatar",
+    };
+}

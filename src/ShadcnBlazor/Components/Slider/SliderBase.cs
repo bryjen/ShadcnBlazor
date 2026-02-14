@@ -26,31 +26,28 @@ public abstract class SliderBase : ShadcnComponentBase
 
     protected int TrackHeightPx => Size switch
     {
-        Size.Xs => 3,
-        Size.Sm => 4,
-        Size.Md => 6,
-        Size.Lg => 8,
-        _ => 4,
+        Size.Sm => 2,
+        Size.Md => 3,
+        Size.Lg => 5,
+        _ => 3,
     };
 
     protected int ThumbSizePx => Size switch
     {
-        Size.Xs => 10,
-        Size.Sm => 12,
-        Size.Md => 16,
-        Size.Lg => 20,
-        _ => 16,
+        Size.Sm => 9,
+        Size.Md => 11,
+        Size.Lg => 15,
+        _ => 11,
     };
 
     protected string GetContainerClass()
     {
         var baseClasses = Size switch
         {
-            Size.Xs => "relative w-full h-5 select-none",
-            Size.Sm => "relative w-full h-5 select-none",
-            Size.Md => "relative w-full h-6 select-none",
-            Size.Lg => "relative w-full h-7 select-none",
-            _ => "relative w-full h-6 select-none",
+            Size.Sm => "relative w-full h-4 select-none",
+            Size.Md => "relative w-full h-5 select-none",
+            Size.Lg => "relative w-full h-6 select-none",
+            _ => "relative w-full h-5 select-none",
         };
 
         var stateClasses = Disabled ? "opacity-50" : string.Empty;

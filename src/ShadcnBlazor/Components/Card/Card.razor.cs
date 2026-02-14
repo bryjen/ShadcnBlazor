@@ -7,7 +7,7 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Card;
 
-[ComponentMetadata(Name = nameof(Card), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(Card), Description = "Container for content with header, body, and footer sections.", Dependencies = [])]
 public partial class Card : ShadcnComponentBase
 {
     [Parameter]

@@ -1,0 +1,10 @@
+<RadioGroup @bind-Value="_selected">
+    <Radio Value="option1">Option 1</Radio>
+    <Radio Value="option2">Option 2</Radio>
+    <Radio Value="option3">Option 3</Radio>
+</RadioGroup>
+<p class="text-sm text-muted-foreground mt-2">Selected: @_selected</p>
+
+@code {
+    private string? _selected = "option1";
+}

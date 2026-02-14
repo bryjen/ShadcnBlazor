@@ -1,0 +1,28 @@
+<section class="flex flex-col gap-2 scroll-mt-20 mb-6 min-w-0" id="@SectionId">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <h3 class="text-lg font-semibold text-foreground">@Title</h3>
+    }
+    
+    <div class="text-sm text-muted-foreground min-w-0">
+        @ChildContent
+    </div>
+</section>
+
+@inject ShadcnBlazor.Docs.Services.PageTocService TocService
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string SectionId => !string.IsNullOrEmpty(Id)
+        ? Id
+        : (!string.IsNullOrEmpty(Title) ? Title.ToLowerInvariant().Replace(" ", "-") : "");
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(SectionId))
+            TocService.AddSection(Title, SectionId, 1);
+    }
+}

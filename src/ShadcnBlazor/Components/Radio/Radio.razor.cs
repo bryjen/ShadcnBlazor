@@ -6,7 +6,7 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Radio;
 
-[ComponentMetadata(Name = nameof(Radio), Description = "", Dependencies = [nameof(RadioGroup)])]
+[ComponentMetadata(Name = nameof(Radio), Description = "Radio and RadioCard options for single selection within a RadioGroup.", Dependencies = [])]
 public partial class Radio : RadioSelectableComponentBase
 {
     [Parameter]
@@ -25,10 +25,9 @@ public partial class Radio : RadioSelectableComponentBase
 
     private string GetClass()
     {
-        var baseClasses = "peer border-input bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/40 aria-invalid:border-destructive shrink-0 rounded-full border shadow-xs transition-all duration-200 outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50";
+        var baseClasses = "peer flex items-center justify-center p-0 border-input bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/40 aria-invalid:border-destructive shrink-0 rounded-full border shadow-xs transition-all duration-200 outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50";
         var sizeClasses = EffectiveSize switch
         {
-            Size.Xs => "size-2",
             Size.Sm => "size-3",
             Size.Md => "size-4",
             Size.Lg => "size-5",
@@ -51,10 +50,9 @@ public partial class Radio : RadioSelectableComponentBase
     {
         var sizeClasses = EffectiveSize switch
         {
-            Size.Xs => "size-0.5",
-            Size.Sm => "size-1",
-            Size.Md => "size-1.5",
-            Size.Lg => "size-2",
+            Size.Sm => "size-1.5",
+            Size.Md => "size-2",
+            Size.Lg => "size-2.5",
         };
 
         return MergeCss("rounded-full bg-current", sizeClasses);

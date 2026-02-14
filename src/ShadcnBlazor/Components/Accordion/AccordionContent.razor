@@ -1,3 +1,4 @@
+@* AccordionContent: The collapsible content panel revealed when the AccordionTrigger is clicked. *@
 @namespace ShadcnBlazor.Components.Accordion
 @inherits ShadcnBlazor.Shared.ShadcnComponentBase
 
@@ -15,6 +16,9 @@
     [CascadingParameter]
     private AccordionItem.AccordionItemContext? ItemContext { get; set; }
 
+    /// <summary>
+    /// The content shown when the associated trigger is expanded.
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

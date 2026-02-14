@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.Slider;
 
-[ComponentMetadata(Name = nameof(RangeSlider), Description = "", Dependencies = [])]
 public partial class RangeSlider : SliderBase
 {
     [Parameter]

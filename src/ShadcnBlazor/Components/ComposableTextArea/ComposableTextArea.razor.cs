@@ -4,7 +4,7 @@ using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.ComposableTextArea;
 
-[ComponentMetadata(Name = nameof(ComposableTextArea), Description = "", Dependencies = [])]
+[ComponentMetadata(Name = nameof(ComposableTextArea), Description = "Multi-line text input with optional header and footer slots.", Dependencies = [])]
 public partial class ComposableTextArea : ShadcnComponentBase
 {
     [Parameter]

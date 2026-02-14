@@ -1,0 +1,62 @@
+@page "/components/button"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Button.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Button">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components.</p>
+        <ComponentPreview Code="@Snippets.ButtonBasicExample" Language="razor">
+            <ButtonBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Size" Id="size">
+            <p class="mb-3">Use the <code>Size</code> parameter for compact (Sm), default (Md), or larger (Lg) buttons. Sizing affects padding and text scale.</p>
+            <ComponentPreview Code="@Snippets.ButtonSizeExample" Language="razor">
+                <ButtonSizeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Variants" Id="variants">
+            <p class="mb-3">Choose a <code>Variant</code> to convey hierarchy: Default for primary actions, Outline for secondary, Ghost for minimal emphasis, Destructive for dangerous actions, and Link for inline-style buttons.</p>
+            <ComponentPreview Code="@Snippets.ButtonVariantExample" Language="razor">
+                <ButtonVariantExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Content" Id="content">
+            <p class="mb-3">The button accepts any content via <code>ChildContent</code>. Mix text with inline elements, or use dynamic content. The component handles layout and spacing automatically.</p>
+            <ComponentPreview Code="@Snippets.ButtonContentExample" Language="razor">
+                <ButtonContentExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Icons" Id="icons">
+            <p class="mb-3">Use Lucide icons (or any SVG) inside the button. Add the icon package and place it alongside text—spacing is handled by the button's built-in gap. Icon-only buttons work with smaller sizes and padding.</p>
+            <ComponentPreview Code="@Snippets.ButtonIconExample" Language="razor">
+                <ButtonIconExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Interactivity" Id="interactivity">
+            <p class="mb-3">Wire up <code>OnClick</code> to handle user actions. The handler receives <code>MouseEventArgs</code>. Use component state to drive dynamic labels or behavior.</p>
+            <ComponentPreview Code="@Snippets.ButtonCounterExample" Language="razor">
+                <ButtonCounterExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Button.Button)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcn-blazor component add button",
+    };
+}

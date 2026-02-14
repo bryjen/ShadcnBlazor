@@ -1,0 +1,66 @@
+@using ShadcnBlazor.Docs.Models
+@using ShadcnBlazor.Docs.Services
+@using ShadcnBlazor.Shared.Attributes
+
+@inject PageTocService TocService
+
+@implements IDisposable
+@implements IHandleAfterRender
+
+<PageTitle>@Metadata.Name - ShadcnBlazor</PageTitle>
+
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-bold">@Metadata.Name</h1>
+        <p class="text-base text-muted-foreground">@Metadata.Description</p>
+    </div>
+
+    <DocsSection Title="Installation" Id="installation">
+        <p class="mb-3">Add the @Metadata.Name component using the CLI:</p>
+        <CommandBlock Options="@InstallOptions" DefaultOption="@DefaultInstallOption" />
+    </DocsSection>
+
+    @ChildContent
+
+    @if (ApiDoc is not null)
+    {
+        <DocsSection Title="API Reference" Id="api" AddToToc="false">
+            <ApiReference Doc="@ApiDoc" ShowHeader="false" />
+        </DocsSection>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public ComponentMetadataAttribute Metadata { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public IReadOnlyDictionary<string, string> InstallOptions { get; set; } = null!;
+
+    [Parameter]
+    public string DefaultInstallOption { get; set; } = "dotnet";
+
+    [Parameter]
+    public DocumentedType? ApiDoc { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        TocService.Clear();
+    }
+
+    Task IHandleAfterRender.OnAfterRenderAsync()
+    {
+        if (ApiDoc is not null)
+            TocService.AddSection("API Reference", "api", 0);
+        TocService.Flush();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        TocService.Clear();
+    }
+}
