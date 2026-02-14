@@ -141,11 +141,11 @@ public static class ApiDocumentation
             new DocumentedProperty
             {
                 Name = "Variant",
-                Type = "string",
+                Type = "AlertVariant",
                 Summary = @"",
                 Remarks = @"",
                 Category = "Common",
-                DefaultValue = "\"default\"",
+                DefaultValue = "AlertVariant.Default",
             },
         },
         Methods = Array.Empty<DocumentedMethod>(),

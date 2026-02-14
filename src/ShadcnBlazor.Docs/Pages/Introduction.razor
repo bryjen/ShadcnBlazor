@@ -1,0 +1,174 @@
+@page "/introduction"
+@using EasyAppDev.Blazor.Icons.Lucide
+
+
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-bold">Introduction</h1>
+        <p class="text-base text-muted-foreground">shadcn/ui is a set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks and AI models. Open Source. Open Code.</p>
+    </div>
+
+    <div class="w-full text-[0.9rem] leading-relaxed text-foreground/85">
+        <p class="mb-3">
+            I'm sure you're well aware of the problems of typical component libraries: you install a package from <code>NuGet</code>, configure your project, and then use the components in your app. 
+            This approach works until you need to modify the source code of your system to fit the requirements of your app.
+            For example, you may need to expose the internal state of a component, or you need finer control over the styling.
+            Often, you end up wrapping library components, writing workarounds to override styles, or mixing components from different libraries with incompatible APIs.
+        </p>
+        
+        <p class="mb-3">
+            ShadcnBlazor solves this by copying component source code directly into your project—you own the code. 
+            There's no black box: components live in your codebase, so you can read, modify, and extend them however you need.
+            Components are built with Tailwind CSS v4 and semantic CSS variables for theming. 
+            They're accessible, customizable, and designed to fit naturally into Blazor apps without fighting the framework.
+        </p>
+    </div>
+
+    <DocsSection Title="Installation" Id="installation">
+        
+        <div class="flex flex-col gap-8">
+            <div class="mb-8">
+                <p class="mb-3">
+                    First, make sure you have the <code>shadcnblazor</code> CLI tool installed. If you don't have it yet, you can install it globally using the command provided below:
+                </p>
+
+                <CommandBlock Options="@InstallOptions" DefaultOption="@("dotnet")"/>
+            </div>
+
+            <DocsSubSection Title="Installation Details" Id="installation-details">
+                <div class="flex flex-col gap-8">
+                    <div class="flex flex-col gap-2">
+                        <p class="mb-3">
+                            The CLI tools initializes a <code>shadcn-blazor.yaml</code> file, which holds the dependencies and configuration for your project.
+                            It contains paths of where components and services will be generated, as well as the root namespace for proper namespacing and resolution of the generated code.
+                        </p>
+                        <CodeBlock Code="@ExampleShadcnBlazorYaml" Language="yaml"/>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <p class="mb-3">
+                            During initialization, the tool imports a <code>Shared</code> directory that contains enums, services, and other shared code used by the components.
+                            This is a one-time import, and the files are copied into your project so you can modify them as needed.
+                        </p>
+                        <CodeBlock Code="@ExampleSharedDirectoryAscii" Language="text"/>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <p class="mb-3">
+                            When importing/adding components, the CLI tool generates the component files in the specified directory.
+                        </p>
+                        <CodeBlock Code="@ExampleButtonComponentDirectoryAscii" Language="text"/>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <p class="mb-3">
+                            For more complex components, like <code>Popover</code>, classes such as models, enums, interfaces, and services are generated in subdirectories within the component directory.
+                            This keeps related functionality neatly organized, and allows better separation of concerns while still giving you full access to modify and extend the code as needed.
+                        </p>
+                        <CodeBlock Code="@ExamplePopoverComponentDirectoryAscii" Language="text"/>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <p class="mb-3">
+                            For more information, see.
+                        </p>
+                    </div>
+                </div>
+            </DocsSubSection>
+
+            <DocsSubSection Title="From New project" Id="installation-new">
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-8 mt-3">
+                        @RenderStep(1,
+                            @<div class="flex flex-col gap-3">
+                                <span class="font-bold text-lg">Init New Project</span>
+                                <span class="text-[0.9rem] leading-relaxed text-foreground/85">
+                                    Run <code>init</code> subcommand to setup a new Blazor project using <code>ShadcnBlazor</code>.
+                                    This will create a new Blazor WebAssembly project with the necessary configuration and dependencies.
+                                </span>
+                                <CommandBlock Options="@InitNew1" DefaultOption="@("dotnet")"/>
+                            </div>)
+
+                        @RenderStep(2,
+                            @<div class="flex flex-col gap-3">
+                                <span class="font-bold text-lg">Add Components</span>
+                                <span class="text-[0.9rem] leading-relaxed text-foreground/85">
+                                    You can now start adding components into your project.
+                                </span>
+                                <CommandBlock Options="@InitNew2" DefaultOption="@("dotnet")"/>
+
+                                <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
+                                    If you with to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can that like so:
+                                </span>
+                                <CommandBlock Options="@InitNew3" DefaultOption="@("dotnet")"/>
+                            </div>)
+                    </div>
+                </div>
+            </DocsSubSection>
+
+            <DocsSubSection Title="From Existing Project" Id="installation-existing">
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-8 mt-3">
+                        @RenderStep(1,
+                            @<div class="flex flex-col gap-3">
+                                <span class="font-bold text-lg">Init New Project</span>
+                                <span class="text-[0.9rem] leading-relaxed text-foreground/85">
+                                    Run <code>init</code> subcommand to setup a new Blazor project using <code>ShadcnBlazor</code>.
+                                    This will create a new Blazor WebAssembly project with the necessary configuration and dependencies.
+                                </span>
+                                <CommandBlock Options="@InitNew1" DefaultOption="@("dotnet")"/>
+                            </div>)
+
+                        @RenderStep(2,
+                            @<div class="flex flex-col gap-3">
+                                <span class="font-bold text-lg">Add Components</span>
+                                <span class="text-[0.9rem] leading-relaxed text-foreground/85">
+                                    You can now start adding components into your project.
+                                </span>
+                                <CommandBlock Options="@InitNew2" DefaultOption="@("dotnet")"/>
+
+                                <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
+                                    If you with to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can that like so:
+                                </span>
+                                <CommandBlock Options="@InitNew3" DefaultOption="@("dotnet")"/>
+                            </div>)
+                    </div>
+                </div>
+            </DocsSubSection>
+        </div>
+    </DocsSection>
+</div>
+
+@code {
+    private RenderFragment RenderStep(int number, RenderFragment contents) => __builder =>
+    {
+        <div class="grid grid-cols-[7.5%_92.5%]">
+            <div class="w-full">
+                <div class="bg-card rounded rounded-2xl w-fit px-3 py-1">
+                    @number
+                </div>
+            </div>
+            @contents
+        </div>
+    };
+    
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "dotnet tool install --global shadcnblazor",
+    };
+    
+    private static readonly Dictionary<string, string> InitNew1 = new()
+    {
+        ["dotnet"] = "shadcnblazor init new . -t wasm",
+    };
+    
+    private static readonly Dictionary<string, string> InitNew2 = new()
+    {
+        ["dotnet"] = "shadcnblazor components add button",
+    };
+    
+    private static readonly Dictionary<string, string> InitNew3 = new()
+    {
+        ["dotnet"] = "shadcnblazor components add all",
+    };
+}

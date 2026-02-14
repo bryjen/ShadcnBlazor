@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Shared;
 using ShadcnBlazor.Shared.Attributes;
 using TailwindMerge;
+#pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
 namespace ShadcnBlazor.Components.Alert;
 
@@ -12,7 +13,7 @@ public partial class Alert : ShadcnComponentBase
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
-    public string Variant { get; set; } = "default";
+    public AlertVariant Variant { get; set; } = AlertVariant.Default;
 
     private string GetClass()
     {
@@ -20,12 +21,23 @@ public partial class Alert : ShadcnComponentBase
 
         var variantClasses = Variant switch
         {
-            "default" => "bg-card text-card-foreground border-border [&>svg]:text-card-foreground",
-            "destructive" => "bg-card text-card-foreground border-destructive [&>svg]:text-destructive *:data-[slot=alert-description]:text-destructive/90",
-            _ => "bg-card text-card-foreground border-border [&>svg]:text-card-foreground"
+            AlertVariant.Default => "bg-card text-card-foreground border-border [&>svg]:text-card-foreground",
+            AlertVariant.Destructive => "bg-destructive/20 text-card-foreground border-destructive [&>svg]:text-destructive *:data-[slot=alert-description]:text-destructive/90",
         };
 
         return MergeCss(baseClasses, variantClasses, Class);
     }
+}
+
+/// <summary>
+/// Visual style variants for the Alert component.
+/// </summary>
+public enum AlertVariant
+{
+    /// <summary>Default informational styling.</summary>
+    Default,
+
+    /// <summary>Destructive/error styling for alerts or warnings.</summary>
+    Destructive,
 }
 

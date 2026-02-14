@@ -52,11 +52,11 @@ namespace ShadcnBlazor.Docs.Models
 </Alert>";
 
         public const string AlertVariantExample = @"<div class=""flex flex-col gap-3"">
-    <Alert Variant=""default"">
+    <Alert Variant=""@AlertVariant.Default"">
         <p class=""font-medium"">Default</p>
         <p class=""text-muted-foreground"">This is a standard informational alert.</p>
     </Alert>
-    <Alert Variant=""destructive"">
+    <Alert Variant=""@AlertVariant.Destructive"">
         <p class=""font-medium"">Destructive</p>
         <p class=""text-muted-foreground"">This alert indicates an error or destructive action.</p>
     </Alert>
