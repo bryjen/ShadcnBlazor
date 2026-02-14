@@ -6,15 +6,27 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Radio;
 
+/// <summary>
+/// Radio option for single selection within a RadioGroup.
+/// </summary>
 [ComponentMetadata(Name = nameof(Radio), Description = "Radio and RadioCard options for single selection within a RadioGroup.", Dependencies = [])]
 public partial class Radio : RadioSelectableComponentBase
 {
+    /// <summary>
+    /// Optional label content displayed next to the radio.
+    /// </summary>
     [Parameter]
     public RenderFragment? LabelContent { get; set; }
 
+    /// <summary>
+    /// Content displayed next to the radio (alternative to LabelContent).
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>
+    /// CSS classes for the radio button element.
+    /// </summary>
     [Parameter]
     public string ButtonClass { get; set; } = string.Empty;
 

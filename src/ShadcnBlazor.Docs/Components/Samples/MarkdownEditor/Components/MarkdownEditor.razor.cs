@@ -56,8 +56,9 @@ public partial class MarkdownEditor : ComponentBase
             return;
         }
 
-        _previewHtml = Markdown.ToHtml(_markdown ?? string.Empty);
-        _lastPreviewMarkdown = _markdown;
+        var markdown = _markdown ?? string.Empty;
+        _previewHtml = Markdown.ToHtml(markdown) ?? string.Empty;
+        _lastPreviewMarkdown = markdown;
     }
 
     private async Task HeaderButtonPressed()

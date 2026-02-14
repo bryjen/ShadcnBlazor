@@ -5,24 +5,45 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Textarea;
 
+/// <summary>
+/// Multi-line text input for longer form content.
+/// </summary>
 [ComponentMetadata(Name = nameof(Textarea), Description = "Multi-line text input for longer form content.", Dependencies = [])]
 public partial class Textarea : ShadcnComponentBase
 {
-    [Parameter] 
+    /// <summary>
+    /// The current value of the textarea.
+    /// </summary>
+    [Parameter]
     public string? Value { get; set; }
-    
-    [Parameter] 
+
+    /// <summary>
+    /// Callback invoked when the value changes.
+    /// </summary>
+    [Parameter]
     public EventCallback<string?> ValueChanged { get; set; }
-    
-    [Parameter] 
+
+    /// <summary>
+    /// The number of visible text rows.
+    /// </summary>
+    [Parameter]
     public int Rows { get; set; } = 4;
-    
-    [Parameter] 
+
+    /// <summary>
+    /// Placeholder text when the value is empty.
+    /// </summary>
+    [Parameter]
     public string? Placeholder { get; set; }
-    
-    [Parameter] 
+
+    /// <summary>
+    /// Whether the textarea is disabled.
+    /// </summary>
+    [Parameter]
     public bool Disabled { get; set; }
-    
+
+    /// <summary>
+    /// Returns the CSS classes for the textarea.
+    /// </summary>
     public string GetClass()
     {
         var baseClasses = "border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm";

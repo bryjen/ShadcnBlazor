@@ -3,15 +3,27 @@ using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.Slider;
 
+/// <summary>
+/// Single-thumb slider for selecting a value within a min/max range.
+/// </summary>
 [ComponentMetadata(Name = nameof(Slider), Description = "Single-thumb slider for selecting a value within a min/max range.", Dependencies = [])]
 public partial class Slider : SliderBase
 {
+    /// <summary>
+    /// The current value.
+    /// </summary>
     [Parameter]
     public double Value { get; set; }
 
+    /// <summary>
+    /// Callback invoked when the value changes.
+    /// </summary>
     [Parameter]
     public EventCallback<double> ValueChanged { get; set; }
 
+    /// <summary>
+    /// Callback invoked when the user finishes changing the value (on change event).
+    /// </summary>
     [Parameter]
     public EventCallback<double> OnChange { get; set; }
 

@@ -5,27 +5,51 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Input;
 
+/// <summary>
+/// Single-line text input with variant styling.
+/// </summary>
 [ComponentMetadata(Name = nameof(Input), Description = "Single-line text input with variant styling.", Dependencies = [])]
 public partial class Input : ShadcnComponentBase
 {
+    /// <summary>
+    /// The HTML input type (e.g., text, password, email).
+    /// </summary>
     [Parameter]
     public string? Type { get; set; } = "text";
 
+    /// <summary>
+    /// The current value of the input.
+    /// </summary>
     [Parameter]
     public string? Value { get; set; }
 
+    /// <summary>
+    /// Callback invoked when the value changes.
+    /// </summary>
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
 
+    /// <summary>
+    /// The size of the input.
+    /// </summary>
     [Parameter]
     public Size Size { get; set; } = Size.Md;
 
+    /// <summary>
+    /// Whether the input is disabled.
+    /// </summary>
     [Parameter]
     public bool Disabled { get; set; }
 
+    /// <summary>
+    /// Placeholder text when the value is empty.
+    /// </summary>
     [Parameter]
     public string? Placeholder { get; set; }
 
+    /// <summary>
+    /// Callback invoked when the input change event fires.
+    /// </summary>
     [Parameter]
     public EventCallback<ChangeEventArgs> OnChange { get; set; }
 

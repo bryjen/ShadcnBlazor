@@ -29,7 +29,7 @@ jobs:
             **/packages.lock.json
 
       - name: Restore
-        run: dotnet restore src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj
+        run: dotnet restore
 
       - name: Publish
         run: |

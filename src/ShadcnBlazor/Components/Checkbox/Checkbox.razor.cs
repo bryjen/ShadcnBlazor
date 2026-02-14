@@ -8,21 +8,39 @@ using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Checkbox;
 
+/// <summary>
+/// Checkbox input for boolean or multi-select form values.
+/// </summary>
 [ComponentMetadata(Name = nameof(Checkbox), Description = "Checkbox input for boolean or multi-select form values.", Dependencies = [])]
 public partial class Checkbox : ShadcnComponentBase
 {
+    /// <summary>
+    /// Content to display alongside the checkbox (e.g., label).
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>
+    /// Whether the checkbox is checked.
+    /// </summary>
     [Parameter]
     public bool Checked { get; set; }
 
+    /// <summary>
+    /// Callback invoked when the checked state changes.
+    /// </summary>
     [Parameter]
     public EventCallback<bool> CheckedChanged { get; set; }
 
+    /// <summary>
+    /// The size of the checkbox.
+    /// </summary>
     [Parameter]
     public Size Size { get; set; } = Size.Md;
 
+    /// <summary>
+    /// Whether the checkbox is disabled.
+    /// </summary>
     [Parameter]
     public bool Disabled { get; set; }
     

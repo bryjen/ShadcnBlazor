@@ -6,6 +6,9 @@ using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.Popover;
 
+/// <summary>
+/// Floating panel anchored to a trigger element; requires PopoverProvider in layout.
+/// </summary>
 [ComponentMetadata(Name = nameof(Popover), Description = "Floating panel anchored to a trigger element; requires PopoverProvider in layout.", Dependencies = [])]
 public partial class Popover : ComponentBase, IAsyncDisposable
 {
@@ -20,54 +23,105 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     private bool _outsideClickSubscriptionActive;
     private CancellationTokenSource? _closeAnimationCts;
 
+    /// <summary>
+    /// Injected popover service for JavaScript interop.
+    /// </summary>
     [Inject]
     public required IPopoverService PopoverService { get; set; }
 
+    /// <summary>
+    /// Injected registry for popover provider coordination.
+    /// </summary>
     [Inject]
     public required IPopoverRegistry PopoverRegistry { get; set; }
 
+    /// <summary>
+    /// Content rendered as the anchor/trigger element.
+    /// </summary>
     [Parameter]
     public RenderFragment? Anchor { get; set; }
 
+    /// <summary>
+    /// Content rendered inside the popover panel.
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>
+    /// Whether the popover is open.
+    /// </summary>
     [Parameter]
     public bool Open { get; set; }
 
+    /// <summary>
+    /// Callback invoked when the open state changes.
+    /// </summary>
     [Parameter]
     public EventCallback<bool> OpenChanged { get; set; }
 
+    /// <summary>
+    /// Whether clicking outside closes the popover.
+    /// </summary>
     [Parameter]
     public bool CloseOnOutsideClick { get; set; }
 
+    /// <summary>
+    /// Whether to animate open/close transitions.
+    /// </summary>
     [Parameter]
     public bool Animate { get; set; } = true;
 
+    /// <summary>
+    /// Duration of the close animation in milliseconds.
+    /// </summary>
     [Parameter]
     public int ExitAnimationDurationMs { get; set; } = 140;
 
+    /// <summary>
+    /// Where the popover is anchored relative to the trigger.
+    /// </summary>
     [Parameter]
     public PopoverPlacement AnchorOrigin { get; set; } = PopoverPlacement.BottomLeft;
 
+    /// <summary>
+    /// Transform origin for the popover content.
+    /// </summary>
     [Parameter]
     public PopoverPlacement TransformOrigin { get; set; } = PopoverPlacement.TopLeft;
 
+    /// <summary>
+    /// How the popover width is determined.
+    /// </summary>
     [Parameter]
     public PopoverWidthMode WidthMode { get; set; } = PopoverWidthMode.None;
 
+    /// <summary>
+    /// Whether to clamp the popover within the viewport.
+    /// </summary>
     [Parameter]
     public bool ClampList { get; set; }
 
+    /// <summary>
+    /// CSS classes for the anchor element.
+    /// </summary>
     [Parameter]
     public string AnchorClass { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Additional attributes for the anchor element.
+    /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AnchorAttributes { get; set; }
 
+    /// <summary>
+    /// CSS classes for the popover panel.
+    /// </summary>
     [Parameter]
     public string PopoverClass { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Additional attributes for the popover panel.
+    /// </summary>
     [Parameter]
     public Dictionary<string, object>? PopoverAttributes { get; set; }
 
@@ -86,6 +140,7 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         var provider = PopoverRegistry.CurrentProvider;
@@ -157,6 +212,7 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (PopoverRegistry.CurrentProvider is null)
@@ -181,6 +237,9 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         await UpdateOutsideClickSubscriptionAsync();
     }
 
+    /// <summary>
+    /// Handles pointer down events outside the popover for close-on-outside-click behavior.
+    /// </summary>
     [JSInvokable]
     public async Task HandleOutsidePointerDown()
     {
@@ -195,6 +254,7 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         CancelCloseAnimation();

@@ -435,7 +435,7 @@ public static class ApiDocumentation
             {
                 Name = "Checked",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether the checkbox is checked.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -444,7 +444,7 @@ public static class ApiDocumentation
             {
                 Name = "CheckedChanged",
                 Type = "EventCallback<bool>",
-                Summary = @"",
+                Summary = @"Callback invoked when the checked state changes.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.Boolean]",
@@ -453,7 +453,7 @@ public static class ApiDocumentation
             {
                 Name = "ChildContent",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Content to display alongside the checkbox (e.g., label).",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -471,7 +471,7 @@ public static class ApiDocumentation
             {
                 Name = "Disabled",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether the checkbox is disabled.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -480,7 +480,7 @@ public static class ApiDocumentation
             {
                 Name = "Size",
                 Type = "Size",
-                Summary = @"",
+                Summary = @"The size of the checkbox.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Size.Md",
@@ -493,7 +493,7 @@ public static class ApiDocumentation
             {
                 Name = "CheckedChanged",
                 Type = "EventCallback<bool>",
-                Summary = @"",
+                Summary = @"Callback invoked when the checked state changes.",
             },
         },
     };
@@ -527,7 +527,7 @@ public static class ApiDocumentation
             {
                 Name = "Disabled",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether the text area is disabled.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -536,7 +536,7 @@ public static class ApiDocumentation
             {
                 Name = "Footer",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Optional footer content below the text area.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -545,7 +545,7 @@ public static class ApiDocumentation
             {
                 Name = "FooterContainerClass",
                 Type = "string",
-                Summary = @"",
+                Summary = @"CSS classes for the footer container.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"\"",
@@ -554,7 +554,7 @@ public static class ApiDocumentation
             {
                 Name = "Header",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Optional header content above the text area.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -563,7 +563,7 @@ public static class ApiDocumentation
             {
                 Name = "HeaderContainerClass",
                 Type = "string",
-                Summary = @"",
+                Summary = @"CSS classes for the header container.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"\"",
@@ -572,7 +572,7 @@ public static class ApiDocumentation
             {
                 Name = "OnChange",
                 Type = "EventCallback<ChangeEventArgs>",
-                Summary = @"",
+                Summary = @"Callback invoked when the input change event fires.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[Microsoft.AspNetCore.Components.ChangeEventArgs]",
@@ -581,7 +581,7 @@ public static class ApiDocumentation
             {
                 Name = "Placeholder",
                 Type = "string",
-                Summary = @"",
+                Summary = @"Placeholder text when the value is empty.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -590,7 +590,7 @@ public static class ApiDocumentation
             {
                 Name = "Rows",
                 Type = "int",
-                Summary = @"",
+                Summary = @"The number of visible text rows.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "8",
@@ -599,7 +599,7 @@ public static class ApiDocumentation
             {
                 Name = "Value",
                 Type = "string",
-                Summary = @"",
+                Summary = @"The current value of the text area.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -608,7 +608,7 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.String]",
@@ -621,13 +621,13 @@ public static class ApiDocumentation
             {
                 Name = "OnChange",
                 Type = "EventCallback<ChangeEventArgs>",
-                Summary = @"",
+                Summary = @"Callback invoked when the input change event fires.",
             },
             new DocumentedEvent
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
             },
         },
     };
@@ -661,7 +661,7 @@ public static class ApiDocumentation
             {
                 Name = "Disabled",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether the input is disabled.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -670,7 +670,7 @@ public static class ApiDocumentation
             {
                 Name = "OnChange",
                 Type = "EventCallback<ChangeEventArgs>",
-                Summary = @"",
+                Summary = @"Callback invoked when the input change event fires.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[Microsoft.AspNetCore.Components.ChangeEventArgs]",
@@ -679,7 +679,7 @@ public static class ApiDocumentation
             {
                 Name = "Placeholder",
                 Type = "string",
-                Summary = @"",
+                Summary = @"Placeholder text when the value is empty.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -688,7 +688,7 @@ public static class ApiDocumentation
             {
                 Name = "Size",
                 Type = "Size",
-                Summary = @"",
+                Summary = @"The size of the input.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Size.Md",
@@ -697,7 +697,7 @@ public static class ApiDocumentation
             {
                 Name = "Type",
                 Type = "string",
-                Summary = @"",
+                Summary = @"The HTML input type (e.g., text, password, email).",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"text\"",
@@ -706,7 +706,7 @@ public static class ApiDocumentation
             {
                 Name = "Value",
                 Type = "string",
-                Summary = @"",
+                Summary = @"The current value of the input.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -715,7 +715,7 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.String]",
@@ -728,13 +728,13 @@ public static class ApiDocumentation
             {
                 Name = "OnChange",
                 Type = "EventCallback<ChangeEventArgs>",
-                Summary = @"",
+                Summary = @"Callback invoked when the input change event fires.",
             },
             new DocumentedEvent
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
             },
         },
     };
@@ -750,7 +750,7 @@ public static class ApiDocumentation
             {
                 Name = "Anchor",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Content rendered as the anchor/trigger element.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -759,7 +759,7 @@ public static class ApiDocumentation
             {
                 Name = "AnchorAttributes",
                 Type = "Dictionary<string, Object>",
-                Summary = @"",
+                Summary = @"Additional attributes for the anchor element.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -768,7 +768,7 @@ public static class ApiDocumentation
             {
                 Name = "AnchorClass",
                 Type = "string",
-                Summary = @"",
+                Summary = @"CSS classes for the anchor element.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"\"",
@@ -777,7 +777,7 @@ public static class ApiDocumentation
             {
                 Name = "AnchorOrigin",
                 Type = "PopoverPlacement",
-                Summary = @"",
+                Summary = @"Where the popover is anchored relative to the trigger.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "PopoverPlacement.BottomLeft",
@@ -786,7 +786,7 @@ public static class ApiDocumentation
             {
                 Name = "Animate",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether to animate open/close transitions.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "true",
@@ -795,7 +795,7 @@ public static class ApiDocumentation
             {
                 Name = "ChildContent",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Content rendered inside the popover panel.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -804,7 +804,7 @@ public static class ApiDocumentation
             {
                 Name = "ClampList",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether to clamp the popover within the viewport.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -813,7 +813,7 @@ public static class ApiDocumentation
             {
                 Name = "CloseOnOutsideClick",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether clicking outside closes the popover.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -822,7 +822,7 @@ public static class ApiDocumentation
             {
                 Name = "ExitAnimationDurationMs",
                 Type = "int",
-                Summary = @"",
+                Summary = @"Duration of the close animation in milliseconds.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "140",
@@ -831,7 +831,7 @@ public static class ApiDocumentation
             {
                 Name = "Open",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether the popover is open.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -840,7 +840,7 @@ public static class ApiDocumentation
             {
                 Name = "OpenChanged",
                 Type = "EventCallback<bool>",
-                Summary = @"",
+                Summary = @"Callback invoked when the open state changes.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.Boolean]",
@@ -849,7 +849,7 @@ public static class ApiDocumentation
             {
                 Name = "PopoverAttributes",
                 Type = "Dictionary<string, Object>",
-                Summary = @"",
+                Summary = @"Additional attributes for the popover panel.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -858,7 +858,7 @@ public static class ApiDocumentation
             {
                 Name = "PopoverClass",
                 Type = "string",
-                Summary = @"",
+                Summary = @"CSS classes for the popover panel.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"\"",
@@ -867,7 +867,7 @@ public static class ApiDocumentation
             {
                 Name = "TransformOrigin",
                 Type = "PopoverPlacement",
-                Summary = @"",
+                Summary = @"Transform origin for the popover content.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "PopoverPlacement.TopLeft",
@@ -876,7 +876,7 @@ public static class ApiDocumentation
             {
                 Name = "WidthMode",
                 Type = "PopoverWidthMode",
-                Summary = @"",
+                Summary = @"How the popover width is determined.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "PopoverWidthMode.None",
@@ -894,7 +894,7 @@ public static class ApiDocumentation
             new DocumentedMethod
             {
                 Name = "HandleOutsidePointerDown",
-                Summary = @"",
+                Summary = @"Handles pointer down events outside the popover for close-on-outside-click behavior.",
                 ReturnType = "Task",
                 Returns = @"",
             },
@@ -905,7 +905,7 @@ public static class ApiDocumentation
             {
                 Name = "OpenChanged",
                 Type = "EventCallback<bool>",
-                Summary = @"",
+                Summary = @"Callback invoked when the open state changes.",
             },
         },
     };
@@ -914,7 +914,7 @@ public static class ApiDocumentation
     {
         Name = "Radio",
         FullName = "ShadcnBlazor.Components.Radio.Radio",
-        Summary = @"Radio and RadioCard options for single selection within a RadioGroup.",
+        Summary = @"Radio option for single selection within a RadioGroup.",
         Properties = new[]
         {
             new DocumentedProperty
@@ -930,7 +930,7 @@ public static class ApiDocumentation
             {
                 Name = "ButtonClass",
                 Type = "string",
-                Summary = @"",
+                Summary = @"CSS classes for the radio button element.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"\"",
@@ -957,7 +957,7 @@ public static class ApiDocumentation
             {
                 Name = "ChildContent",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Content displayed next to the radio (alternative to LabelContent).",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -984,7 +984,7 @@ public static class ApiDocumentation
             {
                 Name = "LabelContent",
                 Type = "RenderFragment",
-                Summary = @"",
+                Summary = @"Optional label content displayed next to the radio.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -1085,7 +1085,7 @@ public static class ApiDocumentation
             {
                 Name = "OnChange",
                 Type = "EventCallback<double>",
-                Summary = @"",
+                Summary = @"Callback invoked when the user finishes changing the value (on change event).",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.Double]",
@@ -1112,7 +1112,7 @@ public static class ApiDocumentation
             {
                 Name = "Value",
                 Type = "double",
-                Summary = @"",
+                Summary = @"The current value.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "0",
@@ -1121,7 +1121,7 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<double>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.Double]",
@@ -1134,13 +1134,13 @@ public static class ApiDocumentation
             {
                 Name = "OnChange",
                 Type = "EventCallback<double>",
-                Summary = @"",
+                Summary = @"Callback invoked when the user finishes changing the value (on change event).",
             },
             new DocumentedEvent
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<double>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
             },
         },
     };
@@ -1174,7 +1174,7 @@ public static class ApiDocumentation
             {
                 Name = "Disabled",
                 Type = "bool",
-                Summary = @"",
+                Summary = @"Whether the textarea is disabled.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",
@@ -1183,7 +1183,7 @@ public static class ApiDocumentation
             {
                 Name = "Placeholder",
                 Type = "string",
-                Summary = @"",
+                Summary = @"Placeholder text when the value is empty.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -1192,7 +1192,7 @@ public static class ApiDocumentation
             {
                 Name = "Rows",
                 Type = "int",
-                Summary = @"",
+                Summary = @"The number of visible text rows.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "4",
@@ -1201,7 +1201,7 @@ public static class ApiDocumentation
             {
                 Name = "Value",
                 Type = "string",
-                Summary = @"",
+                Summary = @"The current value of the textarea.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
@@ -1210,7 +1210,7 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.String]",
@@ -1221,7 +1221,7 @@ public static class ApiDocumentation
             new DocumentedMethod
             {
                 Name = "GetClass",
-                Summary = @"",
+                Summary = @"Returns the CSS classes for the textarea.",
                 ReturnType = "string",
                 Returns = @"",
             },
@@ -1232,7 +1232,7 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"",
+                Summary = @"Callback invoked when the value changes.",
             },
         },
     };

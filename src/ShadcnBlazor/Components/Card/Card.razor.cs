@@ -29,9 +29,15 @@ public partial class Card : ShadcnComponentBase
     }
 }
 
-public enum CardVariant  
+/// <summary>
+/// Visual style variants for the Card component.
+/// </summary>
+public enum CardVariant
 {
+    /// <summary>Default card with background.</summary>
     Default,
+
+    /// <summary>Outline style with transparent background.</summary>
     Outline,
 }
 

@@ -5,8 +5,14 @@ using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Radio;
 
+/// <summary>
+/// Card-style radio option for single selection within a RadioGroup.
+/// </summary>
 public partial class RadioCard : RadioSelectableComponentBase
 {
+    /// <summary>
+    /// Content displayed inside the radio card.
+    /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 

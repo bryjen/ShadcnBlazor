@@ -4,6 +4,9 @@ using ShadcnBlazor.Components.Popover.Models;
 
 namespace ShadcnBlazor.Components.Popover.Services;
 
+/// <summary>
+/// Implementation of <see cref="IPopoverService"/> for popover JavaScript interop.
+/// </summary>
 public class PopoverService : IPopoverService, IAsyncDisposable
 {
     private readonly PopoverJsInterop _jsInterop;
@@ -12,12 +15,18 @@ public class PopoverService : IPopoverService, IAsyncDisposable
     private bool _isInitialized;
     private int? _repositionDebounceOverride;
 
+    /// <summary>
+    /// Creates a new PopoverService.
+    /// </summary>
+    /// <param name="jsRuntime">The JavaScript runtime.</param>
+    /// <param name="options">Popover configuration options.</param>
     public PopoverService(IJSRuntime jsRuntime, IOptions<PopoverOptions> options)
     {
         _jsInterop = new PopoverJsInterop(jsRuntime);
         _options = options.Value;
     }
 
+    /// <inheritdoc />
     public async Task InitializeAsync(string containerClass, int flipMargin, int overflowPadding, int baseZIndex)
     {
         await _semaphore.WaitAsync();
@@ -40,6 +49,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     public async Task SetRepositionDebounceAsync(int debounceMilliseconds)
     {
         var normalized = Math.Max(0, debounceMilliseconds);
@@ -51,6 +61,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     public async Task EnableOutsideClickCloseAsync(string anchorId, string popoverId, DotNetObjectReference<Popover> callbackReference)
     {
         await InitializeAsync(
@@ -62,6 +73,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         await _jsInterop.EnableOutsideClickCloseAsync(anchorId, popoverId, callbackReference);
     }
 
+    /// <inheritdoc />
     public async Task DisableOutsideClickCloseAsync(string popoverId)
     {
         if (!_isInitialized)
@@ -72,6 +84,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         await _jsInterop.DisableOutsideClickCloseAsync(popoverId);
     }
 
+    /// <inheritdoc />
     public async Task ConnectAsync(string anchorId, string popoverId)
     {
         await InitializeAsync(
@@ -83,6 +96,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         await _jsInterop.ConnectAsync(anchorId, popoverId);
     }
 
+    /// <inheritdoc />
     public async Task DisconnectAsync(string popoverId)
     {
         if (!_isInitialized)
@@ -93,6 +107,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         await _jsInterop.DisconnectAsync(popoverId);
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         if (!_isInitialized)

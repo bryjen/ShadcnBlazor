@@ -2,26 +2,50 @@ using Microsoft.AspNetCore.Components;
 
 namespace ShadcnBlazor.Components.Slider;
 
+/// <summary>
+/// Dual-thumb range slider for selecting a min and max value within a range.
+/// </summary>
 public partial class RangeSlider : SliderBase
 {
+    /// <summary>
+    /// The lower (min) value of the range.
+    /// </summary>
     [Parameter]
     public double LowerValue { get; set; } = 25;
 
+    /// <summary>
+    /// Callback invoked when the lower value changes.
+    /// </summary>
     [Parameter]
     public EventCallback<double> LowerValueChanged { get; set; }
 
+    /// <summary>
+    /// The upper (max) value of the range.
+    /// </summary>
     [Parameter]
     public double UpperValue { get; set; } = 75;
 
+    /// <summary>
+    /// Callback invoked when the upper value changes.
+    /// </summary>
     [Parameter]
     public EventCallback<double> UpperValueChanged { get; set; }
 
+    /// <summary>
+    /// Callback invoked when either value changes (provides both lower and upper).
+    /// </summary>
     [Parameter]
     public EventCallback<(double Lower, double Upper)> OnChange { get; set; }
 
+    /// <summary>
+    /// ARIA label for the lower thumb.
+    /// </summary>
     [Parameter]
     public string LowerAriaLabel { get; set; } = "Lower value";
 
+    /// <summary>
+    /// ARIA label for the upper thumb.
+    /// </summary>
     [Parameter]
     public string UpperAriaLabel { get; set; } = "Upper value";
 
@@ -47,6 +71,7 @@ public partial class RangeSlider : SliderBase
 
     private string GetUpperThumbStyle() => GetThumbStyle(UpperPercent);
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         var low = ClampValue(LowerValue);
