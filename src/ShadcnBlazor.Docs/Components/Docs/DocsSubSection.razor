@@ -15,6 +15,7 @@
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Id { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [CascadingParameter(Name = "TocSectionId")] public string? ParentSectionId { get; set; }
 
     private string SectionId => !string.IsNullOrEmpty(Id)
         ? Id
@@ -23,6 +24,6 @@
     protected override void OnParametersSet()
     {
         if (!string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(SectionId))
-            TocService.AddSection(Title, SectionId, 1);
+            TocService.AddSection(Title, SectionId, 1, ParentSectionId);
     }
 }

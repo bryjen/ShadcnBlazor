@@ -4,8 +4,8 @@
 @using UserChatMessageView = ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages.UserChatMessageView
 @inherits ShadcnComponentBase
 
-<div class="grid grid-rows-[1fr_auto] h-full">
-    <div id="chat-feed" class="px-40 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
+<div class="@(MergeCss("grid grid-rows-[1fr_auto] h-full px-40", Class))">
+    <div id="chat-feed" class="flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
         
         @if (ChatOrchestrator.Messages.Count == 0)
         {
@@ -30,7 +30,7 @@
         }
     </div>
     
-    <div id="chat-input" class="px-40">
+    <div id="chat-input">
         <ChatInput SubmitPrompt="SubmitPrompt" />
     </div>
 </div>

@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Models;
 
 namespace ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 
-public class ChatOrchestrator(ChatService chatService)
+public class ChatOrchestrator(IChatService chatService, IStreamResponseParserService streamParserService)
 {
     public bool LockUserInput { get; set; } = false;
     public ObservableCollection<ChatMessage> Messages { get; set; } = new();
@@ -21,7 +21,7 @@ public class ChatOrchestrator(ChatService chatService)
         await OnStateChange.Invoke();
 
         var responseMsg = new AiChatMessage(string.Empty);
-        var streamParser = new StreamResponseParser(responseMsg.Components);
+        var streamParser = streamParserService.CreateStream(responseMsg.Components);
         Messages.Add(responseMsg);
         
         await foreach (var update in chatService.RunStreamingAsync(promptRaw, cancellationToken))

@@ -1,0 +1,13 @@
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.MessageComponents
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<WebSearchMessageComponentView Component="@_search" AccordionExpanded="true" />
+
+@code {
+    private readonly WebSearchMessageComponent _search = new()
+    {
+        Content = @"https://learn.microsoft.com/en-us/aspnet/core/blazor
+https://github.com/dotnet/aspnetcore
+https://docs.fluentui-blazor.net"
+    };
+}

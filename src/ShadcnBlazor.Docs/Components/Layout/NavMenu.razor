@@ -27,11 +27,20 @@
         }
     </div>
 
+    <div class="w-full flex flex-col gap-1">
+        @RenderSectionHeader("Samples", includeTopMargin: false)
+        @foreach (var sample in SampleRegistry.SamplesList)
+        {
+            @RenderNavButton(sample.Name, $"samples/{sample.Slug}")
+        }
+    </div>
 </div>
 
 @code {
     [Inject] 
     public required ComponentRegistryService ComponentRegistry { get; set; }
+    [Inject]
+    public required SampleRegistryService SampleRegistry { get; set; }
     [Inject] 
     public required NavigationManager Nav { get; set; }
 

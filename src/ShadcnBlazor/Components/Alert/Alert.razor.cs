@@ -17,7 +17,7 @@ public partial class Alert : ShadcnComponentBase
 
     private string GetClass()
     {
-        var baseClasses = "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 animate-in fade-in-0 slide-in-from-top-1 duration-200";
+        var baseClasses = "relative w-full rounded-lg border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-3 gap-y-1 items-start [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:translate-y-0.5 animate-in fade-in-0 slide-in-from-top-1 duration-200";
 
         var variantClasses = Variant switch
         {

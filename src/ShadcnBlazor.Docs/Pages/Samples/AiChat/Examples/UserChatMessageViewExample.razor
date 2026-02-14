@@ -1,0 +1,8 @@
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<UserChatMessageView Message="@_userMessage" />
+
+@code {
+    private readonly UserChatMessage _userMessage = new("What's the best framework for building Blazor apps?");
+}

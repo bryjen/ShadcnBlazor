@@ -12,13 +12,27 @@
             On This Page
         </h4>
         <ul class="space-y-1.5 text-[0.8rem] font-medium">
-            @foreach (var item in TocService.Items)
+            @foreach (var group in GetTocGroups())
             {
-                <li class="@(item.Level > 0 ? "pl-4" : "")">
-                    <a href="@GetHref(item.Id)"
-                       class="@GetLinkClass(item.Id)">
-                        @item.Title
+                <li>
+                    <a href="@GetHref(group.Section.Id)"
+                       class="@GetLinkClass(group.Section.Id)">
+                        @group.Section.Title
                     </a>
+                    @if (group.Children.Count > 0)
+                    {
+                        <ul class="mt-1.5 ml-4 space-y-1 border-l border-border pl-3">
+                            @foreach (var child in group.Children)
+                            {
+                                <li>
+                                    <a href="@GetHref(child.Id)"
+                                       class="@GetLinkClass(child.Id)">
+                                        @child.Title
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
                 </li>
             }
         </ul>
@@ -30,6 +44,37 @@
     private string? _activeSectionId;
     private DotNetObjectReference<OnThisPage>? _dotNetRef;
     private string[] _lastSectionIds = [];
+
+    private record TocGroup(TocItem Section, List<TocItem> Children);
+
+    private IEnumerable<TocGroup> GetTocGroups()
+    {
+        var groupMap = new Dictionary<string, TocGroup>();
+        var orderedGroups = new List<TocGroup>();
+        TocGroup? lastGroup = null;
+
+        foreach (var item in TocService.Items)
+        {
+            if (item.Level == 0)
+            {
+                var group = new TocGroup(item, []);
+                groupMap[item.Id] = group;
+                orderedGroups.Add(group);
+                lastGroup = group;
+            }
+            else if (item.ParentId is { } parentId && groupMap.TryGetValue(parentId, out var parent))
+            {
+                parent.Children.Add(item);
+            }
+            else if (lastGroup is not null)
+            {
+                // Fallback: subsection without parent attaches to last section (backward compat)
+                lastGroup.Children.Add(item);
+            }
+        }
+
+        return orderedGroups;
+    }
 
     private string GetHref(string id)
     {

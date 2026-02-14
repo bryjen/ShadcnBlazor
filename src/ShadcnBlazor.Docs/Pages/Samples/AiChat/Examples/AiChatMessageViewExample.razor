@@ -1,0 +1,15 @@
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<AiChatMessageView Message="@_aiMessage" />
+
+@code {
+    private readonly AiChatMessage _aiMessage = new(string.Empty)
+    {
+        Components =
+        {
+            new TextMessageComponent { Content = "**Blazor** is an excellent choice for .NET developers. It offers server-side and WebAssembly hosting models." },
+            new ThinkingMessageComponent { Content = "Considering ecosystem maturity, performance, and developer experience..." }
+        }
+    };
+}

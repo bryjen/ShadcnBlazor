@@ -1,8 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 namespace ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 
-public class ChatService
+public class ChatService : IChatService
 {
     public async IAsyncEnumerable<string> RunStreamingAsync(
         string _, 

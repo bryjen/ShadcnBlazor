@@ -1,0 +1,44 @@
+@using ShadcnBlazor.Docs.Services
+@inject PageTocService TocService
+
+@implements IDisposable
+@implements IHandleAfterRender
+
+<PageTitle>@Title - ShadcnBlazor</PageTitle>
+
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-bold">@Title</h1>
+        <p class="text-base text-muted-foreground">@Description</p>
+    </div>
+
+    @ChildContent
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Title { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public string Description { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        TocService.Clear();
+    }
+
+    Task IHandleAfterRender.OnAfterRenderAsync()
+    {
+        TocService.Flush();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        // Don't clear here - the new page's OnParametersSet will clear when it mounts.
+        // Clearing here can race with navigation and wipe the new page's TOC.
+    }
+}

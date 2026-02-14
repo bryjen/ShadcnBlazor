@@ -61,6 +61,7 @@
 
     public void Dispose()
     {
-        TocService.Clear();
+        // Don't clear here - the new page's OnParametersSet will clear when it mounts.
+        // Clearing here can race with navigation and wipe the new page's TOC.
     }
 }

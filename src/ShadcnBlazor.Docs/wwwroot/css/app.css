@@ -333,6 +333,9 @@
   .my-10 {
     margin-block: calc(var(--spacing) * 10);
   }
+  .mt-1\.5 {
+    margin-top: calc(var(--spacing) * 1.5);
+  }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }
@@ -362,6 +365,9 @@
   }
   .mb-3 {
     margin-bottom: calc(var(--spacing) * 3);
+  }
+  .mb-4 {
+    margin-bottom: calc(var(--spacing) * 4);
   }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
@@ -473,6 +479,9 @@
   }
   .h-\[40\%\] {
     height: 40%;
+  }
+  .h-\[50rem\] {
+    height: 50rem;
   }
   .h-\[55rem\] {
     height: 55rem;
@@ -625,14 +634,17 @@
   .scroll-mt-20 {
     scroll-margin-top: calc(var(--spacing) * 20);
   }
+  .list-inside {
+    list-style-position: inside;
+  }
+  .list-disc {
+    list-style-type: disc;
+  }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-  .grid-cols-\[0_1fr\] {
-    grid-template-columns: 0 1fr;
   }
   .grid-cols-\[1\.5fr_1\.5fr_1fr\] {
     grid-template-columns: 1.5fr 1.5fr 1fr;
@@ -771,8 +783,8 @@
       margin-inline-end: calc(calc(var(--spacing) * -2) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
-  .gap-y-0\.5 {
-    row-gap: calc(var(--spacing) * 0.5);
+  .gap-y-1 {
+    row-gap: calc(var(--spacing) * 1);
   }
   .gap-y-2 {
     row-gap: calc(var(--spacing) * 2);
@@ -847,6 +859,10 @@
   .border-b-2 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 2px;
+  }
+  .border-l {
+    border-left-style: var(--tw-border-style);
+    border-left-width: 1px;
   }
   .border-\[hsl\(var\(--border-dark\)\)\] {
     border-color: hsl(var(--border-dark));
@@ -1165,6 +1181,9 @@
   }
   .pl-0 {
     padding-left: calc(var(--spacing) * 0);
+  }
+  .pl-3 {
+    padding-left: calc(var(--spacing) * 3);
   }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
@@ -1721,9 +1740,9 @@
       opacity: 50%;
     }
   }
-  .has-\[\>svg\]\:grid-cols-\[calc\(var\(--spacing\)\*4\)_1fr\] {
+  .has-\[\>svg\]\:grid-cols-\[auto_1fr\] {
     &:has(>svg) {
-      grid-template-columns: calc(var(--spacing) * 4) 1fr;
+      grid-template-columns: auto 1fr;
     }
   }
   .has-\[\>svg\]\:gap-x-3 {
@@ -2165,6 +2184,11 @@
     &>svg {
       width: calc(var(--spacing) * 4);
       height: calc(var(--spacing) * 4);
+    }
+  }
+  .\[\&\>svg\]\:shrink-0 {
+    &>svg {
+      flex-shrink: 0;
     }
   }
   .\[\&\>svg\]\:translate-y-0\.5 {

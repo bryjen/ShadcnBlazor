@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace ShadcnBlazor.Docs.Pages;
 
@@ -9,7 +9,6 @@ public partial class Home : ComponentBase
     private enum Tab
     {
         Examples,
-        MarkdownEditor,
         AiChat,
     }
     
@@ -17,7 +16,6 @@ public partial class Home : ComponentBase
     private static string TabToString(Tab tab) => tab switch
     {
         Tab.Examples => "Examples",
-        Tab.MarkdownEditor => "Markdown Editor",
         Tab.AiChat => "AI Chat",
     };
     
@@ -25,7 +23,6 @@ public partial class Home : ComponentBase
     private static Tab StringToTab(string tab) => tab switch
     {
         "Examples" => Tab.Examples,
-        "Markdown Editor" => Tab.MarkdownEditor,
         "AI Chat" => Tab.AiChat,
     };
 }

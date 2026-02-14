@@ -1,12 +1,10 @@
 @page "/"
 
-@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor.Components
 @using EasyAppDev.Blazor.Icons.Lucide
 @using ShadcnBlazor.Components.ComposableTextArea
 @using ShadcnBlazor.Components.Popover.Models
 @using ShadcnBlazor.Docs.Components.Home
 @using ShadcnBlazor.Docs.Components.Samples.AiChat
-@using ShadcnBlazor.Docs.Components.Samples.MarkdownEditor
 
 @layout NoNavMenuLayout
 
@@ -59,9 +57,6 @@
         {
             case Tab.Examples:
                 @RenderExamplesTab()
-                break;
-            case Tab.MarkdownEditor:
-                @RenderMarkdownEditorTab()
                 break;
             case Tab.AiChat:
                 @RenderAiChatTab()
@@ -228,13 +223,6 @@
                 <SampleBillingComponent/>
             </div>
         </div>
-    };
-    
-    private RenderFragment RenderMarkdownEditorTab() => __builder =>
-    {
-        <Card Variant="@CardVariant.Outline" Class="w-full h-[55rem] h-max-[55rem] overflow-y-scroll scrollbar-hide">
-            <ViewIssue />
-        </Card>
     };
     
     private RenderFragment RenderAiChatTab() => __builder =>

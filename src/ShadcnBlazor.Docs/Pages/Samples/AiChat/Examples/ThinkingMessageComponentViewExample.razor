@@ -1,0 +1,12 @@
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.MessageComponents
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<ThinkingMessageComponentView Component="@_thinking" IsLast="true" />
+
+@code {
+    private readonly ThinkingMessageComponent _thinking = new()
+    {
+        Content = "The user is asking about Blazor. I should consider ecosystem maturity, performance, and developer experience.",
+        ThinkingTime = 8
+    };
+}

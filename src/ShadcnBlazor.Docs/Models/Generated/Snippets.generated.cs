@@ -284,5 +284,77 @@ namespace ShadcnBlazor.Docs.Models
     <Textarea Placeholder=""6 rows"" Rows=""6"" />
 </div>";
 
+        public const string AiChatMessageViewExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<AiChatMessageView Message=""@_aiMessage"" />
+
+@code {
+    private readonly AiChatMessage _aiMessage = new(string.Empty)
+    {
+        Components =
+        {
+            new TextMessageComponent { Content = ""**Blazor** is an excellent choice for .NET developers. It offers server-side and WebAssembly hosting models."" },
+            new ThinkingMessageComponent { Content = ""Considering ecosystem maturity, performance, and developer experience..."" }
+        }
+    };
+}";
+
+        public const string ChatInputExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components
+
+<ChatInput SubmitPrompt=""OnSubmit"" />
+
+@code {
+    private void OnSubmit(string prompt) { }
+}";
+
+        public const string TextMessageComponentViewExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.MessageComponents
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<TextMessageComponentView Component=""@_text"" />
+
+@code {
+    private readonly TextMessageComponent _text = new()
+    {
+        Content = ""**Blazor** is a great choice. It offers:\n\n- Server-side rendering\n- WebAssembly for client-side\n- Full .NET ecosystem""
+    };
+}";
+
+        public const string ThinkingMessageComponentViewExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.MessageComponents
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<ThinkingMessageComponentView Component=""@_thinking"" IsLast=""true"" />
+
+@code {
+    private readonly ThinkingMessageComponent _thinking = new()
+    {
+        Content = ""The user is asking about Blazor. I should consider ecosystem maturity, performance, and developer experience."",
+        ThinkingTime = 8
+    };
+}";
+
+        public const string UserChatMessageViewExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.Messages
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<UserChatMessageView Message=""@_userMessage"" />
+
+@code {
+    private readonly UserChatMessage _userMessage = new(""What's the best framework for building Blazor apps?"");
+}";
+
+        public const string WebSearchMessageComponentViewExample = @"@using ShadcnBlazor.Docs.Components.Samples.AiChat.Components.MessageComponents
+@using ShadcnBlazor.Docs.Components.Samples.AiChat.Models
+
+<WebSearchMessageComponentView Component=""@_search"" AccordionExpanded=""true"" />
+
+@code {
+    private readonly WebSearchMessageComponent _search = new()
+    {
+        Content = @""https://learn.microsoft.com/en-us/aspnet/core/blazor
+https://github.com/dotnet/aspnetcore
+https://docs.fluentui-blazor.net""
+    };
+}";
+
     }
 }

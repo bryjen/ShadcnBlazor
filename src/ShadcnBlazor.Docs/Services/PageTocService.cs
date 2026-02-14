@@ -1,6 +1,6 @@
 namespace ShadcnBlazor.Docs.Services;
 
-public record TocItem(string Title, string Id, int Level = 0);
+public record TocItem(string Title, string Id, int Level = 0, string? ParentId = null);
 
 public class PageTocService
 {
@@ -18,11 +18,12 @@ public class PageTocService
     public void Clear()
     {
         _items = [];
+        _changed?.Invoke();
     }
 
-    public void AddSection(string title, string id, int level = 0)
+    public void AddSection(string title, string id, int level = 0, string? parentId = null)
     {
-        _items.Add(new TocItem(title, id, level));
+        _items.Add(new TocItem(title, id, level, parentId));
     }
 
     public void Flush()

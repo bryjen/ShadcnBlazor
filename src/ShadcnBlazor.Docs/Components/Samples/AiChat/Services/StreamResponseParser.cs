@@ -3,7 +3,7 @@ using ShadcnBlazor.Docs.Components.Samples.AiChat.Models;
 
 namespace ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 
-public class StreamResponseParser(List<MessageComponent> components)
+public class StreamResponseParser(IList<MessageComponent> components) : IStreamResponseParser
 {
     private readonly StringBuilder _buffer = new();
     private ParseMode _mode = ParseMode.None;

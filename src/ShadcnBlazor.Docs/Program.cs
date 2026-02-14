@@ -16,6 +16,7 @@ builder.Services.AddAiChat();
 builder.Services.AddTailwindMerge();
 builder.Services.AddScoped<PageTocService>();
 builder.Services.AddSingleton<ComponentRegistryService>();
+builder.Services.AddSingleton<SampleRegistryService>();
 builder.Services.AddScoped<IPopoverRegistry, PopoverRegistry>();
 builder.Services.AddScoped<IPopoverService, PopoverService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

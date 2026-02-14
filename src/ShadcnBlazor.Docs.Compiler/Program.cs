@@ -249,18 +249,14 @@ string FindAssemblyPath(string docsDirPath)
 void GenerateSnippets(string docsDirPath, string outputPath)
 {
     var componentsPath = Path.Combine(docsDirPath, "Pages", "Components");
+    var samplesPath = Path.Combine(docsDirPath, "Pages", "Samples");
 
-    if (!Directory.Exists(componentsPath))
-    {
-        Console.WriteLine($"WARNING: Components path not found at {componentsPath}");
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-        WriteEmptySnippets(outputPath);
-        return;
-    }
-
-    var exampleFiles = Directory.EnumerateFiles(componentsPath, "*Example.razor", SearchOption.AllDirectories)
-        .OrderBy(f => f.Replace("\\", "/"), StringComparer.Ordinal)
-        .ToList();
+    var exampleFiles = new List<string>();
+    if (Directory.Exists(componentsPath))
+        exampleFiles.AddRange(Directory.EnumerateFiles(componentsPath, "*Example.razor", SearchOption.AllDirectories));
+    if (Directory.Exists(samplesPath))
+        exampleFiles.AddRange(Directory.EnumerateFiles(samplesPath, "*Example.razor", SearchOption.AllDirectories));
+    exampleFiles = exampleFiles.OrderBy(f => f.Replace("\\", "/"), StringComparer.Ordinal).ToList();
 
     if (exampleFiles.Count == 0)
     {

@@ -1,0 +1,261 @@
+@page "/samples/ai-chat"
+@using ShadcnBlazor.Docs.Components.Samples.AiChat
+@using ShadcnBlazor.Docs.Pages.Samples.AiChat.Examples
+@using ShadcnBlazor.Docs.Models
+@using ShadcnBlazor.Components.Card
+
+<SampleDocPage Title="AI Chat" Description="An interactive chat interface demonstrating AI-style message streaming and structured responses.">
+    <Alert Variant="@AlertVariant.Destructive" Class="mb-6">
+        <p class="font-medium">Work in progress</p>
+        <p class="text-muted-foreground text-sm">This sample is still under development. The UI and API may change. Use it as inspiration, but expect to adapt the code for your own needs.</p>
+    </Alert>
+    
+    <DocsSection Title="Features" Id="features">
+        <ul class="list-disc list-inside space-y-2 mb-3">
+            <li>Streaming message display with word-by-word animation</li>
+            <li>Structured response parsing (thinking, search, text blocks)</li>
+            <li>ComposableTextArea for the input with header/footer slots</li>
+            <li>Card, Button, Badge, Accordion, and other ShadcnBlazor primitives</li>
+        </ul>
+    </DocsSection>
+
+    <DocsSection Title="Preview" Id="preview">
+        <p class="mb-3">
+            This sample showcases a chat UI built with ShadcnBlazor components. It simulates streaming AI responses with support for structured content blocks (thinking, search, text). Type a message and press send to try it.
+        </p>
+        <div class="w-full min-w-0 rounded-lg border border-border overflow-hidden">
+            <Card Variant="@CardVariant.Outline" Class="w-full h-[50rem] py-6 overflow-hidden p-0">
+                <AiChat Class="px-12 py-6" />
+            </Card>
+        </div>
+    </DocsSection>
+
+    <DocsSection Title="Components" Id="components">
+        <p class="mb-4">
+            The sample is built from several reusable pieces. Understanding each helps when adapting it to your own chat or AI integration.
+        </p>
+
+        <DocsSubSection Title="ChatInput" Id="chat-input">
+            <p class="mb-3">
+                The input bar at the bottom. It wraps <code>ComposableTextArea</code> with <code>Header</code> and <code>Footer</code> slots. The header holds an "Add Context" button; the footer has toggles (extended thinking, auto, sources) and a send button. It exposes <code>SubmitPrompt</code> as an <code>EventCallback&lt;string&gt;</code> so the parent can handle submission.
+            </p>
+            <ComponentPreview Code="@Snippets.ChatInputExample" Language="razor">
+                <ChatInputExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="UserChatMessageView" Id="user-message-view">
+            <p class="mb-3">
+                Renders user messages in a right-aligned bubble with primary styling. It receives a <code>UserChatMessage</code> and displays the raw text via <code>GetRawContent()</code>.
+            </p>
+            <ComponentPreview Code="@Snippets.UserChatMessageViewExample" Language="razor">
+                <UserChatMessageViewExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="AiChatMessageView" Id="ai-message-view">
+            <p class="mb-3">
+                Renders AI responses as a sequence of <code>MessageComponent</code> views. It switches on component type: <code>ThinkingMessageComponent</code> (collapsible accordion with markdown), <code>WebSearchMessageComponent</code> (expandable list of URLs), and <code>TextMessageComponent</code> (markdown-rendered text). Each view uses Markdig for markdown and optional syntax highlighting.
+            </p>
+            <ComponentPreview Code="@Snippets.AiChatMessageViewExample" Language="razor">
+                <AiChatMessageViewExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Message component views" Id="message-component-views">
+            <p class="mb-3">
+                <code>ThinkingMessageComponentView</code>, <code>TextMessageComponentView</code>, and <code>WebSearchMessageComponentView</code> each render one block type. Thinking and WebSearch use <code>Accordion</code> for expand/collapse. Text is plain markdown. All support streaming updates as content arrives.
+            </p>
+            
+            <div class="flex flex-col gap-4">
+                <ComponentPreview Code="@Snippets.ThinkingMessageComponentViewExample" Language="razor">
+                    <ThinkingMessageComponentViewExample/>
+                </ComponentPreview>
+                <ComponentPreview Code="@Snippets.TextMessageComponentViewExample" Language="razor">
+                    <TextMessageComponentViewExample/>
+                </ComponentPreview>
+                <ComponentPreview Code="@Snippets.WebSearchMessageComponentViewExample" Language="razor">
+                    <WebSearchMessageComponentViewExample/>
+                </ComponentPreview>
+            </div>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Internals" Id="internals">
+        <p class="mb-4">
+            If you want to adapt this for a real API or different streaming format, here's how the pieces fit together.
+        </p>
+
+        <DocsSubSection Title="Models" Id="models">
+            <p class="mb-3">
+                <code>ChatMessage</code> is the base; <code>UserChatMessage</code> and <code>AiChatMessage</code> extend it. <code>AiChatMessage</code> has a <code>Components</code> list of <code>ThinkingMessageComponent</code>, <code>WebSearchMessageComponent</code>, or <code>TextMessageComponent</code>. Add new component types and corresponding views if your API returns additional block types.
+            </p>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Expected stream format" Id="stream-format">
+            <p class="mb-3">
+                <code>IChatService</code> yields a stream of string chunks (tokens). The parser expects XML-like tags to structure the response: <code>&lt;thinking&gt;</code> for internal reasoning, <code>&lt;search&gt;</code> for URLs (one per line), and <code>&lt;text&gt;</code> for user-facing markdown. Tags can appear in any order. Escape literal <code>&lt;</code> or <code>&gt;</code> with a backslash.
+            </p>
+            <CodeBlock Code="@StreamFormatExample" Language="text" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="ChatOrchestrator" Id="chat-orchestrator">
+            <p class="mb-3">
+                The central coordinator. It injects <code>IChatService</code> and <code>IStreamResponseParserService</code>. <code>SendPromptAsync</code> adds a <code>UserChatMessage</code>, creates an empty <code>AiChatMessage</code>, resolves the parser via <code>streamParserService.CreateStream(responseMsg.Components)</code>, then streams chunks from <code>IChatService</code>. Each chunk is appended to the AI message and fed to the parser; after each chunk it raises <code>OnStateChange</code> so the UI re-renders.
+            </p>
+        </DocsSubSection>
+
+        <DocsSubSection Title="IChatService" Id="chat-service">
+            <p class="mb-3">
+                The contract for streaming AI responses. Implement this to plug in your own API (OpenAI, Claude, custom backend).
+            </p>
+            <CodeBlock Code="@IChatServiceSnippet" Language="csharp" />
+            <p class="mb-3 mt-3">
+                <strong>ChatService</strong> is the concrete implementation: a stub that returns hardcoded streaming text with simulated delays. Replace it with a real implementation that calls your API and yields string chunks.
+            </p>
+        </DocsSubSection>
+
+        <DocsSubSection Title="IStreamResponseParser" Id="stream-response-parser">
+            <p class="mb-3">
+                The contract for parsing streaming chunks into structured <code>MessageComponent</code> instances. The orchestrator resolves <code>IStreamResponseParserService</code> and passes the message's components into <code>CreateStream</code> to get a parser bound to that message.
+            </p>
+            <CodeBlock Code="@IStreamResponseParserSnippet" Language="csharp" />
+            <p class="mb-3 mt-3">
+                <strong>StreamResponseParser</strong> parses XML-like tags (<code>&lt;thinking&gt;</code>, <code>&lt;search&gt;</code>, <code>&lt;text&gt;</code>) from the stream, routes content into the corresponding component types, and handles buffering and escaping. <strong>IStreamResponseParserService</strong> exposes <code>CreateStream(components)</code> so the orchestrator can obtain a parser per AI response.
+            </p>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Extending" Id="extending">
+        <p class="mb-4">
+            The sample is designed to be adapted. Below are two common scenarios: connecting to a real streaming API, and handling non-streamed JSON responses.
+        </p>
+
+        <DocsSubSection Title="Real streaming API" Id="extending-streaming-api">
+            <p class="mb-3">
+                Implement <code>IChatService</code> to call your API. For streaming endpoints (e.g. OpenAI, Claude), use <code>HttpClient</code> with <code>HttpCompletionOption.ResponseHeadersRead</code> and read the response stream. Yield chunks as they arrive. The existing parser and UI handle the rest.
+            </p>
+            <CodeBlock Code="@StreamingApiExample" Language="csharp" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Non-streamed JSON" Id="extending-json">
+            <p class="mb-3">
+                If your API returns a complete JSON response instead of a stream, you have two options. <strong>Option A:</strong> Fetch the JSON, convert it to the expected tag format, and yield it as a single chunk—the existing parser will populate the components. <strong>Option B:</strong> Implement a custom <code>IStreamResponseParser</code> that parses JSON and populates components directly, then yield the raw JSON as one chunk.
+            </p>
+            <CodeBlock Code="@JsonApiExample" Language="csharp" />
+        </DocsSubSection>
+    </DocsSection>
+</SampleDocPage>
+
+@code {
+    private const string IChatServiceSnippet = @"public interface IChatService
+{
+    IAsyncEnumerable<string> RunStreamingAsync(
+        string prompt,
+        CancellationToken cancellationToken = default);
+}";
+
+    private const string IStreamResponseParserSnippet = @"public interface IStreamResponseParser
+{
+    void AppendChunk(string chunk);
+}
+
+public interface IStreamResponseParserService
+{
+    IStreamResponseParser CreateStream(IList<MessageComponent> components);
+}";
+
+    private const string StreamFormatExample = @"<thinking>
+Considering the user's question about Blazor...
+</thinking>
+
+<search>
+https://learn.microsoft.com/en-us/aspnet/core/blazor
+https://docs.fluentui-blazor.net
+</search>
+
+<text>
+**Blazor** is a .NET framework for building interactive web UIs. It supports both Server and WebAssembly hosting.
+</text>";
+
+    private const string StreamingApiExample = @"using System.Runtime.CompilerServices;
+
+public class OpenAiChatService : IChatService
+{
+    private readonly HttpClient _http;
+
+    public OpenAiChatService(HttpClient http) => _http = http;
+
+    public async IAsyncEnumerable<string> RunStreamingAsync(
+        string prompt,
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        var request = new { model = ""gpt-4"", messages = new[] { new { role = ""user"", content = prompt } } };
+        using var res = await _http.PostAsJsonAsync(""https://api.openai.com/v1/chat/completions"", request, ct);
+        res.EnsureSuccessStatusCode();
+        await using var stream = await res.Content.ReadAsStreamAsync(ct);
+
+        await foreach (var chunk in ReadStreamAsChunks(stream, ct))
+            yield return chunk;
+    }
+
+    private static async IAsyncEnumerable<string> ReadStreamAsChunks(Stream stream, [EnumeratorCancellation] CancellationToken ct)
+    {
+        using var reader = new StreamReader(stream);
+        var buffer = new char[256];
+        int read;
+        while ((read = await reader.ReadAsync(buffer, ct)) > 0)
+            yield return new string(buffer, 0, read);
+    }
+}";
+
+    private const string JsonApiExample = @"using System.Text;
+using System.Text.Json;
+
+// Option A: Convert JSON to tag format, yield as one chunk
+public class JsonToTagChatService : IChatService
+{
+    private readonly HttpClient _http;
+
+    public async IAsyncEnumerable<string> RunStreamingAsync(string prompt, CancellationToken ct = default)
+    {
+        var json = await _http.GetStringAsync($""/api/chat?q={Uri.EscapeDataString(prompt)}"", ct);
+        var doc = JsonSerializer.Deserialize<ApiResponse>(json)!;
+
+        var sb = new StringBuilder();
+        if (!string.IsNullOrEmpty(doc.Thinking)) sb.Append($""<thinking>{doc.Thinking}</thinking>"");
+        if (doc.Sources?.Count > 0) sb.Append(""<search>\n"").AppendJoin('\n', doc.Sources).Append(""\n</search>"");
+        if (!string.IsNullOrEmpty(doc.Text)) sb.Append($""<text>{doc.Text}</text>"");
+
+        yield return sb.ToString();
+    }
+
+    private record ApiResponse(string? Thinking, List<string>? Sources, string? Text);
+}
+
+// Option B: Custom parser for JSON (register via IStreamResponseParserService)
+// Use when the API returns the full JSON in one chunk.
+public class JsonStreamResponseParser : IStreamResponseParser
+{
+    private readonly IList<MessageComponent> _components;
+    private string _buffer = string.Empty;
+    private bool _parsed;
+
+    public JsonStreamResponseParser(IList<MessageComponent> components) => _components = components;
+
+    public void AppendChunk(string chunk)
+    {
+        if (_parsed) return;
+        _buffer += chunk;
+        var doc = JsonSerializer.Deserialize<ApiResponse>(_buffer);
+        if (doc == null) return;
+
+        _parsed = true;
+        if (!string.IsNullOrEmpty(doc.Thinking)) _components.Add(new ThinkingMessageComponent { Content = doc.Thinking });
+        if (doc.Sources?.Count > 0) _components.Add(new WebSearchMessageComponent { Content = string.Join(""\n"", doc.Sources) });
+        if (!string.IsNullOrEmpty(doc.Text)) _components.Add(new TextMessageComponent { Content = doc.Text });
+    }
+
+    private record ApiResponse(string? Thinking, List<string>? Sources, string? Text);
+}";
+}
