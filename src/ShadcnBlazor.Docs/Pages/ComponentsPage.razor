@@ -14,7 +14,7 @@
     <div class="grid grid-cols-3 gap-x-12 gap-y-6">
         @foreach (var component in ComponentRegistry.Components)
         {
-            <a href="/components/@component.Slug"
+            <a href="components/@component.Slug"
                class="block w-full text-left text-base font-medium text-foreground/70 hover:text-foreground hover:underline py-1 transition-colors">
                 @component.Name
             </a>

@@ -26,7 +26,7 @@
         @RenderSectionHeader("Components", includeTopMargin: false)
         @foreach (var component in ComponentRegistry.Components)
         {
-            @RenderNavButton(component.Name, $"/components/{component.Slug}")
+            @RenderNavButton(component.Name, $"components/{component.Slug}")
         }
     </div>
 
@@ -74,12 +74,16 @@
         </a>
     };
 
-    private string CurrentPath => new Uri(Nav.Uri).AbsolutePath;
+    private string CurrentPath => Nav.ToBaseRelativePath(Nav.Uri).TrimStart('/');
 
-    private bool IsActive(string href) =>
-        !string.IsNullOrEmpty(href) &&
-        (string.Equals(CurrentPath, href, StringComparison.OrdinalIgnoreCase) ||
-         CurrentPath.StartsWith(href.TrimEnd('/') + "/", StringComparison.OrdinalIgnoreCase));
+    private bool IsActive(string href)
+    {
+        if (string.IsNullOrEmpty(href))
+            return string.IsNullOrEmpty(CurrentPath) || CurrentPath == "/";
+        var normalizedHref = href.TrimEnd('/');
+        return string.Equals(CurrentPath, normalizedHref, StringComparison.OrdinalIgnoreCase) ||
+               CurrentPath.StartsWith(normalizedHref + "/", StringComparison.OrdinalIgnoreCase);
+    }
 
     private void HandleNav(string href) => Nav.NavigateTo(href);
 
