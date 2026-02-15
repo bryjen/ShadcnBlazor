@@ -1,0 +1,96 @@
+@typeparam T
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Popover.Models
+@inherits ShadcnComponentBase
+
+<Popover Open="@_open" OpenChanged="@(v => _open = v)" CloseOnOutsideClick="true" AnchorOrigin="PopoverPlacement.BottomLeft" TransformOrigin="PopoverPlacement.TopLeft" WidthMode="PopoverWidthMode.Relative">
+    <Anchor>
+        <button type="button"
+                role="combobox"
+                aria-expanded="@_open"
+                aria-haspopup="listbox"
+                aria-disabled="@Disabled"
+                class="@GetTriggerClass()"
+                disabled="@Disabled"
+                @onclick="ToggleOpen"
+                @attributes="AdditionalAttributes">
+            <span class="truncate">@GetDisplayText()</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="@(_open ? "rotate-180" : "") transition-transform duration-200">
+                <path d="m6 9 6 6 6-6"/>
+            </svg>
+        </button>
+    </Anchor>
+    <ChildContent>
+        <div class="w-[var(--popover-width)] rounded-lg border border-input bg-popover text-popover-foreground shadow-lg p-1 min-w-[8rem]">
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">@Label</div>
+            }
+            <div class="max-h-[var(--radix-select-content-available-height)] overflow-y-auto overflow-x-hidden" role="listbox">
+                @foreach (var item in Items)
+                {
+                    <button type="button"
+                            role="option"
+                            aria-selected="@IsSelected(item.Value)"
+                            class="@(IsSelected(item.Value) ? "bg-primary text-primary-foreground" : "hover:bg-accent hover:text-accent-foreground") flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none transition-colors"
+                            @onclick="() => SelectOptionAsync(item)"
+                            @onclick:preventDefault="true">
+                        @if (IsSelected(item.Value))
+                        {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        }
+                        <span class="truncate">@item.DisplayText</span>
+                    </button>
+                }
+            </div>
+        </div>
+    </ChildContent>
+</Popover>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public T? Value { get; set; }
+    [Parameter] public EventCallback<T?> ValueChanged { get; set; }
+    [Parameter, EditorRequired] public required IEnumerable<SelectOption<T>> Items { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Select...";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string TriggerClass { get; set; } = string.Empty;
+
+    private bool _open;
+
+    private string GetTriggerClass()
+    {
+        var baseClasses = "flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-input/30 px-3 py-2 text-sm shadow-xs transition-colors hover:bg-input/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0";
+        return MergeCss(baseClasses, TriggerClass);
+    }
+
+    private string GetDisplayText()
+    {
+        if (Value is null)
+            return Placeholder;
+        var option = Items.FirstOrDefault(o => EqualityComparer<T>.Default.Equals(o.Value, Value));
+        return option.DisplayText;
+    }
+
+    private bool IsSelected(T? value)
+    {
+        if (value is null && Value is null) return true;
+        if (value is null || Value is null) return false;
+        return EqualityComparer<T>.Default.Equals(value, Value);
+    }
+
+    private async Task SelectOptionAsync(SelectOption<T> option)
+    {
+        Value = option.Value;
+        await ValueChanged.InvokeAsync(Value);
+        _open = false;
+    }
+
+    private void ToggleOpen()
+    {
+        if (!Disabled)
+            _open = !_open;
+    }
+}

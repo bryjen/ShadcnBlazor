@@ -109,7 +109,8 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         if (string.IsNullOrWhiteSpace(typeSummary) && metadata != null)
             typeSummary = metadata.Description;
 
-        output.AppendLine($"    public static readonly DocumentedType {type.Name} = new()");
+        var safeName = GetSafeTypeIdentifier(type.Name);
+        output.AppendLine($"    public static readonly DocumentedType {safeName} = new()");
         output.AppendLine("    {");
         output.AppendLine($"        Name = \"{type.Name}\",");
         output.AppendLine($"        FullName = \"{EscapeQuotes(type.FullName ?? "")}\",");
@@ -216,7 +217,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         output.AppendLine("    };");
         output.AppendLine();
 
-        allEntries.Add($"        {{ \"{type.Name}\", {type.Name} }}");
+        allEntries.Add($"        {{ \"{type.Name}\", {safeName} }}");
     }
 
     output.AppendLine("    public static IReadOnlyDictionary<string, DocumentedType> All => new Dictionary<string, DocumentedType>");
@@ -336,6 +337,15 @@ void WriteEmptySnippets(string outputPath)
 // ========================================
 // HELPER FUNCTIONS
 // ========================================
+
+/// <summary>
+/// Converts a type name to a valid C# identifier (e.g. "Select`1" -> "Select").
+/// </summary>
+string GetSafeTypeIdentifier(string typeName)
+{
+    var idx = typeName.IndexOf('`');
+    return idx >= 0 ? typeName[..idx] : typeName;
+}
 
 string GetXmlElement(Dictionary<string, XElement> xmlDocs, string memberKey, string elementName)
 {

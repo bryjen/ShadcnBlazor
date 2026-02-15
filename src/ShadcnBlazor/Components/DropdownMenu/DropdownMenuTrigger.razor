@@ -1,0 +1,38 @@
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Shared.Enums
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuContext? Context { get; set; }
+
+    /// <summary>
+    /// When true, renders the child element as the trigger instead of a default button.
+    /// </summary>
+    [Parameter]
+    public bool AsChild { get; set; }
+
+    /// <summary>
+    /// The trigger content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisterTrigger(TriggerFragment);
+    }
+
+    private RenderFragment TriggerFragment => __builder =>
+    {
+        __builder.OpenComponent<DropdownMenuTriggerInner>(0);
+        __builder.AddAttribute(1, "OnClick", EventCallback.Factory.Create(this, HandleClick));
+        __builder.AddAttribute(2, "AsChild", AsChild);
+        __builder.AddAttribute(3, "ChildContent", ChildContent);
+        __builder.CloseComponent();
+    };
+
+    private void HandleClick()
+    {
+        Context?.SetOpen?.Invoke(!Context.Open);
+    }
+}

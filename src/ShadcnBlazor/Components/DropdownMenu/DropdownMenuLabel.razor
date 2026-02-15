@@ -1,0 +1,13 @@
+@inherits ShadcnComponentBase
+
+<div role="presentation" class="@MergeCss("dropdown-menu-label", Class)" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>
+    /// The label content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

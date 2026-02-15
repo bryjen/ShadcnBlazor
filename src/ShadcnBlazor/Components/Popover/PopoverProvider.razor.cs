@@ -101,7 +101,8 @@ public partial class PopoverProvider : ComponentBase, IDisposable
             && left.WidthMode == right.WidthMode
             && left.ClampList == right.ClampList
             && left.PopoverClass == right.PopoverClass
-            && left.PopoverAttributes == right.PopoverAttributes;
+            && left.PopoverAttributes == right.PopoverAttributes
+            && left.Offset == right.Offset;
     }
 
     private Dictionary<string, object> GetPopoverAttributes(PopoverRegistration registration)
@@ -113,7 +114,12 @@ public partial class PopoverProvider : ComponentBase, IDisposable
         merged["data-anchor-id"] = registration.AnchorId;
         merged["data-state"] = registration.Open ? "open" : "closed";
         merged["data-side"] = ToSide(registration.AnchorOrigin);
+        merged["data-resolved-side"] = ToSide(registration.AnchorOrigin);
         merged["aria-hidden"] = registration.Open ? "false" : "true";
+        if (registration.Offset > 0)
+        {
+            merged["data-offset"] = registration.Offset.ToString();
+        }
 
         return merged;
     }

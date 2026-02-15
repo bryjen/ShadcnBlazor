@@ -214,6 +214,146 @@
     .popover-content[data-state="closed"][data-side="bottom"] { animation: popover-out-to-top 0.14s ease-in both; }
     .popover-content[data-state="closed"][data-side="left"] { animation: popover-out-to-right 0.14s ease-in both; }
     .popover-content[data-state="closed"][data-side="right"] { animation: popover-out-to-left 0.14s ease-in both; }
+
+    /* Tooltip - faster animation than standard popovers */
+    .tooltip-popover.popover-content[data-state="open"][data-side="top"] {
+        animation: popover-in-from-bottom 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .tooltip-popover.popover-content[data-state="closed"][data-side="top"] {
+        animation: popover-out-to-bottom 0.06s ease-in both;
+    }
+
+    /* Tooltip pointer/arrow - direction depends on data-resolved-side (set by popovers.js) */
+    .tooltip-arrow {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+    }
+
+    /* Default: arrow down (tooltip above) - fallback when data-resolved-side not yet set */
+    .tooltip-popover .tooltip-arrow {
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top-color: var(--popover);
+    }
+
+    .tooltip-popover[data-resolved-side="top"] .tooltip-arrow {
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top-color: var(--popover);
+    }
+
+    .tooltip-popover[data-resolved-side="bottom"] .tooltip-arrow {
+        bottom: auto;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-top-color: transparent;
+        border-bottom-color: var(--popover);
+    }
+
+    .tooltip-popover[data-resolved-side="left"] .tooltip-arrow {
+        bottom: auto;
+        left: auto;
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top-color: transparent;
+        border-left-color: var(--popover);
+    }
+
+    .tooltip-popover[data-resolved-side="right"] .tooltip-arrow {
+        bottom: auto;
+        left: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top-color: transparent;
+        border-right-color: var(--popover);
+    }
+
+    /* Dropdown menu */
+    .dropdown-menu-trigger {
+        display: inline-flex;
+        cursor: pointer;
+    }
+
+    .dropdown-menu-content {
+        min-width: 8rem;
+    }
+
+    .dropdown-menu-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+        padding: 0.25rem;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background-color: var(--popover);
+        color: var(--popover-foreground);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    .dropdown-menu-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+
+    .dropdown-menu-label {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--muted-foreground);
+    }
+
+    .dropdown-menu-item {
+        display: flex;
+        width: 100%;
+        cursor: pointer;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.375rem 0.5rem;
+        font-size: 0.875rem;
+        outline: none;
+        border: none;
+        border-radius: 0.375rem;
+        background: transparent;
+        color: inherit;
+        transition: background-color 0.15s, color 0.15s;
+    }
+
+    .dropdown-menu-item:hover:not(.dropdown-menu-item-disabled) {
+        background-color: var(--accent);
+        color: var(--accent-foreground);
+    }
+
+    .dropdown-menu-item:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+    }
+
+    .dropdown-menu-item-disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    .dropdown-menu-shortcut {
+        margin-left: auto;
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+    }
+
+    .dropdown-menu-separator {
+        margin: 0.25rem -0.25rem;
+        height: 1px;
+        background-color: var(--muted);
+    }
+
 }
 
 /* Blazor-specific styles that need to be outside Tailwind layers */

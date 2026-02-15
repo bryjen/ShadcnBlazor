@@ -632,6 +632,27 @@ public static class ApiDocumentation
         },
     };
 
+    public static readonly DocumentedType DropdownMenu = new()
+    {
+        Name = "DropdownMenu",
+        FullName = "ShadcnBlazor.Components.DropdownMenu.DropdownMenu",
+        Summary = @"Root container for a dropdown menu; requires PopoverProvider in layout.",
+        Properties = new[]
+        {
+            new DocumentedProperty
+            {
+                Name = "ChildContent",
+                Type = "RenderFragment",
+                Summary = @"The trigger and content of the dropdown menu.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+        },
+        Methods = Array.Empty<DocumentedMethod>(),
+        Events = Array.Empty<DocumentedEvent>(),
+    };
+
     public static readonly DocumentedType Input = new()
     {
         Name = "Input",
@@ -829,6 +850,15 @@ public static class ApiDocumentation
             },
             new DocumentedProperty
             {
+                Name = "Offset",
+                Type = "int",
+                Summary = @"Gap in pixels between the popover and its anchor. Applied in the direction away from the anchor (respects flip).",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "0",
+            },
+            new DocumentedProperty
+            {
                 Name = "Open",
                 Type = "bool",
                 Summary = @"Whether the popover is open.",
@@ -1015,6 +1045,107 @@ public static class ApiDocumentation
             {
                 Name = "CheckedChanged",
                 Type = "EventCallback<bool>",
+                Summary = @"",
+            },
+        },
+    };
+
+    public static readonly DocumentedType Select = new()
+    {
+        Name = "Select`1",
+        FullName = "ShadcnBlazor.Components.Select.Select`1",
+        Summary = @"Dropdown select component for choosing a single value from a list of options.",
+        Properties = new[]
+        {
+            new DocumentedProperty
+            {
+                Name = "AdditionalAttributes",
+                Type = "Dictionary<string, Object>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Class",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Disabled",
+                Type = "bool",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "default",
+            },
+            new DocumentedProperty
+            {
+                Name = "Items",
+                Type = "IEnumerable<SelectOption<T>>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Label",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Placeholder",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "TriggerClass",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Value",
+                Type = "T",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "ValueChanged",
+                Type = "EventCallback<T>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "default",
+            },
+        },
+        Methods = Array.Empty<DocumentedMethod>(),
+        Events = new[]
+        {
+            new DocumentedEvent
+            {
+                Name = "ValueChanged",
+                Type = "EventCallback<T>",
                 Summary = @"",
             },
         },
@@ -1237,6 +1368,108 @@ public static class ApiDocumentation
         },
     };
 
+    public static readonly DocumentedType Tooltip = new()
+    {
+        Name = "Tooltip",
+        FullName = "ShadcnBlazor.Components.Tooltip.Tooltip",
+        Summary = @"Hover-triggered tooltip that displays content above the trigger element.",
+        Properties = new[]
+        {
+            new DocumentedProperty
+            {
+                Name = "AdditionalAttributes",
+                Type = "Dictionary<string, Object>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Anchor",
+                Type = "RenderFragment",
+                Summary = @"Content rendered as the trigger element (e.g., icon or button).",
+                Remarks = @"",
+                Category = "Content",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "ChildContent",
+                Type = "RenderFragment",
+                Summary = @"The tooltip content (supports multiline text).",
+                Remarks = @"",
+                Category = "Content",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Class",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "Content",
+                Type = "string",
+                Summary = @"Simple text content for the tooltip (alternative to ChildContent).",
+                Remarks = @"",
+                Category = "Content",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "ContentClass",
+                Type = "string",
+                Summary = @"Additional CSS classes for the tooltip content.",
+                Remarks = @"",
+                Category = "Appearance",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "DelayBeforeHideMs",
+                Type = "int",
+                Summary = @"Delay in milliseconds before the tooltip hides after mouse leave.",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "50",
+            },
+            new DocumentedProperty
+            {
+                Name = "DelayBeforeShowMs",
+                Type = "int",
+                Summary = @"Delay in milliseconds before the tooltip appears on hover.",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "200",
+            },
+            new DocumentedProperty
+            {
+                Name = "Offset",
+                Type = "int",
+                Summary = @"Gap in pixels between the tooltip and its trigger.",
+                Remarks = @"",
+                Category = "Appearance",
+                DefaultValue = "8",
+            },
+        },
+        Methods = new[]
+        {
+            new DocumentedMethod
+            {
+                Name = "Dispose",
+                Summary = @"",
+                ReturnType = "void",
+                Returns = @"",
+            },
+        },
+        Events = Array.Empty<DocumentedEvent>(),
+    };
+
     public static IReadOnlyDictionary<string, DocumentedType> All => new Dictionary<string, DocumentedType>
     {
         { "Accordion", Accordion },
@@ -1247,10 +1480,13 @@ public static class ApiDocumentation
         { "Card", Card },
         { "Checkbox", Checkbox },
         { "ComposableTextArea", ComposableTextArea },
+        { "DropdownMenu", DropdownMenu },
         { "Input", Input },
         { "Popover", Popover },
         { "Radio", Radio },
+        { "Select`1", Select },
         { "Slider", Slider },
-        { "Textarea", Textarea }
+        { "Textarea", Textarea },
+        { "Tooltip", Tooltip }
     };
 }

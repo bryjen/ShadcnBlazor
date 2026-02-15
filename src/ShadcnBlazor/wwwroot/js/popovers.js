@@ -196,11 +196,13 @@ window.popoverHelper = {
         const shouldFlip = this.shouldFlip(classList, position.anchorX, position.anchorY,
             popoverRect.width, popoverRect.height);
 
+        let finalPlacementClasses = classList;
         if (shouldFlip.flipVertical || shouldFlip.flipHorizontal) {
             const flippedClasses = this.applyFlip(classList, shouldFlip.flipVertical, shouldFlip.flipHorizontal);
             const tempDiv = document.createElement('div');
             flippedClasses.forEach(c => tempDiv.classList.add(c));
             position = this.calculatePosition(tempDiv.classList, anchorRect, popoverRect);
+            finalPlacementClasses = tempDiv.classList;
         }
 
         const firstChild = popover.firstElementChild;
@@ -219,6 +221,27 @@ window.popoverHelper = {
         let left = position.left + position.offsetX;
         let top = position.top + position.offsetY;
 
+        const offset = parseInt(popover.getAttribute('data-offset') || '0', 10);
+        if (offset > 0) {
+            if (finalPlacementClasses.contains('popover-bottom-left') ||
+                finalPlacementClasses.contains('popover-bottom-center') ||
+                finalPlacementClasses.contains('popover-bottom-right')) {
+                top -= offset;
+            } else if (finalPlacementClasses.contains('popover-top-left') ||
+                finalPlacementClasses.contains('popover-top-center') ||
+                finalPlacementClasses.contains('popover-top-right')) {
+                top += offset;
+            } else if (finalPlacementClasses.contains('popover-center-left') ||
+                finalPlacementClasses.contains('popover-top-left') ||
+                finalPlacementClasses.contains('popover-bottom-left')) {
+                left -= offset;
+            } else if (finalPlacementClasses.contains('popover-center-right') ||
+                finalPlacementClasses.contains('popover-top-right') ||
+                finalPlacementClasses.contains('popover-bottom-right')) {
+                left += offset;
+            }
+        }
+
         if (!this.isFiniteNumber(left) || !this.isFiniteNumber(top)) {
             this.retryPlacement(popover, anchorId, popoverId);
             return;
@@ -235,7 +258,23 @@ window.popoverHelper = {
         popover.style.top = top + 'px';
         popover.removeAttribute('data-popover-retry');
 
+        const resolvedSide = this.getResolvedSide(finalPlacementClasses);
+        popover.setAttribute('data-resolved-side', resolvedSide);
+
         this.updateZIndex(popover);
+    },
+
+    getResolvedSide: function (classList) {
+        if (classList.contains('popover-bottom-left') || classList.contains('popover-bottom-center') || classList.contains('popover-bottom-right')) {
+            return 'top';
+        }
+        if (classList.contains('popover-top-left') || classList.contains('popover-top-center') || classList.contains('popover-top-right')) {
+            return 'bottom';
+        }
+        if (classList.contains('popover-center-left') || classList.contains('popover-top-left') || classList.contains('popover-bottom-left')) {
+            return 'left';
+        }
+        return 'right';
     },
 
     updateZIndex: function (popover) {
