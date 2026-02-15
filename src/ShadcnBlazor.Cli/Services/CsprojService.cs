@@ -26,29 +26,30 @@ public class CsprojService
         };
     }
 
-    private static BlazorProjectType? DetermineWebProjectType(XDocument doc)
+    private static BlazorProjectType DetermineWebProjectType(XDocument doc)
     {
         var packages = doc.Descendants("PackageReference")
             .Select(p => p.Attribute("Include")?.Value)
             .Where(p => p != null)
             .Cast<string>()
             .ToList();
-    
-        // Check for Blazor packages
-        var hasBlazorPackages = packages.Any(p => 
+
+        // .NET 8+ Blazor Web App (explicit WebAssembly.Server package)
+        if (packages.Any(p => p.Contains("Components.WebAssembly.Server")))
+            return BlazorProjectType.BlazorWebApp;
+
+        // Explicit Blazor packages present
+        var hasBlazorPackages = packages.Any(p =>
             p.StartsWith("Microsoft.AspNetCore.Components") ||
             p == "Microsoft.AspNetCore.Components.WebAssembly" ||
             p == "Microsoft.AspNetCore.Components.WebAssembly.Server");
-        
-        if (!hasBlazorPackages)
-            return null;
-        
-        // .NET 8+ Blazor Web App
-        if (packages.Any(p => p.Contains("Components.WebAssembly.Server")))
-            return BlazorProjectType.BlazorWebApp;
-        
-        // Blazor Server
-        return BlazorProjectType.Server;
+
+        if (hasBlazorPackages)
+            return BlazorProjectType.Server;
+
+        // No explicit Blazor packages - Blazor comes from Microsoft.NET.Sdk.Web + shared framework
+        // (e.g. Blazor Server with global interactivity, Blazor Web App)
+        return BlazorProjectType.BlazorWebApp;
     }
     
     public string GetRootNamespace(FileInfo csprojFile)

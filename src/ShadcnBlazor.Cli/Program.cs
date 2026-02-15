@@ -23,6 +23,9 @@ app.Configure(conf =>
     conf.AddCommand<InitCommand>("init")
         .WithDescription("Initializes [yellow]ShadcnBlazor[/] in an existing blazor project");
 
+    conf.AddCommand<NewCommand>("new")
+        .WithDescription("Creates a new Blazor project from a template.");
+
     conf.AddBranch("component", branch =>
     {
         branch.SetDescription("Component management, includes commands such as [yellow]add[/] and [yellow]list[/].");

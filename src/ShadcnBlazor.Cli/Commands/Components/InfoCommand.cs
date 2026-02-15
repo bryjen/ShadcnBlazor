@@ -34,7 +34,6 @@ public class InfoCommand(
             var tempOutputProjectConfig = new OutputProjectConfig
             {
                 ComponentsOutputDir = Path.Join(tempDir, "components"),
-                ServicesOutputDir = Path.Join(tempDir, "services"),
                 RootNamespace = "temp"
             };
             

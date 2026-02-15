@@ -1,0 +1,64 @@
+@page "/components/typography"
+@using ShadcnBlazor.Docs.Pages.PseudoComponents.Typography.Examples
+
+<PageTitle>Typography - ShadcnBlazor</PageTitle>
+
+<TocPageBase>
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-bold">Typography</h1>
+        <p class="text-base text-muted-foreground">
+            ShadcnBlazor does not ship a dedicated typography component. Instead, we encourage using Tailwind CSS utility classes directly for text styling.
+        </p>
+    </div>
+
+    <div class="w-full text-[0.9rem] leading-relaxed text-foreground/85">
+        <p class="mb-3">
+            Many component libraries include typography components (e.g. <code>Typography</code>, <code>Text</code>, <code>Heading</code>) that wrap text with predefined styles.
+            ShadcnBlazor takes a different approach: use Tailwind's typography utilities directly on your markup. This keeps your markup simple, avoids unnecessary wrapper components, and gives you full control over styling.
+        </p>
+    </div>
+
+    <DocsSection Title="Using Tailwind for Typography" Id="tailwind">
+        <p class="mb-3">
+            Tailwind provides a rich set of typography utilities. Here are common patterns:
+        </p>
+
+        <DocsSubSection Title="Headings" Id="headings">
+            <p class="mb-3">
+                Use <code>text-*</code> for size and <code>font-*</code> for weight. Combine with <code>tracking-*</code> for letter-spacing and <code>leading-*</code> for line-height.
+            </p>
+            <ComponentPreview Code="@Snippets.TypographyHeadingsExample" Language="razor">
+                <TypographyHeadingsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Muted and Accent Text" Id="muted">
+            <p class="mb-3">
+                Use <code>text-muted-foreground</code> for secondary text and <code>text-foreground</code> for primary content. These respect your theme's semantic colors.
+            </p>
+            <ComponentPreview Code="@Snippets.TypographyMutedExample" Language="razor">
+                <TypographyMutedExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Lists and Links" Id="lists">
+            <p class="mb-3">
+                Style lists and links with standard Tailwind classes. Use <code>underline</code>, <code>hover:underline</code>, and <code>text-primary</code> for links.
+            </p>
+            <ComponentPreview Code="@Snippets.TypographyListsExample" Language="razor">
+                <TypographyListsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Why No Typography Component?" Id="reasoning">
+        <p class="mb-3">
+            A dedicated typography component adds indirection without clear benefit. Tailwind's utilities are composable, tree-shakeable, and work directly in your Razor markup. You avoid prop drilling (e.g. <code>Variant="body1"</code>) and keep styling co-located with content.
+        </p>
+        <p class="mb-3">
+            If you need consistent typography scales across your app, define them in your Tailwind config or use <code>@@layer</code> components in your CSS. ShadcnBlazor's design tokens (<code>--foreground</code>, <code>--muted-foreground</code>, etc.) already support theming.
+        </p>
+    </DocsSection>
+</div>
+</TocPageBase>

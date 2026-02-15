@@ -930,10 +930,22 @@
   .bg-current {
     background-color: currentcolor;
   }
+  .bg-destructive\/15 {
+    background-color: var(--color-destructive);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-destructive) 15%, transparent);
+    }
+  }
   .bg-destructive\/20 {
     background-color: var(--color-destructive);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-destructive) 20%, transparent);
+    }
+  }
+  .bg-destructive\/25 {
+    background-color: var(--color-destructive);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-destructive) 25%, transparent);
     }
   }
   .bg-destructive\/60 {
@@ -946,6 +958,12 @@
     background-color: var(--color-destructive);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-destructive) 80%, transparent);
+    }
+  }
+  .bg-destructive\/90 {
+    background-color: var(--color-destructive);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-destructive) 90%, transparent);
     }
   }
   .bg-emerald-600 {
@@ -982,6 +1000,12 @@
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-muted) 40%, transparent);
+    }
+  }
+  .bg-muted\/50 {
+    background-color: var(--color-muted);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-muted) 50%, transparent);
     }
   }
   .bg-muted\/60 {
@@ -1313,6 +1337,9 @@
   .text-current {
     color: currentcolor;
   }
+  .text-destructive {
+    color: var(--color-destructive);
+  }
   .text-emerald-600 {
     color: var(--color-emerald-600);
   }
@@ -1372,6 +1399,9 @@
   }
   .uppercase {
     text-transform: uppercase;
+  }
+  .underline {
+    text-decoration-line: underline;
   }
   .underline-offset-4 {
     text-underline-offset: 4px;
@@ -2317,10 +2347,6 @@
     --chat-border: 0 0% 12.2%;
     --sidebar-text: 0 0% 82%;
     --sidebar-header: 0 0% 55.7%;
-    --primary-neon: 221 72% 65%;
-    --accent-neon: 0 0% 100%;
-    --dropdown: #262626;
-    --dropdown-foreground: #f5f5f5;
   }
   .dark {
     --background: oklch(0.1448 0 0);
@@ -2393,42 +2419,12 @@
   .validation-message {
     color: red;
   }
-  .nav-link.active {
-    background-color: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
-  }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-  .graph-node {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .node-glow {
-    filter: drop-shadow(0 0 8px hsl(var(--primary-neon) / 0.6));
-  }
-  .node-glow-white {
-    filter: drop-shadow(0 0 8px hsl(var(--accent-neon) / 0.4));
-  }
-  .neon-ring {
-    border: 1px solid hsl(var(--primary-neon) / 0.3);
-    box-shadow: 0 0 15px hsl(var(--primary-neon) / 0.1);
-  }
-  .neon-ring-white {
-    border: 1px solid hsl(var(--accent-neon) / 0.1);
-  }
-  .sidebar-scroll::-webkit-scrollbar {
-    width: 4px;
-  }
-  .sidebar-scroll::-webkit-scrollbar-thumb {
-    background: hsl(var(--scrollbar-thumb));
-    border-radius: 10px;
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -2450,32 +2446,6 @@
   * {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
-  }
-  .node-hover-neon:hover {
-    background-color: hsl(var(--primary-neon) / 0.1) !important;
-  }
-  .node-hover-white:hover {
-    background-color: hsl(var(--accent-neon) / 0.05) !important;
-  }
-  .tooltip-root {
-    position: relative;
-  }
-  .tooltip-trigger-wrapper {
-    display: contents;
-  }
-  .chat-input-divider {
-    height: 1px;
-    margin: 0 2rem;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    backdrop-filter: blur(12px);
-  }
-  .accordion-content-height {
-    transition: max-height 0.22s linear;
-  }
-  .accordion-content-fade {
-    transition-property: opacity, transform;
-    transition-duration: 0.225s, 0.26s;
-    transition-timing-function: ease-out, ease-in-out;
   }
 }
 @layer utilities {
@@ -2511,145 +2481,6 @@
 }
 .blazor-error-boundary::after {
   content: "An error has occurred.";
-}
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-.progress-shimmer {
-  animation: shimmer 2s infinite linear;
-}
-@keyframes progress-indeterminate {
-  0% {
-    transform: translateX(-100%) scaleX(0.4);
-  }
-  50% {
-    transform: translateX(100%) scaleX(1);
-  }
-  100% {
-    transform: translateX(300%) scaleX(0.4);
-  }
-}
-@keyframes sheet-in {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes sheet-out {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-@keyframes select-in-down {
-  from {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-@keyframes select-out-down {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.97);
-  }
-}
-@keyframes select-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(4px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-@keyframes select-out-up {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(4px) scale(0.97);
-  }
-}
-.loading-progress-bar {
-  width: var(--blazor-load-percentage, 0%);
-  transition: width 0.05s ease-in-out;
-}
-#blazor-loading-overlay {
-  transition: opacity 0.5s ease-out;
-}
-.loading-percentage-text::before {
-  content: var(--blazor-load-percentage, "0%");
-}
-.loading-status-text::before {
-  content: var(--blazor-load-percentage-text, "Initializing Diagnostics");
-}
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes slide-in-from-top {
-  from {
-    transform: translateY(-10px);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-.toast-item {
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-}
-.animate-in {
-  animation: fade-in 0.2s ease-out, slide-in-from-top 0.2s ease-out;
-  animation-fill-mode: both;
-}
-.animate-out {
-  animation: fade-out 0.3s ease-out;
-  animation-fill-mode: both;
-}
-.fade-in {
-  animation-name: fade-in;
-}
-.fade-out {
-  animation-name: fade-out;
-}
-.slide-in-from-top-2 {
-  animation-name: slide-in-from-top;
 }
 @property --tw-translate-x {
   syntax: "*";

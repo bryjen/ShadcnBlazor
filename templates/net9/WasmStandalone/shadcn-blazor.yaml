@@ -1,0 +1,2 @@
+componentsOutputDir: ./Components/Core
+rootNamespace: WasmStandalone

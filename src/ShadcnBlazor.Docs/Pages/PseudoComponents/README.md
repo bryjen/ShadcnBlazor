@@ -1,0 +1,1 @@
+﻿Not necessarily components, but rather a collection of pages talking of what people would expect as components, and our alternatives as well as our reasoning. A "classical" example is typography, which this project does not provide directly. Instead, typography is encouraged to be tailwind classes.

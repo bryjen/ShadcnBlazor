@@ -1,0 +1,67 @@
+@page "/components/icons"
+@using ShadcnBlazor.Docs.Pages.PseudoComponents.Icons.Examples
+
+<PageTitle>Icons - ShadcnBlazor</PageTitle>
+
+<TocPageBase>
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1 class="text-3xl font-bold">Icons</h1>
+        <p class="text-base text-muted-foreground">
+            ShadcnBlazor does not ship an icon library. Use any icon set you prefer—we recommend Lucide icons for consistency with shadcn/ui.
+        </p>
+    </div>
+
+    <div class="w-full text-[0.9rem] leading-relaxed text-foreground/85">
+        <p class="mb-3">
+            The shadcn/ui ecosystem uses <a href="https://lucide.dev/" target="_blank" rel="noopener" class="text-primary hover:underline">Lucide</a> icons. For Blazor, you can use <code>EasyAppDev.Blazor.Icons.Lucide</code> or any other icon package. Icons are just components or SVG—place them inside buttons, inputs, or anywhere in your markup.
+        </p>
+    </div>
+
+    <DocsSection Title="Using Lucide Icons" Id="lucide">
+        <p class="mb-3">
+            Add the Lucide Blazor package to your project:
+        </p>
+        <CodeBlock Code="@InstallExample" Language="xml" />
+        <p class="mb-3 mt-4">
+            Then use icon components in your Razor files. Icons are named with a <code>Lu</code> prefix (e.g. <code>LuHome</code>, <code>LuSettings</code>). Size them with Tailwind classes like <code>h-4 w-4</code> or <code>size-5</code>.
+        </p>
+
+        <DocsSubSection Title="Icons in Buttons" Id="buttons">
+            <p class="mb-3">
+                Place icons alongside text or use icon-only buttons. The Button component's built-in gap handles spacing.
+            </p>
+            <ComponentPreview Code="@Snippets.IconsInButtonsExample" Language="razor">
+                <IconsInButtonsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Common Icons" Id="common">
+            <p class="mb-3">
+                A few frequently used icons: <code>LuHome</code>, <code>LuUser</code>, <code>LuSearch</code>, <code>LuChevronRight</code>, <code>LuCheck</code>. Browse the full set at <a href="https://lucide.dev/icons/" target="_blank" rel="noopener" class="text-primary hover:underline">lucide.dev</a>.
+            </p>
+            <ComponentPreview Code="@Snippets.IconsCommonExample" Language="razor">
+                <IconsCommonExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Other Icon Libraries" Id="alternatives">
+        <p class="mb-3">
+            You can use any icon library that renders SVG or components. Popular options include:
+        </p>
+        <ul class="list-disc list-inside space-y-1 text-sm text-foreground/85">
+            <li><strong>Lucide</strong> — Used by shadcn/ui; clean, consistent design.</li>
+            <li><strong>Heroicons</strong> — From Tailwind Labs; similar aesthetic.</li>
+            <li><strong>Custom SVG</strong> — Inline SVG or your own component library.</li>
+        </ul>
+        <p class="mb-3 mt-3">
+            ShadcnBlazor components accept any content via <code>ChildContent</code> or slots, so icons integrate seamlessly regardless of source.
+        </p>
+    </DocsSection>
+</div>
+</TocPageBase>
+
+@code {
+    private const string InstallExample = @"<PackageReference Include=""EasyAppDev.Blazor.Icons.Lucide"" Version=""2.0.4"" />";
+}
