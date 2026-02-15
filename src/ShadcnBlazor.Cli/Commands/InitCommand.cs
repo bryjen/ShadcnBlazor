@@ -72,6 +72,7 @@ public class InitCommand(
             EnsureComponentDependencies(projectConf, cwdInfo);
             ModifyExistingFiles(cwdInfo, blazorProjectType, projectConf);
             EnsureTailwindMergePackage(csprojFile);
+            EnsureProgramCsServices(cwdInfo);
             
             return 0;
         }
@@ -128,7 +129,7 @@ public class InitCommand(
         var srcJsFiles = new DirectoryInfo(Path.Join(assemblyDirInfo.FullName, "wwwroot", "js"));
         var outJsFiles = new DirectoryInfo(Path.Join(cwdInfo.FullName, "wwwroot", "js"));
         fileSystemService.CopyDirectory(srcJsFiles.FullName, outJsFiles.FullName);
-        console.MarkupLine("Copied .js files to [yellow]wwwroot/css[/].");
+        console.MarkupLine("Copied .js files to [yellow]wwwroot/js[/].");
     }
 
     private void ModifyExistingFiles(DirectoryInfo cwdInfo, BlazorProjectType projectType, OutputProjectConfig config)
@@ -155,9 +156,6 @@ public class InitCommand(
             File.WriteAllText(outImportsFile.FullName, mergedImportsContent);
             console.MarkupLine("Updated `[yellow]_Imports.razor[/]` file.");
         }
-        
-        // TODO: services in program.cs
-        // TODO: servcie components in main layout
         
         // adding references to css and js files in index.html or App.razor
         var targetFile = projectType == BlazorProjectType.WebAssembly
@@ -220,6 +218,53 @@ public class InitCommand(
         if (csprojService.EnsurePackageReference(csprojFile, packageName, packageVersion))
         {
             console.MarkupLine($"Added `[green]{packageName}[/]` package reference (v{packageVersion}) to project file.");
+        }
+    }
+
+    private void EnsureProgramCsServices(DirectoryInfo cwdInfo)
+    {
+        var programCsPath = Path.Combine(cwdInfo.FullName, "Program.cs");
+        var programCsFile = new FileInfo(programCsPath);
+        if (!programCsFile.Exists)
+        {
+            console.MarkupLine("[yellow]Warning: Program.cs not found; skipping AddTailwindMerge registration.[/]");
+            return;
+        }
+
+        var content = File.ReadAllText(programCsFile.FullName);
+        var modified = false;
+
+        const string usingTailwindMerge = "using TailwindMerge.Extensions;";
+        if (!content.Contains("TailwindMerge.Extensions"))
+        {
+            var lastUsingIndex = content.LastIndexOf("using ", StringComparison.Ordinal);
+            if (lastUsingIndex >= 0)
+            {
+                var endOfLine = content.IndexOf(';', lastUsingIndex) + 1;
+                var insertIndex = content.IndexOf('\n', endOfLine) + 1;
+                if (insertIndex <= 0) insertIndex = endOfLine;
+                content = content.Insert(insertIndex, usingTailwindMerge + "\n");
+                modified = true;
+            }
+        }
+
+        if (!content.Contains("AddTailwindMerge"))
+        {
+            var insertPoint = content.IndexOf("await builder.Build()", StringComparison.Ordinal);
+            if (insertPoint < 0)
+                insertPoint = content.IndexOf("builder.Build()", StringComparison.Ordinal);
+            if (insertPoint >= 0)
+            {
+                const string serviceLine = "builder.Services.AddTailwindMerge();";
+                content = content.Insert(insertPoint, "    " + serviceLine + "\n    ");
+                modified = true;
+            }
+        }
+
+        if (modified)
+        {
+            File.WriteAllText(programCsFile.FullName, content);
+            console.MarkupLine("Updated `[yellow]Program.cs[/]` with AddTailwindMerge registration.");
         }
     }
 
