@@ -1151,6 +1151,36 @@ public static class ApiDocumentation
         },
     };
 
+    public static readonly DocumentedType Skeleton = new()
+    {
+        Name = "Skeleton",
+        FullName = "ShadcnBlazor.Components.Skeleton.Skeleton",
+        Summary = @"Loading placeholder with pulse animation. Use the Class parameter to customize shape (e.g., h-12 w-12 rounded-full for avatar, h-4 w-[250px] for text).",
+        Properties = new[]
+        {
+            new DocumentedProperty
+            {
+                Name = "AdditionalAttributes",
+                Type = "Dictionary<string, Object>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Class",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+        },
+        Methods = Array.Empty<DocumentedMethod>(),
+        Events = Array.Empty<DocumentedEvent>(),
+    };
+
     public static readonly DocumentedType Slider = new()
     {
         Name = "Slider",
@@ -1272,6 +1302,89 @@ public static class ApiDocumentation
                 Name = "ValueChanged",
                 Type = "EventCallback<double>",
                 Summary = @"Callback invoked when the value changes.",
+            },
+        },
+    };
+
+    public static readonly DocumentedType Switch = new()
+    {
+        Name = "Switch",
+        FullName = "ShadcnBlazor.Components.Switch.Switch",
+        Summary = @"Toggle switch for boolean on/off values.",
+        Properties = new[]
+        {
+            new DocumentedProperty
+            {
+                Name = "AdditionalAttributes",
+                Type = "Dictionary<string, Object>",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Checked",
+                Type = "bool",
+                Summary = @"Whether the switch is on.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "false",
+            },
+            new DocumentedProperty
+            {
+                Name = "CheckedChanged",
+                Type = "EventCallback<bool>",
+                Summary = @"Callback invoked when the checked state changes.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.Boolean]",
+            },
+            new DocumentedProperty
+            {
+                Name = "ChildContent",
+                Type = "RenderFragment",
+                Summary = @"Content to display alongside the switch (e.g., label).",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Class",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "Disabled",
+                Type = "bool",
+                Summary = @"Whether the switch is disabled.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "false",
+            },
+            new DocumentedProperty
+            {
+                Name = "Size",
+                Type = "Size",
+                Summary = @"The size of the switch.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "Size.Md",
+            },
+        },
+        Methods = Array.Empty<DocumentedMethod>(),
+        Events = new[]
+        {
+            new DocumentedEvent
+            {
+                Name = "CheckedChanged",
+                Type = "EventCallback<bool>",
+                Summary = @"Callback invoked when the checked state changes.",
             },
         },
     };
@@ -1485,7 +1598,9 @@ public static class ApiDocumentation
         { "Popover", Popover },
         { "Radio", Radio },
         { "Select`1", Select },
+        { "Skeleton", Skeleton },
         { "Slider", Slider },
+        { "Switch", Switch },
         { "Textarea", Textarea },
         { "Tooltip", Tooltip }
     };

@@ -10,17 +10,16 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    private RenderFragment ContentFragment => Context is not null
+        ? @<CascadingValue TValue="DropdownMenuContext" Value="Context" IsFixed="true">
+            <div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">
+                @ChildContent
+            </div>
+        </CascadingValue>
+        : @<div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>;
+
     protected override void OnInitialized()
     {
         Context?.RegisterContent(ContentFragment);
     }
-
-    private RenderFragment ContentFragment => __builder =>
-    {
-        __builder.OpenElement(0, "div");
-        __builder.AddAttribute(1, "class", MergeCss("dropdown-menu-panel", Class));
-        __builder.AddMultipleAttributes(2, AdditionalAttributes);
-        __builder.AddContent(3, ChildContent);
-        __builder.CloseElement();
-    };
 }

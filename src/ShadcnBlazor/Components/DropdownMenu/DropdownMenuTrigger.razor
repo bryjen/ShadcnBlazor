@@ -17,19 +17,12 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    private RenderFragment TriggerFragment => @<DropdownMenuTriggerInner OnClick="HandleClick" AsChild="AsChild">@ChildContent</DropdownMenuTriggerInner>;
+
     protected override void OnInitialized()
     {
         Context?.RegisterTrigger(TriggerFragment);
     }
-
-    private RenderFragment TriggerFragment => __builder =>
-    {
-        __builder.OpenComponent<DropdownMenuTriggerInner>(0);
-        __builder.AddAttribute(1, "OnClick", EventCallback.Factory.Create(this, HandleClick));
-        __builder.AddAttribute(2, "AsChild", AsChild);
-        __builder.AddAttribute(3, "ChildContent", ChildContent);
-        __builder.CloseComponent();
-    };
 
     private void HandleClick()
     {

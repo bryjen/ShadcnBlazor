@@ -196,6 +196,43 @@ namespace ShadcnBlazor.Docs.Models
     </DropdownMenuContent>
 </DropdownMenu>";
 
+        public const string DropdownMenuSubmenuExample = @"<DropdownMenu>
+    <DropdownMenuTrigger AsChild=""true"">
+        <Button Variant=""Variant.Outline"">Open</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuItem>Team</DropdownMenuItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                        <DropdownMenuItem>Email</DropdownMenuItem>
+                        <DropdownMenuItem>Message</DropdownMenuItem>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>More options</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent>
+                                    <DropdownMenuItem>Calendly</DropdownMenuItem>
+                                    <DropdownMenuItem>Slack</DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>Webhook</DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Advanced...</DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuItem>
+                New Team
+                <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>";
+
         public const string InputBasicExample = @"<Input @bind-Value=""_email"" Placeholder=""Email"" Type=""email"" />
 
 @code {
@@ -284,6 +321,19 @@ namespace ShadcnBlazor.Docs.Models
     ];
 }";
 
+        public const string SkeletonBasicExample = @"<Skeleton Class=""h-4 w-[250px]"" />";
+
+        public const string SkeletonShapesExample = @"<div class=""flex flex-col gap-4"">
+    <div class=""flex items-center gap-4"">
+        <Skeleton Class=""h-12 w-12 rounded-full"" />
+        <div class=""flex flex-col gap-2"">
+            <Skeleton Class=""h-4 w-[250px]"" />
+            <Skeleton Class=""h-4 w-[200px]"" />
+        </div>
+    </div>
+    <Skeleton Class=""h-[125px] w-full rounded-xl"" />
+</div>";
+
         public const string SliderBasicExample = @"<div class=""space-y-2"">
     <Slider @bind-Value=""_value"" Min=""0"" Max=""100"" AriaLabel=""Volume"" />
     <p class=""text-sm text-muted-foreground"">Value: @_value</p>
@@ -303,6 +353,24 @@ namespace ShadcnBlazor.Docs.Models
 
 @code {
     private double _rating = 5;
+}";
+
+        public const string SwitchBasicExample = @"<Switch @bind-Checked=""_enabled"">Airplane Mode</Switch>
+
+@code {
+    private bool _enabled;
+}";
+
+        public const string SwitchSizeExample = @"<div class=""flex flex-col gap-4"">
+    <Switch @bind-Checked=""_small"" Size=""Size.Sm"">Small</Switch>
+    <Switch @bind-Checked=""_default"" Size=""Size.Md"">Default</Switch>
+    <Switch @bind-Checked=""_large"" Size=""Size.Lg"">Large</Switch>
+</div>
+
+@code {
+    private bool _small;
+    private bool _default = true;
+    private bool _large;
 }";
 
         public const string TextareaBasicExample = @"<Textarea @bind-Value=""_bio"" Placeholder=""Tell us about yourself..."" Rows=""4"" />
