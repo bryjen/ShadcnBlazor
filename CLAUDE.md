@@ -95,7 +95,6 @@ This metadata is used by the CLI to:
 **Configuration File (`shadcn-blazor.yaml`):**
 ```yaml
 componentsOutputDir: ./Components/Core
-servicesOutputDir: ./Services/Components
 rootNamespace: YourProject
 ```
 

@@ -40,11 +40,6 @@ public class InitCommand(
         [DefaultValue("./Components")]
         public string ComponentsOutputDir { get; init; } = string.Empty;
         
-        [CommandOption("-s|--service-dir")]
-        [Description("The directory to copy services to.")]
-        [DefaultValue("./Services/Components")]
-        public string ServicesOutputDir { get; init; } = string.Empty;
-        
         [CommandOption("--silent")]
         [Description("Mutes output.")]
         [DefaultValue("false")]
@@ -91,7 +86,6 @@ public class InitCommand(
         var projectConfig = new OutputProjectConfig
         {
             ComponentsOutputDir = Path.Join(settings.ComponentsOutputDir, "Core"),
-            ServicesOutputDir = settings.ServicesOutputDir,
             RootNamespace = rootNamespace
         };
         

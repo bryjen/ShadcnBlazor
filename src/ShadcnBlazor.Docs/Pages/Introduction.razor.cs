@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace ShadcnBlazor.Docs.Pages;
 
@@ -7,7 +7,6 @@ public partial class Introduction : ComponentBase
     private const string ExampleShadcnBlazorYaml = 
 """
 componentsOutputDir: ./Components/Core
-servicesOutputDir: ./Services/Components
 rootNamespace: SampleBlazorProject
 """;
     

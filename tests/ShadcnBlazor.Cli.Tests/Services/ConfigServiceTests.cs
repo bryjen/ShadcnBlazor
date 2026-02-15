@@ -15,18 +15,16 @@ public class ConfigServiceTests : TestBase
         using var tempDir = new TempDirectory();
         var yaml = """
             componentsOutputDir: ./Components/Core
-            servicesOutputDir: ./Services/Components
             rootNamespace: MyApp
             """;
         File.WriteAllText(Path.Combine(tempDir.Path, "shadcn-blazor.yaml"), yaml);
-        Console.WriteLine($"  Input YAML: componentsOutputDir, servicesOutputDir, rootNamespace");
+        Console.WriteLine($"  Input YAML: componentsOutputDir, rootNamespace");
 
         var config = _sut.LoadConfig(new DirectoryInfo(tempDir.Path));
 
-        Console.WriteLine($"  Actual: ComponentsOutputDir={config.ComponentsOutputDir}, ServicesOutputDir={config.ServicesOutputDir}, RootNamespace={config.RootNamespace}");
-        Console.WriteLine($"  Expected: ./Components/Core, ./Services/Components, MyApp");
+        Console.WriteLine($"  Actual: ComponentsOutputDir={config.ComponentsOutputDir}, RootNamespace={config.RootNamespace}");
+        Console.WriteLine($"  Expected: ./Components/Core, MyApp");
         Assert.That(config.ComponentsOutputDir, Is.EqualTo("./Components/Core"));
-        Assert.That(config.ServicesOutputDir, Is.EqualTo("./Services/Components"));
         Assert.That(config.RootNamespace, Is.EqualTo("MyApp"));
     }
 
@@ -50,7 +48,6 @@ public class ConfigServiceTests : TestBase
         var original = new OutputProjectConfig
         {
             ComponentsOutputDir = "./Components/Core",
-            ServicesOutputDir = "./Services/Components",
             RootNamespace = "TestProject"
         };
         Console.WriteLine($"  Input config: ComponentsOutputDir={original.ComponentsOutputDir}, RootNamespace={original.RootNamespace}");
@@ -61,7 +58,6 @@ public class ConfigServiceTests : TestBase
         Console.WriteLine($"  Actual loaded: ComponentsOutputDir={loaded.ComponentsOutputDir}, RootNamespace={loaded.RootNamespace}");
         Console.WriteLine($"  Expected: match original (round-trip)");
         Assert.That(loaded.ComponentsOutputDir, Is.EqualTo(original.ComponentsOutputDir));
-        Assert.That(loaded.ServicesOutputDir, Is.EqualTo(original.ServicesOutputDir));
         Assert.That(loaded.RootNamespace, Is.EqualTo(original.RootNamespace));
     }
 
