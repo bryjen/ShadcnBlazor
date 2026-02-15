@@ -930,10 +930,22 @@
   .bg-current {
     background-color: currentcolor;
   }
+  .bg-destructive\/15 {
+    background-color: var(--color-destructive);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-destructive) 15%, transparent);
+    }
+  }
   .bg-destructive\/20 {
     background-color: var(--color-destructive);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-destructive) 20%, transparent);
+    }
+  }
+  .bg-destructive\/25 {
+    background-color: var(--color-destructive);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-destructive) 25%, transparent);
     }
   }
   .bg-destructive\/60 {
@@ -946,6 +958,12 @@
     background-color: var(--color-destructive);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-destructive) 80%, transparent);
+    }
+  }
+  .bg-destructive\/90 {
+    background-color: var(--color-destructive);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-destructive) 90%, transparent);
     }
   }
   .bg-emerald-600 {
@@ -982,6 +1000,12 @@
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-muted) 40%, transparent);
+    }
+  }
+  .bg-muted\/50 {
+    background-color: var(--color-muted);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-muted) 50%, transparent);
     }
   }
   .bg-muted\/60 {
@@ -1312,6 +1336,9 @@
   }
   .text-current {
     color: currentcolor;
+  }
+  .text-destructive {
+    color: var(--color-destructive);
   }
   .text-emerald-600 {
     color: var(--color-emerald-600);

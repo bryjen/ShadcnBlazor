@@ -23,3 +23,6 @@ public class ComponentAlreadyExistsException(string componentName)
 
 public class ComponentSourceNotFoundException(string componentName)
     : CliException($"Source files for component `{componentName}` not found.");
+
+public class OutputDirectoryExistsException(string path)
+    : CliException($"Output directory `{path}` already exists.");

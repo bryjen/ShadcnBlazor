@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <!-- Dotnet tool publishing -->
         <PackAsTool>true</PackAsTool>
-        <ToolCommandName>shadcn-blazor</ToolCommandName>
+        <ToolCommandName>shadcnblazor</ToolCommandName>
         <PackageOutputPath>./nupkgs</PackageOutputPath>
     </PropertyGroup>
 
@@ -22,6 +22,17 @@
 
     <ItemGroup>
       <Folder Include="Exception\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\templates\net9\WasmStandalone\**\*"
+            Exclude="**\obj\**;**\bin\**"
+            CopyToOutputDirectory="PreserveNewest"
+            LinkBase="templates\net9\WasmStandalone" />
+      <None Include="..\..\templates\net9\ServerGlobalInteractivity\**\*"
+            Exclude="**\obj\**;**\bin\**"
+            CopyToOutputDirectory="PreserveNewest"
+            LinkBase="templates\net9\ServerGlobalInteractivity" />
     </ItemGroup>
 
 </Project>

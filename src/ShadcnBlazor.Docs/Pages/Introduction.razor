@@ -39,8 +39,8 @@
                 <div class="flex flex-col gap-8">
                     <div class="flex flex-col gap-2">
                         <p class="mb-3">
-                            The CLI tools initializes a <code>shadcn-blazor.yaml</code> file, which holds the dependencies and configuration for your project.
-                            It contains paths of where components and services will be generated, as well as the root namespace for proper namespacing and resolution of the generated code.
+                            The CLI initializes a <code>shadcn-blazor.yaml</code> file, which holds the configuration for your project.
+                            It contains the path where components will be generated and the root namespace for proper namespacing and resolution of the generated code.
                         </p>
                         <CodeBlock Code="@ExampleShadcnBlazorYaml" Language="yaml"/>
                     </div>
@@ -76,47 +76,63 @@
                 </div>
             </DocsSubSection>
 
-            <DocsSubSection Title="From New project" Id="installation-new">
+            <DocsSubSection Title="From New Project" Id="installation-new">
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-8 mt-3">
                         @RenderStep(1,
                             @<div class="flex flex-col gap-3">
-                                <span class="font-bold text-lg">Init New Project</span>
+                                <span class="font-bold text-lg">Create New Project</span>
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
-                                    Run <code>init</code> subcommand to setup a new Blazor project using <code>ShadcnBlazor</code>.
-                                    This will create a new Blazor WebAssembly project with the necessary configuration and dependencies.
+                                    Use the <code>new</code> command to scaffold a Blazor project from a template. Specify <code>--wasm</code> for WebAssembly standalone or <code>--server</code> for Blazor Server with global interactivity.
                                 </span>
-                                <CommandBlock Options="@InitNew1" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject1" DefaultOption="@("dotnet")"/>
+                                <span class="text-[0.9rem] leading-relaxed text-foreground/85">
+                                    Use <code>-o</code> or <code>--out</code> to specify an output directory. By default, the project is created in <code>./{proj}</code>.
+                                </span>
+                                <CommandBlock Options="@NewProject1WithOut" DefaultOption="@("dotnet")"/>
                             </div>)
 
                         @RenderStep(2,
                             @<div class="flex flex-col gap-3">
                                 <span class="font-bold text-lg">Add Components</span>
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
-                                    You can now start adding components into your project.
+                                    Navigate into the project directory and add components.
                                 </span>
-                                <CommandBlock Options="@InitNew2" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject2" DefaultOption="@("dotnet")"/>
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
-                                    If you with to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can that like so:
+                                    If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
                                 </span>
-                                <CommandBlock Options="@InitNew3" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject3" DefaultOption="@("dotnet")"/>
                             </div>)
+
+                        <div class="flex flex-col gap-3 mt-6 p-4 rounded-lg bg-muted/50 border border-border">
+                            <span class="font-bold text-lg">Tailwind CSS</span>
+                            <span class="text-[0.9rem] leading-relaxed text-foreground/85">
+                                New projects use <code>Tailwind.MSBuild</code> to automatically compile <code>wwwroot/css/input.css</code> to <code>wwwroot/css/app.css</code> on each build. The package downloads the Tailwind CLI on first build. No additional setup is required.
+                            </span>
+                        </div>
                     </div>
                 </div>
             </DocsSubSection>
 
             <DocsSubSection Title="From Existing Project" Id="installation-existing">
+                <Alert Variant="@AlertVariant.Destructive" Class="mb-6">
+                    <p class="font-medium">Tailwind not configured by init</p>
+                    <p class="text-muted-foreground text-sm">
+                        Unlike creating a new project, initializing an existing project <b>DOES NOT</b> add Tailwind compilation. You must configure it yourself: add <code class="text-destructive bg-destructive/15">Tailwind.MSBuild</code> to your project, or use the standalone <code class="text-destructive bg-destructive/15">tailwindcss</code> CLI to compile <code>input.css</code> to <code>app.css</code>.
+                    </p>
+                </Alert>
+                
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-8 mt-3">
                         @RenderStep(1,
                             @<div class="flex flex-col gap-3">
-                                <span class="font-bold text-lg">Init New Project</span>
+                                <span class="font-bold text-lg">Initialize Project</span>
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
-                                    Run <code>init</code> subcommand to setup a new Blazor project using <code>ShadcnBlazor</code>.
-                                    This will create a new Blazor WebAssembly project with the necessary configuration and dependencies.
+                                    Navigate into your existing Blazor project directory and run <code>init</code> to add ShadcnBlazor configuration, the <code>Shared</code> folder, CSS/JS assets, and TailwindMerge.
                                 </span>
-                                <CommandBlock Options="@InitNew1" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@InitExisting1" DefaultOption="@("dotnet")"/>
                             </div>)
 
                         @RenderStep(2,
@@ -125,12 +141,12 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     You can now start adding components into your project.
                                 </span>
-                                <CommandBlock Options="@InitNew2" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@InitExisting2" DefaultOption="@("dotnet")"/>
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
-                                    If you with to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can that like so:
+                                    If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
                                 </span>
-                                <CommandBlock Options="@InitNew3" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@InitExisting3" DefaultOption="@("dotnet")"/>
                             </div>)
                     </div>
                 </div>
@@ -158,18 +174,38 @@
         ["dotnet"] = "dotnet tool install --global shadcnblazor",
     };
     
-    private static readonly Dictionary<string, string> InitNew1 = new()
+    private static readonly Dictionary<string, string> NewProject1 = new()
     {
-        ["dotnet"] = "shadcnblazor init new . -t wasm",
+        ["dotnet"] = "shadcnblazor new --wasm --proj MyApp --namespace MyApp",
     };
-    
-    private static readonly Dictionary<string, string> InitNew2 = new()
+
+    private static readonly Dictionary<string, string> NewProject1WithOut = new()
     {
-        ["dotnet"] = "shadcnblazor components add button",
+        ["dotnet"] = "shadcnblazor new --server --proj MyApp --namespace MyApp -o ./projects",
     };
-    
-    private static readonly Dictionary<string, string> InitNew3 = new()
+
+    private static readonly Dictionary<string, string> InitExisting1 = new()
     {
-        ["dotnet"] = "shadcnblazor components add all",
+        ["dotnet"] = "cd MyBlazorProject && shadcnblazor init",
+    };
+
+    private static readonly Dictionary<string, string> NewProject2 = new()
+    {
+        ["dotnet"] = "cd MyApp && shadcnblazor component add button",
+    };
+
+    private static readonly Dictionary<string, string> NewProject3 = new()
+    {
+        ["dotnet"] = "shadcnblazor component add --all",
+    };
+
+    private static readonly Dictionary<string, string> InitExisting2 = new()
+    {
+        ["dotnet"] = "shadcnblazor component add button",
+    };
+
+    private static readonly Dictionary<string, string> InitExisting3 = new()
+    {
+        ["dotnet"] = "shadcnblazor component add --all",
     };
 }
