@@ -6,7 +6,7 @@
 
 <div class="dialog-overlay"
      data-dialog-overlay="@Instance.Id.ToString("N")"
-     data-state="@(_isOpen ? "open" : "closed")"
+     data-state="@_overlayState"
      style="@GetBackdropStyle()">
 </div>
 
@@ -26,6 +26,7 @@
     public required Models.DialogInstance Instance { get; set; }
 
     private bool _isOpen = true;
+    private string _overlayState = "closed";  /* start closed so CSS paints invisible before open() */
     private DotNetObjectReference<DialogContainer>? _dotNetRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -38,10 +39,14 @@
                 await ScrollLock.LockAsync();
                 await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.initialize", Instance.Id.ToString("N"), _dotNetRef);
                 await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.open", Instance.Id.ToString("N"));
+                _overlayState = "open";
+                StateHasChanged();
             }
             catch (JSException)
             {
                 // dialog.js / scroll-lock.js may not be loaded; dialog will still work without animation
+                _overlayState = "open";
+                StateHasChanged();
             }
         }
     }
@@ -62,10 +67,11 @@
         }
 
         _isOpen = false;
+        _overlayState = "closed";
         try
         {
             await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.close", Instance.Id.ToString("N"));
-            await Task.Delay(300); // Allow close animation
+            await Task.Delay(250); // Allow close animation to complete
         }
         catch (JSException)
         {

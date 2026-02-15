@@ -76,39 +76,15 @@
         const contentElement = getContentElement(dialogId);
         if (!overlayElement || !contentElement) return;
 
-        overlayElement.style.opacity = '0';
-        overlayElement.style.backdropFilter = 'blur(0px) saturate(120%)';
-        overlayElement.style.transition = 'opacity 250ms ease-in-out, backdrop-filter 250ms ease-in-out';
-        overlayElement.style.pointerEvents = 'none';
-
-        contentElement.style.opacity = '0';
-        contentElement.style.transform = 'scale(0.95)';
-        contentElement.style.transition = 'opacity 250ms ease-in-out, transform 250ms ease-in-out';
-
         overlayElement.setAttribute('data-state', 'open');
         contentElement.setAttribute('data-state', 'open');
-        overlayElement.style.pointerEvents = 'auto';
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                overlayElement.style.opacity = '1';
-                overlayElement.style.backdropFilter = 'blur(16px) saturate(150%)';
-            });
-        });
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                contentElement.style.opacity = '1';
-                contentElement.style.transform = 'scale(1)';
-            });
-        });
 
         setTimeout(() => {
             const firstFocusable = contentElement.querySelector(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
             firstFocusable?.focus();
-        }, 100);
+        }, 50);
     }
 
     function close(dialogId) {
@@ -121,19 +97,6 @@
 
         overlayElement.setAttribute('data-state', 'closed');
         contentElement.setAttribute('data-state', 'closed');
-
-        overlayElement.style.transition = 'opacity 250ms ease-in-out, backdrop-filter 250ms ease-in-out';
-        contentElement.style.transition = 'opacity 250ms ease-in-out, transform 250ms ease-in-out';
-        overlayElement.style.pointerEvents = 'none';
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                overlayElement.style.opacity = '0';
-                overlayElement.style.backdropFilter = 'blur(0px) saturate(120%)';
-                contentElement.style.opacity = '0';
-                contentElement.style.transform = 'scale(0.95)';
-            });
-        });
     }
 
     function dispose(dialogId) {
