@@ -1,0 +1,17 @@
+@using ShadcnBlazor.Components.Dialog
+@using ShadcnBlazor.Components.Dialog.Models
+@using ShadcnBlazor.Components.Dialog.Services
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Shared.Enums
+
+<Button Variant="@Variant.Default" OnClick="OpenDialog">Open Dialog</Button>
+
+@code {
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+
+    private void OpenDialog()
+    {
+        DialogService.Show<SingleFileDialogContent>("Confirm");
+    }
+}

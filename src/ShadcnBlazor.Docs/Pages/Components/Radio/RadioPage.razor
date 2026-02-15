@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Radio">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Radio component provides single selection within a <code>RadioGroup</code>. Place <code>Radio</code> options inside a <code>RadioGroup</code> and bind <code>Value</code> for the selected option. Each <code>Radio</code> needs a unique <code>Value</code> and <code>ChildContent</code> for the label.</p>
-        <ComponentPreview Code="@Snippets.RadioBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioBasicExample })">
             <RadioBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Horizontal" Id="horizontal">
             <p class="mb-3">Set <code>Vertical="false"</code> on RadioGroup to display options horizontally.</p>
-            <ComponentPreview Code="@Snippets.RadioHorizontalExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioHorizontalExample })">
                 <RadioHorizontalExample />
             </ComponentPreview>
         </DocsSubSection>

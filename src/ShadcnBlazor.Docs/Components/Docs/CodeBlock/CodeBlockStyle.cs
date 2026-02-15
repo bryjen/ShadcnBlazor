@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Docs.Components.Docs;
+namespace ShadcnBlazor.Docs.Components.Docs.CodeBlock;
 
 /// <summary>
 /// Visual style for the CodeBlock component.

@@ -79,6 +79,12 @@
         overlayElement.setAttribute('data-state', 'open');
         contentElement.setAttribute('data-state', 'open');
 
+        focusFirstInDialog(dialogId);
+    }
+
+    function focusFirstInDialog(dialogId) {
+        const contentElement = getContentElement(dialogId);
+        if (!contentElement) return;
         setTimeout(() => {
             const firstFocusable = contentElement.querySelector(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -116,4 +122,5 @@
     window.ShadcnBlazor.Dialog.open = open;
     window.ShadcnBlazor.Dialog.close = close;
     window.ShadcnBlazor.Dialog.dispose = dispose;
+    window.ShadcnBlazor.Dialog.focusFirstInDialog = focusFirstInDialog;
 })();

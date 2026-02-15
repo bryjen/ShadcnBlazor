@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Input">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Input component provides a single-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Type</code>, and <code>Size</code> as needed.</p>
-        <ComponentPreview Code="@Snippets.InputBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputBasicExample })">
             <InputBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Sizes" Id="sizes">
             <p class="mb-3">Use the <code>Size</code> parameter for Sm, Md, or Lg inputs.</p>
-            <ComponentPreview Code="@Snippets.InputSizeExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputSizeExample })">
                 <InputSizeExample />
             </ComponentPreview>
         </DocsSubSection>

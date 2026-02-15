@@ -1,0 +1,10 @@
+@inherits ShadcnComponentBase
+
+<h2 class="@MergeCss("dialog-title", Class ?? "")" @attributes="AdditionalAttributes">
+    @ChildContent
+</h2>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

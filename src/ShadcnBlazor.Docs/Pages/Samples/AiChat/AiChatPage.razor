@@ -2,6 +2,7 @@
 @using ShadcnBlazor.Docs.Components.Samples.AiChat
 @using ShadcnBlazor.Docs.Pages.Samples.AiChat.Examples
 @using ShadcnBlazor.Docs.Models
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 @using ShadcnBlazor.Components.Card
 
 <SampleDocPage Title="AI Chat" Description="An interactive chat interface demonstrating AI-style message streaming and structured responses.">
@@ -39,7 +40,7 @@
             <p class="mb-3">
                 The input bar at the bottom. It wraps <code>ComposableTextArea</code> with <code>Header</code> and <code>Footer</code> slots. The header holds an "Add Context" button; the footer has toggles (extended thinking, auto, sources) and a send button. It exposes <code>SubmitPrompt</code> as an <code>EventCallback&lt;string&gt;</code> so the parent can handle submission.
             </p>
-            <ComponentPreview Code="@Snippets.ChatInputExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Samples_AiChat_Examples_ChatInputExample })">
                 <ChatInputExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -48,7 +49,7 @@
             <p class="mb-3">
                 Renders user messages in a right-aligned bubble with primary styling. It receives a <code>UserChatMessage</code> and displays the raw text via <code>GetRawContent()</code>.
             </p>
-            <ComponentPreview Code="@Snippets.UserChatMessageViewExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Samples_AiChat_Examples_UserChatMessageViewExample })">
                 <UserChatMessageViewExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -57,7 +58,7 @@
             <p class="mb-3">
                 Renders AI responses as a sequence of <code>MessageComponent</code> views. It switches on component type: <code>ThinkingMessageComponent</code> (collapsible accordion with markdown), <code>WebSearchMessageComponent</code> (expandable list of URLs), and <code>TextMessageComponent</code> (markdown-rendered text). Each view uses Markdig for markdown and optional syntax highlighting.
             </p>
-            <ComponentPreview Code="@Snippets.AiChatMessageViewExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Samples_AiChat_Examples_AiChatMessageViewExample })">
                 <AiChatMessageViewExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -68,13 +69,13 @@
             </p>
             
             <div class="flex flex-col gap-4">
-                <ComponentPreview Code="@Snippets.ThinkingMessageComponentViewExample" Language="razor">
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Samples_AiChat_Examples_ThinkingMessageComponentViewExample })">
                     <ThinkingMessageComponentViewExample/>
                 </ComponentPreview>
-                <ComponentPreview Code="@Snippets.TextMessageComponentViewExample" Language="razor">
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Samples_AiChat_Examples_TextMessageComponentViewExample })">
                     <TextMessageComponentViewExample/>
                 </ComponentPreview>
-                <ComponentPreview Code="@Snippets.WebSearchMessageComponentViewExample" Language="razor">
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Samples_AiChat_Examples_WebSearchMessageComponentViewExample })">
                     <WebSearchMessageComponentViewExample/>
                 </ComponentPreview>
             </div>
@@ -96,7 +97,7 @@
             <p class="mb-3">
                 <code>IChatService</code> yields a stream of string chunks (tokens). The parser expects XML-like tags to structure the response: <code>&lt;thinking&gt;</code> for internal reasoning, <code>&lt;search&gt;</code> for URLs (one per line), and <code>&lt;text&gt;</code> for user-facing markdown. Tags can appear in any order. Escape literal <code>&lt;</code> or <code>&gt;</code> with a backslash.
             </p>
-            <CodeBlock Code="@StreamFormatExample" Language="text" />
+            <CodeBlock CodeFiles="@(new[] { CodeFile.Create(StreamFormatExample, "text") })" />
         </DocsSubSection>
 
         <DocsSubSection Title="ChatOrchestrator" Id="chat-orchestrator">
@@ -109,7 +110,7 @@
             <p class="mb-3">
                 The contract for streaming AI responses. Implement this to plug in your own API (OpenAI, Claude, custom backend).
             </p>
-            <CodeBlock Code="@IChatServiceSnippet" Language="csharp" />
+            <CodeBlock CodeFiles="@(new[] { CodeFile.Create(IChatServiceSnippet, "csharp", "IChatService.cs") })" />
             <p class="mb-3 mt-3">
                 <strong>ChatService</strong> is the concrete implementation: a stub that returns hardcoded streaming text with simulated delays. Replace it with a real implementation that calls your API and yields string chunks.
             </p>
@@ -119,7 +120,7 @@
             <p class="mb-3">
                 The contract for parsing streaming chunks into structured <code>MessageComponent</code> instances. The orchestrator resolves <code>IStreamResponseParserService</code> and passes the message's components into <code>CreateStream</code> to get a parser bound to that message.
             </p>
-            <CodeBlock Code="@IStreamResponseParserSnippet" Language="csharp" />
+            <CodeBlock CodeFiles="@(new[] { CodeFile.Create(IStreamResponseParserSnippet, "csharp", "IStreamResponseParser.cs") })" />
             <p class="mb-3 mt-3">
                 <strong>StreamResponseParser</strong> parses XML-like tags (<code>&lt;thinking&gt;</code>, <code>&lt;search&gt;</code>, <code>&lt;text&gt;</code>) from the stream, routes content into the corresponding component types, and handles buffering and escaping. <strong>IStreamResponseParserService</strong> exposes <code>CreateStream(components)</code> so the orchestrator can obtain a parser per AI response.
             </p>
@@ -135,14 +136,14 @@
             <p class="mb-3">
                 Implement <code>IChatService</code> to call your API. For streaming endpoints (e.g. OpenAI, Claude), use <code>HttpClient</code> with <code>HttpCompletionOption.ResponseHeadersRead</code> and read the response stream. Yield chunks as they arrive. The existing parser and UI handle the rest.
             </p>
-            <CodeBlock Code="@StreamingApiExample" Language="csharp" />
+            <CodeBlock CodeFiles="@(new[] { CodeFile.Create(StreamingApiExample, "csharp", "OpenAiChatService.cs") })" />
         </DocsSubSection>
 
         <DocsSubSection Title="Non-streamed JSON" Id="extending-json">
             <p class="mb-3">
                 If your API returns a complete JSON response instead of a stream, you have two options. <strong>Option A:</strong> Fetch the JSON, convert it to the expected tag format, and yield it as a single chunk—the existing parser will populate the components. <strong>Option B:</strong> Implement a custom <code>IStreamResponseParser</code> that parses JSON and populates components directly, then yield the raw JSON as one chunk.
             </p>
-            <CodeBlock Code="@JsonApiExample" Language="csharp" />
+            <CodeBlock CodeFiles="@(new[] { CodeFile.Create(JsonApiExample, "csharp", "JsonToTagChatService.cs") })" />
         </DocsSubSection>
     </DocsSection>
 </SampleDocPage>

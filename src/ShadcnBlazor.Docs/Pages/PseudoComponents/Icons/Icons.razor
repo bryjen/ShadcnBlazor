@@ -1,4 +1,5 @@
 @page "/components/icons"
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 @using ShadcnBlazor.Docs.Pages.PseudoComponents.Icons.Examples
 
 <PageTitle>Icons - ShadcnBlazor</PageTitle>
@@ -22,7 +23,7 @@
         <p class="mb-3">
             Add the Lucide Blazor package to your project:
         </p>
-        <CodeBlock Code="@InstallExample" Language="xml" />
+        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(InstallExample, "xml") })" />
         <p class="mb-3 mt-4">
             Then use icon components in your Razor files. Icons are named with a <code>Lu</code> prefix (e.g. <code>LuHome</code>, <code>LuSettings</code>). Size them with Tailwind classes like <code>h-4 w-4</code> or <code>size-5</code>.
         </p>
@@ -31,7 +32,7 @@
             <p class="mb-3">
                 Place icons alongside text or use icon-only buttons. The Button component's built-in gap handles spacing.
             </p>
-            <ComponentPreview Code="@Snippets.IconsInButtonsExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Icons_Examples_IconsInButtonsExample })">
                 <IconsInButtonsExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -40,7 +41,7 @@
             <p class="mb-3">
                 A few frequently used icons: <code>LuHome</code>, <code>LuUser</code>, <code>LuSearch</code>, <code>LuChevronRight</code>, <code>LuCheck</code>. Browse the full set at <a href="https://lucide.dev/icons/" target="_blank" rel="noopener" class="text-primary hover:underline">lucide.dev</a>.
             </p>
-            <ComponentPreview Code="@Snippets.IconsCommonExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Icons_Examples_IconsCommonExample })">
                 <IconsCommonExample />
             </ComponentPreview>
         </DocsSubSection>

@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Popover">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Popover component displays a floating panel anchored to a trigger. Use <code>Anchor</code> for the trigger element and <code>ChildContent</code> for the panel. Requires <code>PopoverProvider</code> in your layout (already present in the docs). Bind <code>Open</code> for controlled state.</p>
-        <ComponentPreview Code="@Snippets.PopoverBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverBasicExample })">
             <PopoverBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Placement" Id="placement">
             <p class="mb-3">Use <code>AnchorOrigin</code> and <code>TransformOrigin</code> to control where the popover appears relative to the trigger.</p>
-            <ComponentPreview Code="@Snippets.PopoverPlacementExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverPlacementExample })">
                 <PopoverPlacementExample />
             </ComponentPreview>
         </DocsSubSection>

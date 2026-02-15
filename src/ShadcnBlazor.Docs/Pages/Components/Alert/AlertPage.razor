@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Alert">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Alert component displays important messages or notifications. Use <code>ChildContent</code> to render your message. Set <code>Variant</code> to <code>AlertVariant.Default</code> or <code>AlertVariant.Destructive</code> for different styling.</p>
-        <ComponentPreview Code="@Snippets.AlertBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertBasicExample })">
             <AlertBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Variants" Id="variants">
             <p class="mb-3">Use the <code>Variant</code> parameter to switch between default and destructive styling for error or warning messages.</p>
-            <ComponentPreview Code="@Snippets.AlertVariantExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertVariantExample })">
                 <AlertVariantExample />
             </ComponentPreview>
         </DocsSubSection>

@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Switch">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Switch component is a toggle for boolean on/off values. Use <code>ChildContent</code> for the label. Bind <code>Checked</code> for two-way state, or use <code>CheckedChanged</code> for one-way updates.</p>
-        <ComponentPreview Code="@Snippets.SwitchBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Switch_Examples_SwitchBasicExample })">
             <SwitchBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Sizes" Id="sizes">
             <p class="mb-3">Use the <code>Size</code> parameter for Sm, Md, or Lg variants.</p>
-            <ComponentPreview Code="@Snippets.SwitchSizeExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Switch_Examples_SwitchSizeExample })">
                 <SwitchSizeExample />
             </ComponentPreview>
         </DocsSubSection>

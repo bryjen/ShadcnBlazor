@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Badge">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> and <code>Size</code> for styling.</p>
-        <ComponentPreview Code="@Snippets.BadgeBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeBasicExample })">
             <BadgeBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Variants" Id="variants">
             <p class="mb-3">Use the <code>Variant</code> parameter for Default, Secondary, Outline, or Destructive styling.</p>
-            <ComponentPreview Code="@Snippets.BadgeVariantExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeVariantExample })">
                 <BadgeVariantExample />
             </ComponentPreview>
         </DocsSubSection>
