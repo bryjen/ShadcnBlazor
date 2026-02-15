@@ -1,0 +1,154 @@
+@implements IAsyncDisposable
+@using Microsoft.JSInterop
+@using ShadcnBlazor.Shared.Services
+@inject IJSRuntime JSRuntime
+@inject IScrollLockService ScrollLock
+
+<div class="dialog-overlay"
+     data-dialog-overlay="@Instance.Id.ToString("N")"
+     data-state="@(_isOpen ? "open" : "closed")"
+     style="@GetBackdropStyle()">
+</div>
+
+<div class="dialog-container @GetPositionClass()"
+     style="@GetPositionStyle()"
+     @onclick="OnBackdropClick">
+    <Dialog Instance="@Instance"
+            Options="@Instance.Options"
+            OnCloseRequested="CloseAsync">
+        <DynamicComponent Type="@Instance.ComponentType"
+                          Parameters="@GetComponentParameters()" />
+    </Dialog>
+</div>
+
+@code {
+    [Parameter]
+    public required Models.DialogInstance Instance { get; set; }
+
+    private bool _isOpen = true;
+    private DotNetObjectReference<DialogContainer>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await ScrollLock.LockAsync();
+                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.initialize", Instance.Id.ToString("N"), _dotNetRef);
+                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.open", Instance.Id.ToString("N"));
+            }
+            catch (JSException)
+            {
+                // dialog.js / scroll-lock.js may not be loaded; dialog will still work without animation
+            }
+        }
+    }
+
+    private void OnBackdropClick()
+    {
+        if (!Instance.Options.DisableBackdropClick)
+        {
+            _ = CloseAsync(Models.DialogResult.Cancel());
+        }
+    }
+
+    private async Task CloseAsync(Models.DialogResult result)
+    {
+        if (!_isOpen)
+        {
+            return;
+        }
+
+        _isOpen = false;
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.close", Instance.Id.ToString("N"));
+            await Task.Delay(300); // Allow close animation
+        }
+        catch (JSException)
+        {
+            // Ignore
+        }
+
+        try
+        {
+            await ScrollLock.UnlockAsync();
+        }
+        catch (JSException)
+        {
+            // Ignore
+        }
+
+        Instance.Reference.Close(result);
+    }
+
+    [JSInvokable]
+    public void HandleEscape()
+    {
+        if (Instance.Options.CloseOnEscapeKey)
+        {
+            _ = InvokeAsync(() => CloseAsync(Models.DialogResult.Cancel()));
+        }
+    }
+
+    [JSInvokable]
+    public void HandleOverlayClick()
+    {
+        if (!Instance.Options.DisableBackdropClick)
+        {
+            _ = InvokeAsync(() => CloseAsync(Models.DialogResult.Cancel()));
+        }
+    }
+
+    private string GetBackdropStyle()
+    {
+        if (Instance.Options.NoBackdrop)
+        {
+            return "background-color: transparent; pointer-events: none;";
+        }
+        return "";
+    }
+
+    private string GetPositionStyle()
+    {
+        return Instance.Options.Position switch
+        {
+            Models.DialogPosition.Center => "align-items: center; justify-content: center;",
+            Models.DialogPosition.TopCenter => "align-items: flex-start; justify-content: center;",
+            Models.DialogPosition.BottomCenter => "align-items: flex-end; justify-content: center;",
+            _ => "align-items: center; justify-content: center;"
+        };
+    }
+
+    private string GetPositionClass()
+    {
+        return Instance.Options.Position switch
+        {
+            Models.DialogPosition.Center => "dialog-position-center",
+            Models.DialogPosition.TopCenter => "dialog-position-top",
+            Models.DialogPosition.BottomCenter => "dialog-position-bottom",
+            _ => "dialog-position-center"
+        };
+    }
+
+    private Dictionary<string, object?> GetComponentParameters()
+    {
+        var dict = new Dictionary<string, object?>(Instance.Parameters);
+        return dict;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.dispose", Instance.Id.ToString("N"));
+        }
+        catch (JSException)
+        {
+            // Ignore
+        }
+        _dotNetRef?.Dispose();
+    }
+}

@@ -121,8 +121,14 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             .OrderBy(p => p.Name)
             .ToList();
 
-        output.AppendLine("        Properties = new[]");
-        output.AppendLine("        {");
+        if (properties.Count == 0)
+        {
+            output.AppendLine("        Properties = Array.Empty<DocumentedProperty>(),");
+        }
+        else
+        {
+            output.AppendLine("        Properties = new[]");
+            output.AppendLine("        {");
 
         foreach (var prop in properties)
         {
@@ -144,7 +150,8 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             output.AppendLine("            },");
         }
 
-        output.AppendLine("        },");
+            output.AppendLine("        },");
+        }
 
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
             .Where(m => !m.IsSpecialName)

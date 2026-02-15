@@ -178,6 +178,116 @@ namespace ShadcnBlazor.Docs.Models
     private string? _content;
 }";
 
+        public const string DialogEditProfileExample = @"@using ShadcnBlazor.Components.Dialog
+@using ShadcnBlazor.Components.Dialog.Models
+@using ShadcnBlazor.Components.Dialog.Services
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples
+@using ShadcnBlazor.Shared.Enums
+
+<Button Variant=""@Variant.Default"" OnClick=""OpenDialog"">Open Dialog</Button>
+
+@code {
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+
+    private async Task OpenDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(EditProfileDialogExample.Name), ""Pedro Duarte"" },
+            { nameof(EditProfileDialogExample.Username), ""@peduarte"" }
+        };
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            MaxWidth = DialogMaxWidth.Small,
+            Description = ""Make changes to your profile here. Click save when you're done.""
+        };
+        var dialogRef = DialogService.Show<EditProfileDialogExample>(""Edit profile"", parameters, options);
+        var result = await dialogRef.Result;
+
+        if (!result.Cancelled && result.Data is (string name, string username))
+        {
+            // In a real app you might show a toast or update state
+            await Task.CompletedTask; // placeholder
+        }
+    }
+}";
+
+        public const string DialogEditProfileTriggerExample = @"@using ShadcnBlazor.Components.Dialog
+@using ShadcnBlazor.Components.Dialog.Models
+@using ShadcnBlazor.Components.Dialog.Services
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples
+@using ShadcnBlazor.Shared.Enums
+
+<Button Variant=""@Variant.Default"" OnClick=""OpenDialog"">Open Dialog</Button>
+
+@code {
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+
+    private async Task OpenDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(EditProfileDialogExample.Name), ""Pedro Duarte"" },
+            { nameof(EditProfileDialogExample.Username), ""@peduarte"" }
+        };
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            MaxWidth = DialogMaxWidth.Small,
+            Description = ""Make changes to your profile here. Click save when you're done.""
+        };
+        var dialogRef = DialogService.Show<EditProfileDialogExample>(""Edit profile"", parameters, options);
+        var result = await dialogRef.Result;
+
+        if (!result.Cancelled && result.Data is (string name, string username))
+        {
+            // In a real app you might show a toast or update state
+            await Task.CompletedTask; // placeholder
+        }
+    }
+}";
+
+        public const string EditProfileDialogExample = @"@using ShadcnBlazor.Components.Dialog
+@using ShadcnBlazor.Components.Dialog.Models
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.Input
+@using ShadcnBlazor.Shared.Enums
+
+<div class=""grid gap-4 py-4"">
+    <div class=""grid gap-2"">
+        <label for=""name"" class=""text-sm font-medium"">Name</label>
+        <Input id=""name"" @bind-Value=""Name"" placeholder=""Pedro Duarte"" />
+    </div>
+    <div class=""grid gap-2"">
+        <label for=""username"" class=""text-sm font-medium"">Username</label>
+        <Input id=""username"" @bind-Value=""Username"" placeholder=""peduarte"" />
+    </div>
+</div>
+<div class=""flex justify-end gap-2 pt-4"">
+    <Button Variant=""@Variant.Secondary"" OnClick=""OnCancel"">Cancel</Button>
+    <Button Variant=""@Variant.Default"" OnClick=""OnSave"">Save changes</Button>
+</div>
+
+@code {
+    [CascadingParameter]
+    public IDialogInstance? Dialog { get; set; }
+
+    [Parameter]
+    public string Name { get; set; } = ""Pedro Duarte"";
+
+    [Parameter]
+    public string Username { get; set; } = ""@peduarte"";
+
+    private void OnCancel() => Dialog?.Cancel();
+
+    private void OnSave() => Dialog?.Close(DialogResult.Ok((Name, Username)));
+}";
+
         public const string DropdownMenuBasicExample = @"<DropdownMenu>
     <DropdownMenuTrigger AsChild=""true"">
         <Button Variant=""Variant.Outline"">Open</Button>

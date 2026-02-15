@@ -666,6 +666,9 @@
   .cursor-pointer {
     cursor: pointer;
   }
+  .resize {
+    resize: both;
+  }
   .resize-none {
     resize: none;
   }
@@ -1212,6 +1215,9 @@
   .pt-3 {
     padding-top: calc(var(--spacing) * 3);
   }
+  .pt-4 {
+    padding-top: calc(var(--spacing) * 4);
+  }
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }
@@ -1432,6 +1438,9 @@
   }
   .text-white {
     color: var(--color-white);
+  }
+  .lowercase {
+    text-transform: lowercase;
   }
   .uppercase {
     text-transform: uppercase;
@@ -1930,24 +1939,6 @@
       }
     }
   }
-  .data-\[state\=checked\]\:translate-x-3 {
-    &[data-state="checked"] {
-      --tw-translate-x: calc(var(--spacing) * 3);
-      translate: var(--tw-translate-x) var(--tw-translate-y);
-    }
-  }
-  .data-\[state\=checked\]\:translate-x-4 {
-    &[data-state="checked"] {
-      --tw-translate-x: calc(var(--spacing) * 4);
-      translate: var(--tw-translate-x) var(--tw-translate-y);
-    }
-  }
-  .data-\[state\=checked\]\:translate-x-5 {
-    &[data-state="checked"] {
-      --tw-translate-x: calc(var(--spacing) * 5);
-      translate: var(--tw-translate-x) var(--tw-translate-y);
-    }
-  }
   .data-\[state\=checked\]\:border-primary {
     &[data-state="checked"] {
       border-color: var(--color-primary);
@@ -1969,12 +1960,6 @@
   .data-\[state\=checked\]\:text-primary-foreground {
     &[data-state="checked"] {
       color: var(--color-primary-foreground);
-    }
-  }
-  .data-\[state\=unchecked\]\:translate-x-0 {
-    &[data-state="unchecked"] {
-      --tw-translate-x: calc(var(--spacing) * 0);
-      translate: var(--tw-translate-x) var(--tw-translate-y);
     }
   }
   .data-\[state\=unchecked\]\:bg-input {

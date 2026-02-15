@@ -1,0 +1,42 @@
+@page "/components/dialog"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Models
+@using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.DialogProvider">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Dialog component shows modal dialogs imperatively via <code>IDialogService.Show&lt;T&gt;()</code>. Add <code>DialogProvider</code> to your layout (already present in the docs), inject <code>IDialogService</code>, and call <code>Show&lt;YourDialogComponent&gt;(title, parameters, options)</code>. Await <code>dialogRef.Result</code> to get the user's response. Your dialog content component receives <code>IDialogInstance</code> via cascading to call <code>Close()</code> or <code>Cancel()</code>.</p>
+        <ComponentPreview Code="@Snippets.DialogEditProfileExample" Language="razor">
+            <DialogEditProfileExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Edit Profile Example" Id="edit-profile">
+        <p class="mb-3">This example demonstrates the full flow: a button opens an "Edit profile" dialog with name and username fields. The dialog uses Shadcn styling with a frosted backdrop, header, and action buttons. The content component (<code>EditProfileDialogExample</code>) receives <code>IDialogInstance</code> and calls <code>Dialog.Close(DialogResult.Ok(data))</code> or <code>Dialog.Cancel()</code>.</p>
+        <DocsSubSection Title="Trigger (page)" Id="trigger">
+            <p class="mb-3">Inject <code>IDialogService</code> and call <code>Show&lt;EditProfileDialogExample&gt;</code> with parameters and options. The <code>DialogOptions</code> control the close button, description text, and max width.</p>
+            <ComponentPreview Code="@Snippets.DialogEditProfileTriggerExample" Language="razor">
+                <DialogEditProfileTriggerExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Dialog content component" Id="content">
+            <p class="mb-3">Your dialog component receives <code>IDialogInstance</code> via <code>[CascadingParameter]</code>. Use <code>Dialog.Close(result)</code> to return data, or <code>Dialog.Cancel()</code> to dismiss without data.</p>
+            <ComponentPreview Code="@Snippets.EditProfileDialogExample" Language="razor">
+                <EditProfileDialogExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Dialog.DialogProvider)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcnblazor component add dialog",
+    };
+}
