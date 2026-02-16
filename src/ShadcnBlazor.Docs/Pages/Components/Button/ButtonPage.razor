@@ -42,10 +42,24 @@
             </ComponentPreview>
         </DocsSubSection>
 
+        <DocsSubSection Title="Spinner" Id="spinner">
+            <p class="mb-3">Render a spinner inside the button to show a loading state. Use <code>LuLoaderCircle</code> with <code>animate-spin</code> for a Tailwind-based spinner. Place it before the text for inline-start or after for inline-end.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonSpinnerExample })">
+                <ButtonSpinnerExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
         <DocsSubSection Title="Interactivity" Id="interactivity">
             <p class="mb-3">Wire up <code>OnClick</code> to handle user actions. The handler receives <code>MouseEventArgs</code>. Use component state to drive dynamic labels or behavior.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonCounterExample })">
                 <ButtonCounterExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Button Group" Id="button-group">
+            <p class="mb-3">Use <code>ButtonGroup</code> to group related buttons with shared borders and styling. Set <code>Variant</code> for Default, Outline, Ghost, or other styles. Use <code>Role="toolbar"</code> for toolbar groups. Buttons inside the group share the group's visual style.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonGroupExample })">
+                <ButtonGroupExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

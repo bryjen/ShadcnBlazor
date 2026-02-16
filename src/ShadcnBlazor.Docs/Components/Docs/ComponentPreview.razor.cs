@@ -8,6 +8,7 @@ public partial class ComponentPreview : ShadcnComponentBase
 {
     [Parameter] 
     public RenderFragment? ChildContent { get; set; }
+    
     [Parameter] 
     public IReadOnlyList<CodeFile>? CodeFiles { get; set; }
 }

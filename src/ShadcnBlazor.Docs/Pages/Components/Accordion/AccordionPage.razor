@@ -9,15 +9,43 @@
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionBasicExample })">
-            <AccordionBasicExample />
+            <div class="w-full px-20">
+                <AccordionBasicExample/>
+            </div>
         </ComponentPreview>
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Multiple" Id="multiple">
+            <p class="mb-3">Set <code>Type="AccordionType.Multiple"</code> to allow multiple items to be open at the same time. Each item can be toggled independently, and all items can be closed.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionMultipleExample })">
+                <div class="w-full px-20">
+                    <AccordionMultipleExample />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
         <DocsSubSection Title="Collapsible" Id="collapsible">
-            <p class="mb-3">Set <code>Collapsible="true"</code> to allow closing the open item so that no item is expanded. By default, one item must remain open when <code>Type</code> is Single.</p>
+            <p class="mb-3">By default, clicking an open item closes it. Set <code>Collapsible="false"</code> to require at least one item to remain open—clicking the open item will have no effect.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionCollapsibleExample })">
-                <AccordionCollapsibleExample />
+                <div class="w-full px-20">
+                    <AccordionCollapsibleExample />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p class="mb-3">Set <code>Disabled="true"</code> on an <code>AccordionItem</code> to prevent it from being expanded or collapsed. Disabled items appear grayed out and do not respond to clicks.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionDisabledExample })">
+                <div class="w-full px-20">
+                    <AccordionDisabledExample />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="With Card" Id="with-card">
+            <p class="mb-3">The Accordion works well inside a <code>Card</code> for FAQ sections, settings panels, or other grouped content.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionCardExample })">
+                <div class="w-full px-20">
+                    <AccordionCardExample />
+                </div>
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

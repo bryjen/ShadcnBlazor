@@ -320,12 +320,6 @@
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
-  .h-9 {
-    height: calc(var(--spacing) * 9);
-  }
-  .h-10 {
-    height: calc(var(--spacing) * 10);
-  }
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
@@ -371,11 +365,20 @@
   .w-full {
     width: 100%;
   }
+  .w-max {
+    width: max-content;
+  }
+  .max-w-full {
+    max-width: 100%;
+  }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
   }
   .min-w-\[8rem\] {
     min-width: 8rem;
+  }
+  .min-w-full {
+    min-width: 100%;
   }
   .flex-1 {
     flex: 1;

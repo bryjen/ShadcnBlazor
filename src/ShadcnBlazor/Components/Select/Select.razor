@@ -1,15 +1,23 @@
 @typeparam T
 @using ShadcnBlazor.Components.Popover
 @using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Shared.Enums
 @inherits ShadcnComponentBase
 
-<Popover Open="@_open" OpenChanged="@(v => _open = v)" CloseOnOutsideClick="true" AnchorOrigin="PopoverPlacement.BottomLeft" TransformOrigin="PopoverPlacement.TopLeft" WidthMode="PopoverWidthMode.Relative">
+<Popover Open="@_open" 
+         OpenChanged="@(v => _open = v)" 
+         CloseOnOutsideClick="true" 
+         AnchorOrigin="PopoverPlacement.BottomLeft" 
+         TransformOrigin="PopoverPlacement.TopLeft" 
+         WidthMode="@(PopoverFitContent ? PopoverWidthMode.Adaptive : PopoverWidthMode.Relative)"
+         AnchorClass="min-w-full max-w-full w-full">
     <Anchor>
         <button type="button"
                 role="combobox"
                 aria-expanded="@_open"
                 aria-haspopup="listbox"
                 aria-disabled="@Disabled"
+                data-size="@Size.ToString().ToLower()"
                 class="@GetTriggerClass()"
                 disabled="@Disabled"
                 @onclick="ToggleOpen"
@@ -21,7 +29,7 @@
         </button>
     </Anchor>
     <ChildContent>
-        <div class="w-[var(--popover-width)] rounded-lg border border-input bg-popover text-popover-foreground shadow-lg p-1 min-w-[8rem]">
+        <div class="@GetContentClass() rounded-lg border border-input bg-popover text-popover-foreground shadow-lg p-1 min-w-[8rem]">
             @if (!string.IsNullOrEmpty(Label))
             {
                 <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">@Label</div>
@@ -41,7 +49,7 @@
                                 <polyline points="20 6 9 17 4 12"/>
                             </svg>
                         }
-                        <span class="truncate">@item.DisplayText</span>
+                        <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@item.DisplayText</span>
                     </button>
                 }
             </div>
@@ -55,15 +63,34 @@
     [Parameter] public EventCallback<T?> ValueChanged { get; set; }
     [Parameter, EditorRequired] public required IEnumerable<SelectOption<T>> Items { get; set; }
     [Parameter] public string Placeholder { get; set; } = "Select...";
+    [Parameter] public Size Size { get; set; } = Size.Md;
+    /// <summary>
+    /// When true, the popover expands to fit the width of its option content instead of matching the trigger width.
+    /// </summary>
+    [Parameter] public bool PopoverFitContent { get; set; }
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public string TriggerClass { get; set; } = string.Empty;
 
     private bool _open;
 
+    private string GetContentClass()
+    {
+        return PopoverFitContent
+            ? "w-max"
+            : "w-[var(--popover-width)]";
+    }
+
     private string GetTriggerClass()
     {
-        var baseClasses = "flex h-9 w-full items-center justify-between gap-2 rounded-md border border-input bg-input/30 px-3 py-2 text-sm shadow-xs transition-colors hover:bg-input/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0";
-        return MergeCss(baseClasses, TriggerClass);
+        var baseClasses = "flex w-full items-center justify-between gap-2 rounded-md border border-input bg-input/30 shadow-xs transition-colors hover:bg-input/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0";
+        var sizeClasses = Size switch
+        {
+            Size.Sm => "h-6 px-1.75 py-0.75 text-[0.6rem]",
+            Size.Md => "h-7 px-2.5 py-1 text-sm",
+            Size.Lg => "h-8 px-2.75 py-1.25 text-base md:text-sm",
+            _ => "h-7 px-2.5 py-1 text-sm",
+        };
+        return MergeCss(baseClasses, sizeClasses, TriggerClass);
     }
 
     private string GetDisplayText()

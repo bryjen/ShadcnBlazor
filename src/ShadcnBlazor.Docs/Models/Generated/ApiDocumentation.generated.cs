@@ -48,17 +48,30 @@ public static class ApiDocumentation
             {
                 Name = "Collapsible",
                 Type = "bool",
-                Summary = @"When , allows the open item to be collapsed so that no item is open.",
+                Summary = @"When , allows the open item to be collapsed so that no item is open.
+            Defaults to true so clicking an open item closes it. Set to false to require at least one item to remain open.",
                 Remarks = @"",
                 Category = "Behavior",
-                DefaultValue = "false",
+                DefaultValue = "true",
             },
             new DocumentedProperty
             {
                 Name = "DefaultValue",
                 Type = "string",
                 Summary = @"The value of the item to open by default when uncontrolled.
-            Must match the Value of an .",
+            Must match the Value of an .
+            Used when  is .",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "DefaultValues",
+                Type = "IEnumerable<string>",
+                Summary = @"The values of items to open by default when uncontrolled.
+            Must match the Value of  components.
+            Used when  is .",
                 Remarks = @"",
                 Category = "Behavior",
                 DefaultValue = "null",
@@ -77,7 +90,8 @@ public static class ApiDocumentation
                 Name = "Value",
                 Type = "string",
                 Summary = @"The value of the currently open item when controlled.
-            Use with  for two-way binding.",
+            Use with  for two-way binding.
+            Used when  is .",
                 Remarks = @"",
                 Category = "Behavior",
                 DefaultValue = "null",
@@ -86,10 +100,32 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"Callback fired when the open item changes. Use with  for two-way binding.",
+                Summary = @"Callback fired when the open item changes. Use with  for two-way binding.
+            Used when  is .",
                 Remarks = @"",
                 Category = "Behavior",
                 DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.String]",
+            },
+            new DocumentedProperty
+            {
+                Name = "Values",
+                Type = "IEnumerable<string>",
+                Summary = @"The values of the currently open items when controlled.
+            Use with  for two-way binding.
+            Used when  is .",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "ValuesChanged",
+                Type = "EventCallback<IEnumerable<string>>",
+                Summary = @"Callback fired when the open items change. Use with  for two-way binding.
+            Used when  is .",
+                Remarks = @"",
+                Category = "Behavior",
+                DefaultValue = "Microsoft.AspNetCore.Components.EventCallback`1[System.Collections.Generic.IEnumerable`1[System.String]]",
             },
         },
         Methods = Array.Empty<DocumentedMethod>(),
@@ -99,7 +135,15 @@ public static class ApiDocumentation
             {
                 Name = "ValueChanged",
                 Type = "EventCallback<string>",
-                Summary = @"Callback fired when the open item changes. Use with  for two-way binding.",
+                Summary = @"Callback fired when the open item changes. Use with  for two-way binding.
+            Used when  is .",
+            },
+            new DocumentedEvent
+            {
+                Name = "ValuesChanged",
+                Type = "EventCallback<IEnumerable<string>>",
+                Summary = @"Callback fired when the open items change. Use with  for two-way binding.
+            Used when  is .",
             },
         },
     };
@@ -172,6 +216,15 @@ public static class ApiDocumentation
             {
                 Name = "Alt",
                 Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "Badge",
+                Type = "RenderFragment",
                 Summary = @"",
                 Remarks = @"",
                 Category = "Common",
@@ -400,6 +453,60 @@ public static class ApiDocumentation
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "ContentClass",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "Footer",
+                Type = "RenderFragment",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "FooterClass",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "Header",
+                Type = "RenderFragment",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "HeaderClass",
+                Type = "string",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "\"\"",
+            },
+            new DocumentedProperty
+            {
+                Name = "Size",
+                Type = "CardSize",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "CardSize.Default",
             },
             new DocumentedProperty
             {
@@ -1129,6 +1236,24 @@ public static class ApiDocumentation
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "null",
+            },
+            new DocumentedProperty
+            {
+                Name = "PopoverFitContent",
+                Type = "bool",
+                Summary = @"When true, the popover expands to fit the width of its option content instead of matching the trigger width.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "default",
+            },
+            new DocumentedProperty
+            {
+                Name = "Size",
+                Type = "Size",
+                Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "default",
             },
             new DocumentedProperty
             {

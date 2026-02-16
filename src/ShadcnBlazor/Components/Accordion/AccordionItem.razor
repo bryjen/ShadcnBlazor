@@ -22,6 +22,12 @@
     public required string Value { get; set; }
 
     /// <summary>
+    /// When true, the item cannot be expanded or collapsed. The trigger appears disabled and does not respond to clicks.
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    /// <summary>
     /// The content of the item, typically an <see cref="AccordionTrigger"/> followed by <see cref="AccordionContent"/>.
     /// </summary>
     [Parameter]
@@ -34,12 +40,12 @@
         if (AccordionContext is null)
             throw new InvalidOperationException("AccordionItem must be used inside an Accordion.");
 
-        _itemContext = new AccordionItemContext(AccordionContext, Value);
+        _itemContext = new AccordionItemContext(AccordionContext, Value, Disabled);
     }
 
     protected override void OnParametersSet()
     {
-        _itemContext = new AccordionItemContext(AccordionContext!, Value);
+        _itemContext = new AccordionItemContext(AccordionContext!, Value, Disabled);
     }
 
     private string GetClass()
@@ -52,13 +58,16 @@
     {
         private readonly Accordion.AccordionContext _accordion;
 
-        public AccordionItemContext(Accordion.AccordionContext accordion, string value)
+        public AccordionItemContext(Accordion.AccordionContext accordion, string value, bool disabled)
         {
             _accordion = accordion;
             Value = value;
+            Disabled = disabled;
         }
 
         public string Value { get; }
+
+        public bool Disabled { get; }
 
         public bool IsOpen => _accordion.IsItemOpen(Value);
 

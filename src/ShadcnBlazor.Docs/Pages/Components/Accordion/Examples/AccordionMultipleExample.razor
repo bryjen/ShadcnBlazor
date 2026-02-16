@@ -1,0 +1,20 @@
+<Accordion Type="AccordionType.Multiple">
+    <AccordionItem Value="item-1">
+        <AccordionTrigger>Can I open multiple items at once?</AccordionTrigger>
+        <AccordionContent>
+            Yes! Set Type="AccordionType.Multiple" on the Accordion component to allow multiple items to be expanded simultaneously. This is useful when you want users to compare content across several sections or keep context from one section visible while reading another. Unlike the default Single mode, opening a new item won't automatically close the one that was previously open.
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value="item-2">
+        <AccordionTrigger>How does the toggle behavior work?</AccordionTrigger>
+        <AccordionContent>
+            Each item can be toggled independently. Clicking an open item will collapse it; clicking a closed item will expand it. There's no limit to how many items can be open at the same time—you could have all of them expanded if that suits your use case. This makes the Multiple mode ideal for FAQ pages, settings panels, or any content where users might want to reference several sections at once.
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value="item-3">
+        <AccordionTrigger>Can I close all items so nothing is expanded?</AccordionTrigger>
+        <AccordionContent>
+            Yes. In Multiple mode, you can expand and collapse any combination of items, including having none open. Users can close each item individually by clicking its trigger, and there's no requirement to keep at least one section expanded. This gives you full flexibility for both the initial state and how users interact with the accordion over time.
+        </AccordionContent>
+    </AccordionItem>
+</Accordion>

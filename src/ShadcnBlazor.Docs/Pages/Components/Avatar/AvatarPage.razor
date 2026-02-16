@@ -20,6 +20,34 @@
                 <AvatarFallbackExample />
             </ComponentPreview>
         </DocsSubSection>
+
+        <DocsSubSection Title="Badge" Id="badge">
+            <p class="mb-3">Use the <code>AvatarBadge</code> component via the <code>Badge</code> parameter to add a status indicator at the bottom right of the avatar. Use the <code>Class</code> parameter to customize colors (e.g. <code>bg-green-600 dark:bg-green-800</code>).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBadgeExample })">
+                <AvatarBadgeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Sizes" Id="sizes">
+            <p class="mb-3">Use the <code>Size</code> parameter to change the size of the avatar: <code>Size.Sm</code>, <code>Size.Md</code>, or <code>Size.Lg</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarSizeExample })">
+                <AvatarSizeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Avatar Group" Id="avatar-group">
+            <p class="mb-3">Use the <code>AvatarGroup</code> component to display multiple avatars with overlapping styling. Set <code>Size</code> to match your avatars and use <code>Class</code> for additional styling (e.g. <code>grayscale</code>).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarGroupExample })">
+                <AvatarGroupExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Dropdown" Id="dropdown">
+            <p class="mb-3">You can use the <code>Avatar</code> component as a trigger for a dropdown menu. Wrap it in <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and add <code>DropdownMenuContent</code> for the menu items.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarDropdownExample })">
+                <AvatarDropdownExample />
+            </ComponentPreview>
+        </DocsSubSection>
     </DocsSection>
 </ComponentDocPage>
 

@@ -17,41 +17,124 @@ namespace ShadcnBlazor.Docs.Models
             FileName = "AccordionBasicExample.razor",
             Contents = @"<Accordion>
     <AccordionItem Value=""item-1"">
-        <AccordionTrigger>Is it accessible?</AccordionTrigger>
+        <AccordionTrigger>What should I pack for a week-long trip?</AccordionTrigger>
         <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern and uses semantic HTML.
+            Start with versatile basics: neutral-colored tops and bottoms that mix and match, one comfortable pair of walking shoes, and layers for changing weather. Pack travel-sized toiletries and consider a capsule wardrobe approach—aim for 5–7 outfits that can be worn in different combinations. Don't forget chargers, adapters for your destination, and any medications. Rolling clothes instead of folding saves space and reduces wrinkles.
         </AccordionContent>
     </AccordionItem>
     <AccordionItem Value=""item-2"">
-        <AccordionTrigger>Is it styled?</AccordionTrigger>
+        <AccordionTrigger>How do I prepare for airport security?</AccordionTrigger>
         <AccordionContent>
-            Yes. It comes with default styles that match the shadcn/ui design system.
+            Arrive at least two hours before domestic flights and three hours for international. Keep liquids under 100ml in a clear, quart-sized bag and place it in an easily accessible pocket. Wear slip-on shoes and minimal jewelry to speed through the metal detector. Have your boarding pass and ID ready before reaching the front of the line. Laptops and large electronics must come out of your bag—consider a TSA-friendly bag to simplify this step.
         </AccordionContent>
     </AccordionItem>
     <AccordionItem Value=""item-3"">
-        <AccordionTrigger>Is it animated?</AccordionTrigger>
+        <AccordionTrigger>What are the best tips for booking accommodations?</AccordionTrigger>
         <AccordionContent>
-            Yes. It uses CSS transitions for smooth expand and collapse animations.
+            Book early for popular destinations and travel dates, but also check cancellation policies in case your plans change. Read recent reviews rather than just the overall rating—look for mentions of cleanliness, noise, and accuracy of the listing. Compare prices across multiple sites and consider staying slightly outside the main tourist area for better value. If you're flexible, last-minute deals can sometimes save 20–30%, especially for hotels with unsold inventory.
         </AccordionContent>
     </AccordionItem>
 </Accordion>",
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Accordion_Examples_AccordionCardExample = new()
+        {
+            FileName = "AccordionCardExample.razor",
+            Contents = @"<Card>
+    <div class=""space-y-2"">
+        <h3 class=""text-lg font-semibold"">Frequently Asked Questions</h3>
+        <Accordion Type=""AccordionType.Multiple"">
+            <AccordionItem Value=""item-1"">
+                <AccordionTrigger>How do I get started with the library?</AccordionTrigger>
+                <AccordionContent>
+                    Install the package via your preferred method—NuGet, dotnet CLI, or the component installer. Add the necessary service registrations in Program.cs and include the CSS in your layout. The getting started guide walks through a minimal setup in under five minutes. If you're migrating from another UI library, we provide migration notes for common scenarios. Our templates also include pre-configured projects you can use as a starting point.
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value=""item-2"">
+                <AccordionTrigger>Can I customize the styling to match my brand?</AccordionTrigger>
+                <AccordionContent>
+                    Yes. All components use Tailwind CSS and expose a Class parameter for additional styling. You can override CSS variables for colors, spacing, and typography to create a consistent theme. The design tokens are documented so you can adjust the look without fighting the framework. For deeper customization, components are built with composition in mind—you can wrap them, extend them, or replace specific parts. Dark mode is supported out of the box via CSS variables.
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value=""item-3"">
+                <AccordionTrigger>Is the component library accessible?</AccordionTrigger>
+                <AccordionContent>
+                    Yes. Components adhere to the WAI-ARIA design patterns and use semantic HTML where appropriate. Keyboard navigation is supported for interactive elements, and focus management is handled for modals, dropdowns, and other overlay components. We recommend testing with screen readers and following the accessibility notes in our documentation. If you encounter an accessibility issue, please report it—we treat a11y as a core requirement, not an afterthought.
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+    </div>
+</Card>",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Accordion_Examples_AccordionCollapsibleExample = new()
         {
             FileName = "AccordionCollapsibleExample.razor",
-            Contents = @"<Accordion Collapsible=""true"">
+            Contents = @"<Accordion Collapsible=""false"">
     <AccordionItem Value=""item-1"">
-        <AccordionTrigger>Can I close all items?</AccordionTrigger>
+        <AccordionTrigger>Can I change or cancel my flight reservation?</AccordionTrigger>
         <AccordionContent>
-            Yes. With Collapsible enabled, clicking the open item again will close it.
+            Most airlines allow changes or cancellations, but fees and policies vary by fare type. Economy basic tickets often have the strictest rules and may only offer a credit rather than a refund. Flexible or premium fares typically allow free changes within a certain window. Always check your confirmation email for the specific terms—some airlines have waived change fees for certain routes or during promotional periods. If your flight is significantly delayed or cancelled, you may be entitled to compensation under consumer protection laws.
         </AccordionContent>
     </AccordionItem>
     <AccordionItem Value=""item-2"">
-        <AccordionTrigger>How does it work?</AccordionTrigger>
+        <AccordionTrigger>What happens if I need to cancel my hotel booking?</AccordionTrigger>
         <AccordionContent>
-            Set Collapsible=""true"" on the Accordion to allow collapsing the currently open item.
+            Cancellation policies depend on the rate you booked. Non-refundable rates are cheaper but typically don't allow cancellations or offer only partial refunds. Flexible or refundable rates usually let you cancel free of charge up to 24–48 hours before check-in. Some hotels and booking platforms offer ""free cancellation"" as a filter when searching. If you have extenuating circumstances—medical emergency, natural disaster—contact the property directly; many will work with you even when the policy is strict. Consider travel insurance for expensive or non-refundable bookings.
+        </AccordionContent>
+    </AccordionItem>
+</Accordion>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Accordion_Examples_AccordionDisabledExample = new()
+        {
+            FileName = "AccordionDisabledExample.razor",
+            Contents = @"<Accordion>
+    <AccordionItem Value=""item-1"">
+        <AccordionTrigger>Paris &amp; Amsterdam (Available)</AccordionTrigger>
+        <AccordionContent>
+            Our most popular combo: start in Paris for the art, architecture, and cuisine, then take the high-speed train to Amsterdam. The journey takes about 3.5 hours. We recommend at least 4 days in Paris and 3 in Amsterdam. Spring and fall offer the best weather and fewer crowds. Book museum tickets in advance—the Louvre and Van Gogh Museum sell out quickly, especially on weekends.
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value=""item-2"" Disabled=""true"">
+        <AccordionTrigger>Antarctica Expedition (Coming 2026)</AccordionTrigger>
+        <AccordionContent>
+            This itinerary is not yet available for booking. We're finalizing partnerships with expedition operators and will open reservations in early 2026. Join our waitlist to be notified when dates are released.
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value=""item-3"">
+        <AccordionTrigger>Tokyo &amp; Kyoto (Available)</AccordionTrigger>
+        <AccordionContent>
+            Experience the contrast between modern Tokyo and traditional Kyoto. The bullet train between the two cities takes about 2.5 hours. Best visited in spring for cherry blossoms or autumn for fall foliage. We suggest 5 days in Tokyo and 4 in Kyoto. Don't miss the Tsukiji outer market, teamLab Borderless, Fushimi Inari shrine, and a traditional tea ceremony. Consider a Japan Rail Pass if you're also visiting other cities.
+        </AccordionContent>
+    </AccordionItem>
+</Accordion>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Accordion_Examples_AccordionMultipleExample = new()
+        {
+            FileName = "AccordionMultipleExample.razor",
+            Contents = @"<Accordion Type=""AccordionType.Multiple"">
+    <AccordionItem Value=""item-1"">
+        <AccordionTrigger>Can I open multiple items at once?</AccordionTrigger>
+        <AccordionContent>
+            Yes! Set Type=""AccordionType.Multiple"" on the Accordion component to allow multiple items to be expanded simultaneously. This is useful when you want users to compare content across several sections or keep context from one section visible while reading another. Unlike the default Single mode, opening a new item won't automatically close the one that was previously open.
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value=""item-2"">
+        <AccordionTrigger>How does the toggle behavior work?</AccordionTrigger>
+        <AccordionContent>
+            Each item can be toggled independently. Clicking an open item will collapse it; clicking a closed item will expand it. There's no limit to how many items can be open at the same time—you could have all of them expanded if that suits your use case. This makes the Multiple mode ideal for FAQ pages, settings panels, or any content where users might want to reference several sections at once.
+        </AccordionContent>
+    </AccordionItem>
+    <AccordionItem Value=""item-3"">
+        <AccordionTrigger>Can I close all items so nothing is expanded?</AccordionTrigger>
+        <AccordionContent>
+            Yes. In Multiple mode, you can expand and collapse any combination of items, including having none open. Users can close each item individually by clicking its trigger, and there's no requirement to keep at least one section expanded. This gives you full flexibility for both the initial state and how users interact with the accordion over time.
         </AccordionContent>
     </AccordionItem>
 </Accordion>",
@@ -84,10 +167,96 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Alert_Examples_AlertWithIconsExample = new()
+        {
+            FileName = "AlertWithIconsExample.razor",
+            Contents = @"<div class=""flex flex-col gap-3"">
+    <Alert Variant=""@AlertVariant.Default"" Class=""flex"">
+        <LuBadgeCheck />
+        <div class=""space-y-1"">
+            <p class=""font-medium"">Payment successful</p>
+            <p class=""text-muted-foreground"">Your payment of $29.99 has been processed. A receipt has been sent to your email address.</p>
+        </div>
+    </Alert>
+    <Alert Variant=""@AlertVariant.Default"" Class=""flex"">
+        <LuInfo />
+        <div class=""space-y-1"">
+            <p class=""font-medium"">New feature available</p>
+            <p class=""text-muted-foreground"">We've added dark mode support. You can enable it in your account settings.</p>
+        </div>
+    </Alert>
+</div>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Alert_Examples_AlertWithInteractivityExample = new()
+        {
+            FileName = "AlertWithInteractivityExample.razor",
+            Contents = @"<Alert Variant=""@AlertVariant.Default"" Class=""relative flex"">
+    <LuBadgeCheck />
+    <div class=""space-y-1"">
+        <p class=""font-medium"">Artifacts generated</p>
+        <p class=""text-muted-foreground"">3 files have been created and are ready to download. Click view to access your generated content.</p>
+    </div>
+    <Button Variant=""@Variant.Outline"" class=""flex-1"">
+        View
+    </Button>
+</Alert>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Alert_Examples_CustomAlertStylingExample = new()
+        {
+            FileName = "CustomAlertStylingExample.razor",
+            Contents = @"<Alert Variant=""@AlertVariant.Default"" Class=""flex group transition-colors duration-300 bg-primary/15 border-primary/50 hover:bg-primary/25 hover:border-primary/75"">
+    <LuInfo class=""w-4 overflow-hidden transition-all duration-300 group-hover:w-0 group-hover:mr-0"" />
+    <div class=""space-y-1"">
+        <p class=""font-medium"">New feature available</p>
+        <p class=""text-muted-foreground transition-all duration-300 group-hover:text-foreground/75"">We've added dark mode support. You can enable it in your account settings.</p>
+    </div>
+</Alert>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Avatar_Examples_AvatarBadgeExample = new()
+        {
+            FileName = "AvatarBadgeExample.razor",
+            Contents = @"<Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" Badge=""@BadgeContent"" />
+
+@code {
+    private static RenderFragment BadgeContent => __builder =>
+    {
+        <AvatarBadge Class=""bg-green-600 dark:bg-green-800"" />
+    };
+}",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Avatar_Examples_AvatarBasicExample = new()
         {
             FileName = "AvatarBasicExample.razor",
             Contents = @"<Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" />",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Avatar_Examples_AvatarDropdownExample = new()
+        {
+            FileName = "AvatarDropdownExample.razor",
+            Contents = @"<DropdownMenu>
+    <DropdownMenuTrigger AsChild=""true"">
+        <Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" Class=""cursor-pointer"" />
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Log out</DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>",
             Language = "razor"
         };
 
@@ -101,10 +270,60 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Avatar_Examples_AvatarGroupExample = new()
+        {
+            FileName = "AvatarGroupExample.razor",
+            Contents = @"<AvatarGroup Size=""@Size.Md"" Class=""grayscale"">
+    <Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" />
+    <Avatar Src=""https://i.pravatar.cc/64?img=11"" Alt=""User 1"" />
+    <Avatar Src=""https://i.pravatar.cc/64?img=12"" Alt=""User 2"" />
+</AvatarGroup>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Avatar_Examples_AvatarSizeExample = new()
+        {
+            FileName = "AvatarSizeExample.razor",
+            Contents = @"<div class=""flex items-center gap-4"">
+    <Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" Size=""@Size.Sm"" />
+    <Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" Size=""@Size.Md"" />
+    <Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" Size=""@Size.Lg"" />
+</div>",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Badge_Examples_BadgeBasicExample = new()
         {
             FileName = "BadgeBasicExample.razor",
-            Contents = @"<Badge>Badge</Badge>",
+            Contents = @"<div class=""flex flex-wrap gap-2"">
+    <Badge>Badge</Badge>
+    <Badge Variant=""@Variant.Secondary"">Secondary</Badge>
+    <Badge Variant=""@Variant.Destructive"">Destructive</Badge>
+    <Badge Variant=""@Variant.Outline"">Outline</Badge>
+</div>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Badge_Examples_BadgeCustomColorsExample = new()
+        {
+            FileName = "BadgeCustomColorsExample.razor",
+            Contents = @"<div class=""flex flex-wrap gap-2"">
+    <Badge Variant=""@Variant.Default"" Class=""bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 border-transparent"">Blue</Badge>
+    <Badge Variant=""@Variant.Default"" Class=""bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 border-transparent"">Green</Badge>
+    <Badge Variant=""@Variant.Default"" Class=""bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-300 border-transparent"">Sky</Badge>
+    <Badge Variant=""@Variant.Default"" Class=""bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300 border-transparent"">Purple</Badge>
+    <Badge Variant=""@Variant.Default"" Class=""bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 border-transparent"">Red</Badge>
+</div>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Badge_Examples_BadgeLinkExample = new()
+        {
+            FileName = "BadgeLinkExample.razor",
+            Contents = @"<BadgeLink Href=""#"" Variant=""@Variant.Link"">
+    <LuArrowUpRight />
+    Open Link
+</BadgeLink>",
             Language = "razor"
         };
 
@@ -114,8 +333,41 @@ namespace ShadcnBlazor.Docs.Models
             Contents = @"<div class=""flex flex-wrap gap-2"">
     <Badge Variant=""@Variant.Default"">Default</Badge>
     <Badge Variant=""@Variant.Secondary"">Secondary</Badge>
-    <Badge Variant=""@Variant.Outline"">Outline</Badge>
     <Badge Variant=""@Variant.Destructive"">Destructive</Badge>
+    <Badge Variant=""@Variant.Outline"">Outline</Badge>
+    <Badge Variant=""@Variant.Ghost"">Ghost</Badge>
+</div>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Badge_Examples_BadgeWithIconExample = new()
+        {
+            FileName = "BadgeWithIconExample.razor",
+            Contents = @"<div class=""flex flex-wrap gap-2"">
+    <Badge Variant=""@Variant.Default"">
+        <LuBadgeCheck />
+        Verified
+    </Badge>
+    <Badge Variant=""@Variant.Secondary"">
+        <LuBookmark />
+        Bookmark
+    </Badge>
+</div>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Badge_Examples_BadgeWithSpinnerExample = new()
+        {
+            FileName = "BadgeWithSpinnerExample.razor",
+            Contents = @"<div class=""flex flex-wrap gap-2"">
+    <Badge Variant=""@Variant.Destructive"">
+        <LuLoaderCircle class=""animate-spin"" />
+        Deleting
+    </Badge>
+    <Badge Variant=""@Variant.Default"">
+        <LuLoaderCircle class=""animate-spin"" />
+        Generating
+    </Badge>
 </div>",
             Language = "razor"
         };
@@ -161,6 +413,28 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Button_Examples_ButtonGroupExample = new()
+        {
+            FileName = "ButtonGroupExample.razor",
+            Contents = @"<div class=""flex flex-col gap-4"">
+    <ButtonGroup Variant=""@Variant.Outline"">
+        <Button>One</Button>
+        <Button>Two</Button>
+        <Button>Three</Button>
+    </ButtonGroup>
+    <ButtonGroup Variant=""@Variant.Default"">
+        <Button><LuChevronLeft /></Button>
+        <Button><LuChevronRight /></Button>
+    </ButtonGroup>
+    <ButtonGroup Role=""toolbar"" Class=""w-fit"">
+        <div class=""px-4 flex items-center text-sm"">0</div>
+        <Button Size=""@Size.Sm"" Class=""px-2.5""><LuMinus /></Button>
+        <Button Size=""@Size.Sm"" Class=""px-2.5""><LuPlus /></Button>
+    </ButtonGroup>
+</div>",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Button_Examples_ButtonIconExample = new()
         {
             FileName = "ButtonIconExample.razor",
@@ -184,6 +458,22 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Button_Examples_ButtonSpinnerExample = new()
+        {
+            FileName = "ButtonSpinnerExample.razor",
+            Contents = @"<div class=""flex flex-wrap gap-4"">
+    <Button Variant=""@Variant.Default"" Disabled=""true"">
+        <LuLoaderCircle class=""animate-spin size-4 shrink-0"" />
+        Generating
+    </Button>
+    <Button Variant=""@Variant.Outline"" Disabled=""true"">
+        Downloading
+        <LuLoaderCircle class=""animate-spin size-4 shrink-0"" />
+    </Button>
+</div>",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Button_Examples_ButtonVariantExample = new()
         {
             FileName = "ButtonVariantExample.razor",
@@ -201,11 +491,124 @@ namespace ShadcnBlazor.Docs.Models
         public static readonly CodeFile Components_Card_Examples_CardBasicExample = new()
         {
             FileName = "CardBasicExample.razor",
-            Contents = @"<Card>
-    <div class=""space-y-2"">
-        <h3 class=""text-lg font-semibold"">Card Title</h3>
-        <p class=""text-sm text-muted-foreground"">Card content goes here. Use the Card component as a container for related content with optional header, body, and footer sections.</p>
+            Contents = @"<Card Class=""w-[350px]"">
+    <Header>
+        <h3 class=""text-lg font-semibold"">Login to your account</h3>
+        <p class=""text-sm text-muted-foreground"">Enter your email below to login to your account</p>
+    </Header>
+    <ChildContent>
+        <div class=""space-y-4"">
+            <div class=""space-y-2"">
+                <label for=""email"" class=""text-sm font-medium"">Email</label>
+                <Input id=""email"" Type=""email"" Placeholder=""m@example.com"" />
+            </div>
+            <div class=""space-y-2"">
+                <div class=""flex items-center justify-between"">
+                    <label for=""password"" class=""text-sm font-medium"">Password</label>
+                    <Button Variant=""@Variant.Link"" Size=""@Size.Sm"" Class=""px-0 text-xs"">Forgot your password?</Button>
+                </div>
+                <Input id=""password"" Type=""password"" />
+            </div>
+        </div>
+    </ChildContent>
+    <Footer>
+        <div class=""flex flex-col gap-2 w-full"">
+            <Button Variant=""@Variant.Default"" Class=""w-full"">Login</Button>
+            <Button Variant=""@Variant.Outline"" Class=""w-full"">Login with Google</Button>
+        </div>
+    </Footer>
+</Card>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Card_Examples_CardHeaderFooterExample = new()
+        {
+            FileName = "CardHeaderFooterExample.razor",
+            Contents = @"<div class=""flex flex-col gap-6 w-fit"">
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">HeaderClass=""bg-muted/50""</p>
+        <Card Class=""w-[350px]"" HeaderClass=""bg-muted/50"">
+            <Header>
+                <h3 class=""text-lg font-semibold"">Custom header background</h3>
+                <p class=""text-sm text-muted-foreground"">The header uses a muted background.</p>
+            </Header>
+            <ChildContent>
+                <p class=""text-sm text-muted-foreground"">Default content padding.</p>
+            </ChildContent>
+            <Footer>
+                <Button Variant=""@Variant.Outline"" Size=""@Size.Sm"">Action</Button>
+            </Footer>
+        </Card>
     </div>
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">ContentClass=""p-0""</p>
+        <Card Class=""w-[350px]"" ContentClass=""p-0"">
+            <Header>
+                <h3 class=""text-lg font-semibold"">Edge-to-edge content</h3>
+                <p class=""text-sm text-muted-foreground"">Content has no padding.</p>
+            </Header>
+            <ChildContent>
+                <div class=""h-24 bg-muted/30 flex items-center justify-center text-sm text-muted-foreground"">Full-width area</div>
+            </ChildContent>
+            <Footer>
+                <Button Variant=""@Variant.Default"" Size=""@Size.Sm"">Action</Button>
+            </Footer>
+        </Card>
+    </div>
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">FooterClass=""justify-between""</p>
+        <Card Class=""w-[350px]"" FooterClass=""justify-between"">
+            <Header>
+                <h3 class=""text-lg font-semibold"">Footer alignment</h3>
+                <p class=""text-sm text-muted-foreground"">Footer content is spread apart.</p>
+            </Header>
+            <ChildContent>
+                <p class=""text-sm text-muted-foreground"">Card content.</p>
+            </ChildContent>
+            <Footer>
+                <Button Variant=""@Variant.Link"" Size=""@Size.Sm"">Cancel</Button>
+                <Button Variant=""@Variant.Default"" Size=""@Size.Sm"">Save</Button>
+            </Footer>
+        </Card>
+    </div>
+</div>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Card_Examples_CardImageExample = new()
+        {
+            FileName = "CardImageExample.razor",
+            Contents = @"<Card Class=""w-[350px]"" HeaderClass=""p-0"">
+    <Header>
+        <img src=""https://placehold.co/400x200"" alt=""Event cover"" class=""aspect-video w-full object-cover rounded-t-xl"" />
+    </Header>
+    <ChildContent>
+        <div class=""flex items-start justify-between gap-2"">
+            <div>
+                <h3 class=""text-lg font-semibold"">Design systems meetup</h3>
+                <p class=""text-sm text-muted-foreground"">A practical talk on component APIs, accessibility, and shipping faster.</p>
+            </div>
+            <Badge Variant=""@Variant.Secondary"">Featured</Badge>
+        </div>
+    </ChildContent>
+    <Footer>
+        <Button Variant=""@Variant.Default"" Class=""w-full"">View Event</Button>
+    </Footer>
+</Card>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Card_Examples_CardSizeExample = new()
+        {
+            FileName = "CardSizeExample.razor",
+            Contents = @"<Card Size=""@CardSize.Sm"" Class=""w-[350px]"">
+    <Header>
+        <h3 class=""text-lg font-semibold"">Small Card</h3>
+        <p class=""text-sm text-muted-foreground"">This card uses the small size variant.</p>
+    </Header>
+    <ChildContent>
+        <p class=""text-sm text-muted-foreground"">The card component supports a size prop that can be set to ""sm"" for a more compact appearance.</p>
+    </ChildContent>
 </Card>",
             Language = "razor"
         };
@@ -214,17 +617,13 @@ namespace ShadcnBlazor.Docs.Models
         {
             FileName = "CardVariantExample.razor",
             Contents = @"<div class=""flex flex-col gap-4 w-fit"">
-    <Card Variant=""@CardVariant.Default"" Class=""w-full"">
-        <div class=""space-y-2"">
-            <h3 class=""text-lg font-semibold"">Default</h3>
-            <p class=""text-sm text-muted-foreground"">Uses the card background color.</p>
-        </div>
+    <Card Variant=""@CardVariant.Default"" Class=""w-[350px] gap-2"">
+        <h3 class=""text-lg font-semibold"">Default</h3>
+        <p class=""text-sm text-muted-foreground"">Uses the card background color.</p>
     </Card>
-    <Card Variant=""@CardVariant.Outline"" Class=""w-fit"">
-        <div class=""space-y-2"">
-            <h3 class=""text-lg font-semibold"">Outline</h3>
-            <p class=""text-sm text-muted-foreground"">Transparent background with border.</p>
-        </div>
+    <Card Variant=""@CardVariant.Outline"" Class=""w-[350px] gap-2"">
+        <h3 class=""text-lg font-semibold"">Outline</h3>
+        <p class=""text-sm text-muted-foreground"">Transparent background with border.</p>
     </Card>
 </div>",
             Language = "razor"

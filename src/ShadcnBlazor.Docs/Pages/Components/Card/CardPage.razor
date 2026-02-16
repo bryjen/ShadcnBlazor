@@ -6,15 +6,40 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallOptions="@InstallOptions"
                  ApiDoc="@ApiDocumentation.Card">
-    
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Card component is a container for content. Use <code>ChildContent</code> to render your content—typically structured with header, body, and footer sections using divs or other layout components.</p>
+        <p class="mb-3">Displays a card with header, content, and footer. Use <code>Header</code>, <code>ChildContent</code>, and <code>Footer</code> child content to compose the card. When <code>Header</code> or <code>Footer</code> are provided, they render as distinct sections with borders and consistent padding.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardBasicExample })">
             <CardBasicExample />
         </ComponentPreview>
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Header and Footer" Id="header-footer">
+            <p class="mb-3">
+                <code>Header</code> and <code>Footer</code> are optional child content slots. When provided, they render as distinct sections above and below the main content, each with a border separator and padding derived from the card's <code>Size</code>.
+            </p>
+            <p class="mb-3">
+                Customize each section with <code>HeaderClass</code>, <code>ContentClass</code>, and <code>FooterClass</code>. These apply only when the corresponding slot is used. For example, <code>HeaderClass="p-0"</code> removes header padding for a full-bleed image, and <code>ContentClass="p-0"</code> removes content padding for edge-to-edge content.
+            </p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardHeaderFooterExample })">
+                <CardHeaderFooterExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Size" Id="size">
+            <p class="mb-3">Use the <code>Size</code> parameter set to <code>CardSize.Sm</code> for a more compact card. The small size variant uses smaller spacing.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardSizeExample })">
+                <CardSizeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Image" Id="image">
+            <p class="mb-3">Add an image in the <code>Header</code> slot to create a card with an image. Use <code>HeaderClass="p-0"</code> for a full-bleed image.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardImageExample })">
+                <CardImageExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
         <DocsSubSection Title="Variants" Id="variants">
             <p class="mb-3">Use the <code>Variant</code> parameter to switch between Default (card background) and Outline (transparent with border).</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardVariantExample })">
