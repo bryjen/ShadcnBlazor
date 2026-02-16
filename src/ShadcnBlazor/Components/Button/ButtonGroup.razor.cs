@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Button;
 

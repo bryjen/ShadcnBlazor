@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 using TailwindMerge;
 
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
@@ -11,7 +10,6 @@ namespace ShadcnBlazor.Components.Checkbox;
 /// <summary>
 /// Checkbox input for boolean or multi-select form values.
 /// </summary>
-[ComponentMetadata(Name = nameof(Checkbox), Description = "Checkbox input for boolean or multi-select form values.", Dependencies = [])]
 public partial class Checkbox : ShadcnComponentBase
 {
     /// <summary>

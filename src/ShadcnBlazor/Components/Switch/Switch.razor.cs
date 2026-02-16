@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Switch;
 
 /// <summary>
 /// Toggle switch for boolean on/off values.
 /// </summary>
-[ComponentMetadata(Name = nameof(Switch), Description = "Toggle switch for boolean on/off values.", Dependencies = [])]
 public partial class Switch : ShadcnComponentBase
 {
     /// <summary>

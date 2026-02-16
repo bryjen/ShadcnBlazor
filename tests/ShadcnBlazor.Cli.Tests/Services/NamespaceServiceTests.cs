@@ -56,33 +56,33 @@ public class NamespaceServiceTests : TestBase
     [Test]
     public void ReplaceNamespaceInCs_ReplacesFileScopedNamespace()
     {
-        var content = "using System;\nnamespace ShadcnBlazor.Shared;\npublic class Foo { }";
-        var newNamespace = "MyApp.Shared";
-        Console.WriteLine($"  Input: file-scoped namespace ShadcnBlazor.Shared");
+        var content = "using System;\nnamespace ShadcnBlazor.Components.Shared;\npublic class Foo { }";
+        var newNamespace = "MyApp.Components.Core.Shared";
+        Console.WriteLine($"  Input: file-scoped namespace ShadcnBlazor.Components.Shared");
         Console.WriteLine($"  newNamespace: {newNamespace}");
 
         var result = _sut.ReplaceNamespaceInCs(content, newNamespace);
 
         Console.WriteLine($"  Actual result: {result.Replace("\n", " | ")}");
-        Console.WriteLine($"  Expected: 'namespace {newNamespace};', no 'ShadcnBlazor.Shared'");
-        Assert.That(result, Does.Contain("namespace MyApp.Shared;"));
-        Assert.That(result, Does.Not.Contain("namespace ShadcnBlazor.Shared;"));
+        Console.WriteLine($"  Expected: 'namespace {newNamespace};', no 'ShadcnBlazor.Components.Shared'");
+        Assert.That(result, Does.Contain("namespace MyApp.Components.Core.Shared;"));
+        Assert.That(result, Does.Not.Contain("namespace ShadcnBlazor.Components.Shared;"));
     }
 
     [Test]
     public void ReplaceNamespaceInCs_ReplacesBlockScopedNamespace()
     {
-        var content = "using System;\nnamespace ShadcnBlazor.Shared\n{\n    public class Foo { }\n}";
-        var newNamespace = "MyApp.Shared";
-        Console.WriteLine($"  Input: block-scoped namespace ShadcnBlazor.Shared");
+        var content = "using System;\nnamespace ShadcnBlazor.Components.Shared\n{\n    public class Foo { }\n}";
+        var newNamespace = "MyApp.Components.Core.Shared";
+        Console.WriteLine($"  Input: block-scoped namespace ShadcnBlazor.Components.Shared");
         Console.WriteLine($"  newNamespace: {newNamespace}");
 
         var result = _sut.ReplaceNamespaceInCs(content, newNamespace);
 
         Console.WriteLine($"  Actual result: {result.Replace("\n", " | ")}");
-        Console.WriteLine($"  Expected: 'namespace {newNamespace} {{', no 'ShadcnBlazor.Shared'");
-        Assert.That(result, Does.Contain("namespace MyApp.Shared {"));
-        Assert.That(result, Does.Not.Contain("namespace ShadcnBlazor.Shared"));
+        Console.WriteLine($"  Expected: 'namespace {newNamespace} {{', no 'ShadcnBlazor.Components.Shared'");
+        Assert.That(result, Does.Contain("namespace MyApp.Components.Core.Shared {"));
+        Assert.That(result, Does.Not.Contain("namespace ShadcnBlazor.Components.Shared"));
     }
 
     [Test]

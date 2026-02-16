@@ -1,7 +1,7 @@
 @page "/components/dropdownmenu"
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.DropdownMenu.Examples
-@using ShadcnBlazor.Shared.Attributes
+@using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
                  InstallOptions="@InstallOptions"
@@ -27,8 +27,7 @@
 </ComponentDocPage>
 
 @code {
-    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.DropdownMenu.DropdownMenu)
-        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("DropdownMenu");
 
     private static readonly Dictionary<string, string> InstallOptions = new()
     {

@@ -1,13 +1,11 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Button;
 
-[ComponentMetadata(Name = nameof(Button), Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", Dependencies = [])]
 public partial class Button : ShadcnComponentBase
 {
     /// <summary>

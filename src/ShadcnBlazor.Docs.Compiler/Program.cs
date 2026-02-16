@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
 
 const string SnippetsFileName = "Snippets.generated.cs";
 const string ApiDocFileName = "ApiDocumentation.generated.cs";
@@ -75,10 +74,33 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             .ToDictionary(m => m.Attribute("name")!.Value, m => m);
     }
 
+    var documentedComponentFullNames = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "ShadcnBlazor.Components.Accordion.Accordion",
+        "ShadcnBlazor.Components.Alert.Alert",
+        "ShadcnBlazor.Components.Avatar.Avatar",
+        "ShadcnBlazor.Components.Badge.Badge",
+        "ShadcnBlazor.Components.Button.Button",
+        "ShadcnBlazor.Components.Card.Card",
+        "ShadcnBlazor.Components.Checkbox.Checkbox",
+        "ShadcnBlazor.Components.Textarea.ComposableTextArea",
+        "ShadcnBlazor.Components.Dialog.DialogProvider",
+        "ShadcnBlazor.Components.DropdownMenu.DropdownMenu",
+        "ShadcnBlazor.Components.Input.Input",
+        "ShadcnBlazor.Components.Popover.Popover",
+        "ShadcnBlazor.Components.Radio.Radio",
+        "ShadcnBlazor.Components.Select.Select`1",
+        "ShadcnBlazor.Components.Skeleton.Skeleton",
+        "ShadcnBlazor.Components.Slider.Slider",
+        "ShadcnBlazor.Components.Switch.Switch",
+        "ShadcnBlazor.Components.Textarea.Textarea",
+        "ShadcnBlazor.Components.Tooltip.Tooltip",
+    };
+
     var componentTypes = assembly.GetTypes()
         .Where(t => t.IsPublic && !t.IsAbstract)
         .Where(t => typeof(ComponentBase).IsAssignableFrom(t))
-        .Where(t => t.GetCustomAttribute<ComponentMetadataAttribute>() != null)
+        .Where(t => documentedComponentFullNames.Contains(t.FullName ?? ""))
         .OrderBy(t => t.Name)
         .ToList();
 
@@ -105,9 +127,6 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
 
         var typeXmlKey = $"T:{type.FullName}";
         var typeSummary = GetXmlElement(xmlDocs, typeXmlKey, "summary");
-        var metadata = type.GetCustomAttribute<ComponentMetadataAttribute>();
-        if (string.IsNullOrWhiteSpace(typeSummary) && metadata != null)
-            typeSummary = metadata.Description;
 
         var safeName = GetSafeTypeIdentifier(type.Name);
         output.AppendLine($"    public static readonly DocumentedType {safeName} = new()");

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared.Enums;
 
 #pragma warning disable CS8524
 
@@ -9,7 +8,6 @@ namespace ShadcnBlazor.Components.Radio;
 /// <summary>
 /// Radio option for single selection within a RadioGroup.
 /// </summary>
-[ComponentMetadata(Name = nameof(Radio), Description = "Radio and RadioCard options for single selection within a RadioGroup.", Dependencies = [])]
 public partial class Radio : RadioSelectableComponentBase
 {
     /// <summary>

@@ -25,7 +25,6 @@
     <ItemGroup>
         <!-- For CLI tool to extract components -->
         <None Include="Components/**/*" CopyToOutputDirectory="Always" />
-        <None Include="Shared/**/*" CopyToOutputDirectory="Always" />
         <None Include="_Imports.razor" CopyToOutputDirectory="Always" />
     </ItemGroup>
 

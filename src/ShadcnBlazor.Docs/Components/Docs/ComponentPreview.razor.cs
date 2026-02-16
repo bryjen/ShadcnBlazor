@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Docs.Components.Docs.CodeBlock;
-using ShadcnBlazor.Shared;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Docs.Components.Docs;
 

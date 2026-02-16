@@ -753,7 +753,7 @@ namespace ShadcnBlazor.Docs.Models
         {
             FileName = "DeclarativeDialogExample.razor",
             Contents = @"@using ShadcnBlazor.Components.Button
-@using ShadcnBlazor.Shared.Enums
+@using ShadcnBlazor.Components.Shared.Enums
 
 <DialogRoot>
     <form>
@@ -811,7 +811,7 @@ namespace ShadcnBlazor.Docs.Models
 @using ShadcnBlazor.Components.Dialog.Models
 @using ShadcnBlazor.Components.Dialog.Services
 @using ShadcnBlazor.Components.Button
-@using ShadcnBlazor.Shared.Enums
+@using ShadcnBlazor.Components.Shared.Enums
 
 <Button Variant=""@Variant.Default"" OnClick=""OpenDialog"">Open Dialog</Button>
 

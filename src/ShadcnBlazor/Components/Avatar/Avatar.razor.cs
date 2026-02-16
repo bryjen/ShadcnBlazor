@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Avatar;
 
-[ComponentMetadata(Name = nameof(Avatar), Description = "Displays image avatars with text fallback for missing or loading images.", Dependencies = [])]
 public partial class Avatar : ShadcnComponentBase
 {
     [Parameter] public string? Src { get; set; }

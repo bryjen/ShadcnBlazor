@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 
 namespace ShadcnBlazor.Docs.Components.Samples.AiChat;
 

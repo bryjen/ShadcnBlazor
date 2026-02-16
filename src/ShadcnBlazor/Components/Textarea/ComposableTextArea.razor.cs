@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Textarea;
 
 /// <summary>
 /// Multi-line text input with optional header and footer slots.
 /// </summary>
-[ComponentMetadata(Name = nameof(ComposableTextArea), Description = "Multi-line text input with optional header and footer slots.", Dependencies = [])]
 public partial class ComposableTextArea : ShadcnComponentBase
 {
     /// <summary>

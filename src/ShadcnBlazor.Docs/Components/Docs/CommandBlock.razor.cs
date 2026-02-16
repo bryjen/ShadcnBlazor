@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using ShadcnBlazor.Shared;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Docs.Components.Docs;
 

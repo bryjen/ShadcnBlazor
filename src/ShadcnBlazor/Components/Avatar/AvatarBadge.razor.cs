@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Avatar;
 

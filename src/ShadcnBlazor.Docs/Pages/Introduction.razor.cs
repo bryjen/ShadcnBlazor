@@ -6,9 +6,7 @@ public partial class Introduction : ComponentBase
 {
     private const string ExampleSharedDirectoryAscii = 
 """
-Shared/
-├── Attributes/
-│   └── ComponentMetadataAttribute.cs
+Components/Core/Shared/
 ├── Enums/
 │   ├── Size.cs
 │   └── Variant.cs

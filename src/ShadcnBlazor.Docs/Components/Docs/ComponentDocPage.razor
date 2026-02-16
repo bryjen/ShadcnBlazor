@@ -1,6 +1,5 @@
 @using ShadcnBlazor.Docs.Models
 @using ShadcnBlazor.Docs.Services
-@using ShadcnBlazor.Shared.Attributes
 
 @inject PageTocService TocService
 
@@ -32,7 +31,7 @@
 
 @code {
     [Parameter, EditorRequired]
-    public ComponentMetadataAttribute Metadata { get; set; } = null!;
+    public ComponentMetadata Metadata { get; set; } = null!;
 
     [Parameter, EditorRequired]
     public IReadOnlyDictionary<string, string> InstallOptions { get; set; } = null!;

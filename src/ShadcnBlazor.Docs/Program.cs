@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.Popover.Services;
-using ShadcnBlazor.Shared.Services;
+using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Docs.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
-using ShadcnBlazor.Shared.Services.Extensions;
+using ShadcnBlazor.Components.Shared.Services.Extensions;
 using TailwindMerge.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

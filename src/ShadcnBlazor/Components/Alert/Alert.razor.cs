@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Components.Shared;
 using TailwindMerge;
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
 namespace ShadcnBlazor.Components.Alert;
 
-[ComponentMetadata(Name = nameof(Alert), Description = "Displays important messages or notifications with variant styling (default, destructive).", Dependencies = [])]
 public partial class Alert : ShadcnComponentBase
 {
     [Parameter]

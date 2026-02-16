@@ -5,7 +5,6 @@ using ShadcnBlazor.Cli.Models;
 using ShadcnBlazor.Cli.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
-using static ShadcnBlazor.Cli.PromptUtils;
 
 namespace ShadcnBlazor.Cli.Commands.Components;
 
@@ -15,8 +14,7 @@ public class AddCommand(
     ProjectValidator projectValidator,
     ProjectNamespaceService projectNamespaceService,
     ComponentService componentService,
-    SetupDetectionService setupDetectionService,
-    FirstTimeSetupService firstTimeSetupService,
+    SharedInfrastructureService sharedInfrastructureService,
     NamespaceService namespaceService,
     UsingService usingService,
     IAnsiConsole console)
@@ -39,6 +37,11 @@ public class AddCommand(
         [Description("Mutes output.")]
         [DefaultValue("false")]
         public bool Silent { get; init; } = false;
+
+        [CommandOption("--overwrite")]
+        [Description("Overwrite if component already exists (no prompt).")]
+        [DefaultValue("false")]
+        public bool Overwrite { get; init; } = false;
     }
 
     public override int Execute(CommandContext context, AddSettings settings, CancellationToken cancellation)
@@ -58,31 +61,15 @@ public class AddCommand(
                 RootNamespace = rootNamespace
             };
 
-            if (setupDetectionService.CheckIfFirstTimeSetup(cwdInfo, csprojFile))
-            {
-                var integrity = setupDetectionService.CheckSetupIntegrity(cwdInfo, csprojFile);
-                var shouldProceed = integrity == SetupStatus.Partial
-                    ? PromptRepairSetup() == ConfirmationResponse.Yes
-                    : PromptFirstTimeSetup() == ConfirmationResponse.Yes;
-
-                if (!shouldProceed)
-                {
-                    console.MarkupLine("Component addition cancelled.");
-                    return 1;
-                }
-
-                firstTimeSetupService.RunFirstTimeSetup(rootNamespace, cwdInfo, blazorProjectType, csprojFile);
-            }
-
-            var componentsWithMetadata = componentService.LoadComponents();
-            var componentToAdd = componentService.FindComponent(componentsWithMetadata, settings.Name);
+            var components = componentService.LoadComponents();
+            var componentToAdd = componentService.FindComponent(components, settings.Name);
 
             var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
-                outputProjectConfig, componentsWithMetadata, componentToAdd.ComponentMetadata.Name.Trim().ToLower());
+                outputProjectConfig, components, componentToAdd.Name.Trim().ToLower());
 
             var srcDirInfo = componentService.GetComponentsSourceDirectory();
 
-            AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, settings.Silent);
+            AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite);
 
             return 0;
         }
@@ -99,7 +86,10 @@ public class AddCommand(
         DirectoryInfo cwdInfo,
         DirectoryInfo srcDirInfo,
         ComponentDependencyTree componentDependencyTree,
-        bool silent)
+        BlazorProjectType blazorProjectType,
+        FileInfo csprojFile,
+        bool silent,
+        bool overwrite = false)
     {
         void AddComponentWithDependenciesCore(ComponentDependencyNode componentDependencyNode)
         {
@@ -108,7 +98,7 @@ public class AddCommand(
                 AddComponentWithDependenciesCore(dependency);
             }
 
-            AddComponent(outputProjectConfig, cwdInfo, srcDirInfo, componentDependencyNode.Component, silent);
+            AddComponent(outputProjectConfig, cwdInfo, srcDirInfo, componentDependencyNode.Component, blazorProjectType, csprojFile, silent, overwrite);
         }
 
         AddComponentWithDependenciesCore(componentDependencyTree.RootNode);
@@ -118,39 +108,49 @@ public class AddCommand(
         OutputProjectConfig outputProjectConfig,
         DirectoryInfo cwdInfo,
         DirectoryInfo srcDirInfo,
-        ComponentData componentData,
-        bool silent)
+        ComponentDefinition definition,
+        BlazorProjectType blazorProjectType,
+        FileInfo csprojFile,
+        bool silent,
+        bool overwrite = false)
     {
-        var destinationDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, outputProjectConfig.ComponentsOutputDir, componentData.ComponentMetadata.Name));
+        var destinationDir = new DirectoryInfo(Path.Join(cwdInfo.FullName, outputProjectConfig.ComponentsOutputDir, definition.Name));
         if (destinationDir.Exists)
         {
-            if (silent)
+            if (silent && !overwrite)
             {
-                console.MarkupLine($"[yellow]Skipping {componentData.ComponentMetadata.Name} (already exists).[/]");
+                console.MarkupLine($"[yellow]Skipping {definition.Name} (already exists).[/]");
                 return;
             }
 
-            if (PromptOverwriteComponent(componentData.ComponentMetadata.Name) == ConfirmationResponse.No)
+            if (!overwrite && PromptUtils.PromptOverwriteComponent(definition.Name) == ConfirmationResponse.No)
             {
-                console.MarkupLine($"[yellow]Skipped {componentData.ComponentMetadata.Name}.[/]");
+                console.MarkupLine($"[yellow]Skipped {definition.Name}.[/]");
                 return;
             }
 
             destinationDir.Delete(recursive: true);
         }
 
-        var sourceDir = new DirectoryInfo(Path.Join(srcDirInfo.FullName, componentData.ComponentMetadata.Name));
+        var sourceDir = new DirectoryInfo(Path.Join(srcDirInfo.FullName, definition.Name));
         if (!sourceDir.Exists)
         {
-            throw new ComponentSourceNotFoundException(componentData.ComponentMetadata.Name);
+            throw new ComponentSourceNotFoundException(definition.Name);
         }
 
+        console.MarkupLine($"Adding [green]{definition.Name}[/]...");
         fileSystemService.CopyDirectory(sourceDir.FullName, destinationDir.FullName);
 
-        var targetNamespace = BuildTargetNamespace(outputProjectConfig, componentData.ComponentMetadata.Name);
+        var targetNamespace = BuildTargetNamespace(outputProjectConfig, definition.Name);
         UpdateNamespacesInComponent(destinationDir, targetNamespace, outputProjectConfig);
 
-        console.MarkupLine($"Component `[green]{componentData.ComponentMetadata.Name}[/]` added successfully.");
+        if (definition.Name == "Shared")
+        {
+            sharedInfrastructureService.RunInfrastructureSteps(cwdInfo, blazorProjectType, csprojFile, outputProjectConfig.RootNamespace);
+        }
+
+        console.MarkupLine($"  Copied to [yellow]{Path.Join(outputProjectConfig.ComponentsOutputDir, definition.Name)}/[/]");
+        console.MarkupLine($"Component `[green]{definition.Name}[/]` added successfully.");
     }
 
     private string BuildTargetNamespace(OutputProjectConfig config, string componentName)
@@ -164,31 +164,43 @@ public class AddCommand(
         return $"{config.RootNamespace}.{componentsDir}.{componentName}";
     }
 
-    private void UpdateNamespacesInComponent(DirectoryInfo componentDir, string targetNamespace, OutputProjectConfig config)
+    private void UpdateNamespacesInComponent(DirectoryInfo componentDir, string targetNamespaceBase, OutputProjectConfig config)
     {
-        UpdateNamespacesInDirectory(componentDir, targetNamespace, config);
+        UpdateNamespacesInDirectory(componentDir, componentDir, targetNamespaceBase, config);
     }
 
-    private void UpdateNamespacesInDirectory(DirectoryInfo directory, string targetNamespace, OutputProjectConfig config)
+    private void UpdateNamespacesInDirectory(DirectoryInfo componentRoot, DirectoryInfo directory, string targetNamespaceBase, OutputProjectConfig config)
     {
-        const string sourceNamespacePrefix = "ShadcnBlazor";
-        var targetNamespacePrefix = config.RootNamespace;
+        var rootNamespace = config.RootNamespace;
 
         foreach (var razorFile in directory.EnumerateFiles("*.razor", SearchOption.AllDirectories))
         {
+            var fileTargetNamespace = GetTargetNamespaceForFile(componentRoot, razorFile.Directory!, targetNamespaceBase);
             var content = File.ReadAllText(razorFile.FullName);
-            content = namespaceService.ReplaceNamespaceInRazor(content, targetNamespace);
-            content = usingService.ReplaceUsingsInRazor(content, sourceNamespacePrefix, targetNamespacePrefix);
+            content = namespaceService.ReplaceNamespaceInRazor(content, fileTargetNamespace);
+            content = usingService.ReplaceUsingsInRazor(content, "ShadcnBlazor.Components", rootNamespace + ".Components.Core");
+            content = usingService.ReplaceUsingsInRazor(content, "ShadcnBlazor", rootNamespace);
             File.WriteAllText(razorFile.FullName, content);
         }
 
         foreach (var csFile in directory.EnumerateFiles("*.razor.cs", SearchOption.AllDirectories)
             .Concat(directory.EnumerateFiles("*.cs", SearchOption.AllDirectories)))
         {
+            var fileTargetNamespace = GetTargetNamespaceForFile(componentRoot, csFile.Directory!, targetNamespaceBase);
             var content = File.ReadAllText(csFile.FullName);
-            content = namespaceService.ReplaceNamespaceInCs(content, targetNamespace);
-            content = usingService.ReplaceUsingsInCs(content, sourceNamespacePrefix, targetNamespacePrefix);
+            content = namespaceService.ReplaceNamespaceInCs(content, fileTargetNamespace);
+            content = usingService.ReplaceUsingsInCs(content, "ShadcnBlazor.Components", rootNamespace + ".Components.Core");
+            content = usingService.ReplaceUsingsInCs(content, "ShadcnBlazor", rootNamespace);
             File.WriteAllText(csFile.FullName, content);
         }
+    }
+
+    private static string GetTargetNamespaceForFile(DirectoryInfo componentRoot, DirectoryInfo fileDir, string targetNamespaceBase)
+    {
+        var relativePath = Path.GetRelativePath(componentRoot.FullName, fileDir.FullName);
+        if (relativePath == "." || string.IsNullOrEmpty(relativePath))
+            return targetNamespaceBase;
+        var suffix = relativePath.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
+        return $"{targetNamespaceBase}.{suffix}";
     }
 }

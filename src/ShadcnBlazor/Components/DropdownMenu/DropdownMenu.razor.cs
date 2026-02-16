@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Popover;
 using ShadcnBlazor.Components.Popover.Models;
-using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.DropdownMenu;
 
 /// <summary>
 /// Root container for a dropdown menu; requires PopoverProvider in layout.
 /// </summary>
-[ComponentMetadata(Name = nameof(DropdownMenu), Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.", Dependencies = ["Popover"])]
 public partial class DropdownMenu : ComponentBase
 {
     private readonly DropdownMenuContext _context = new();

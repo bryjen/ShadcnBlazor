@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Accordion;
 
@@ -9,7 +8,6 @@ namespace ShadcnBlazor.Components.Accordion;
 /// A vertically stacked set of interactive headings that each reveal a section of content.
 /// Use with <see cref="AccordionItem"/>, <see cref="AccordionTrigger"/>, and <see cref="AccordionContent"/>.
 /// </summary>
-[ComponentMetadata(Name = nameof(Accordion), Description = "A vertically stacked set of interactive headings that each reveal a section of content..", Dependencies = [])]
 public partial class Accordion : ShadcnComponentBase
 {
     /// <summary>

@@ -152,7 +152,7 @@ public static class ApiDocumentation
     {
         Name = "Alert",
         FullName = "ShadcnBlazor.Components.Alert.Alert",
-        Summary = @"Displays important messages or notifications with variant styling (default, destructive).",
+        Summary = @"",
         Properties = new[]
         {
             new DocumentedProperty
@@ -200,7 +200,7 @@ public static class ApiDocumentation
     {
         Name = "Avatar",
         FullName = "ShadcnBlazor.Components.Avatar.Avatar",
-        Summary = @"Displays image avatars with text fallback for missing or loading images.",
+        Summary = @"",
         Properties = new[]
         {
             new DocumentedProperty
@@ -275,7 +275,7 @@ public static class ApiDocumentation
     {
         Name = "Badge",
         FullName = "ShadcnBlazor.Components.Badge.Badge",
-        Summary = @"Small label or count indicator with variant styling (default, secondary, outline, destructive).",
+        Summary = @"",
         Properties = new[]
         {
             new DocumentedProperty
@@ -332,7 +332,7 @@ public static class ApiDocumentation
     {
         Name = "Button",
         FullName = "ShadcnBlazor.Components.Button.Button",
-        Summary = @"Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.",
+        Summary = @"",
         Properties = new[]
         {
             new DocumentedProperty
@@ -424,7 +424,7 @@ public static class ApiDocumentation
     {
         Name = "Card",
         FullName = "ShadcnBlazor.Components.Card.Card",
-        Summary = @"Container for content with header, body, and footer sections.",
+        Summary = @"",
         Properties = new[]
         {
             new DocumentedProperty

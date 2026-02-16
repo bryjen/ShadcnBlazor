@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="..\ShadcnBlazor\_Imports.razor" CopyToOutputDirectory="PreserveNewest" />
       <None Include="..\ShadcnBlazor\wwwroot\**\*"
             CopyToOutputDirectory="PreserveNewest"
             LinkBase="wwwroot" />

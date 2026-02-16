@@ -6,37 +6,30 @@ namespace ShadcnBlazor.Cli.Services;
 
 public class ComponentService
 {
-    public List<ComponentData> LoadComponents()
+    public List<ComponentDefinition> LoadComponents()
     {
-        var executingAssembly = Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
-            ?? throw new InvalidOperationException("Could not determine assembly directory.");
-        
-        var componentsAssemblyPath = Path.Join(assemblyDir, "ShadcnBlazor.dll");
-        var assembly = Assembly.LoadFrom(componentsAssemblyPath);
-        
-        return ComponentData.GetComponents(assembly).ToList();
+        return ComponentRegistry.AllComponents.ToList();
     }
-    
-    public ComponentData FindComponent(List<ComponentData> components, string componentName)
+
+    public ComponentDefinition FindComponent(List<ComponentDefinition> components, string componentName)
     {
         var component = components.FirstOrDefault(c =>
-            string.Equals(componentName.Trim(), c.ComponentMetadata.Name, StringComparison.InvariantCultureIgnoreCase));
-        
+            string.Equals(componentName.Trim(), c.Name, StringComparison.InvariantCultureIgnoreCase));
+
         if (component is null)
         {
             throw new ComponentNotFoundException(componentName);
         }
-        
+
         return component;
     }
-    
+
     public DirectoryInfo GetComponentsSourceDirectory()
     {
         var executingAssembly = Assembly.GetExecutingAssembly();
-        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location) 
+        var assemblyDir = Path.GetDirectoryName(executingAssembly.Location)
             ?? throw new InvalidOperationException("Could not determine assembly directory.");
-        
-        return new DirectoryInfo(Path.Join(assemblyDir, "components"));
+
+        return new DirectoryInfo(Path.Join(assemblyDir, "Components"));
     }
 }

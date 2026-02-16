@@ -2,14 +2,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
-using ShadcnBlazor.Shared.Attributes;
 
 namespace ShadcnBlazor.Components.Popover;
 
 /// <summary>
 /// Floating panel anchored to a trigger element; requires PopoverProvider in layout.
 /// </summary>
-[ComponentMetadata(Name = nameof(Popover), Description = "Floating panel anchored to a trigger element; requires PopoverProvider in layout.", Dependencies = [])]
 public partial class Popover : ComponentBase, IAsyncDisposable
 {
     private readonly string _popoverId = $"popover-{Guid.NewGuid():N}";

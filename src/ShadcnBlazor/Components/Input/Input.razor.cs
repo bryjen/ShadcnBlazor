@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Enums;
 
 namespace ShadcnBlazor.Components.Input;
 
 /// <summary>
 /// Single-line text input with variant styling.
 /// </summary>
-[ComponentMetadata(Name = nameof(Input), Description = "Single-line text input with variant styling.", Dependencies = [])]
 public partial class Input : ShadcnComponentBase
 {
     /// <summary>

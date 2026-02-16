@@ -1,4 +1,4 @@
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared.Enums;
 using TailwindMerge;
 
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.

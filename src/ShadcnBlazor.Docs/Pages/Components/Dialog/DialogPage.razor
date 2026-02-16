@@ -3,7 +3,7 @@
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples
 @using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples.TwoFile
-@using ShadcnBlazor.Shared.Attributes
+@using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
                  InstallOptions="@InstallOptions"
@@ -35,8 +35,7 @@
 </ComponentDocPage>
 
 @code {
-    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Dialog.DialogProvider)
-        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Dialog");
 
     private static readonly Dictionary<string, string> InstallOptions = new()
     {

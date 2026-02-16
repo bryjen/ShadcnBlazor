@@ -13,8 +13,7 @@ services.AddSingleton<ComponentService>();
 services.AddSingleton<ProjectNamespaceService>();
 services.AddSingleton<NamespaceService>();
 services.AddSingleton<UsingService>();
-services.AddSingleton<SetupDetectionService>();
-services.AddSingleton<FirstTimeSetupService>();
+services.AddSingleton<SharedInfrastructureService>();
 
 var registrar = new TypeRegistrar(services);
 var app = new CommandApp(registrar);
@@ -25,11 +24,11 @@ app.Configure(conf =>
         .WithDescription("Creates a new Blazor project from a template.");
 
     conf.AddCommand<RepairCommand>("repair")
-        .WithDescription("Re-run first-time setup (Shared, _Imports, Program.cs, etc.). Use if setup was broken or incomplete.");
+        .WithDescription("Re-add Shared component with overwrite. Use if setup was broken or incomplete.");
 
     conf.AddBranch("component", branch =>
     {
-        branch.SetDescription("Component management. Infrastructure is set up automatically on first add.");
+        branch.SetDescription("Component management. Shared and its dependencies are added automatically.");
         branch.AddCommand<AddCommand>("add")
             .WithDescription("Adds a component to a project. Runs first-time setup automatically if needed.");
         branch.AddCommand<ListCommand>("list")

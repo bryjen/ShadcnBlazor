@@ -2,15 +2,13 @@ using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Popover;
 using ShadcnBlazor.Components.Popover.Models;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Tooltip;
 
 /// <summary>
 /// Hover-triggered tooltip that displays content above the trigger element.
 /// </summary>
-[ComponentMetadata(Name = nameof(Tooltip), Description = "Hover-triggered tooltip with pointer; requires PopoverProvider in layout.", Dependencies = ["Popover"])]
 public partial class Tooltip
 {
     /// <summary>

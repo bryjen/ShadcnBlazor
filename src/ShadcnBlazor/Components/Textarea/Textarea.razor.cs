@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
+using ShadcnBlazor.Components.Shared;
 using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Textarea;
@@ -8,7 +7,6 @@ namespace ShadcnBlazor.Components.Textarea;
 /// <summary>
 /// Multi-line text input for longer form content.
 /// </summary>
-[ComponentMetadata(Name = nameof(Textarea), Description = "Multi-line text input for longer form content.", Dependencies = [])]
 public partial class Textarea : ShadcnComponentBase
 {
     /// <summary>
