@@ -1,0 +1,10 @@
+<Checkbox @bind-Checked="_checked" Alignment="VerticalAlignment.Top">
+    <div>
+        <span class="font-semibold">Accept terms and conditions</span>
+        <p class="text-sm text-muted-foreground mt-1">By clicking this checkbox, you agree to the terms and conditions.</p>
+    </div>
+</Checkbox>
+
+@code {
+    private bool _checked;
+}

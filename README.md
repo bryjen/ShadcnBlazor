@@ -50,15 +50,14 @@ New projects use **Tailwind.MSBuild** to automatically compile `wwwroot/css/inpu
 
 ### From Existing Project
 
-Initialize your existing Blazor project, then add components:
+Just add components—setup runs automatically on first add:
 
 ```bash
 cd MyBlazorProject
-shadcnblazor init
 shadcnblazor component add button
 ```
 
-> **Note:** Initializing an existing project does not add Tailwind compilation. Add `Tailwind.MSBuild` to your project, or use the standalone `tailwindcss` CLI to compile `input.css` to `app.css`.
+> **Note:** Adding to an existing project does not add Tailwind compilation. Add `Tailwind.MSBuild` to your project, or use the standalone `tailwindcss` CLI to compile `input.css` to `app.css`. If setup fails, run `shadcnblazor repair`.
 
 ### Example Usage
 
@@ -83,14 +82,7 @@ For more examples, see the [documentation](https://bryjen.github.io/ShadcnBlazor
 
 ## 📁 Project Structure
 
-The CLI creates a `shadcn-blazor.yaml` configuration file and copies components into your project:
-
-```
-componentsOutputDir: ./Components/Core
-rootNamespace: MyApp
-```
-
-Components are generated with proper namespaces. Example structure for the Button component:
+The CLI copies components into your project. Namespace is auto-detected from your `.csproj`; components go to `Components/Core/`. Example structure for the Button component:
 
 ```
 Components/Core/Button/

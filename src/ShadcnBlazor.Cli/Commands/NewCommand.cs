@@ -5,8 +5,6 @@ using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Services;
 using Spectre.Console;
 using Spectre.Console.Cli;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace ShadcnBlazor.Cli.Commands;
 
@@ -104,7 +102,6 @@ public class NewCommand(
 
             RenameProjectFile(outputPath, templateName, settings.Proj);
             ReplaceNamespacesAndUsings(outputPath, templateName, settings.Namespace, settings.Proj);
-            UpdateShadcnBlazorYaml(outputPath, settings.Namespace);
 
             console.MarkupLine($"Project [green]{settings.Proj}[/] created successfully.");
             return 0;
@@ -163,19 +160,5 @@ public class NewCommand(
         content = content.Replace($"@Assets[\"{sourceNamespace}.styles.css\"]", $"@Assets[\"{projName}.styles.css\"]");
         content = content.Replace($"<title>{sourceNamespace}</title>", $"<title>{projName}</title>");
         return content;
-    }
-
-    private void UpdateShadcnBlazorYaml(string outputPath, string rootNamespace)
-    {
-        var yamlPath = Path.Combine(outputPath, "shadcn-blazor.yaml");
-        if (!File.Exists(yamlPath))
-            return;
-
-        var config = new { componentsOutputDir = "./Components/Core", rootNamespace };
-        var serializer = new SerializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
-        var yaml = serializer.Serialize(config);
-        File.WriteAllText(yamlPath, yaml);
     }
 }

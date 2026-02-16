@@ -12,6 +12,18 @@
             <DropdownMenuBasicExample />
         </ComponentPreview>
     </DocsSection>
+    <DocsSection Title="Avatar" Id="avatar">
+        <p class="mb-3">An account switcher dropdown triggered by an avatar. Use <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and pass an <code>Avatar</code> as the trigger.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuAvatarExample })">
+            <DropdownMenuAvatarExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Complex" Id="complex">
+        <p class="mb-3">A richer example combining groups, icons, shortcuts, a checked state, and a destructive action.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuComplexExample })">
+            <DropdownMenuComplexExample />
+        </ComponentPreview>
+    </DocsSection>
 </ComponentDocPage>
 
 @code {

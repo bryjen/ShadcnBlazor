@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Shared;
 using ShadcnBlazor.Shared.Attributes;
 
-namespace ShadcnBlazor.Components.ComposableTextArea;
+namespace ShadcnBlazor.Components.Textarea;
 
 /// <summary>
 /// Multi-line text input with optional header and footer slots.

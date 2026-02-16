@@ -40,16 +40,14 @@
                 <div class="flex flex-col gap-8">
                     <div class="flex flex-col gap-2">
                         <p class="mb-3">
-                            The CLI initializes a <code>shadcn-blazor.yaml</code> file, which holds the configuration for your project.
-                            It contains the path where components will be generated and the root namespace for proper namespacing and resolution of the generated code.
+                            When you add your first component, the CLI automatically sets up the required infrastructure: the <code>Shared</code> directory, CSS/JS assets, <code>_Imports.razor</code> usings, and TailwindMerge registration. Namespace is auto-detected from your <code>.csproj</code>; components are copied to <code>Components/Core/</code>.
                         </p>
-                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleShadcnBlazorYaml, "yaml", "shadcn-blazor.yaml") })"/>
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <p class="mb-3">
-                            During initialization, the tool imports a <code>Shared</code> directory that contains enums, services, and other shared code used by the components.
-                            This is a one-time import, and the files are copied into your project so you can modify them as needed.
+                            The <code>Shared</code> directory contains enums, services, and other shared code used by the components.
+                            It is copied into your project on first add so you can modify it as needed.
                         </p>
                         <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleSharedDirectoryAscii, "text") })"/>
                     </div>
@@ -119,9 +117,9 @@
 
             <DocsSubSection Title="From Existing Project" Id="installation-existing">
                 <Alert Variant="@AlertVariant.Destructive" Class="mb-6">
-                    <p class="font-medium">Tailwind not configured by init</p>
+                    <p class="font-medium">Tailwind not configured automatically</p>
                     <p class="text-muted-foreground text-sm">
-                        Unlike creating a new project, initializing an existing project <b>DOES NOT</b> add Tailwind compilation. You must configure it yourself: add <code class="text-destructive bg-destructive/15">Tailwind.MSBuild</code> to your project, or use the standalone <code class="text-destructive bg-destructive/15">tailwindcss</code> CLI to compile <code>input.css</code> to <code>app.css</code>.
+                        Unlike creating a new project, adding to an existing project <b>DOES NOT</b> add Tailwind compilation. You must configure it yourself: add <code class="text-destructive bg-destructive/15">Tailwind.MSBuild</code> to your project, or use the standalone <code class="text-destructive bg-destructive/15">tailwindcss</code> CLI to compile <code>input.css</code> to <code>app.css</code>. If setup fails, run <code>shadcnblazor repair</code>.
                     </p>
                 </Alert>
                 
@@ -129,20 +127,11 @@
                     <div class="flex flex-col gap-8 mt-3">
                         @RenderStep(1,
                             @<div class="flex flex-col gap-3">
-                                <span class="font-bold text-lg">Initialize Project</span>
-                                <span class="text-[0.9rem] leading-relaxed text-foreground/85">
-                                    Navigate into your existing Blazor project directory and run <code>init</code> to add ShadcnBlazor configuration, the <code>Shared</code> folder, CSS/JS assets, and TailwindMerge.
-                                </span>
-                                <CommandBlock Options="@InitExisting1" DefaultOption="@("dotnet")"/>
-                            </div>)
-
-                        @RenderStep(2,
-                            @<div class="flex flex-col gap-3">
                                 <span class="font-bold text-lg">Add Components</span>
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
-                                    You can now start adding components into your project.
+                                    Navigate into your existing Blazor project directory and run <code>component add</code>. Setup (Shared folder, CSS/JS assets, TailwindMerge) runs automatically on first add.
                                 </span>
-                                <CommandBlock Options="@InitExisting2" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@InitExisting1" DefaultOption="@("dotnet")"/>
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
                                     If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
@@ -187,7 +176,7 @@
 
     private static readonly Dictionary<string, string> InitExisting1 = new()
     {
-        ["dotnet"] = "cd MyBlazorProject && shadcnblazor init",
+        ["dotnet"] = "cd MyBlazorProject && shadcnblazor component add button",
     };
 
     private static readonly Dictionary<string, string> NewProject2 = new()
@@ -198,11 +187,6 @@
     private static readonly Dictionary<string, string> NewProject3 = new()
     {
         ["dotnet"] = "shadcnblazor component add --all",
-    };
-
-    private static readonly Dictionary<string, string> InitExisting2 = new()
-    {
-        ["dotnet"] = "shadcnblazor component add button",
     };
 
     private static readonly Dictionary<string, string> InitExisting3 = new()

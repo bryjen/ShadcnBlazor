@@ -14,10 +14,40 @@
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Grouping" Id="grouping">
+            <p class="mb-3">Use a container with multiple <code>Radio</code> components. Bind each via <code>Checked</code> and <code>CheckedChanged</code> to a shared value in the parent. When one is selected, set the value; when unchecked, clear it. No separate group component—the layout and parent state define the group.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioGroupingExample })">
+                <RadioGroupingExample />
+            </ComponentPreview>
+        </DocsSubSection>
         <DocsSubSection Title="Horizontal" Id="horizontal">
             <p class="mb-3">Set <code>Vertical="false"</code> on RadioGroup to display options horizontally.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioHorizontalExample })">
                 <RadioHorizontalExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Alignment" Id="alignment">
+            <p class="mb-3">Use the <code>Alignment</code> parameter to control how the radio aligns with its label when the label wraps to multiple lines. Options are <code>VerticalAlignment.Top</code>, <code>VerticalAlignment.Center</code> (default), and <code>VerticalAlignment.Bottom</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioAlignmentExample })">
+                <RadioAlignmentExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Alignment with label and description" Id="alignment-with-description">
+            <p class="mb-3">Use <code>Alignment="VerticalAlignment.Top"</code> when you have a main label with a description underneath. The radio aligns with the top of the label so it stays visually anchored to the primary text.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioAlignmentWithDescriptionExample })">
+                <RadioAlignmentWithDescriptionExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p class="mb-3">Use the <code>Disabled</code> parameter on a <code>Radio</code> to prevent selecting it, or set <code>Disabled</code> on <code>RadioGroup</code> to disable all options.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioDisabledExample })">
+                <RadioDisabledExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Invalid state" Id="invalid">
+            <p class="mb-3">Set <code>Invalid="true"</code> to show the invalid state. The radio gets a red border and ring, and the label text turns red. Use this when validation fails (e.g. a required selection that must be made before submit).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioInvalidExample })">
+                <RadioInvalidExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

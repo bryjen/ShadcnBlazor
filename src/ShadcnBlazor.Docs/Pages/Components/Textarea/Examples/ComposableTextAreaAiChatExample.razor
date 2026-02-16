@@ -22,7 +22,7 @@
                 </Button>
             </div>
 
-            <Button Size="@Size" Variant="@Variant.Default" Class="font-medium rounded-xl" OnClick="@(_ => SubmitPrompt.InvokeAsync(_prompt))">
+            <Button Size="@Size" Variant="@Variant.Default" Class="font-medium rounded-xl" OnClick="@(_ => OnSend(_prompt))">
                 <LuArrowUp/>
             </Button>
         </div>
@@ -33,9 +33,8 @@
     [CascadingParameter(Name = nameof(Size))]
     public Size Size { get; set; } = Size.Md;
     
-    [Parameter] 
-    public EventCallback<string> SubmitPrompt { get; set; }
-
     private string _prompt = string.Empty;
     private bool _extendedThinkingToggle = true;
+
+    private void OnSend(string _) { /* Handle send */ }
 }

@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-2">
+    <Radio Checked="@(_selected == "all")" CheckedChanged="@(v => SelectIf(v, "all"))">All notifications</Radio>
+    <Radio Checked="@(_selected == "email")" CheckedChanged="@(v => SelectIf(v, "email"))">Email only</Radio>
+    <Radio Checked="@(_selected == "none")" CheckedChanged="@(v => SelectIf(v, "none"))">No notifications</Radio>
+</div>
+<p class="text-sm text-muted-foreground mt-2">Selected: @_selected</p>
+
+@code {
+    private string? _selected = "email";
+
+    private void SelectIf(bool checked_, string value)
+    {
+        if (checked_)
+            _selected = value;
+        else
+            _selected = null;
+    }
+}

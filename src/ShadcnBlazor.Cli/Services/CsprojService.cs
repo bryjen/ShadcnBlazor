@@ -59,6 +59,13 @@ public class CsprojService
         
         return rootNamespace ?? Path.GetFileNameWithoutExtension(csprojFile.Name);
     }
+
+    public bool HasPackageReference(FileInfo csprojFile, string packageName)
+    {
+        var doc = XDocument.Load(csprojFile.FullName);
+        return doc.Descendants("PackageReference")
+            .Any(p => p.Attribute("Include")?.Value == packageName);
+    }
     
     public bool EnsurePackageReference(FileInfo csprojFile, string packageName, string version)
     {

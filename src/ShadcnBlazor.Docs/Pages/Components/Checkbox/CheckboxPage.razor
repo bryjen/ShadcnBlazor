@@ -20,6 +20,36 @@
                 <CheckboxLabelExample />
             </ComponentPreview>
         </DocsSubSection>
+        <DocsSubSection Title="Grouping" Id="grouping">
+            <p class="mb-3">Use a container with multiple <code>Checkbox</code> components. Bind each via <code>Checked</code> and <code>CheckedChanged</code> to a shared collection (e.g. <code>HashSet&lt;string&gt;</code>) in the parent. No separate group component—the layout and parent state define the group.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxGroupingExample })">
+                <CheckboxGroupingExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Alignment" Id="alignment">
+            <p class="mb-3">Use the <code>Alignment</code> parameter to control how the checkbox aligns with its label when the label wraps to multiple lines. Options are <code>VerticalAlignment.Top</code>, <code>VerticalAlignment.Center</code> (default), and <code>VerticalAlignment.Bottom</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxAlignmentExample })">
+                <CheckboxAlignmentExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Alignment with label and description" Id="alignment-with-description">
+            <p class="mb-3">Use <code>Alignment="VerticalAlignment.Top"</code> when you have a main label with a description underneath. The checkbox aligns with the top of the label so it stays visually anchored to the primary text.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxAlignmentWithDescriptionExample })">
+                <CheckboxAlignmentWithDescriptionExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p class="mb-3">Use the <code>Disabled</code> parameter to prevent interaction. The checkbox is dimmed and cannot be toggled.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxDisabledExample })">
+                <CheckboxDisabledExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Invalid state" Id="invalid">
+            <p class="mb-3">Set <code>Invalid="true"</code> to show the invalid state. The checkbox gets a red border and ring, and the label text turns red. Use this when validation fails (e.g. a required checkbox that must be checked before submit).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxInvalidExample })">
+                <CheckboxInvalidExample />
+            </ComponentPreview>
+        </DocsSubSection>
     </DocsSection>
 </ComponentDocPage>
 

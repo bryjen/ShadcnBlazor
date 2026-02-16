@@ -1,0 +1,91 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild="true">
+        <Button Variant="Variant.Outline">Complex Menu</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Class="min-w-[12rem]">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>File</DropdownMenuLabel>
+            <DropdownMenuItem Shortcut="⌘N">
+                <LuFilePlus class="h-4 w-4 shrink-0" />
+                New File
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut="⇧⌘N">
+                <LuFolderPlus class="h-4 w-4 shrink-0" />
+                New Folder
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuFolderOpen class="h-4 w-4 shrink-0" />
+                Open Recent
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem Shortcut="⌘S">
+                <LuSave class="h-4 w-4 shrink-0" />
+                Save
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut="⇧⌘E">
+                <LuDownload class="h-4 w-4 shrink-0" />
+                Export
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>View</DropdownMenuLabel>
+            <DropdownMenuItem OnClick="@(_ => _showSidebar = !_showSidebar)">
+                <LuPanelLeft class="h-4 w-4 shrink-0" />
+                <span class="flex-1">Show Sidebar</span>
+                @if (_showSidebar)
+                {
+                    <LuCheck class="h-4 w-4 shrink-0" />
+                }
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuPanelBottom class="h-4 w-4 shrink-0" />
+                Show Status Bar
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuPalette class="h-4 w-4 shrink-0" />
+                Theme
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Account</DropdownMenuLabel>
+            <DropdownMenuItem Shortcut="⇧⌘P">
+                <LuUser class="h-4 w-4 shrink-0" />
+                Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuCreditCard class="h-4 w-4 shrink-0" />
+                Billing
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuSettings class="h-4 w-4 shrink-0" />
+                Settings
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Help & Support</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuFileText class="h-4 w-4 shrink-0" />
+                Documentation
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem Class="text-destructive" Shortcut="⇧⌘Q" OnClick="HandleSignOut">
+            <LuLogOut class="h-4 w-4 shrink-0" />
+            Sign Out
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private bool _showSidebar = true;
+
+    private void HandleSignOut()
+    {
+        // Sign out logic
+    }
+}

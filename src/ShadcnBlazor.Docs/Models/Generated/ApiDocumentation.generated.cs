@@ -540,6 +540,15 @@ public static class ApiDocumentation
             },
             new DocumentedProperty
             {
+                Name = "Alignment",
+                Type = "VerticalAlignment",
+                Summary = @"Vertical alignment of the checkbox relative to its label.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "VerticalAlignment.Center",
+            },
+            new DocumentedProperty
+            {
                 Name = "Checked",
                 Type = "bool",
                 Summary = @"Whether the checkbox is checked.",
@@ -585,6 +594,15 @@ public static class ApiDocumentation
             },
             new DocumentedProperty
             {
+                Name = "Invalid",
+                Type = "bool",
+                Summary = @"Whether the checkbox is in an invalid state. When true, sets aria-invalid=""true"" and applies invalid styling.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "false",
+            },
+            new DocumentedProperty
+            {
                 Name = "Size",
                 Type = "Size",
                 Summary = @"The size of the checkbox.",
@@ -608,7 +626,7 @@ public static class ApiDocumentation
     public static readonly DocumentedType ComposableTextArea = new()
     {
         Name = "ComposableTextArea",
-        FullName = "ShadcnBlazor.Components.ComposableTextArea.ComposableTextArea",
+        FullName = "ShadcnBlazor.Components.Textarea.ComposableTextArea",
         Summary = @"Multi-line text input with optional header and footer slots.",
         Properties = new[]
         {
@@ -1084,6 +1102,15 @@ public static class ApiDocumentation
             },
             new DocumentedProperty
             {
+                Name = "Alignment",
+                Type = "VerticalAlignment",
+                Summary = @"Vertical alignment of the radio relative to its label.",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "VerticalAlignment.Center",
+            },
+            new DocumentedProperty
+            {
                 Name = "ButtonClass",
                 Type = "string",
                 Summary = @"CSS classes for the radio button element.",
@@ -1132,6 +1159,15 @@ public static class ApiDocumentation
                 Name = "Disabled",
                 Type = "bool",
                 Summary = @"",
+                Remarks = @"",
+                Category = "Common",
+                DefaultValue = "false",
+            },
+            new DocumentedProperty
+            {
+                Name = "Invalid",
+                Type = "bool",
+                Summary = @"Whether the radio is in an invalid state. When true, sets aria-invalid=""true"" and applies invalid styling.",
                 Remarks = @"",
                 Category = "Common",
                 DefaultValue = "false",

@@ -4,12 +4,6 @@ namespace ShadcnBlazor.Docs.Pages;
 
 public partial class Introduction : ComponentBase
 {
-    private const string ExampleShadcnBlazorYaml = 
-"""
-componentsOutputDir: ./Components/Core
-rootNamespace: SampleBlazorProject
-""";
-    
     private const string ExampleSharedDirectoryAscii = 
 """
 Shared/

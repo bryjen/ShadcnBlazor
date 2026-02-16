@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using ShadcnBlazor.Shared;
+using ShadcnBlazor.Shared.Enums;
 
 namespace ShadcnBlazor.Docs.Components.Samples.AiChat;
 
@@ -8,7 +9,6 @@ public partial class AiChat : ShadcnComponentBase
 {
     [Inject]
     public required ChatOrchestrator ChatOrchestrator { get; set; }
-    
     
     protected override void OnInitialized()
     {

@@ -1,0 +1,9 @@
+<RadioGroup @bind-Value="_choice">
+    <Radio Value="yes">Yes, enable notifications</Radio>
+    <Radio Value="no" Disabled="true">No, keep them off</Radio>
+</RadioGroup>
+<p class="text-sm text-muted-foreground mt-2">Selected: @_choice</p>
+
+@code {
+    private string? _choice = "yes";
+}

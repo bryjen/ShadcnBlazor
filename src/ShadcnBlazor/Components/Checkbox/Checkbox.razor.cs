@@ -43,7 +43,33 @@ public partial class Checkbox : ShadcnComponentBase
     /// </summary>
     [Parameter]
     public bool Disabled { get; set; }
-    
+
+    /// <summary>
+    /// Vertical alignment of the checkbox relative to its label.
+    /// </summary>
+    [Parameter]
+    public VerticalAlignment Alignment { get; set; } = VerticalAlignment.Center;
+
+    /// <summary>
+    /// Whether the checkbox is in an invalid state. When true, sets <c>aria-invalid="true"</c> and applies invalid styling.
+    /// </summary>
+    [Parameter]
+    public bool Invalid { get; set; }
+
+    private string GetLabelClass()
+    {
+        var alignmentClass = Alignment switch
+        {
+            VerticalAlignment.Top => "items-start",
+            VerticalAlignment.Center => "items-center",
+            VerticalAlignment.Bottom => "items-end",
+            _ => "items-center",
+        };
+        var invalidClass = Invalid ? "data-[invalid]:text-destructive" : "";
+        var disabledClass = Disabled ? "data-[disabled]:text-muted-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70" : "";
+        return MergeCss("flex gap-2 cursor-pointer", alignmentClass, invalidClass, disabledClass);
+    }
+
     private string GetClass()
     {
         var baseClasses = "peer flex items-center justify-center p-0 border-input bg-input/30 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/40 aria-invalid:border-destructive shrink-0 rounded-[4px] border shadow-xs transition-all duration-200 outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50";
@@ -53,8 +79,14 @@ public partial class Checkbox : ShadcnComponentBase
             Size.Md => "size-4",
             Size.Lg => "size-5",
         };
+        
+        var alignmentClasses = Alignment switch
+        {
+            VerticalAlignment.Top => "mt-1",
+            _ => string.Empty
+        };
 
-        return MergeCss(baseClasses, sizeClasses, Class ?? "");
+        return MergeCss(baseClasses, sizeClasses, alignmentClasses, Class ?? "");
     }
 
     private string GetCheckmarkClass() => Size switch

@@ -6,9 +6,6 @@ public class CliException : System.Exception
     public CliException(string message, System.Exception innerException) : base(message, innerException) { }
 }
 
-public class ConfigFileNotFoundException(string fileName)
-    : CliException($"Couldn't find a `{fileName}` file in the current directory.");
-
 public class ProjectFileNotFoundException() 
     : CliException("Couldn't find a .csproj file in the current directory.");
 

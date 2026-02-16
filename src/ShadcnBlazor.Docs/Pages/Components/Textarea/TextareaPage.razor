@@ -6,7 +6,7 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallOptions="@InstallOptions"
                  ApiDoc="@ApiDocumentation.Textarea">
-    <DocsSection Title="Usage" Id="usage">
+    <DocsSection Title="Textarea" Id="textarea">
         <p class="mb-3">The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaBasicExample })">
             <TextareaBasicExample />
@@ -21,10 +21,33 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+
+    <DocsSection Title="ComposableTextArea" Id="composable-textarea">
+        <p class="mb-3">The ComposableTextArea extends the textarea pattern with optional <code>Header</code> and <code>Footer</code> slots. Use it when you need to add toolbar buttons, hints, or actions above or below the input. It lives in the same folder as Textarea—<code>shadcnblazor component add textarea</code> adds both.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_ComposableTextAreaBasicExample })">
+            <ComposableTextAreaBasicExample />
+        </ComponentPreview>
+        <DocsSubSection Title="With Header and Footer" Id="with-header-footer">
+            <p class="mb-3">Use the <code>Header</code> and <code>Footer</code> render fragments to add content above and below the textarea.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_ComposableTextAreaWithSlotsExample })">
+                <ComposableTextAreaWithSlotsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="AI Chat input" Id="ai-chat-input">
+            <p class="mb-3">The <a href="/samples/ai-chat" class="text-primary hover:underline">AI Chat sample</a> uses ComposableTextArea for its input bar. The <code>Header</code> holds an "Add Context" button; the <code>Footer</code> has toggles (extended thinking, auto, sources) and a send button. The slots keep the input compact while exposing controls.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_ComposableTextAreaAiChatExample })">
+                <ComposableTextAreaAiChatExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="ComposableTextArea API" Id="composable-textarea-api" AddToToc="false">
+        <ApiReference Doc="@ApiDocumentation.ComposableTextArea" ShowHeader="true" />
+    </DocsSection>
 </ComponentDocPage>
 
 @code {
-    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Textarea.Textarea)
+    private static readonly ComponentMetadataAttribute Metadata = typeof(Textarea)
         .GetCustomAttribute<ComponentMetadataAttribute>()!;
 
     private static readonly Dictionary<string, string> InstallOptions = new()

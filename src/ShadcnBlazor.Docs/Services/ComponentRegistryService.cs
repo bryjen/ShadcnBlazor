@@ -28,6 +28,11 @@ public class ComponentRegistryService
         new ComponentRegistryEntry("Typography", "typography"),
     ];
 
+    /// <summary>
+    /// Components documented on another page (e.g. ComposableTextArea on Textarea page).
+    /// </summary>
+    private static readonly HashSet<string> ComponentsWithoutOwnPage = ["ComposableTextArea"];
+
     private static IReadOnlyList<ComponentRegistryEntry> DiscoverComponents()
     {
         var assembly = typeof(ShadcnBlazor.Components.Button.Button).Assembly;
@@ -36,6 +41,7 @@ public class ComponentRegistryService
             .Where(t => t.IsPublic && !t.IsAbstract)
             .Where(t => typeof(ComponentBase).IsAssignableFrom(t))
             .Where(t => t.GetCustomAttribute<ComponentMetadataAttribute>() is not null)
+            .Where(t => !ComponentsWithoutOwnPage.Contains(t.Name))
             .Select(t =>
             {
                 var metadata = t.GetCustomAttribute<ComponentMetadataAttribute>()!;

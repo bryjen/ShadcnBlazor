@@ -536,7 +536,7 @@ namespace ShadcnBlazor.Docs.Models
                 <p class=""text-sm text-muted-foreground"">Default content padding.</p>
             </ChildContent>
             <Footer>
-                <Button Variant=""@Variant.Outline"" Size=""@Size.Sm"">Action</Button>
+                <Button Variant=""@Variant.Outline"">Action</Button>
             </Footer>
         </Card>
     </div>
@@ -551,7 +551,7 @@ namespace ShadcnBlazor.Docs.Models
                 <div class=""h-24 bg-muted/30 flex items-center justify-center text-sm text-muted-foreground"">Full-width area</div>
             </ChildContent>
             <Footer>
-                <Button Variant=""@Variant.Default"" Size=""@Size.Sm"">Action</Button>
+                <Button Variant=""@Variant.Default"">Action</Button>
             </Footer>
         </Card>
     </div>
@@ -566,8 +566,8 @@ namespace ShadcnBlazor.Docs.Models
                 <p class=""text-sm text-muted-foreground"">Card content.</p>
             </ChildContent>
             <Footer>
-                <Button Variant=""@Variant.Link"" Size=""@Size.Sm"">Cancel</Button>
-                <Button Variant=""@Variant.Default"" Size=""@Size.Sm"">Save</Button>
+                <Button Variant=""@Variant.Link"">Cancel</Button>
+                <Button Variant=""@Variant.Default"">Save</Button>
             </Footer>
         </Card>
     </div>
@@ -629,10 +629,104 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Checkbox_Examples_CheckboxAlignmentExample = new()
+        {
+            FileName = "CheckboxAlignmentExample.razor",
+            Contents = @"<div class=""flex flex-col gap-6"">
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">Top</p>
+        <Checkbox @bind-Checked=""_top"" Alignment=""VerticalAlignment.Top"">
+            This is a longer label that wraps to multiple lines so you can see how the checkbox aligns to the top of the text block.
+        </Checkbox>
+    </div>
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">Center (default)</p>
+        <Checkbox @bind-Checked=""_center"" Alignment=""VerticalAlignment.Center"">
+            This is a longer label that wraps to multiple lines so you can see how the checkbox aligns to the center of the text block.
+        </Checkbox>
+    </div>
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">Bottom</p>
+        <Checkbox @bind-Checked=""_bottom"" Alignment=""VerticalAlignment.Bottom"">
+            This is a longer label that wraps to multiple lines so you can see how the checkbox aligns to the bottom of the text block.
+        </Checkbox>
+    </div>
+</div>
+
+@code {
+    private bool _top;
+    private bool _center;
+    private bool _bottom;
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Checkbox_Examples_CheckboxAlignmentWithDescriptionExample = new()
+        {
+            FileName = "CheckboxAlignmentWithDescriptionExample.razor",
+            Contents = @"<Checkbox @bind-Checked=""_checked"" Alignment=""VerticalAlignment.Top"">
+    <div>
+        <span class=""font-semibold"">Accept terms and conditions</span>
+        <p class=""text-sm text-muted-foreground mt-1"">By clicking this checkbox, you agree to the terms and conditions.</p>
+    </div>
+</Checkbox>
+
+@code {
+    private bool _checked;
+}",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Checkbox_Examples_CheckboxBasicExample = new()
         {
             FileName = "CheckboxBasicExample.razor",
             Contents = @"<Checkbox @bind-Checked=""_checked"">Accept terms</Checkbox>
+
+@code {
+    private bool _checked;
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Checkbox_Examples_CheckboxDisabledExample = new()
+        {
+            FileName = "CheckboxDisabledExample.razor",
+            Contents = @"<Checkbox @bind-Checked=""_enabled"" Disabled=""true"">Enable notifications</Checkbox>
+
+@code {
+    private bool _enabled;
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Checkbox_Examples_CheckboxGroupingExample = new()
+        {
+            FileName = "CheckboxGroupingExample.razor",
+            Contents = @"<div class=""flex flex-col gap-2"">
+    <Checkbox Checked=""@_selected.Contains(""email"")"" CheckedChanged=""@(v => Toggle(""email"", v))"">Email notifications</Checkbox>
+    <Checkbox Checked=""@_selected.Contains(""sms"")"" CheckedChanged=""@(v => Toggle(""sms"", v))"">SMS notifications</Checkbox>
+    <Checkbox Checked=""@_selected.Contains(""push"")"" CheckedChanged=""@(v => Toggle(""push"", v))"">Push notifications</Checkbox>
+</div>
+<p class=""text-sm text-muted-foreground mt-2"">Selected: @string.Join("", "", _selected)</p>
+
+@code {
+    private HashSet<string> _selected = new();
+
+    private void Toggle(string value, bool checked_)
+    {
+        if (checked_)
+            _selected.Add(value);
+        else
+            _selected.Remove(value);
+    }
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Checkbox_Examples_CheckboxInvalidExample = new()
+        {
+            FileName = "CheckboxInvalidExample.razor",
+            Contents = @"<Checkbox @bind-Checked=""_checked"" Invalid=""true"">Accept terms and conditions</Checkbox>
 
 @code {
     private bool _checked;
@@ -651,35 +745,6 @@ namespace ShadcnBlazor.Docs.Models
 @code {
     private bool _accept;
     private bool _newsletter = true;
-}",
-            Language = "razor"
-        };
-
-        public static readonly CodeFile Components_ComposableTextArea_Examples_ComposableTextAreaBasicExample = new()
-        {
-            FileName = "ComposableTextAreaBasicExample.razor",
-            Contents = @"<ComposableTextArea @bind-Value=""_text"" Placeholder=""Enter your message..."" Rows=""4"" />
-
-@code {
-    private string? _text;
-}",
-            Language = "razor"
-        };
-
-        public static readonly CodeFile Components_ComposableTextArea_Examples_ComposableTextAreaWithSlotsExample = new()
-        {
-            FileName = "ComposableTextAreaWithSlotsExample.razor",
-            Contents = @"<ComposableTextArea @bind-Value=""_content"" Rows=""4"">
-    <Header>
-        <span class=""text-sm font-medium"">Description</span>
-    </Header>
-    <Footer>
-        <span class=""text-xs text-muted-foreground"">@(_content?.Length ?? 0) characters</span>
-    </Footer>
-</ComposableTextArea>
-
-@code {
-    private string? _content;
 }",
             Language = "razor"
         };
@@ -811,6 +876,41 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_DropdownMenu_Examples_DropdownMenuAvatarExample = new()
+        {
+            FileName = "DropdownMenuAvatarExample.razor",
+            Contents = @"@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild=""true"">
+        <Avatar Src=""https://github.com/shadcn.png"" Alt=""shadcn"" Class=""cursor-pointer"" />
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuUser class=""h-4 w-4 shrink-0"" />
+                Account
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuCreditCard class=""h-4 w-4 shrink-0"" />
+                Billing
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuBell class=""h-4 w-4 shrink-0"" />
+                Notifications
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+            <LuLogOut class=""h-4 w-4 shrink-0"" />
+            Sign Out
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_DropdownMenu_Examples_DropdownMenuBasicExample = new()
         {
             FileName = "DropdownMenuBasicExample.razor",
@@ -831,6 +931,103 @@ namespace ShadcnBlazor.Docs.Models
         </DropdownMenuGroup>
     </DropdownMenuContent>
 </DropdownMenu>",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_DropdownMenu_Examples_DropdownMenuComplexExample = new()
+        {
+            FileName = "DropdownMenuComplexExample.razor",
+            Contents = @"@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild=""true"">
+        <Button Variant=""Variant.Outline"">Complex Menu</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Class=""min-w-[12rem]"">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>File</DropdownMenuLabel>
+            <DropdownMenuItem Shortcut=""⌘N"">
+                <LuFilePlus class=""h-4 w-4 shrink-0"" />
+                New File
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut=""⇧⌘N"">
+                <LuFolderPlus class=""h-4 w-4 shrink-0"" />
+                New Folder
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuFolderOpen class=""h-4 w-4 shrink-0"" />
+                Open Recent
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem Shortcut=""⌘S"">
+                <LuSave class=""h-4 w-4 shrink-0"" />
+                Save
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut=""⇧⌘E"">
+                <LuDownload class=""h-4 w-4 shrink-0"" />
+                Export
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>View</DropdownMenuLabel>
+            <DropdownMenuItem OnClick=""@(_ => _showSidebar = !_showSidebar)"">
+                <LuPanelLeft class=""h-4 w-4 shrink-0"" />
+                <span class=""flex-1"">Show Sidebar</span>
+                @if (_showSidebar)
+                {
+                    <LuCheck class=""h-4 w-4 shrink-0"" />
+                }
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuPanelBottom class=""h-4 w-4 shrink-0"" />
+                Show Status Bar
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuPalette class=""h-4 w-4 shrink-0"" />
+                Theme
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Account</DropdownMenuLabel>
+            <DropdownMenuItem Shortcut=""⇧⌘P"">
+                <LuUser class=""h-4 w-4 shrink-0"" />
+                Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuCreditCard class=""h-4 w-4 shrink-0"" />
+                Billing
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuSettings class=""h-4 w-4 shrink-0"" />
+                Settings
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Help & Support</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuFileText class=""h-4 w-4 shrink-0"" />
+                Documentation
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem Class=""text-destructive"" Shortcut=""⇧⌘Q"" OnClick=""HandleSignOut"">
+            <LuLogOut class=""h-4 w-4 shrink-0"" />
+            Sign Out
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private bool _showSidebar = true;
+
+    private void HandleSignOut()
+    {
+        // Sign out logic
+    }
+}",
             Language = "razor"
         };
 
@@ -948,6 +1145,62 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Radio_Examples_RadioAlignmentExample = new()
+        {
+            FileName = "RadioAlignmentExample.razor",
+            Contents = @"<div class=""flex flex-col gap-6"">
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">Top</p>
+        <RadioGroup @bind-Value=""_top"">
+            <Radio Value=""a"" Alignment=""VerticalAlignment.Top"">
+                This is a longer label that wraps to multiple lines so you can see how the radio aligns to the top of the text block.
+            </Radio>
+        </RadioGroup>
+    </div>
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">Center (default)</p>
+        <RadioGroup @bind-Value=""_center"">
+            <Radio Value=""b"" Alignment=""VerticalAlignment.Center"">
+                This is a longer label that wraps to multiple lines so you can see how the radio aligns to the center of the text block.
+            </Radio>
+        </RadioGroup>
+    </div>
+    <div>
+        <p class=""text-sm font-medium text-muted-foreground mb-2"">Bottom</p>
+        <RadioGroup @bind-Value=""_bottom"">
+            <Radio Value=""c"" Alignment=""VerticalAlignment.Bottom"">
+                This is a longer label that wraps to multiple lines so you can see how the radio aligns to the bottom of the text block.
+            </Radio>
+        </RadioGroup>
+    </div>
+</div>
+
+@code {
+    private string? _top = ""a"";
+    private string? _center = ""b"";
+    private string? _bottom = ""c"";
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Radio_Examples_RadioAlignmentWithDescriptionExample = new()
+        {
+            FileName = "RadioAlignmentWithDescriptionExample.razor",
+            Contents = @"<RadioGroup @bind-Value=""_selected"">
+    <Radio Value=""terms"" Alignment=""VerticalAlignment.Top"">
+        <div>
+            <span class=""font-semibold"">Accept terms and conditions</span>
+            <p class=""text-sm text-muted-foreground mt-1"">By selecting this option, you agree to the terms and conditions.</p>
+        </div>
+    </Radio>
+</RadioGroup>
+
+@code {
+    private string? _selected = ""terms"";
+}",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Radio_Examples_RadioBasicExample = new()
         {
             FileName = "RadioBasicExample.razor",
@@ -964,6 +1217,45 @@ namespace ShadcnBlazor.Docs.Models
             Language = "razor"
         };
 
+        public static readonly CodeFile Components_Radio_Examples_RadioDisabledExample = new()
+        {
+            FileName = "RadioDisabledExample.razor",
+            Contents = @"<RadioGroup @bind-Value=""_choice"">
+    <Radio Value=""yes"">Yes, enable notifications</Radio>
+    <Radio Value=""no"" Disabled=""true"">No, keep them off</Radio>
+</RadioGroup>
+<p class=""text-sm text-muted-foreground mt-2"">Selected: @_choice</p>
+
+@code {
+    private string? _choice = ""yes"";
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Radio_Examples_RadioGroupingExample = new()
+        {
+            FileName = "RadioGroupingExample.razor",
+            Contents = @"<div class=""flex flex-col gap-2"">
+    <Radio Checked=""@(_selected == ""all"")"" CheckedChanged=""@(v => SelectIf(v, ""all""))"">All notifications</Radio>
+    <Radio Checked=""@(_selected == ""email"")"" CheckedChanged=""@(v => SelectIf(v, ""email""))"">Email only</Radio>
+    <Radio Checked=""@(_selected == ""none"")"" CheckedChanged=""@(v => SelectIf(v, ""none""))"">No notifications</Radio>
+</div>
+<p class=""text-sm text-muted-foreground mt-2"">Selected: @_selected</p>
+
+@code {
+    private string? _selected = ""email"";
+
+    private void SelectIf(bool checked_, string value)
+    {
+        if (checked_)
+            _selected = value;
+        else
+            _selected = null;
+    }
+}",
+            Language = "razor"
+        };
+
         public static readonly CodeFile Components_Radio_Examples_RadioHorizontalExample = new()
         {
             FileName = "RadioHorizontalExample.razor",
@@ -976,6 +1268,19 @@ namespace ShadcnBlazor.Docs.Models
 
 @code {
     private string? _choice = ""b"";
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Radio_Examples_RadioInvalidExample = new()
+        {
+            FileName = "RadioInvalidExample.razor",
+            Contents = @"<RadioGroup @bind-Value=""_selected"">
+    <Radio Value=""accept"" Invalid=""true"">Accept terms and conditions</Radio>
+</RadioGroup>
+
+@code {
+    private string? _selected;
 }",
             Language = "razor"
         };
@@ -1077,6 +1382,81 @@ namespace ShadcnBlazor.Docs.Models
     private bool _small;
     private bool _default = true;
     private bool _large;
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Textarea_Examples_ComposableTextAreaAiChatExample = new()
+        {
+            FileName = "ComposableTextAreaAiChatExample.razor",
+            Contents = @"<ComposableTextArea @bind-Value=""@_prompt"" Class=""w-full"" Rows=""3"" Placeholder=""Write your prompt here..."">
+    <Header>
+        <Button Size=""@Size"" Variant=""@Variant.Outline"" Class=""text-xs text-muted-foreground"">
+            <LuAtSign Class=""h-3 w-3""/>
+            Add Context
+        </Button>
+    </Header>
+    <Footer>
+        <div class=""flex items-center justify-between text-xs text-muted-foreground"">
+            <div class=""flex gap-2"">
+                <ToggleButton @bind-IsToggled=""@_extendedThinkingToggle"" Size=""@Size"" VariantUntoggled=""@Variant.Ghost"" VariantToggled=""@Variant.Default"" Class=""rounded-xl"">
+                    <LuBrain/>
+                </ToggleButton>
+
+                <Button Size=""@Size"" Variant=""@Variant.Ghost"" Class=""font-medium text-muted-foreground"">
+                    <span>Auto</span>
+                </Button>
+
+                <Button Size=""@Size"" Variant=""@Variant.Ghost"" Class=""font-medium text-muted-foreground"">
+                    <LuGlobe/>
+                    <span>Sources</span>
+                </Button>
+            </div>
+
+            <Button Size=""@Size"" Variant=""@Variant.Default"" Class=""font-medium rounded-xl"" OnClick=""@(_ => OnSend(_prompt))"">
+                <LuArrowUp/>
+            </Button>
+        </div>
+    </Footer>
+</ComposableTextArea>
+
+@code {
+    [CascadingParameter(Name = nameof(Size))]
+    public Size Size { get; set; } = Size.Md;
+    
+    private string _prompt = string.Empty;
+    private bool _extendedThinkingToggle = true;
+
+    private void OnSend(string _) { /* Handle send */ }
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Textarea_Examples_ComposableTextAreaBasicExample = new()
+        {
+            FileName = "ComposableTextAreaBasicExample.razor",
+            Contents = @"<ComposableTextArea @bind-Value=""_text"" Placeholder=""Enter your message..."" Rows=""4"" />
+
+@code {
+    private string? _text;
+}",
+            Language = "razor"
+        };
+
+        public static readonly CodeFile Components_Textarea_Examples_ComposableTextAreaWithSlotsExample = new()
+        {
+            FileName = "ComposableTextAreaWithSlotsExample.razor",
+            Contents = @"<ComposableTextArea @bind-Value=""_content"" Rows=""4"">
+    <Header>
+        <span class=""text-sm font-medium"">Description</span>
+    </Header>
+    <Footer>
+        <span class=""text-xs text-muted-foreground"">@(_content?.Length ?? 0) characters</span>
+    </Footer>
+</ComposableTextArea>
+
+@code {
+    private string? _content;
 }",
             Language = "razor"
         };
