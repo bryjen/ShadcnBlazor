@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Slider">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for two-way binding.</p>
-        <ComponentPreview Code="@Snippets.SliderBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderBasicExample })">
             <SliderBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Range" Id="range">
             <p class="mb-3">Customize <code>Min</code>, <code>Max</code>, and <code>Step</code> for different value ranges.</p>
-            <ComponentPreview Code="@Snippets.SliderRangeExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderRangeExample })">
                 <SliderRangeExample />
             </ComponentPreview>
         </DocsSubSection>

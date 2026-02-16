@@ -1,0 +1,45 @@
+@page "/components/dialog"
+
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples
+@using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples.TwoFile
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.DialogProvider">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">ShadcnBlazor supports two dialog APIs: <strong>imperative</strong> (via <code>IDialogService.Show&lt;T&gt;()</code>) and <strong>declarative</strong> (via <code>DialogRoot</code>, <code>DialogTrigger</code>, <code>DialogContent</code>, etc.). For imperative dialogs, add <code>DialogProvider</code> to your layout, inject <code>IDialogService</code>, and call <code>Show&lt;YourDialogComponent&gt;(title, parameters, options)</code>. The declarative API mirrors shadcn/ui React: nest <code>DialogTrigger</code> and <code>DialogContent</code> inside <code>DialogRoot</code>.</p>
+    </DocsSection>
+
+    <DocsSection Title="Declarative" Id="declarative">
+        <p class="mb-3">Compose dialogs inline with <code>DialogRoot</code>, <code>DialogTrigger</code>, <code>DialogContent</code>, <code>DialogHeader</code>, <code>DialogTitle</code>, <code>DialogDescription</code>, <code>DialogFooter</code>, and <code>DialogClose</code>.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Dialog_Examples_DeclarativeDialogExample })">
+            <DeclarativeDialogExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Single file" Id="single-file">
+        <p class="mb-3">Trigger and dialog content in one place. The dialog content component is defined in the code-behind of the same example.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Dialog_Examples_SingleFileDialogExample })">
+            <SingleFileDialogExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Two files" Id="two-files">
+        <p class="mb-3">Trigger and dialog content in separate files. The trigger calls <code>Show&lt;Dialog&gt;</code>; the dialog content lives in its own component.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Dialog_Examples_TwoFile_Page, Snippets.Components_Dialog_Examples_TwoFile_Dialog })">
+            <Page />
+        </ComponentPreview>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Dialog.DialogProvider)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcnblazor component add dialog",
+    };
+}

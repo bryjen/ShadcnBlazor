@@ -134,6 +134,27 @@
     min-height: 1.65em;
 }
 
+/* Code block tabs - file selector when multiple files */
+.docs-codeblock-tabs button {
+    cursor: pointer;
+    background: transparent;
+}
+
+/* Hide scrollbars on code block - keep overflow for wide content */
+.docs-codeblock-wrapper,
+.docs-codeblock,
+.docs-codeblock pre,
+.docs-codeblock-tabs {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.docs-codeblock-wrapper::-webkit-scrollbar,
+.docs-codeblock::-webkit-scrollbar,
+.docs-codeblock pre::-webkit-scrollbar,
+.docs-codeblock-tabs::-webkit-scrollbar {
+    display: none;
+}
+
 /* Component preview code block accordion - matches AccordionContent animation */
 .docs-codeblock-accordion {
     max-height: 0;

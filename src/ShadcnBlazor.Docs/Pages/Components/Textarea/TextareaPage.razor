@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Textarea">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
-        <ComponentPreview Code="@Snippets.TextareaBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaBasicExample })">
             <TextareaBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Rows" Id="rows">
             <p class="mb-3">Use the <code>Rows</code> parameter to control the initial height of the textarea.</p>
-            <ComponentPreview Code="@Snippets.TextareaRowsExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaRowsExample })">
                 <TextareaRowsExample />
             </ComponentPreview>
         </DocsSubSection>

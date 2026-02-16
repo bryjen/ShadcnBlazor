@@ -1,0 +1,25 @@
+@page "/components/select"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Select.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Select">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Select component displays a dropdown for choosing a single value from a list. Use <code>Value</code> and <code>ValueChanged</code> (or <code>@@bind-Value</code>) for two-way binding. Provide <code>Items</code> as a collection of <code>SelectOption&lt;T&gt;</code>. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Select_Examples_SelectBasicExample })">
+            <SelectBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Select.Select<string>)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcnblazor component add select",
+    };
+}

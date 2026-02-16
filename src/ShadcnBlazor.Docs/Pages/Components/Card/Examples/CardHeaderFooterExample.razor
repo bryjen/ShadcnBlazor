@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-6 w-fit">
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">HeaderClass="bg-muted/50"</p>
+        <Card Class="w-[350px]" HeaderClass="bg-muted/50">
+            <Header>
+                <h3 class="text-lg font-semibold">Custom header background</h3>
+                <p class="text-sm text-muted-foreground">The header uses a muted background.</p>
+            </Header>
+            <ChildContent>
+                <p class="text-sm text-muted-foreground">Default content padding.</p>
+            </ChildContent>
+            <Footer>
+                <Button Variant="@Variant.Outline">Action</Button>
+            </Footer>
+        </Card>
+    </div>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">ContentClass="p-0"</p>
+        <Card Class="w-[350px]" ContentClass="p-0">
+            <Header>
+                <h3 class="text-lg font-semibold">Edge-to-edge content</h3>
+                <p class="text-sm text-muted-foreground">Content has no padding.</p>
+            </Header>
+            <ChildContent>
+                <div class="h-24 bg-muted/30 flex items-center justify-center text-sm text-muted-foreground">Full-width area</div>
+            </ChildContent>
+            <Footer>
+                <Button Variant="@Variant.Default">Action</Button>
+            </Footer>
+        </Card>
+    </div>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">FooterClass="justify-between"</p>
+        <Card Class="w-[350px]" FooterClass="justify-between">
+            <Header>
+                <h3 class="text-lg font-semibold">Footer alignment</h3>
+                <p class="text-sm text-muted-foreground">Footer content is spread apart.</p>
+            </Header>
+            <ChildContent>
+                <p class="text-sm text-muted-foreground">Card content.</p>
+            </ChildContent>
+            <Footer>
+                <Button Variant="@Variant.Link">Cancel</Button>
+                <Button Variant="@Variant.Default">Save</Button>
+            </Footer>
+        </Card>
+    </div>
+</div>

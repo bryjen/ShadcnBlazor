@@ -6,8 +6,10 @@
     type="button"
     data-slot="accordion-trigger"
     data-state="@(IsOpen ? "open" : "closed")"
+    data-disabled="@(Disabled ? "true" : "false")"
+    disabled="@Disabled"
     class="@GetClass()"
-    @onclick="ToggleAsync">
+    @onclick="OnClick">
     <span class="text-left">
         @ChildContent
     </span>
@@ -35,10 +37,15 @@
 
     private bool IsOpen => ItemContext?.IsOpen ?? false;
 
-    private async Task ToggleAsync()
+    private bool Disabled => ItemContext?.Disabled ?? false;
+
+    private async Task OnClick()
     {
         if (ItemContext is null)
             throw new InvalidOperationException("AccordionTrigger must be used inside an AccordionItem.");
+
+        if (Disabled)
+            return;
 
         await ItemContext.ToggleAsync();
     }
@@ -46,6 +53,7 @@
     private string GetClass()
     {
         var baseClasses = "flex w-full items-center justify-between py-4 text-sm font-medium transition-all hover:underline";
-        return MergeCss(baseClasses, Class);
+        var disabledClasses = Disabled ? "pointer-events-none opacity-50" : "";
+        return MergeCss(baseClasses, disabledClasses, Class);
     }
 }

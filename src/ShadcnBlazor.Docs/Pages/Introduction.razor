@@ -1,4 +1,5 @@
 @page "/introduction"
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 @using EasyAppDev.Blazor.Icons.Lucide
 
 <TocPageBase>
@@ -42,7 +43,7 @@
                             The CLI initializes a <code>shadcn-blazor.yaml</code> file, which holds the configuration for your project.
                             It contains the path where components will be generated and the root namespace for proper namespacing and resolution of the generated code.
                         </p>
-                        <CodeBlock Code="@ExampleShadcnBlazorYaml" Language="yaml"/>
+                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleShadcnBlazorYaml, "yaml", "shadcn-blazor.yaml") })"/>
                     </div>
 
                     <div class="flex flex-col gap-2">
@@ -50,14 +51,14 @@
                             During initialization, the tool imports a <code>Shared</code> directory that contains enums, services, and other shared code used by the components.
                             This is a one-time import, and the files are copied into your project so you can modify them as needed.
                         </p>
-                        <CodeBlock Code="@ExampleSharedDirectoryAscii" Language="text"/>
+                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleSharedDirectoryAscii, "text") })"/>
                     </div>
                     
                     <div class="flex flex-col gap-2">
                         <p class="mb-3">
                             When importing/adding components, the CLI tool generates the component files in the specified directory.
                         </p>
-                        <CodeBlock Code="@ExampleButtonComponentDirectoryAscii" Language="text"/>
+                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleButtonComponentDirectoryAscii, "text") })"/>
                     </div>
                     
                     <div class="flex flex-col gap-2">
@@ -65,7 +66,7 @@
                             For more complex components, like <code>Popover</code>, classes such as models, enums, interfaces, and services are generated in subdirectories within the component directory.
                             This keeps related functionality neatly organized, and allows better separation of concerns while still giving you full access to modify and extend the code as needed.
                         </p>
-                        <CodeBlock Code="@ExamplePopoverComponentDirectoryAscii" Language="text"/>
+                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExamplePopoverComponentDirectoryAscii, "text") })"/>
                     </div>
                     
                     <div class="flex flex-col gap-2">

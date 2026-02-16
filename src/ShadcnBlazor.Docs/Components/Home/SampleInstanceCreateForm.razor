@@ -1,4 +1,4 @@
-﻿@using EasyAppDev.Blazor.Icons.Lucide
+@using EasyAppDev.Blazor.Icons.Lucide
 @using ShadcnBlazor.Components.Checkbox
 @layout NoNavMenuLayout
 
@@ -15,17 +15,18 @@
         
         <div>
             <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
-            <Input Size="@Size.Sm" Placeholder="Calgary"></Input>
+            <Input Placeholder="Calgary"></Input>
         </div>
         
         <div class="grid grid-cols-[1fr_1fr] gap-x-4">
-            <div>
+            <div class="w-full min-w-full max-w-full">
                 <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
-                <Input Placeholder="Calgary"></Input>
+                <Select T="string" Size="@Size.Lg" Label="Americas" @bind-Value="_region" Items="@_regionOptions" Placeholder="Select a region" Class="w-full" PopoverFitContent="true">
+                </Select>
             </div>
-            <div>
+            <div class="w-full min-w-full max-w-full">
                 <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
-                <Input Placeholder="Calgary"></Input>
+                <Input Size="@Size.Lg" Placeholder="Calgary"></Input>
             </div>
         </div>
     </div>
@@ -127,4 +128,24 @@
 
     private void IncCount() => _count += 1;
     private void DecCount() => _count -= (_count <= 0 ? 0 : 1);
+    
+    
+    private string? _region = null;
+    private static readonly SelectOption<string>[] _regionOptions =
+    [
+        new("northamerica-northeast1", "northamerica-northeast1 (Montréal) — Low CO2"),
+        new("northamerica-northeast2", "northamerica-northeast2 (Toronto) — Low CO2"),
+        new("northamerica-south1", "northamerica-south1 (Mexico)"),
+        new("southamerica-east1", "southamerica-east1 (São Paulo) — Low CO2"),
+        new("southamerica-west1", "southamerica-west1 (Santiago) — Low CO2"),
+        new("us-central1", "us-central1 (Iowa) — Low CO2"),
+        new("us-east1", "us-east1 (South Carolina) — Low CO2"),
+        new("us-east4", "us-east4 (Northern Virginia)"),
+        new("us-west1", "us-west1 (Oregon)"),
+        new("us-west2", "us-west2 (Los Angeles)"),
+        new("us-west3", "us-west3 (Salt Lake City)"),
+        new("us-west4", "us-west4 (Las Vegas)"),
+    ];
+    
+    
 }

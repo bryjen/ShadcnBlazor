@@ -1,0 +1,32 @@
+@inherits ShadcnComponentBase
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuSubContext? Context { get; set; }
+
+    /// <summary>
+    /// The sub-menu content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment ContentFragment => Context is not null
+        ? @<CascadingValue TValue="DropdownMenuSubContext" Value="Context">
+            @if (Context!.RootMenuContext is not null)
+            {
+                <CascadingValue TValue="DropdownMenuContext" Value="Context.RootMenuContext" IsFixed="true">
+                    <div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>
+                </CascadingValue>
+            }
+            else
+            {
+                <div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>
+            }
+        </CascadingValue>
+        : @<div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>;
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisterContent(ContentFragment);
+    }
+}

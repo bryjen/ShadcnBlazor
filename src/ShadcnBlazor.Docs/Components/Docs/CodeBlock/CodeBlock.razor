@@ -1,0 +1,47 @@
+@inherits ShadcnComponentBase
+
+<div class="@WrapperClass">
+    @if (HasMultipleFiles)
+    {
+        <div class="docs-codeblock-tabs flex items-center gap-1 border-b border-border px-4 pt-3 pb-0 min-w-0 overflow-x-auto">
+            @for (var i = 0; i < _files.Count; i++)
+            {
+                var idx = i;
+                <button type="button" class="@TabClass(idx)" @onclick="() => SelectTab(idx)">
+                    <span class="font-semibold">
+                        @(string.IsNullOrEmpty(_files[idx].FileName) ? $"File {idx + 1}" : _files[idx].FileName)
+                    </span>
+                </button>
+            }
+        </div>
+    }
+    <div class="@CodeBlockClass flex min-w-0 overflow-x-auto">
+        @if (ShowLineNumbers)
+        {
+            <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right text-xs text-muted-foreground/50 leading-[1.65]">
+                @foreach (var lineNum in _lineNumbers)
+                {
+                    <div>@lineNum</div>
+                }
+            </div>
+        }
+        <pre class="flex-1 min-w-0 pr-4 @(ShowLineNumbers ? "pl-0" : "pl-4") overflow-x-auto text-xs font-mono leading-[1.65] m-0 border-0" @key="_selectedIndex"><code class="language-@_language" id="@_id">@_code</code></pre>
+    </div>
+    @if (ShowCopyButton)
+    {
+        <Button Size="@Size.Sm"
+                Variant="@Variant.Ghost"
+                Class="@CopyBtnClass"
+                OnClick="CopyCodeAsync"
+                title="@(_copied ? "Copied!" : "Copy code")">
+            @if (_copied)
+            {
+                <LuCheck class="size-4 transition-colors duration-200" />
+            }
+            else
+            {
+                <LuCopy class="size-4 transition-colors duration-200" />
+            }
+        </Button>
+    }
+</div>

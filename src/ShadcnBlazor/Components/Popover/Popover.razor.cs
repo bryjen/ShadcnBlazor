@@ -125,6 +125,12 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     [Parameter]
     public Dictionary<string, object>? PopoverAttributes { get; set; }
 
+    /// <summary>
+    /// Gap in pixels between the popover and its anchor. Applied in the direction away from the anchor (respects flip).
+    /// </summary>
+    [Parameter]
+    public int Offset { get; set; }
+
     private string AnchorId => $"anchor-{_popoverId}";
 
     private string AnchorClassValue
@@ -200,7 +206,8 @@ public partial class Popover : ComponentBase, IAsyncDisposable
                 WidthMode = WidthMode,
                 ClampList = ClampList,
                 PopoverClass = PopoverClass,
-                PopoverAttributes = PopoverAttributes
+                PopoverAttributes = PopoverAttributes,
+                Offset = Offset
             });
 
             _isRegistered = true;

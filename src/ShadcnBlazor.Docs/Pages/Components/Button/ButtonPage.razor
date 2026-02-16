@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Button">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components.</p>
-        <ComponentPreview Code="@Snippets.ButtonBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonBasicExample })">
             <ButtonBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,36 +16,50 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Size" Id="size">
             <p class="mb-3">Use the <code>Size</code> parameter for compact (Sm), default (Md), or larger (Lg) buttons. Sizing affects padding and text scale.</p>
-            <ComponentPreview Code="@Snippets.ButtonSizeExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonSizeExample })">
                 <ButtonSizeExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Variants" Id="variants">
             <p class="mb-3">Choose a <code>Variant</code> to convey hierarchy: Default for primary actions, Outline for secondary, Ghost for minimal emphasis, Destructive for dangerous actions, and Link for inline-style buttons.</p>
-            <ComponentPreview Code="@Snippets.ButtonVariantExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonVariantExample })">
                 <ButtonVariantExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Content" Id="content">
             <p class="mb-3">The button accepts any content via <code>ChildContent</code>. Mix text with inline elements, or use dynamic content. The component handles layout and spacing automatically.</p>
-            <ComponentPreview Code="@Snippets.ButtonContentExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonContentExample })">
                 <ButtonContentExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Icons" Id="icons">
             <p class="mb-3">Use Lucide icons (or any SVG) inside the button. Add the icon package and place it alongside text—spacing is handled by the button's built-in gap. Icon-only buttons work with smaller sizes and padding.</p>
-            <ComponentPreview Code="@Snippets.ButtonIconExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonIconExample })">
                 <ButtonIconExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Spinner" Id="spinner">
+            <p class="mb-3">Render a spinner inside the button to show a loading state. Use <code>LuLoaderCircle</code> with <code>animate-spin</code> for a Tailwind-based spinner. Place it before the text for inline-start or after for inline-end.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonSpinnerExample })">
+                <ButtonSpinnerExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Interactivity" Id="interactivity">
             <p class="mb-3">Wire up <code>OnClick</code> to handle user actions. The handler receives <code>MouseEventArgs</code>. Use component state to drive dynamic labels or behavior.</p>
-            <ComponentPreview Code="@Snippets.ButtonCounterExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonCounterExample })">
                 <ButtonCounterExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Button Group" Id="button-group">
+            <p class="mb-3">Use <code>ButtonGroup</code> to group related buttons with shared borders and styling. Set <code>Variant</code> for Default, Outline, Ghost, or other styles. Use <code>Role="toolbar"</code> for toolbar groups. Buttons inside the group share the group's visual style.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonGroupExample })">
+                <ButtonGroupExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

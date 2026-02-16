@@ -1,0 +1,78 @@
+@implements IDisposable
+@using Microsoft.JSInterop
+@using ShadcnBlazor.Shared.Services
+@inject IJSRuntime JSRuntime
+@inject IScrollLockService ScrollLock
+
+<CascadingValue Value="_context">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private bool _open;
+    private readonly string _dialogId = Guid.NewGuid().ToString("N");
+    private DeclarativeDialogContext _context = null!;
+    private DotNetObjectReference<DialogRoot>? _dotNetRef;
+
+    protected override void OnInitialized()
+    {
+        _dotNetRef = DotNetObjectReference.Create(this);
+        _context = new DeclarativeDialogContext
+        {
+            DialogId = _dialogId,
+            CloseAsync = CloseAsync,
+            OpenDialog = OpenDialog,
+            SetAnimationState = s => { _context.AnimationState = s; StateHasChanged(); },
+            DotNetRef = _dotNetRef
+        };
+    }
+
+    protected override void OnParametersSet()
+    {
+        _context.Open = _open;
+    }
+
+    private void OpenDialog()
+    {
+        if (_open) return;
+        _open = true;
+        _context.Open = true;
+        _context.AnimationState = "closed";
+        _ = ScrollLock.LockAsync();
+        StateHasChanged();
+    }
+
+    private async Task CloseAsync()
+    {
+        if (!_open) return;
+
+        _context.IsClosing = true;
+        _context.SetAnimationState("closed");
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(250);
+
+        try { await ScrollLock.UnlockAsync(); }
+        catch (JSException) { }
+
+        _open = false;
+        _context.Open = false;
+        _context.IsClosing = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    [JSInvokable]
+    public void HandleEscape() => _ = CloseAsync();
+
+    [JSInvokable]
+    public void HandleOverlayClick() => _ = CloseAsync();
+
+    public void Dispose()
+    {
+        try { _ = JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.dispose", _dialogId); }
+        catch { }
+        _dotNetRef?.Dispose();
+    }
+}

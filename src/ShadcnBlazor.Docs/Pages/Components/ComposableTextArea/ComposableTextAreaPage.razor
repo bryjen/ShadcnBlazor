@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.ComposableTextArea">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The ComposableTextArea is a multi-line text input with optional <code>Header</code> and <code>Footer</code> slots. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding.</p>
-        <ComponentPreview Code="@Snippets.ComposableTextAreaBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ComposableTextArea_Examples_ComposableTextAreaBasicExample })">
             <ComposableTextAreaBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,7 +16,7 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="With Header and Footer" Id="with-header-footer">
             <p class="mb-3">Use the <code>Header</code> and <code>Footer</code> render fragments to add content above and below the textarea.</p>
-            <ComponentPreview Code="@Snippets.ComposableTextAreaWithSlotsExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ComposableTextArea_Examples_ComposableTextAreaWithSlotsExample })">
                 <ComposableTextAreaWithSlotsExample />
             </ComponentPreview>
         </DocsSubSection>

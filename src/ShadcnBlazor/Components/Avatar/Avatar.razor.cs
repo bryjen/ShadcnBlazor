@@ -11,6 +11,7 @@ public partial class Avatar : ShadcnComponentBase
     [Parameter] public string? Src { get; set; }
     [Parameter] public string? Alt { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Badge { get; set; }
     [Parameter] public Size Size { get; set; } = Size.Md;
 
     private string? _lastSrc;
@@ -20,15 +21,15 @@ public partial class Avatar : ShadcnComponentBase
 
     private string GetSizeClass() => Size switch
     {
-        Size.Sm => "size-4 text-[9px]",
-        Size.Md => "size-5 text-[10px]",
-        Size.Lg => "size-6 text-xs",
-        _ => "size-5 text-[10px]",
+        Size.Sm => "size-6 text-[10px]",
+        Size.Md => "size-8 text-xs",
+        Size.Lg => "size-10 text-sm",
+        _ => "size-8 text-xs",
     };
 
     private string GetClass()
     {
-        var baseClasses = "bg-background text-primary font-bold inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full leading-none uppercase select-none";
+        var baseClasses = "relative bg-background text-primary font-bold inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full leading-none uppercase select-none";
         return MergeCss(baseClasses, GetSizeClass(), Class);
     }
 

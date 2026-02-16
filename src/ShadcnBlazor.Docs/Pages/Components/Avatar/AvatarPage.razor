@@ -8,7 +8,7 @@
                  ApiDoc="@ApiDocumentation.Avatar">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg.</p>
-        <ComponentPreview Code="@Snippets.AvatarBasicExample" Language="razor">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBasicExample })">
             <AvatarBasicExample />
         </ComponentPreview>
     </DocsSection>
@@ -16,8 +16,36 @@
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Fallback" Id="fallback">
             <p class="mb-3">When <code>Src</code> is not set or the image fails to load, the Avatar shows <code>ChildContent</code> or initials derived from <code>Alt</code>.</p>
-            <ComponentPreview Code="@Snippets.AvatarFallbackExample" Language="razor">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarFallbackExample })">
                 <AvatarFallbackExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Badge" Id="badge">
+            <p class="mb-3">Use the <code>AvatarBadge</code> component via the <code>Badge</code> parameter to add a status indicator at the bottom right of the avatar. Use the <code>Class</code> parameter to customize colors (e.g. <code>bg-green-600 dark:bg-green-800</code>).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBadgeExample })">
+                <AvatarBadgeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Sizes" Id="sizes">
+            <p class="mb-3">Use the <code>Size</code> parameter to change the size of the avatar: <code>Size.Sm</code>, <code>Size.Md</code>, or <code>Size.Lg</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarSizeExample })">
+                <AvatarSizeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Avatar Group" Id="avatar-group">
+            <p class="mb-3">Use the <code>AvatarGroup</code> component to display multiple avatars with overlapping styling. Set <code>Size</code> to match your avatars and use <code>Class</code> for additional styling (e.g. <code>grayscale</code>).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarGroupExample })">
+                <AvatarGroupExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Dropdown" Id="dropdown">
+            <p class="mb-3">You can use the <code>Avatar</code> component as a trigger for a dropdown menu. Wrap it in <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and add <code>DropdownMenuContent</code> for the menu items.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarDropdownExample })">
+                <AvatarDropdownExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

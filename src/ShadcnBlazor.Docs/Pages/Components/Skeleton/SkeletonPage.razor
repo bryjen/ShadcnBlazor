@@ -1,0 +1,34 @@
+@page "/components/skeleton"
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Skeleton.Examples
+@using ShadcnBlazor.Shared.Attributes
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Skeleton">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Skeleton component displays a loading placeholder with a pulse animation. Use the <code>Class</code> parameter to customize the shape (e.g., <code>h-12 w-12 rounded-full</code> for avatars, <code>h-4 w-[250px]</code> for text lines).</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Skeleton_Examples_SkeletonBasicExample })">
+            <SkeletonBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Shapes" Id="shapes">
+            <p class="mb-3">Combine Skeleton components with different <code>Class</code> values to build loading states for cards, avatars, or form layouts.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Skeleton_Examples_SkeletonShapesExample })">
+                <SkeletonShapesExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadataAttribute Metadata = typeof(ShadcnBlazor.Components.Skeleton.Skeleton)
+        .GetCustomAttribute<ComponentMetadataAttribute>()!;
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["dotnet"] = "shadcnblazor component add skeleton",
+    };
+}

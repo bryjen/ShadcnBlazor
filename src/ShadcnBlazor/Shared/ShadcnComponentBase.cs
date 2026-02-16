@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Components;
 using TailwindMerge;
 
@@ -34,6 +35,15 @@ public abstract class ShadcnComponentBase : ComponentBase
     protected string MergeCss(params string[] classes)
     {
         var joined = string.Join(" ", classes) + " " + Class;
+        return TwMerge.Merge(joined) ?? joined;
+    }
+
+    /// <summary>
+    /// Merges classes without appending the component's Class parameter. Use for internal elements that should not receive user styling.
+    /// </summary>
+    protected string MergeCssNoUserClass(params string[] classes)
+    {
+        var joined = string.Join(" ", classes.Where(c => !string.IsNullOrWhiteSpace(c)));
         return TwMerge.Merge(joined) ?? joined;
     }
 }

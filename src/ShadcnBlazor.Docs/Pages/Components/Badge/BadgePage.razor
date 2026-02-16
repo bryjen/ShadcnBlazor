@@ -7,17 +7,45 @@
                  InstallOptions="@InstallOptions"
                  ApiDoc="@ApiDocumentation.Badge">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> and <code>Size</code> for styling.</p>
-        <ComponentPreview Code="@Snippets.BadgeBasicExample" Language="razor">
+        <p class="mb-3">The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> to <code>default</code>, <code>secondary</code>, <code>destructive</code>, <code>outline</code>, or <code>ghost</code>. Set <code>Size</code> for Sm, Md, or Lg.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeBasicExample })">
             <BadgeBasicExample />
         </ComponentPreview>
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Variants" Id="variants">
-            <p class="mb-3">Use the <code>Variant</code> parameter for Default, Secondary, Outline, or Destructive styling.</p>
-            <ComponentPreview Code="@Snippets.BadgeVariantExample" Language="razor">
+            <p class="mb-3">Use the <code>Variant</code> parameter to change the variant of the badge.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeVariantExample })">
                 <BadgeVariantExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="With Icon" Id="with-icon">
+            <p class="mb-3">You can render an icon inside the badge. Place the icon as the first child for inline-start or as the last child for inline-end.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeWithIconExample })">
+                <BadgeWithIconExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="With Spinner" Id="with-spinner">
+            <p class="mb-3">You can render a spinner inside the badge for loading states. Use <code>LuLoaderCircle</code> with <code>animate-spin</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeWithSpinnerExample })">
+                <BadgeWithSpinnerExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Link" Id="link">
+            <p class="mb-3">Use the <code>BadgeLink</code> component to render a badge as a link for clickable badges that navigate.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeLinkExample })">
+                <BadgeLinkExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Custom Colors" Id="custom-colors">
+            <p class="mb-3">Customize badge colors by adding custom classes such as <code>bg-green-100 dark:bg-green-900</code> to the <code>Badge</code> component.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeCustomColorsExample })">
+                <BadgeCustomColorsExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
