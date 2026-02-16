@@ -1,14 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.13"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.13" PrivateAssets="all"/>
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.13" PrivateAssets="all" />
+    <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Core\Button\Button.razor" />
+    <_ContentIncludedByDefault Remove="Components\Core\Button\ButtonGroup.razor" />
+    <_ContentIncludedByDefault Remove="Components\Core\Button\ToggleButton.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Core\Button\Button.razor" />
+    <UpToDateCheckInput Remove="Components\Core\Button\ButtonGroup.razor" />
+    <UpToDateCheckInput Remove="Components\Core\Button\ToggleButton.razor" />
+  </ItemGroup>
 </Project>

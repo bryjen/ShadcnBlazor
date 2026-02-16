@@ -1,10 +1,10 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using ShadcnBlazor.Components.Shared;
-using ShadcnBlazor.Components.Shared.Models.Enums;
+using SampleWasmProject.Components.Core.Shared;
+using SampleWasmProject.Components.Core.Shared.Models.Enums;
 
-namespace ShadcnBlazor.Components.Button;
+namespace SampleWasmProject.Components.Core.Button;
 
 public partial class Button : ShadcnComponentBase
 {

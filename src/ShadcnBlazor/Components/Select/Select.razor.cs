@@ -1,7 +1,3 @@
-using System.ComponentModel;
-using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Components.Shared;
-
 namespace ShadcnBlazor.Components.Select;
 
 /// <summary>

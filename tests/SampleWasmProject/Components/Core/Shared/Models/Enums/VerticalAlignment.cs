@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Components.Shared.Models.Enums;
+namespace SampleWasmProject.Components.Core.Shared.Models.Enums;
 
 /// <summary>
 /// Vertical alignment of a control (e.g. checkbox, radio) relative to its label.

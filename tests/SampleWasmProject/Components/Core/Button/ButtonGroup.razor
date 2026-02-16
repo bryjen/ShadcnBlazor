@@ -1,0 +1,11 @@
+@namespace SampleWasmProject.Components.Core.Button
+@inherits ShadcnComponentBase
+
+<div
+    data-slot="button-group"
+    data-variant="@Variant.ToString().ToLower()"
+    role="@Role"
+    class="@GetClass()"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</div>

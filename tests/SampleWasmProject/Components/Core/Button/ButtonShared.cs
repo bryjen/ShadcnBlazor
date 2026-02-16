@@ -1,8 +1,8 @@
-using ShadcnBlazor.Components.Shared.Models.Enums;
+using SampleWasmProject.Components.Core.Shared.Models.Enums;
 
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
-namespace ShadcnBlazor.Components.Button;
+namespace SampleWasmProject.Components.Core.Button;
 
 internal static class ButtonStyles
 {

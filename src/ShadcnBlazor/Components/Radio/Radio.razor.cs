@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Components.Shared.Enums;
+using ShadcnBlazor.Components.Shared.Models.Enums;
 
 #pragma warning disable CS8524
 

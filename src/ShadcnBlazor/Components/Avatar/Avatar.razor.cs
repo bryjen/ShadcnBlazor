@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Shared;
-using ShadcnBlazor.Components.Shared.Enums;
+using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Avatar;
 
