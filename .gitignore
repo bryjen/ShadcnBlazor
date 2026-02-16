@@ -8,3 +8,6 @@ riderModule.iml
 
 context/
 scratch/
+
+Models/Generated/
+src/ShadcnBlazor.Docs/Models/Generated/
