@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-namespace ShadcnBlazor.Cli.Models;
+namespace ShadcnBlazor.Cli.Models.Components;
 
 public class ComponentDependencyTree
 {

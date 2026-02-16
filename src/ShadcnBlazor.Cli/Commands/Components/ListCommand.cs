@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using ShadcnBlazor.Cli.Services;
+using ShadcnBlazor.Cli.Services.Components;
 using Spectre.Console;
 using Spectre.Console.Cli;
 

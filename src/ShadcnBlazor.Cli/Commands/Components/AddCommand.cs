@@ -1,8 +1,12 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
+using ShadcnBlazor.Cli.Models.Components;
 using ShadcnBlazor.Cli.Services;
+using ShadcnBlazor.Cli.Services.Actions;
+using ShadcnBlazor.Cli.Services.Components;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -14,7 +18,13 @@ public class AddCommand(
     ProjectValidator projectValidator,
     ProjectNamespaceService projectNamespaceService,
     ComponentService componentService,
-    SharedInfrastructureService sharedInfrastructureService,
+    CopyCssActionService copyCssActionService,
+    CopyJsActionService copyJsActionService,
+    AddCssLinksToRootActionService addCssLinksToRootActionService,
+    AddNugetDependencyActionService addNugetDependencyActionService,
+    AddProgramServiceActionService addProgramServiceActionService,
+    MergeToImportsActionService mergeToImportsActionService,
+    AddToServicesActionService addToServicesActionService,
     NamespaceService namespaceService,
     UsingService usingService,
     IAnsiConsole console)
@@ -144,10 +154,9 @@ public class AddCommand(
         var targetNamespace = BuildTargetNamespace(outputProjectConfig, definition.Name);
         UpdateNamespacesInComponent(destinationDir, targetNamespace, outputProjectConfig);
 
-        if (definition.Name == "Shared")
-        {
-            sharedInfrastructureService.RunInfrastructureSteps(cwdInfo, blazorProjectType, csprojFile, outputProjectConfig.RootNamespace);
-        }
+        var assemblyDir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!);
+        var actionContext = new ActionContext(cwdInfo, blazorProjectType, csprojFile, outputProjectConfig.RootNamespace, assemblyDir);
+        ExecuteActions(definition.RequiredActions, actionContext);
 
         console.MarkupLine($"  Copied to [yellow]{Path.Join(outputProjectConfig.ComponentsOutputDir, definition.Name)}/[/]");
         console.MarkupLine($"Component `[green]{definition.Name}[/]` added successfully.");
@@ -192,6 +201,23 @@ public class AddCommand(
             content = usingService.ReplaceUsingsInCs(content, "ShadcnBlazor.Components", rootNamespace + ".Components.Core");
             content = usingService.ReplaceUsingsInCs(content, "ShadcnBlazor", rootNamespace);
             File.WriteAllText(csFile.FullName, content);
+        }
+    }
+
+    private void ExecuteActions(RequiredAction[] actions, ActionContext context)
+    {
+        foreach (var action in actions)
+        {
+            switch (action)
+            {
+                case CopyCssAction a: copyCssActionService.Execute(a, context); break;
+                case CopyJsAction a: copyJsActionService.Execute(a, context); break;
+                case AddCssLinksToRootAction a: addCssLinksToRootActionService.Execute(a, context); break;
+                case AddNugetDependencyAction a: addNugetDependencyActionService.Execute(a, context); break;
+                case AddProgramServiceAction a: addProgramServiceActionService.Execute(a, context); break;
+                case MergeToImportsAction a: mergeToImportsActionService.Execute(a, context); break;
+                case AddToServicesAction a: addToServicesActionService.Execute(a, context); break;
+            }
         }
     }
 

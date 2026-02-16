@@ -2,6 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ShadcnBlazor.Cli.Commands;
 using ShadcnBlazor.Cli.Commands.Components;
 using ShadcnBlazor.Cli.Services;
+using ShadcnBlazor.Cli.Services.Actions;
+using ShadcnBlazor.Cli.Services.Components;
 using ShadcnBlazor.Cli.Utils;
 using Spectre.Console.Cli;
 
@@ -13,7 +15,13 @@ services.AddSingleton<ComponentService>();
 services.AddSingleton<ProjectNamespaceService>();
 services.AddSingleton<NamespaceService>();
 services.AddSingleton<UsingService>();
-services.AddSingleton<SharedInfrastructureService>();
+services.AddSingleton<CopyCssActionService>();
+services.AddSingleton<CopyJsActionService>();
+services.AddSingleton<AddCssLinksToRootActionService>();
+services.AddSingleton<AddNugetDependencyActionService>();
+services.AddSingleton<AddProgramServiceActionService>();
+services.AddSingleton<MergeToImportsActionService>();
+services.AddSingleton<AddToServicesActionService>();
 
 var registrar = new TypeRegistrar(services);
 var app = new CommandApp(registrar);

@@ -1,8 +1,9 @@
 using System.Reflection;
 using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
+using ShadcnBlazor.Cli.Models.Components;
 
-namespace ShadcnBlazor.Cli.Services;
+namespace ShadcnBlazor.Cli.Services.Components;
 
 public class ComponentService
 {

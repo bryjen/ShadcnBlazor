@@ -2,7 +2,9 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
+using ShadcnBlazor.Cli.Models.Components;
 using ShadcnBlazor.Cli.Services;
+using ShadcnBlazor.Cli.Services.Components;
 using Spectre.Console;
 using Spectre.Console.Cli;
 

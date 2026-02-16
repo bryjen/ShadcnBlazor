@@ -2,15 +2,8 @@ using Microsoft.JSInterop;
 
 namespace ShadcnBlazor.Components.Popover.Services;
 
-internal class PopoverJsInterop
+internal class PopoverJsInterop(IJSRuntime jsRuntime)
 {
-    private readonly IJSRuntime _jsRuntime;
-
-    public PopoverJsInterop(IJSRuntime jsRuntime)
-    {
-        _jsRuntime = jsRuntime;
-    }
-
     public ValueTask InitializeAsync(
         string containerClass,
         int flipMargin,
@@ -18,7 +11,7 @@ internal class PopoverJsInterop
         int baseZIndex,
         CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync(
+        return jsRuntime.InvokeVoidAsync(
             "popoverManager.initialize",
             cancellationToken,
             containerClass,
@@ -29,7 +22,7 @@ internal class PopoverJsInterop
 
     public ValueTask SetRepositionDebounceAsync(int debounceMilliseconds, CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync(
+        return jsRuntime.InvokeVoidAsync(
             "popoverManager.setRepositionDebounce",
             cancellationToken,
             debounceMilliseconds);
@@ -37,7 +30,7 @@ internal class PopoverJsInterop
 
     public ValueTask EnableOutsideClickCloseAsync(string anchorId, string popoverId, DotNetObjectReference<Popover> callbackReference, CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync(
+        return jsRuntime.InvokeVoidAsync(
             "popoverManager.enableOutsideClickClose",
             cancellationToken,
             anchorId,
@@ -47,7 +40,7 @@ internal class PopoverJsInterop
 
     public ValueTask DisableOutsideClickCloseAsync(string popoverId, CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync(
+        return jsRuntime.InvokeVoidAsync(
             "popoverManager.disableOutsideClickClose",
             cancellationToken,
             popoverId);
@@ -58,7 +51,7 @@ internal class PopoverJsInterop
         string popoverId,
         CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync(
+        return jsRuntime.InvokeVoidAsync(
             "popoverManager.connect",
             cancellationToken,
             anchorId,
@@ -67,7 +60,7 @@ internal class PopoverJsInterop
 
     public ValueTask DisconnectAsync(string popoverId, CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync(
+        return jsRuntime.InvokeVoidAsync(
             "popoverManager.disconnect",
             cancellationToken,
             popoverId);
@@ -75,6 +68,6 @@ internal class PopoverJsInterop
 
     public ValueTask DisposeAsync(CancellationToken cancellationToken = default)
     {
-        return _jsRuntime.InvokeVoidAsync("popoverManager.dispose", cancellationToken);
+        return jsRuntime.InvokeVoidAsync("popoverManager.dispose", cancellationToken);
     }
 }
