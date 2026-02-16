@@ -16,7 +16,8 @@ public class ComponentDependencyTree
 
         ComponentDependencyNode BuildComponentDependencyNode(string componentName)
         {
-            if (!componentDict.TryGetValue(componentName, out var definition))
+            var key = componentName.Trim().ToLower();
+            if (!componentDict.TryGetValue(key, out var definition))
                 throw new ArgumentException($"Component '{componentName}' not found in the provided components.");
 
             var expectedLocation = Path.Combine(outputProjectConfig.ComponentsOutputDir, definition.Name);

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Shared;
-using ShadcnBlazor.Components.Shared.Attributes;
 using ShadcnBlazor.Components.Shared.Enums;
 using TailwindMerge;
 #pragma warning disable CS8524

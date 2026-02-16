@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Shared;
-using ShadcnBlazor.Components.Shared.Attributes;
 using ShadcnBlazor.Components.Shared.Enums;
-using TailwindMerge;
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
 namespace ShadcnBlazor.Components.Badge;

@@ -19,10 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Components\Radio\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <!-- For CLI tool to extract components -->
         <None Include="Components/**/*" CopyToOutputDirectory="Always" />
         <None Include="_Imports.razor" CopyToOutputDirectory="Always" />
