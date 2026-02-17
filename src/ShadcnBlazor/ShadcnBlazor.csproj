@@ -8,7 +8,8 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\ShadcnBlazor.xml</DocumentationFile>
         <!-- Enable CS1591 to warn on missing XML documentation -->
-        <NoWarn>$(NoWarn.Replace('1591', '').Replace(';1591', '').Replace('1591;', '').Replace(';;', ';'))</NoWarn>
+        <NoWarn>$(NoWarn.Replace('1591', '').Replace(';1591', '').Replace('1591;', '').Replace(';;',
+            ';'))</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

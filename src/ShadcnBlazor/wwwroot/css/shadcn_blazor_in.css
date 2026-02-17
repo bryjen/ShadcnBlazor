@@ -430,6 +430,19 @@
         max-width: 100%;
     }
 
+    /* Unstyled: no preset styling; child content (e.g. Card) controls appearance */
+    .dialog-unstyled {
+        position: relative;
+        width: fit-content;
+        transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1),
+            transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .dialog-unstyled[data-state="closed"] {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+    }
+
     .dialog-header {
         display: flex;
         flex-direction: row;

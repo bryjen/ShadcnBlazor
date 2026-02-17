@@ -1,0 +1,36 @@
+<div class="flex items-center gap-2 w-full rounded-xl border border-input bg-input/30 shadow-xs px-3 py-2 text-sm
+     focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] focus-within:outline-none
+     transition-all duration-200">
+    <LuSearch class="size-4 shrink-0 text-muted-foreground" />
+    <input type="text"
+           class="flex-1 min-w-0 bg-transparent border-none outline-none placeholder:text-muted-foreground
+                  disabled:pointer-events-none disabled:opacity-50"
+           value="@Value"
+           @oninput="HandleInput"
+           placeholder="@Placeholder"
+           disabled="@Disabled"
+           @attributes="AdditionalAttributes" />
+</div>
+
+@code {
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string? Placeholder { get; set; } = "Search documentation...";
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object?>? AdditionalAttributes { get; set; }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString();
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

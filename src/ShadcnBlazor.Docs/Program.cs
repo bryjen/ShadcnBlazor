@@ -19,6 +19,7 @@ builder.Services.AddAiChat();
 builder.Services.AddTailwindMerge();
 builder.Services.AddScoped<PageTocService>();
 builder.Services.AddSingleton<ComponentRegistryService>();
+builder.Services.AddSingleton<PageRegistryService>();
 builder.Services.AddSingleton<SampleRegistryService>();
 
 builder.Services.AddScoped<IPopoverRegistry, PopoverRegistry>();

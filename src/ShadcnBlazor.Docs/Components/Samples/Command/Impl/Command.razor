@@ -1,0 +1,140 @@
+@using ShadcnBlazor.Docs.Components.Samples.Command.Base
+@using ShadcnBlazor.Docs.Components.Samples.Command.Base.Models
+@using ShadcnBlazor.Docs.Components.Samples.Command.Impl.Models
+
+@ChildContent
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+    
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+
+    [Inject]
+    private PageRegistryService PageRegistry { get; set; } = null!;
+
+    [Inject]
+    private ComponentRegistryService ComponentRegistry { get; set; } = null!;
+
+    [Inject]
+    private SampleRegistryService SampleRegistry { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private IReadOnlyList<CommandItem>? _commandItemsCache;
+
+    private IReadOnlyList<CommandItem> CommandItems =>
+        _commandItemsCache ??= BuildCommandItems();
+    
+    private IDialogReference? _dialogReference = null;
+    
+    internal void OpenDialog()
+    {
+        var parameters = new CommandParameters<CommandItem>
+        {
+            CommandItems = CommandItems,
+            Filter = DefaultFilter,
+            RenderCommandItems = RenderCommandItems
+        };
+        var options = new DialogOptions { Unstyled = true };
+        _dialogReference = DialogService.Show<CommandDialog<CommandItem>>(string.Empty, parameters, options);
+    }
+
+    private IReadOnlyList<CommandItem> BuildCommandItems()
+    {
+        var items = new List<CommandItem>();
+        foreach (var page in PageRegistry.PagesList)
+        {
+            items.Add(new PageCommandItem(page.Name));
+        }
+        foreach (var component in ComponentRegistry.Components)
+        {
+            items.Add(new ComponentCommandItem(component.Name));
+        }
+        foreach (var sample in SampleRegistry.SamplesList)
+        {
+            items.Add(new SampleCommandItem(sample.Name));
+        }
+        return items;
+    }
+
+    /// impl
+    private IReadOnlyList<CommandItem> DefaultFilter(IReadOnlyList<CommandItem> commandItems, string searchQuery)
+    {
+        var query = (searchQuery ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(query))
+            return commandItems;
+
+        var terms = query.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)
+            .Select(t => t.Trim())
+            .Where(t => t.Length > 0)
+            .ToArray();
+        if (terms.Length == 0)
+            return commandItems;
+
+        return commandItems
+            .Where(item =>
+            {
+                var text = item.SearchString();
+                if (string.IsNullOrEmpty(text))
+                    return false;
+                return terms.All(term =>
+                    text.Contains(term, StringComparison.OrdinalIgnoreCase));
+            })
+            .ToList();
+    }
+
+    /// impl
+    private RenderFragment RenderCommandItems(IReadOnlyList<CommandItem> commandItems) => __builder =>
+    {
+        <div class="w-full flex flex-col gap-4 px-4">
+            @foreach (var group in commandItems.GroupBy(x => x.GetType()))
+            {
+                var groupLabel = group.Key == typeof(PageCommandItem) ? "Pages"
+                    : group.Key == typeof(ComponentCommandItem) ? "Components"
+                    : group.Key == typeof(SampleCommandItem) ? "Samples"
+                    : "Other";
+                
+                RenderFragment icon = group.Key switch
+                {
+                    _ when group.Key == typeof(PageCommandItem) => @<LuStickyNote class="size-4"/>,
+                    _ when group.Key == typeof(ComponentCommandItem) => @<LuComponent class="size-4"/>,
+                    _ when group.Key == typeof(SampleCommandItem) => @<LuCodeXml class="size-4"/>,
+                    _ => null
+                };
+
+                <div>
+                    <div class="w-full text-xs text-muted-foreground pb-2 font-semibold">
+                        @groupLabel
+                    </div>
+                    <div class="w-full"> @* command items container *@
+                        @foreach (var commandItem in group)
+                        {
+                            <button class="w-full px-3 py-1 gap-3 flex items-center justify-start hover:bg-card" 
+                                    @onclick="@(_ => NavigateToPage(commandItem))">
+                                @icon
+                                <span class="text-muted-foreground font-semibold text-sm">@commandItem.SearchString()</span>
+                            </button>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    };
+
+    private void NavigateToPage(CommandItem commandItem)
+    {
+        var href = commandItem switch
+        {
+            PageCommandItem pageCommand => pageCommand.PageName,
+            ComponentCommandItem componentCommand => $"components/{componentCommand.ComponentName}",
+            SampleCommandItem sampleCommand => $"samples/{sampleCommand.SampleName}",
+            _ => string.Empty
+        };
+
+        _dialogReference?.Close(DialogResult.Ok(commandItem));
+        NavigationManager.NavigateTo(href);
+    }
+}

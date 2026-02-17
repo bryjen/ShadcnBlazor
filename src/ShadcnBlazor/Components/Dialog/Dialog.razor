@@ -1,13 +1,13 @@
 @inherits ShadcnComponentBase
 
 <div id="@_elementId"
-     class="@MergeCss("dialog-content", GetDialogClass())"
+     class="@GetContentClass()"
      data-dialog-content="@Instance.Id.ToString("N")"
      data-state="closed"
      style="@GetDialogStyle()"
      @onclick:stopPropagation
      @attributes="AdditionalAttributes">
-    @if (!Options.NoHeader)
+    @if (!Options.Unstyled && !Options.NoHeader)
     {
         <div class="dialog-header">
             <div class="dialog-header-text">
@@ -31,11 +31,20 @@
             }
         </div>
     }
-    <div class="dialog-body">
+    @if (Options.Unstyled)
+    {
         <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
             @ChildContent
         </CascadingValue>
-    </div>
+    }
+    else
+    {
+        <div class="dialog-body">
+            <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
+                @ChildContent
+            </CascadingValue>
+        </div>
+    }
 </div>
 
 @code {
@@ -64,9 +73,13 @@
         _ = OnCloseRequested.InvokeAsync(Models.DialogResult.Cancel());
     }
 
-    private string GetDialogClass()
+    private string GetContentClass()
     {
-        var classes = new List<string>();
+        if (Options.Unstyled)
+        {
+            return MergeCss("dialog-unstyled");
+        }
+        var classes = new List<string> { "dialog-content" };
         if (Options.FullScreen)
         {
             classes.Add("dialog-fullscreen");
@@ -75,11 +88,15 @@
         {
             classes.Add("dialog-fullwidth");
         }
-        return string.Join(" ", classes);
+        return MergeCss(string.Join(" ", classes));
     }
 
     private string GetDialogStyle()
     {
+        if (Options.Unstyled)
+        {
+            return "";
+        }
         if (Options.FullScreen)
         {
             return "max-width: none; width: 100vw; height: 100vh;";
