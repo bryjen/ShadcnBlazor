@@ -1,0 +1,39 @@
+@namespace SampleWasmProject.Components.Core.Dialog
+@implements IDisposable
+@using SampleWasmProject.Components.Core.Dialog.Services
+@inject IDialogService DialogService
+
+@foreach (var instance in _instances)
+{
+    <DialogContainer Instance="@instance" />
+}
+
+@code {
+    private List<Models.DialogInstance> _instances = [];
+
+    protected override void OnInitialized()
+    {
+        if (DialogService is Services.DialogService dialogService)
+        {
+            dialogService.OnDialogsChanged += Update;
+            Update();
+        }
+    }
+
+    private void Update()
+    {
+        if (DialogService is Services.DialogService dialogService)
+        {
+            _instances = dialogService.DialogInstances.ToList();
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+        if (DialogService is Services.DialogService dialogService)
+        {
+            dialogService.OnDialogsChanged -= Update;
+        }
+    }
+}

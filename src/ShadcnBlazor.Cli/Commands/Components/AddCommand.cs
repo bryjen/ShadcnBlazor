@@ -34,9 +34,9 @@ public class AddCommand(
 
     public class AddSettings : CommandSettings
     {
-        [CommandArgument(0, "<name>")]
-        [Description("The name of the component to add. (input, textarea, checkbox, etc.)")]
-        public required string Name { get; init; }
+        [CommandArgument(0, "[name]")]
+        [Description("The name of the component to add. (input, textarea, checkbox, etc.) Omit when using --all.")]
+        public string? Name { get; init; }
 
         [CommandOption("-a|--all")]
         [Description("Adds all available components.")]
@@ -58,6 +58,11 @@ public class AddCommand(
     {
         try
         {
+            if (!settings.AddAllComponents && string.IsNullOrWhiteSpace(settings.Name))
+            {
+                throw new CliException("Component name is required. Specify a component name or use --all to add all components.");
+            }
+
             var cwd = Directory.GetCurrentDirectory();
             var cwdInfo = new DirectoryInfo(cwd);
 
@@ -72,14 +77,25 @@ public class AddCommand(
             };
 
             var components = componentService.LoadComponents();
-            var componentToAdd = componentService.FindComponent(components, settings.Name);
-
-            var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
-                outputProjectConfig, components, componentToAdd.Name.Trim().ToLower());
-
             var srcDirInfo = componentService.GetComponentsSourceDirectory();
 
-            AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite);
+            if (settings.AddAllComponents)
+            {
+                var added = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var component in components)
+                {
+                    var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
+                        outputProjectConfig, components, component.Name.Trim().ToLower());
+                    AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite, added);
+                }
+            }
+            else
+            {
+                var componentToAdd = componentService.FindComponent(components, settings.Name!);
+                var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
+                    outputProjectConfig, components, componentToAdd.Name.Trim().ToLower());
+                AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite);
+            }
 
             return 0;
         }
@@ -99,8 +115,11 @@ public class AddCommand(
         BlazorProjectType blazorProjectType,
         FileInfo csprojFile,
         bool silent,
-        bool overwrite = false)
+        bool overwrite = false,
+        HashSet<string>? sharedAdded = null)
     {
+        var added = sharedAdded ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         void AddComponentWithDependenciesCore(ComponentDependencyNode componentDependencyNode)
         {
             foreach (var dependency in componentDependencyNode.ResolvedDependencies)
@@ -108,7 +127,11 @@ public class AddCommand(
                 AddComponentWithDependenciesCore(dependency);
             }
 
+            if (added.Contains(componentDependencyNode.Component.Name))
+                return;
+
             AddComponent(outputProjectConfig, cwdInfo, srcDirInfo, componentDependencyNode.Component, blazorProjectType, csprojFile, silent, overwrite);
+            added.Add(componentDependencyNode.Component.Name);
         }
 
         AddComponentWithDependenciesCore(componentDependencyTree.RootNode);

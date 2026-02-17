@@ -43,7 +43,7 @@ public class ComponentRegistryService
         new ComponentRegistryEntry("Card", "card"),
         new ComponentRegistryEntry("Checkbox", "checkbox"),
         new ComponentRegistryEntry("Dialog", "dialog"),
-        new ComponentRegistryEntry("DropdownMenu", "dropdown-menu"),
+        new ComponentRegistryEntry("DropdownMenu", "dropdownmenu"),
         new ComponentRegistryEntry("Input", "input"),
         new ComponentRegistryEntry("Popover", "popover"),
         new ComponentRegistryEntry("Radio", "radio"),

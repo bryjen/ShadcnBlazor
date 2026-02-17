@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using ShadcnBlazor.Cli.Commands;
 using ShadcnBlazor.Cli.Commands.Components;

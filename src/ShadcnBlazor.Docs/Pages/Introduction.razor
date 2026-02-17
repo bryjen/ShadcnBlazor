@@ -1,6 +1,4 @@
 @page "/introduction"
-@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
-@using EasyAppDev.Blazor.Icons.Lucide
 
 <TocPageBase>
 <div class="flex flex-col gap-8 min-w-0">
@@ -9,7 +7,7 @@
         <p class="text-base text-muted-foreground">shadcn/ui is a set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks and AI models. Open Source. Open Code.</p>
     </div>
 
-    <div class="w-full text-[0.9rem] leading-relaxed text-foreground/85">
+    <div class="w-full text-[0.9rem] leading-[1.75] text-foreground/85">
         <p class="mb-3">
             I'm sure you're well aware of the problems of typical component libraries: you install a package from <code>NuGet</code>, configure your project, and then use the components in your app. 
             This approach works until you need to modify the source code of your system to fit the requirements of your app.
@@ -28,52 +26,13 @@
     <DocsSection Title="Installation" Id="installation">
         
         <div class="flex flex-col gap-8">
-            <div class="mb-8">
+            <div class="space-y-6 mb-8">
                 <p class="mb-3">
                     First, make sure you have the <code>shadcnblazor</code> CLI tool installed. If you don't have it yet, you can install it globally using the command provided below:
                 </p>
 
-                <CommandBlock Options="@InstallOptions" DefaultOption="@("dotnet")"/>
+                <CommandBlock Options="@InstallOptions" DefaultOption="@("shell")"/>
             </div>
-
-            <DocsSubSection Title="Installation Details" Id="installation-details">
-                <div class="flex flex-col gap-8">
-                    <div class="flex flex-col gap-2">
-                        <p class="mb-3">
-                            When you add your first component, the CLI automatically sets up the required infrastructure: the <code>Shared</code> directory, CSS/JS assets, <code>_Imports.razor</code> usings, and TailwindMerge registration. Namespace is auto-detected from your <code>.csproj</code>; components are copied to <code>Components/Core/</code>.
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col gap-2">
-                        <p class="mb-3">
-                            The <code>Shared</code> directory contains enums, services, and other shared code used by the components.
-                            It is copied into your project on first add so you can modify it as needed.
-                        </p>
-                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleSharedDirectoryAscii, "text") })"/>
-                    </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <p class="mb-3">
-                            When importing/adding components, the CLI tool generates the component files in the specified directory.
-                        </p>
-                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExampleButtonComponentDirectoryAscii, "text") })"/>
-                    </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <p class="mb-3">
-                            For more complex components, like <code>Popover</code>, classes such as models, enums, interfaces, and services are generated in subdirectories within the component directory.
-                            This keeps related functionality neatly organized, and allows better separation of concerns while still giving you full access to modify and extend the code as needed.
-                        </p>
-                        <CodeBlock CodeFiles="@(new[] { CodeFile.Create(ExamplePopoverComponentDirectoryAscii, "text") })"/>
-                    </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <p class="mb-3">
-                            For more information, see.
-                        </p>
-                    </div>
-                </div>
-            </DocsSubSection>
 
             <DocsSubSection Title="From New Project" Id="installation-new">
                 <div class="flex flex-col gap-4">
@@ -84,11 +43,11 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Use the <code>new</code> command to scaffold a Blazor project from a template. Specify <code>--wasm</code> for WebAssembly standalone or <code>--server</code> for Blazor Server with global interactivity.
                                 </span>
-                                <CommandBlock Options="@NewProject1" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject1" DefaultOption="@("shell")"/>
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Use <code>-o</code> or <code>--out</code> to specify an output directory. By default, the project is created in <code>./{proj}</code>.
                                 </span>
-                                <CommandBlock Options="@NewProject1WithOut" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject1WithOut" DefaultOption="@("shell")"/>
                             </div>)
 
                         @RenderStep(2,
@@ -97,32 +56,45 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Navigate into the project directory and add components.
                                 </span>
-                                <CommandBlock Options="@NewProject2" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject2" DefaultOption="@("shell")"/>
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
                                     If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
                                 </span>
-                                <CommandBlock Options="@NewProject3" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@NewProject3" DefaultOption="@("shell")"/>
                             </div>)
-
-                        <div class="flex flex-col gap-3 mt-6 p-4 rounded-lg bg-muted/50 border border-border">
-                            <span class="font-bold text-lg">Tailwind CSS</span>
-                            <span class="text-[0.9rem] leading-relaxed text-foreground/85">
-                                New projects use <code>Tailwind.MSBuild</code> to automatically compile <code>wwwroot/css/input.css</code> to <code>wwwroot/css/app.css</code> on each build. The package downloads the Tailwind CLI on first build. No additional setup is required.
-                            </span>
-                        </div>
                     </div>
                 </div>
             </DocsSubSection>
 
             <DocsSubSection Title="From Existing Project" Id="installation-existing">
-                <Alert Variant="@AlertVariant.Destructive" Class="mb-6">
-                    <p class="font-medium">Tailwind not configured automatically</p>
-                    <p class="text-muted-foreground text-sm">
-                        Unlike creating a new project, adding to an existing project <b>DOES NOT</b> add Tailwind compilation. You must configure it yourself: add <code class="text-destructive bg-destructive/15">Tailwind.MSBuild</code> to your project, or use the standalone <code class="text-destructive bg-destructive/15">tailwindcss</code> CLI to compile <code>input.css</code> to <code>app.css</code>. If setup fails, run <code>shadcnblazor repair</code>.
-                    </p>
-                </Alert>
-                
+                <div class="w-full gap-y-6">
+                    <Alert Variant="@AlertVariant.Default" Class="mb-6">
+                        <p class="font-bold">Tailwind Configuration</p>
+                        <div class="text-muted-foreground text-sm space-y-4">
+                            <p>
+                                This library ships a <b>precompiled tailwind file</b>, meaning the components should render properly out of the box.
+                                However, if you would like to use custom tailwind utilities, please note that adding components <b>DOES NOT</b> provide a tailwind configuration or compilation mechanism.
+                            </p>
+                            
+                            <p class="text-muted-foreground text-sm">
+                                You must configure Tailwind CSS compilation yourself. We recommend installing <a href="https://www.nuget.org/packages/Tailwind.MSBuild" target="_blank" class="text-primary underline">Tailwind.MSBuild</a> or downloading the <a href="https://tailwindcss.com/blog/standalone-cli" target="_blank" class="text-primary underline">standalone Tailwind CLI</a> executable to compile <code class="bg-muted px-1 rounded">input.css</code> to <code class="bg-muted px-1 rounded">app.css</code>.
+                            </p>
+                        </div>
+                    </Alert>
+                    
+                    <Alert Variant="@AlertVariant.Destructive" Class="mb-6">
+                        <p class="font-bold">Bootstrap Conflicts</p>
+                        <p class="text-muted-foreground text-sm mb-3">
+                            Blazor templates include Bootstrap by default, which <b>conflicts with Tailwind CSS</b> and will break component styling. You must resolve these css conflicts manually, or remove Bootstrap from your project:
+                        </p>
+                        <p class="text-muted-foreground text-sm">
+                            Remove this line from <code class="text-destructive bg-destructive/15">wwwroot/index.html</code> or <code class="text-destructive bg-destructive/15">Components/App.razor</code>:
+                        </p>
+                        <pre class="bg-destructive/10 p-2 rounded text-xs mt-2 overflow-x-auto">&lt;link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" /&gt;</pre>
+                    </Alert>
+                </div>
+
                 <div class="flex flex-col gap-4">
                     <div class="flex flex-col gap-8 mt-3">
                         @RenderStep(1,
@@ -131,12 +103,12 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Navigate into your existing Blazor project directory and run <code>component add</code>. Setup (Shared folder, CSS/JS assets, TailwindMerge) runs automatically on first add.
                                 </span>
-                                <CommandBlock Options="@InitExisting1" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@InitExisting1" DefaultOption="@("shell")"/>
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
                                     If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
                                 </span>
-                                <CommandBlock Options="@InitExisting3" DefaultOption="@("dotnet")"/>
+                                <CommandBlock Options="@InitExisting3" DefaultOption="@("shell")"/>
                             </div>)
                     </div>
                 </div>
@@ -161,36 +133,36 @@
     
     private static readonly Dictionary<string, string> InstallOptions = new()
     {
-        ["dotnet"] = "dotnet tool install --global shadcnblazor",
+        ["shell"] = "dotnet tool install --global shadcnblazor",
     };
     
     private static readonly Dictionary<string, string> NewProject1 = new()
     {
-        ["dotnet"] = "shadcnblazor new --wasm --proj MyApp --namespace MyApp",
+        ["shell"] = "shadcnblazor new --wasm --proj MyApp --namespace MyApp",
     };
 
     private static readonly Dictionary<string, string> NewProject1WithOut = new()
     {
-        ["dotnet"] = "shadcnblazor new --server --proj MyApp --namespace MyApp -o ./projects",
+        ["shell"] = "shadcnblazor new --server --proj MyApp --namespace MyApp -o ./projects",
     };
 
     private static readonly Dictionary<string, string> InitExisting1 = new()
     {
-        ["dotnet"] = "cd MyBlazorProject && shadcnblazor component add button",
+        ["shell"] = "shadcnblazor component add button",
     };
 
     private static readonly Dictionary<string, string> NewProject2 = new()
     {
-        ["dotnet"] = "cd MyApp && shadcnblazor component add button",
+        ["shell"] = "shadcnblazor component add button",
     };
 
     private static readonly Dictionary<string, string> NewProject3 = new()
     {
-        ["dotnet"] = "shadcnblazor component add --all",
+        ["shell"] = "shadcnblazor component add --all",
     };
 
     private static readonly Dictionary<string, string> InitExisting3 = new()
     {
-        ["dotnet"] = "shadcnblazor component add --all",
+        ["shell"] = "shadcnblazor component add --all",
     };
 }

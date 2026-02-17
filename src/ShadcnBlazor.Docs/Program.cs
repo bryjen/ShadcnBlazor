@@ -6,7 +6,6 @@ using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Docs.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
-using ShadcnBlazor.Components.Shared.Services.Extensions;
 using TailwindMerge.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -18,7 +17,6 @@ builder.Services.AddAiChat();
 
 // builder.Services.AddSingleton<TwMerge>();
 builder.Services.AddTailwindMerge();
-builder.Services.AddShadcnBlazor();
 builder.Services.AddScoped<PageTocService>();
 builder.Services.AddSingleton<ComponentRegistryService>();
 builder.Services.AddSingleton<SampleRegistryService>();

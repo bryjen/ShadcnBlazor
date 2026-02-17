@@ -1,0 +1,26 @@
+@namespace SampleWasmProject.Components.Core.Tooltip
+@using SampleWasmProject.Components.Core.Popover
+@using SampleWasmProject.Components.Core.Popover.Models
+@inherits ShadcnComponentBase
+@implements IDisposable
+
+<div @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave" class="inline-flex">
+    <Popover Open="@_open" OpenChanged="@(v => _open = v)" CloseOnOutsideClick="false" AnchorOrigin="PopoverPlacement.TopCenter" TransformOrigin="PopoverPlacement.BottomCenter" Animate="true" PopoverClass="tooltip-popover" ExitAnimationDurationMs="60" Offset="@Offset">
+        <Anchor>
+            @Anchor
+        </Anchor>
+        <ChildContent>
+            <div class="@MergeCss("relative z-50 rounded-full bg-popover px-3 py-2 text-sm text-popover-foreground shadow-md", ContentClass)">
+                <span class="tooltip-arrow"></span>
+                @if (ChildContent is not null)
+                {
+                    @ChildContent
+                }
+                else if (!string.IsNullOrEmpty(Content))
+                {
+                    <span>@Content</span>
+                }
+            </div>
+        </ChildContent>
+    </Popover>
+</div>

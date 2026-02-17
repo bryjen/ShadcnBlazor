@@ -1,0 +1,26 @@
+@namespace SampleWasmProject.Components.Core.DropdownMenu
+@inherits ShadcnComponentBase
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuContext? Context { get; set; }
+
+    /// <summary>
+    /// The menu content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment ContentFragment => Context is not null
+        ? @<CascadingValue TValue="DropdownMenuContext" Value="Context" IsFixed="true">
+            <div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">
+                @ChildContent
+            </div>
+        </CascadingValue>
+        : @<div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>;
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisterContent(ContentFragment);
+    }
+}

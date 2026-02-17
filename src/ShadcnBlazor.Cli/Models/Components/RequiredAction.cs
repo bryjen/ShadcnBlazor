@@ -1,9 +1,20 @@
+using System.Text.Json.Serialization;
+
 namespace ShadcnBlazor.Cli.Models.Components;
 
 /// <summary>
 /// Represents an additional action that needs to be performed in the client project to fully integrate a component, such as adding a service to the DI container or adding a NuGet dependency.
 /// This is separate from the dependencies between components.
 /// </summary>
+/// [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(AddToServicesAction), typeDiscriminator: "addToServices")]
+[JsonDerivedType(typeof(AddNugetDependencyAction), typeDiscriminator: "addNugetDependency")]
+[JsonDerivedType(typeof(CopyJsAction), typeDiscriminator: "copyJs")]
+[JsonDerivedType(typeof(CopyCssAction), typeDiscriminator: "copyCss")]
+[JsonDerivedType(typeof(LinkExternalJsAction), typeDiscriminator: "linkExternalJs")]
+[JsonDerivedType(typeof(MergeToImportsAction), typeDiscriminator: "mergeToImports")]
+[JsonDerivedType(typeof(AddCssLinksToRootAction), typeDiscriminator: "addCssLinksToRoot")]
+[JsonDerivedType(typeof(AddProgramServiceAction), typeDiscriminator: "addProgramService")]
 public abstract record RequiredAction;
 
 /// <summary>
@@ -58,12 +69,12 @@ public sealed record CopyJsAction(string JsFileName) : RequiredAction;
 /// Represents an action where a css file from the component library needs to be copied to the client project.
 /// Contains only the filetype name. Assumes consumer code knows where this file will be located on the component library.
 /// </summary>
-public sealed record CopyCssAction(string CssFileName) : RequiredAction;
+public sealed record CopyCssAction(string CssFileName, bool Link = false) : RequiredAction;
 
 /// <summary>
 /// Represents an action where a js file from the component library needs to be copied to the client project.
 /// </summary>
-public sealed record LinkExternalJsAction(string PackageName, string Version) : RequiredAction;
+public sealed record LinkExternalJsAction(string PackageName, string Version, bool Link = false) : RequiredAction;
 
 /// <summary>
 /// Represents an action where we merge using statements into the client's _Imports.razor file. Contains the namespaces to be merged.

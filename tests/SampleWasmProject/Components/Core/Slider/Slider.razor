@@ -1,0 +1,24 @@
+@namespace SampleWasmProject.Components.Core.Slider
+@inherits SliderBase
+
+<div
+    data-slot="slider"
+    data-size="@Size.ToString().ToLower()"
+    class="@GetContainerClass()"
+    @attributes="AdditionalAttributes">
+    <div class="pointer-events-none absolute top-1/2 left-0 right-0 -translate-y-1/2 rounded-full bg-muted/40" style="@GetTrackStyle()"></div>
+    <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-primary" style="@GetCurrentRangeStyle()"></div>
+    <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full border border-border bg-foreground shadow-xs" style="@GetCurrentThumbStyle()"></div>
+
+    <input
+        type="range"
+        min="@Min"
+        max="@Max"
+        step="@Step"
+        value="@Value"
+        aria-label="@AriaLabel"
+        disabled="@Disabled"
+        class="@GetInputClass()"
+        @oninput="HandleInput"
+        @onchange="HandleChange" />
+</div>

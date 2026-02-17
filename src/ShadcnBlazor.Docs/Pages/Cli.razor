@@ -1,0 +1,113 @@
+@page "/cli"
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
+
+<TocPageBase>
+    <div class="flex flex-col gap-8 min-w-0">
+        <div class="flex flex-col gap-1">
+            <h1 class="text-3xl font-bold">CLI</h1>
+            <p class="text-base text-muted-foreground">The CLI overview. Briefly mentions the CLI's internals.</p>
+        </div>
+        
+        <DocsSection Title="Commands" Id="commands">
+            <DocsSubSection Title="Root" Id="cli-root">
+                <p class="mb-3">Use the CLI from the project directory.</p>
+                <CommandBlock Options="@_cliRootCommands" Class="mb-4" />
+                <CodeBlock CodeFiles="@(new[] { _cliRoot })"/>
+            </DocsSubSection>
+
+            <DocsSubSection Title="new" Id="cli-new">
+                <p class="mb-3">Creates a new Blazor project from a template.</p>
+                <CommandBlock Options="@_cliNewCommands" Class="mb-4" />
+                <CodeBlock CodeFiles="@(new[] { _cliNew })"/>
+            </DocsSubSection>
+
+            <DocsSubSection Title="repair" Id="cli-repair">
+                <p class="mb-3">Re-add Shared component with overwrite. Use if setup was broken or incomplete.</p>
+                <CommandBlock Options="@_cliRepairCommands" Class="mb-4" />
+                <CodeBlock CodeFiles="@(new[] { _cliRepair })"/>
+            </DocsSubSection>
+
+            <DocsSubSection Title="component" Id="cli-component">
+                <p class="mb-3">Component management. Shared and its dependencies are added automatically.</p>
+                <CommandBlock Options="@_cliComponentCommands" Class="mb-4" />
+                <CodeBlock CodeFiles="@(new[] { _cliComponent })"/>
+            </DocsSubSection>
+
+            <DocsSubSection Title="add" Id="add">
+                <p class="mb-3">Adds a component to a project. Runs first-time setup automatically if needed.</p>
+                <CommandBlock Options="@_cliAddCommands" Class="mb-4" />
+                <CodeBlock CodeFiles="@(new[] { _cliAdd })"/>
+            </DocsSubSection>
+        </DocsSection>
+        
+        <DocsSection Title="Internals" Id="internals">
+            <DocsSubSection Title="Components Registry" Id="components-registry">
+                <div class="flex flex-col gap-2 w-full text-[0.9rem] leading-relaxed text-foreground/85">
+                    <p class="mb-3">
+                        The CLI tool contains a hardcoded registry which contains all components, as well as their dependencies and additional actions required for a full installation.
+                        An example of a component entry in the registry looks like this:
+                    </p>
+                    
+                    <CodeBlock Class="h-[50vh] overflow-y-scroll" CodeFiles="@(new[] { _sampleJson })" />
+                    
+                    <p class="my-4">
+                        That is to say that that CLI automatically handles actions such as <span class="font-semibold">namespace conversion/resolution, adding <code>.js</code> and <code>.css</code> files to <code>wwwroot</code>, adding C# Nuget dependencies,</span> etc.
+                        In addition to these actions, the CLI resolves dependencies between components, adding any declared sub-components if not present in the output path.
+                        For example, take below:
+                    </p>
+                    
+                    <CodeBlock CodeFiles="@(new[] { _sampleDependencyTree })" />
+                    
+                    <p class="my-4">
+                        The CLI starts at the deepest node, then walks up the dependency tree, copying the component into the output path, fixing namespaces and performing any additional declared actions.
+                        For the above component, the CLI would first copy <code>Shared</code>, then <code>Popover</code>, then finally the intended component, <code>Select</code>.
+                    </p>
+                </div>
+            </DocsSubSection>
+            
+            <DocsSubSection Title="Component Structure" Id="components-structure">
+                <div class="flex flex-col gap-2 w-full text-[0.9rem] leading-relaxed text-foreground/85">
+                    <p class="mb-3">
+                        Most components are simple, containing the main <code>.razor</code> file and sometimes a backing <strong>.razor.cs</strong> file.
+                    </p>
+                    
+                    <CodeBlock CodeFiles="@(new[] { _cardFileStructure })" />
+                    
+                    <p class="my-4">
+                        However, for more complex components, additional files such as sub-components, models, and service files are bundled within the directory (such as the below <code>Dialog</code> component).
+                    </p>
+                    
+                    <CodeBlock CodeFiles="@(new[] { _dialogFileStructure })" />
+                    
+                    <p class="my-4">
+                        Recall that components are added to the <code>Components</code> directory within the project.
+                        It may seem counterintuitive to have models and services within the components folder, but this is an intentional design choice to ensure that the components <span class="font-semibold">self-contained and independently copyable</span>.
+                        That is to say that it also allows arguably better integration with existing projects, as it prevents the "pollution" of the components' code with that of the project.
+                    </p>
+                </div>
+            </DocsSubSection>
+            
+            <DocsSubSection Title="@("The \"Shared\" Component")" Id="the-shared-component">
+                <div class="flex flex-col gap-2 w-full text-[0.9rem] leading-relaxed text-foreground/85">
+                    <p class="mb-3">
+                        Continuing with the aforementioned idea of keeping all component functionality self-contained within the component's directory, you can find that we apply the exact same principle with the shared/common code between all components.
+                        Instead of populating <code>Services</code>, <code>Models</code>, etc. in the project root, all common code is shipped as a "pseudo-component" <code>Shared</code>.
+                    </p>
+                    
+                    <CodeBlock CodeFiles="@(new[] { _sharedFileStructure })" />
+                    
+                    <p class="my-4">
+                        As can be seen from above, this includes enums, common interop services, options, etc.
+                        Doing this allows the bulk majority code changes to happen within a specific folder within the <code>Components</code> directory, rather than to different folders spread out within the project.
+                    </p>
+                    
+                    <p class="mb-4">
+                        Unlike other component libraries, this setup means that there isn't a single "core" function <code>AddShadcnServices()</code> or "core" .js script <code>&lt;script src=&quot;_content/MudBlazor/MudBlazor.min.js?v=1&quot;&gt;&lt;/script&gt;</code>.
+                        While it can be argued that this makes the overall setup more fragmented and complex, it can be reasoned that this is a side effect of the design choices to make components self-contained and independently copyable, which is a core principle of this library.
+                    </p>
+                </div>
+            </DocsSubSection>
+        </DocsSection>
+        
+    </div>
+</TocPageBase>

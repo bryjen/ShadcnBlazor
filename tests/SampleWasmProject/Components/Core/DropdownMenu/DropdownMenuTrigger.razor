@@ -1,0 +1,30 @@
+@namespace SampleWasmProject.Components.Core.DropdownMenu
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuContext? Context { get; set; }
+
+    /// <summary>
+    /// When true, renders the child element as the trigger instead of a default button.
+    /// </summary>
+    [Parameter]
+    public bool AsChild { get; set; }
+
+    /// <summary>
+    /// The trigger content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment TriggerFragment => @<DropdownMenuTriggerInner OnClick="HandleClick" AsChild="AsChild">@ChildContent</DropdownMenuTriggerInner>;
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisterTrigger(TriggerFragment);
+    }
+
+    private void HandleClick()
+    {
+        Context?.SetOpen?.Invoke(!Context.Open);
+    }
+}

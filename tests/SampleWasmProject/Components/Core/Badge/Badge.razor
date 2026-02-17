@@ -1,0 +1,10 @@
+@namespace SampleWasmProject.Components.Core.Badge
+@inherits ShadcnComponentBase
+
+<span
+    data-slot="badge"
+    data-variant="@Variant"
+    class="@GetClass()"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</span>

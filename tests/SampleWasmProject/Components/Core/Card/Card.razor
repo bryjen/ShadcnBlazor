@@ -1,0 +1,29 @@
+@namespace SampleWasmProject.Components.Core.Card
+@inherits ShadcnComponentBase
+
+@if (Header is null && Footer is null)
+{
+    <div
+        data-slot="card"
+        class="@GetContainerClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+else
+{
+    <div
+        data-slot="card"
+        class="@GetContainerClass()"
+        @attributes="AdditionalAttributes">
+        @if (Header is not null)
+        {
+            <div data-slot="card-header" class="@GetHeaderClass()">@Header</div>
+        }
+        <div data-slot="card-content" class="@GetContentClass()">@ChildContent</div>
+        @if (Footer is not null)
+        {
+            <div data-slot="card-footer" class="@GetFooterClass()">@Footer</div>
+        }
+    </div>
+}

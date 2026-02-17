@@ -1,0 +1,17 @@
+@namespace SampleWasmProject.Components.Core.Switch
+@inherits ShadcnComponentBase
+
+<label class="flex items-center gap-2 cursor-pointer">
+    <button type="button"
+            role="switch"
+            aria-checked="@(Checked ? "true" : "false")"
+            data-state="@(Checked ? "checked" : "unchecked")"
+            data-size="@Size.ToString().ToLower()"
+            class="@GetTrackClass() group"
+            disabled="@Disabled"
+            @onclick="HandleClick"
+            @attributes="AdditionalAttributes">
+        <span class="@GetThumbClass()" data-slot="switch-thumb"></span>
+    </button>
+    @ChildContent
+</label>

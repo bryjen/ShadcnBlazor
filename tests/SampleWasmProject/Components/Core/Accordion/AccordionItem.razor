@@ -1,0 +1,76 @@
+@* AccordionItem: A single expandable section within an Accordion. Must contain AccordionTrigger and AccordionContent. *@
+@namespace SampleWasmProject.Components.Core.Accordion
+@inherits ShadcnBlazor.Components.Shared.ShadcnComponentBase
+
+<CascadingValue Value="_itemContext">
+    <div
+        data-slot="accordion-item"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    private Accordion.AccordionContext? AccordionContext { get; set; }
+
+    /// <summary>
+    /// A unique value that identifies this item. Used to control which item is open and for two-way binding.
+    /// </summary>
+    [Parameter]
+    public required string Value { get; set; }
+
+    /// <summary>
+    /// When true, the item cannot be expanded or collapsed. The trigger appears disabled and does not respond to clicks.
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    /// <summary>
+    /// The content of the item, typically an <see cref="AccordionTrigger"/> followed by <see cref="AccordionContent"/>.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private AccordionItemContext _itemContext = null!;
+
+    protected override void OnInitialized()
+    {
+        if (AccordionContext is null)
+            throw new InvalidOperationException("AccordionItem must be used inside an Accordion.");
+
+        _itemContext = new AccordionItemContext(AccordionContext, Value, Disabled);
+    }
+
+    protected override void OnParametersSet()
+    {
+        _itemContext = new AccordionItemContext(AccordionContext!, Value, Disabled);
+    }
+
+    private string GetClass()
+    {
+        var baseClasses = "border-b border-border";
+        return MergeCss(baseClasses, Class);
+    }
+
+    internal sealed class AccordionItemContext
+    {
+        private readonly Accordion.AccordionContext _accordion;
+
+        public AccordionItemContext(Accordion.AccordionContext accordion, string value, bool disabled)
+        {
+            _accordion = accordion;
+            Value = value;
+            Disabled = disabled;
+        }
+
+        public string Value { get; }
+
+        public bool Disabled { get; }
+
+        public bool IsOpen => _accordion.IsItemOpen(Value);
+
+        public Task ToggleAsync() => _accordion.ToggleItemAsync(Value);
+    }
+}

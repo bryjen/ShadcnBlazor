@@ -47,7 +47,8 @@ public class AddProgramServiceActionService
                 insertPoint = content.IndexOf("builder.Build()", StringComparison.Ordinal);
             if (insertPoint >= 0)
             {
-                var serviceLine = $"builder.Services.{action.ServiceCall}";
+                var serviceCall = action.ServiceCall.TrimEnd(';');
+                var serviceLine = $"builder.Services.{serviceCall};";
                 content = content.Insert(insertPoint, "    " + serviceLine + "\n    ");
                 modified = true;
             }

@@ -1,0 +1,11 @@
+@namespace SampleWasmProject.Components.Core.Dialog.Declarative
+@inherits ShadcnComponentBase
+
+<p class="@MergeCss("dialog-description", Class ?? "")" @attributes="AdditionalAttributes">
+    @ChildContent
+</p>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

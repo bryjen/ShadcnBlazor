@@ -1,0 +1,24 @@
+@namespace SampleWasmProject.Components.Core.DropdownMenu
+@using SampleWasmProject.Components.Core.Button
+
+<div class="dropdown-menu-trigger" @onclick="OnClick" @onclick:preventDefault="true">
+    @if (AsChild)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <Button Variant="Variant.Outline" Type="ButtonType.Button">@ChildContent</Button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public bool AsChild { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

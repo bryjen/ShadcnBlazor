@@ -1,0 +1,24 @@
+@namespace SampleWasmProject.Components.Core.DropdownMenu
+@using SampleWasmProject.Components.Core.Popover
+@using SampleWasmProject.Components.Core.Popover.Models
+
+<CascadingValue Value="_context">
+    <div style="display: none">@ChildContent</div>
+    <div @onmouseenter="HandleTriggerMouseEnter" @onmouseleave="HandleTriggerMouseLeave">
+        <Popover Open="_open"
+                OpenChanged="v => { _open = v; _context.Open = v; StateHasChanged(); }"
+                CloseOnOutsideClick="false"
+                AnchorOrigin="PopoverPlacement.CenterRight"
+                TransformOrigin="PopoverPlacement.CenterLeft"
+                Offset="0">
+            <Anchor>
+                @_context.GetTriggerFragment()
+            </Anchor>
+            <ChildContent>
+                <div @onmouseenter="HandleContentMouseEnter" @onmouseleave="HandleContentMouseLeave">
+                    @_context.GetContentFragment()
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</CascadingValue>

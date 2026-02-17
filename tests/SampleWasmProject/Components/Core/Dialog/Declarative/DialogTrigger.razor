@@ -1,0 +1,29 @@
+@namespace SampleWasmProject.Components.Core.Dialog.Declarative
+@inherits ShadcnComponentBase
+
+<div @onclick="OnClick"
+     role="button"
+     tabindex="0"
+     @onkeydown="OnKeyDown"
+     class="@MergeCss("inline-block cursor-pointer")"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private DeclarativeDialogContext? Context { get; set; }
+
+    private void OnClick() => Context?.OpenDialog();
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " ")
+        {
+            Context?.OpenDialog();
+        }
+    }
+}

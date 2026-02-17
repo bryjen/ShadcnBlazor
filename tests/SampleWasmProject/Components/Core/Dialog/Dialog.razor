@@ -1,0 +1,101 @@
+@namespace SampleWasmProject.Components.Core.Dialog
+@inherits ShadcnComponentBase
+
+<div id="@_elementId"
+     class="@MergeCss("dialog-content", GetDialogClass())"
+     data-dialog-content="@Instance.Id.ToString("N")"
+     data-state="closed"
+     style="@GetDialogStyle()"
+     @onclick:stopPropagation
+     @attributes="AdditionalAttributes">
+    @if (!Options.NoHeader)
+    {
+        <div class="dialog-header">
+            <div class="dialog-header-text">
+                <h2 class="dialog-title">@Instance.Title</h2>
+                @if (!string.IsNullOrWhiteSpace(Options.Description))
+                {
+                    <p class="dialog-description">@Options.Description</p>
+                }
+            </div>
+            @if (Options.CloseButton)
+            {
+                <button type="button"
+                        class="dialog-close"
+                        aria-label="Close"
+                        @onclick="OnCloseClick">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+            }
+        </div>
+    }
+    <div class="dialog-body">
+        <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public required Models.DialogInstance Instance { get; set; }
+
+    [Parameter]
+    public Models.DialogOptions Options { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<Models.DialogResult> OnCloseRequested { get; set; }
+
+    private readonly string _elementId = $"dialog-{Guid.NewGuid():N}";
+    private DialogInstanceCascade _dialogInstance = null!;
+
+    protected override void OnInitialized()
+    {
+        _dialogInstance = new DialogInstanceCascade(result => _ = OnCloseRequested.InvokeAsync(result));
+    }
+
+    private void OnCloseClick()
+    {
+        _ = OnCloseRequested.InvokeAsync(Models.DialogResult.Cancel());
+    }
+
+    private string GetDialogClass()
+    {
+        var classes = new List<string>();
+        if (Options.FullScreen)
+        {
+            classes.Add("dialog-fullscreen");
+        }
+        if (Options.FullWidth)
+        {
+            classes.Add("dialog-fullwidth");
+        }
+        return string.Join(" ", classes);
+    }
+
+    private string GetDialogStyle()
+    {
+        if (Options.FullScreen)
+        {
+            return "max-width: none; width: 100vw; height: 100vh;";
+        }
+
+        var maxWidth = Options.MaxWidth switch
+        {
+            Models.DialogMaxWidth.ExtraSmall => "444px",
+            Models.DialogMaxWidth.Small => "600px",
+            Models.DialogMaxWidth.Medium => "960px",
+            Models.DialogMaxWidth.Large => "1280px",
+            Models.DialogMaxWidth.ExtraLarge => "1920px",
+            _ => "600px"
+        };
+
+        return $"max-width: {maxWidth};";
+    }
+}

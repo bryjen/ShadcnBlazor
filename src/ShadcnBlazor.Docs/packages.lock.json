@@ -241,11 +241,31 @@
         "resolved": "1.2.0",
         "contentHash": "WE2eblbDjsOoJhOBA+Jiwk/c+xrbFTRu+KaUOhhRWklCyScWSGCFS3gNmuc7zjjdJPSjotGAoKjAJIkHsXPXxQ=="
       },
+      "Spectre.Console": {
+        "type": "Transitive",
+        "resolved": "0.53.1",
+        "contentHash": "wNLoytZpc7brgH3V9ZmrRyQqplOQUnNkEu1qSjRnEa0KOGvWAxgdEG6jmFTfyXKzO7p1pTLBHYH+AgxsWi69Cg=="
+      },
+      "Spectre.Console.Cli": {
+        "type": "Transitive",
+        "resolved": "0.53.1",
+        "contentHash": "y//7ZZ0shhvgXzoJXJzMaLGA4dPem8qCbkyv9khfE8NQDlH4hPVsHOHYoz6uzAwiTX9Yd7OnX3wNOX/wRfPUOg==",
+        "dependencies": {
+          "Spectre.Console": "0.53.1"
+        }
+      },
       "shadcnblazor": {
         "type": "Project",
         "dependencies": {
           "Microsoft.AspNetCore.Components.Web": "[9.0.6, )",
           "TailwindMerge.NET": "[1.2.0, )"
+        }
+      },
+      "shadcnblazor.cli": {
+        "type": "Project",
+        "dependencies": {
+          "ShadcnBlazor": "[1.0.0, )",
+          "Spectre.Console.Cli": "[0.53.1, )"
         }
       }
     },
