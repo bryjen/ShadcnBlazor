@@ -88,6 +88,7 @@ public partial class Accordion : ShadcnComponentBase
     private HashSet<string> _localValues = [];
     private AccordionContext _context = null!;
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         _localValue = DefaultValue;
@@ -95,6 +96,7 @@ public partial class Accordion : ShadcnComponentBase
         _context = new AccordionContext(this);
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         if (Type == AccordionType.Single && IsControlledSingle)
@@ -191,7 +193,6 @@ public partial class Accordion : ShadcnComponentBase
 
         public Task ToggleItemAsync(string value) => _owner.ToggleItemAsync(value);
     }
-
 }
 
 /// <summary>

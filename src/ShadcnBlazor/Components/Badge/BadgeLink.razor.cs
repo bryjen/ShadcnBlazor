@@ -11,10 +11,15 @@ namespace ShadcnBlazor.Components.Badge;
 /// </summary>
 public partial class BadgeLink : ShadcnComponentBase
 {
+    /// <summary>The content of the badge link.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>The URL the badge links to.</summary>
     [Parameter] public string? Href { get; set; }
+    /// <summary>The target attribute for the link (e.g. "_blank").</summary>
     [Parameter] public string? Target { get; set; }
+    /// <summary>The visual style variant of the badge.</summary>
     [Parameter] public Variant Variant { get; set; } = Variant.Link;
+    /// <summary>The size of the badge.</summary>
     [Parameter] public Size Size { get; set; } = Size.Md;
 
     private string GetClass()

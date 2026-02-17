@@ -7,14 +7,16 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\ShadcnBlazor.xml</DocumentationFile>
+        <!-- Enable CS1591 to warn on missing XML documentation -->
+        <NoWarn>$(NoWarn.Replace('1591', '').Replace(';1591', '').Replace('1591;', '').Replace(';;', ';'))</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser"/>
+        <SupportedPlatform Include="browser" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
         <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
     </ItemGroup>
 

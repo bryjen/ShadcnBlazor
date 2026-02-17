@@ -6,6 +6,9 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Button;
 
+/// <summary>
+/// A clickable button with configurable variant, size, and type.
+/// </summary>
 public partial class Button : ShadcnComponentBase
 {
     /// <summary>

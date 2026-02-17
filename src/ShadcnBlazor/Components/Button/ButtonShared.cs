@@ -31,10 +31,16 @@ internal static class ButtonStyles
     }
 }
 
+/// <summary>
+/// The HTML button type attribute value.
+/// </summary>
 public enum ButtonType
 {
+    /// <summary>Standard clickable button with no default behavior.</summary>
     Button,
+    /// <summary>Submits the containing form.</summary>
     Submit,
+    /// <summary>Resets the containing form to its initial state.</summary>
     Reset
 }
 

@@ -5,29 +5,40 @@ using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Card;
 
+/// <summary>
+/// A container card with optional header and footer sections.
+/// </summary>
 public partial class Card : ShadcnComponentBase
 {
+    /// <summary>The main content of the card.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>Optional header content rendered above the main content.</summary>
     [Parameter]
     public RenderFragment? Header { get; set; }
 
+    /// <summary>Optional footer content rendered below the main content.</summary>
     [Parameter]
     public RenderFragment? Footer { get; set; }
 
+    /// <summary>The visual style variant of the card.</summary>
     [Parameter]
     public CardVariant Variant { get; set; } = CardVariant.Default;
 
+    /// <summary>The size/spacing of the card sections.</summary>
     [Parameter]
     public CardSize Size { get; set; } = CardSize.Default;
 
+    /// <summary>Additional CSS classes for the header section.</summary>
     [Parameter]
     public string HeaderClass { get; set; } = string.Empty;
 
+    /// <summary>Additional CSS classes for the content section.</summary>
     [Parameter]
     public string ContentClass { get; set; } = string.Empty;
 
+    /// <summary>Additional CSS classes for the footer section.</summary>
     [Parameter]
     public string FooterClass { get; set; } = string.Empty;
 

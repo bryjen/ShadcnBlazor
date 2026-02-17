@@ -9,6 +9,7 @@ namespace ShadcnBlazor.Components.Avatar;
 /// </summary>
 public partial class AvatarBadge : ShadcnComponentBase
 {
+    /// <summary>The content of the badge (e.g. a colored dot or status indicator).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private string GetClass()

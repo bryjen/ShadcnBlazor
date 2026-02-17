@@ -6,14 +6,20 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Badge;
 
+/// <summary>
+/// A small label or count indicator for highlighting status or metadata.
+/// </summary>
 public partial class Badge : ShadcnComponentBase
 {
+    /// <summary>The content of the badge.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>The visual style variant of the badge.</summary>
     [Parameter]
     public Variant Variant { get; set; } = Variant.Default;
 
+    /// <summary>The size of the badge.</summary>
     [Parameter]
     public Size Size { get; set; } = Size.Md;
 

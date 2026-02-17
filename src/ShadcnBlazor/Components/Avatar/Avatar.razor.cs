@@ -4,12 +4,20 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Avatar;
 
+/// <summary>
+/// Displays a user avatar with optional image, fallback initials, and status badge.
+/// </summary>
 public partial class Avatar : ShadcnComponentBase
 {
+    /// <summary>The URL of the avatar image.</summary>
     [Parameter] public string? Src { get; set; }
+    /// <summary>Alt text for the image; used to generate fallback initials when the image fails to load.</summary>
     [Parameter] public string? Alt { get; set; }
+    /// <summary>Content rendered when no image is shown (e.g. initials or custom fallback).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Optional badge overlay, typically an <see cref="AvatarBadge"/>.</summary>
     [Parameter] public RenderFragment? Badge { get; set; }
+    /// <summary>The size of the avatar.</summary>
     [Parameter] public Size Size { get; set; } = Size.Md;
 
     private string? _lastSrc;
@@ -66,6 +74,7 @@ public partial class Avatar : ShadcnComponentBase
         return string.Concat(first, second).ToUpperInvariant();
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         if (!string.Equals(_lastSrc, Src, StringComparison.Ordinal))

@@ -5,6 +5,8 @@
 
 @layout NoNavMenuLayout
 
+@inject NavigationManager Navigation
+
 <PageTitle>A shadcn/ui inspired Blazor component library</PageTitle>
 
 <HeadContent>
@@ -32,11 +34,11 @@
         </p>
         
         <div class="flex gap-4">
-            <Button Size="@Size.Lg" Variant="@Variant.Default">
+            <Button Size="@Size.Lg" Variant="@Variant.Default" OnClick="@(() => Navigation.NavigateTo("introduction"))">
                 Getting Started
             </Button>
         
-            <Button Size="@Size.Lg" Variant="@Variant.Outline">
+            <Button Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(() => Navigation.NavigateTo("components"))">
                 View Components
             </Button>
         </div>
@@ -163,6 +165,7 @@
                 </Card>
                 
                 @* range slider demo *@
+                @*
                 <Card Variant="@CardVariant.Outline" Class="gap-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs text-muted-foreground font-bold">Window</span>
@@ -177,6 +180,7 @@
                         Max="100"
                         Step="1" />
                 </Card>
+                *@
             </div>
             
             

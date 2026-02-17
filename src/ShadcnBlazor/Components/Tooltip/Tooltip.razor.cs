@@ -104,6 +104,7 @@ public partial class Tooltip
         _hideCts = null;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         CancelShow();

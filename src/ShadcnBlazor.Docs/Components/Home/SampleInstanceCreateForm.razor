@@ -15,18 +15,19 @@
         
         <div>
             <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
-            <Input Placeholder="Calgary"></Input>
+            <Input Size="@Size.Lg" Placeholder="super-cool-instance"></Input>
         </div>
         
         <div class="grid grid-cols-[1fr_1fr] gap-x-4">
             <div class="w-full min-w-full max-w-full">
-                <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
-                <Select T="string" Size="@Size.Lg" Label="Americas" @bind-Value="_region" Items="@_regionOptions" Placeholder="Select a region" Class="w-full" PopoverFitContent="true">
+                <span class="text-[0.6rem] font-bold text-muted-foreground">Region:</span>
+                <Select T="string" Size="@Size.Lg" @bind-Value="_region" Items="@_regionOptions" Placeholder="Select a region" Class="w-full" PopoverFitContent="true">
                 </Select>
             </div>
             <div class="w-full min-w-full max-w-full">
-                <span class="text-[0.6rem] font-bold text-muted-foreground">Instance Name:</span>
-                <Input Size="@Size.Lg" Placeholder="Calgary"></Input>
+                <span class="text-[0.6rem] font-bold text-muted-foreground">Series:</span>
+                <Select T="string" Size="@Size.Lg" @bind-Value="_series" Items="@_seriesOptions" Placeholder="Select a series" Class="w-full" PopoverFitContent="true">
+                </Select>
             </div>
         </div>
     </div>
@@ -76,7 +77,7 @@
     </div>
     
     <div class="flex flex-col gap-2 w-fit mt-4">
-        <Checkbox Size="@Size.Lg">
+        <Checkbox Alignment="@VerticalAlignment.Top">
             <div class="flex flex-col">
                 <span class="text-sm">Limit the VM's CPU frequency to all-core turbo</span>
                 <span class="text-xs text-muted-foreground">Allows more consistent performance</span>
@@ -92,19 +93,19 @@
         </div>
 
         <RadioGroup @bind-Value="_backupMethod" Size="@Size.Md" Class="w-full">
-            <Radio Value="planb">
+            <Radio Value="planb" Alignment="@VerticalAlignment.Top">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold">Backup Plan</span>
                     <span class="text-xs text-muted-foreground">Back up the full VM. These immutable backups are secured by backup vault against accidental or malicious deletion. </span>
                 </div>
             </Radio>
-            <Radio Value="snapshots">
+            <Radio Value="snapshots" Alignment="@VerticalAlignment.Top">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold">Scheduled Snapshots</span>
                     <span class="text-xs text-muted-foreground">Back up disks only. This provides foundational protection at a lower cost.</span>
                 </div>
             </Radio>
-            <Radio Value="rawdoggingit">
+            <Radio Value="rawdoggingit" Alignment="@VerticalAlignment.Top">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold">No Backups</span>
                     <span class="text-xs text-muted-foreground">Neither VM nor disks will be backed up. If data is deleted or corrupted for any reason, you won't be able to recover it.</span>
@@ -116,8 +117,8 @@
     <div class="h-px bg-border"></div>
     
     <div class="flex gap-2">
-        <Button Size="@Size.Sm" Variant="@Variant.Default">Create</Button>
-        <Button Size="@Size.Sm" Variant="@Variant.Outline">Cancel</Button>
+        <Button Variant="@Variant.Default">Create</Button>
+        <Button Variant="@Variant.Outline">Cancel</Button>
     </div>
 </div>
 
@@ -131,6 +132,24 @@
     
     
     private string? _region = null;
+    private string? _series = null;
+    private static readonly SelectOption<string>[] _seriesOptions =
+    [
+        new("E2", "E2 — Low cost, day-to-day computing"),
+        new("T2A", "T2A — Scale-out workloads"),
+        new("T2D", "T2D — Scale-out workloads"),
+        new("N4", "N4 — Flexible & cost-optimized"),
+        new("N4A", "N4A — Arm-based flexibility & cost optimization"),
+        new("N4D", "N4D — Flexible & cost-optimized"),
+        new("N1", "N1 — Balanced price & performance"),
+        new("N2", "N2 — Balanced price & performance"),
+        new("N2D", "N2D — Balanced price & performance"),
+        new("C3", "C3 — Consistently high performance"),
+        new("C3D", "C3D — Consistently high performance"),
+        new("C4", "C4 — Consistently high performance"),
+        new("C4A", "C4A — Arm-based consistently high performance"),
+        new("C4D", "C4D — Consistently high performance"),
+    ];
     private static readonly SelectOption<string>[] _regionOptions =
     [
         new("northamerica-northeast1", "northamerica-northeast1 (Montréal) — Low CO2"),
