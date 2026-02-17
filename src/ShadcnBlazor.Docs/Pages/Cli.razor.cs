@@ -22,12 +22,14 @@ public partial class Cli : ComponentBase
 
     private static readonly IReadOnlyDictionary<string, string> _cliComponentCommands = new Dictionary<string, string>
     {
-        ["shell"] = "shadcnblazor component add [component]"
+        ["single"] = "shadcnblazor component add [component]",
+        ["all"] = "shadcnblazor component add --all"
     };
 
     private static readonly IReadOnlyDictionary<string, string> _cliAddCommands = new Dictionary<string, string>
     {
-        ["shell"] = "shadcnblazor component add [component]"
+        ["single"] = "shadcnblazor component add [component]",
+        ["all"] = "shadcnblazor component add --all [--overwrite] [--silent]"
     };
 
     private CodeFile _sampleJson = new()
@@ -218,7 +220,7 @@ public partial class Cli : ComponentBase
                 -h, --help    Display help
 
             COMMANDS:
-                add <name>     Adds a component to a project. Runs first-time setup automatically if needed
+                add [name]     Adds a component to a project. Use --all to add all. Runs first-time setup automatically if needed
                 list           Lists all available components
                 info <name>    Displays details related to a component
             """
@@ -233,17 +235,17 @@ public partial class Cli : ComponentBase
             Adds a component to a project. Runs first-time setup automatically if needed
 
             USAGE:
-                ShadcnBlazor.Cli.dll component add [OPTIONS] <name>
+                ShadcnBlazor.Cli.dll component add [OPTIONS] [name]
 
             ARGUMENTS:
-                name    The name of the component to add (input, textarea, checkbox, etc.)
+                name    The name of the component to add (input, textarea, checkbox, etc.). Omit when using --all
 
             OPTIONS:
                             DEFAULT
                 -h, --help                Display help
-                -a, --all    false        Adds all available components
-                --silent    false        Mutes output
-                --overwrite  false       Overwrite if component already exists (no prompt)
+                -a, --all    false        Adds all available components (name not required)
+                --silent    false         Mutes output
+                --overwrite  false        Overwrite if component already exists (no prompt)
             """
     };
 }
