@@ -50,7 +50,12 @@ public static class ComponentRegistry
                 new AddCssLinksToRootAction(),
                 new AddNugetDependencyAction("TailwindMerge.NET", "1.2.0"),
                 new AddProgramServiceAction("TailwindMerge.Extensions", "AddTailwindMerge()"),
-                new MergeToImportsAction(["ShadcnBlazor.Components.Shared"]),
+                new MergeToImportsAction([
+                    "ShadcnBlazor.Components.Shared", 
+                    "ShadcnBlazor.Components.Shared.Models",
+                    "ShadcnBlazor.Components.Shared.Models.Enums",
+                    "ShadcnBlazor.Components.Shared.Models.Options",
+                ]),
             ]
         },
         new() 
@@ -108,7 +113,10 @@ public static class ComponentRegistry
                 new CopyJsAction("dialog.js"),
                 new CopyJsAction("scroll-lock.js"),
                 new CopyJsAction("keyInterceptor.js"),
-                new MergeToImportsAction(["ShadcnBlazor.Components.Dialog", "ShadcnBlazor.Components.Dialog.Declarative", "ShadcnBlazor.Components.Dialog.Models"]),
+                new MergeToImportsAction([
+                    "ShadcnBlazor.Components.Dialog", 
+                    "ShadcnBlazor.Components.Dialog.Declarative", 
+                    "ShadcnBlazor.Components.Dialog.Models"]),
             ]
         },
         new() 

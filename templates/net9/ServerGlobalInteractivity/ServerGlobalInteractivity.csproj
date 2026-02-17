@@ -4,13 +4,17 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <_BuildArchitecture>$([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture)</_BuildArchitecture>
+    <IsWindowsArm64 Condition="'$(OS)' == 'Windows_NT' and '$(_BuildArchitecture)' == 'Arm64'">true</IsWindowsArm64>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsWindowsArm64)' != 'true'">
     <TailwindConfigDir>$(MSBuildProjectDirectory)</TailwindConfigDir>
     <TailwindInputFile>wwwroot/css/input.css</TailwindInputFile>
     <TailwindOutputFile>$(MSBuildProjectDirectory)/wwwroot/css/app.css</TailwindOutputFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
-    <PackageReference Include="Tailwind.MSBuild" Version="2.0.2">
+    <PackageReference Include="Tailwind.MSBuild" Version="2.0.2" Condition="'$(IsWindowsArm64)' != 'true'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

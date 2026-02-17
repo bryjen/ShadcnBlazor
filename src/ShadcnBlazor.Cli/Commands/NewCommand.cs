@@ -30,12 +30,8 @@ public class NewCommand(
         public bool Server { get; init; }
 
         [CommandOption("-p|--proj <NAME>")]
-        [Description("Project name (also used as default output folder).")]
+        [Description("Project name, root namespace, and default output folder.")]
         public string Proj { get; init; } = string.Empty;
-
-        [CommandOption("-n|--namespace <NS>")]
-        [Description("Root namespace for generated code.")]
-        public string Namespace { get; init; } = string.Empty;
 
         [CommandOption("-o|--out <DIR>")]
         [Description("Output directory. Default: ./{proj}")]
@@ -60,12 +56,6 @@ public class NewCommand(
             if (string.IsNullOrWhiteSpace(settings.Proj))
             {
                 console.MarkupLine("[red]Project name [yellow]--proj[/] is required.[/]");
-                return 1;
-            }
-
-            if (string.IsNullOrWhiteSpace(settings.Namespace))
-            {
-                console.MarkupLine("[red]Namespace [yellow]--namespace[/] is required.[/]");
                 return 1;
             }
 
@@ -101,7 +91,7 @@ public class NewCommand(
             console.MarkupLine($"Copied template to [yellow]{outputPath}[/].");
 
             RenameProjectFile(outputPath, templateName, settings.Proj);
-            ReplaceNamespacesAndUsings(outputPath, templateName, settings.Namespace, settings.Proj);
+            ReplaceNamespacesAndUsings(outputPath, templateName, settings.Proj, settings.Proj);
 
             console.MarkupLine($"Project [green]{settings.Proj}[/] created successfully.");
             return 0;

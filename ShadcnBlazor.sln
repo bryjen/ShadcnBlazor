@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WasmStandalone", "templates
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerGlobalInteractivity", "templates\net9\ServerGlobalInteractivity\ServerGlobalInteractivity.csproj", "{7D621590-9664-4B6C-81D8-AF0F787B98DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWasmProject", "tests\SampleWasmProject\SampleWasmProject.csproj", "{06CF5FFB-3FAF-4793-8FB0-3C290B27CB3A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,10 +58,6 @@ Global
 		{7D621590-9664-4B6C-81D8-AF0F787B98DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D621590-9664-4B6C-81D8-AF0F787B98DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D621590-9664-4B6C-81D8-AF0F787B98DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06CF5FFB-3FAF-4793-8FB0-3C290B27CB3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06CF5FFB-3FAF-4793-8FB0-3C290B27CB3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06CF5FFB-3FAF-4793-8FB0-3C290B27CB3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06CF5FFB-3FAF-4793-8FB0-3C290B27CB3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BC034C3F-0A8F-4604-86FE-D9451B147528} = {5C8BF2D3-623B-4AB3-8A8B-30B120939AF3}
@@ -74,6 +68,5 @@ Global
 		{6C429CFF-EE76-4C8A-9B48-20ACB4700FDD} = {A27A9635-C8B8-40B4-99FE-00E93375ACD6}
 		{6F347A89-36CF-42B1-A1F3-4540C4D26A99} = {6C429CFF-EE76-4C8A-9B48-20ACB4700FDD}
 		{7D621590-9664-4B6C-81D8-AF0F787B98DF} = {6C429CFF-EE76-4C8A-9B48-20ACB4700FDD}
-		{06CF5FFB-3FAF-4793-8FB0-3C290B27CB3A} = {50CE4EB7-879A-4EB9-8AE6-B3E00AE7B09B}
 	EndGlobalSection
 EndGlobal

@@ -42,14 +42,12 @@ public class AddProgramServiceActionService
 
         if (!content.Contains(action.ServiceCall))
         {
-            var insertPoint = content.IndexOf("await builder.Build()", StringComparison.Ordinal);
-            if (insertPoint < 0)
-                insertPoint = content.IndexOf("builder.Build()", StringComparison.Ordinal);
+            var insertPoint = GetInsertPointAfterBuilderCreation(content);
             if (insertPoint >= 0)
             {
                 var serviceCall = action.ServiceCall.TrimEnd(';');
                 var serviceLine = $"builder.Services.{serviceCall};";
-                content = content.Insert(insertPoint, "    " + serviceLine + "\n    ");
+                content = content.Insert(insertPoint, "\n    " + serviceLine);
                 modified = true;
             }
         }
@@ -59,5 +57,22 @@ public class AddProgramServiceActionService
             File.WriteAllText(programCsFile.FullName, content);
             _console.MarkupLine("  Updated `[yellow]Program.cs[/]`.");
         }
+    }
+
+    private static int GetInsertPointAfterBuilderCreation(string content)
+    {
+        var marker = content.IndexOf("CreateBuilder(args);", StringComparison.Ordinal);
+        var suffix = "CreateBuilder(args);";
+        if (marker < 0)
+        {
+            marker = content.IndexOf("CreateDefault(args);", StringComparison.Ordinal);
+            suffix = "CreateDefault(args);";
+        }
+        if (marker < 0)
+            return -1;
+
+        var afterSemicolon = marker + suffix.Length;
+        var newlineIndex = content.IndexOf('\n', afterSemicolon);
+        return newlineIndex >= 0 ? newlineIndex + 1 : afterSemicolon;
     }
 }

@@ -12,7 +12,7 @@ public partial class Cli : ComponentBase
 
     private static readonly IReadOnlyDictionary<string, string> _cliNewCommands = new Dictionary<string, string>
     {
-        ["shell"] = "shadcnblazor new --proj [project] -n [namespace] --wasm"
+        ["shell"] = "shadcnblazor new --wasm --proj MyApp"
     };
 
     private static readonly IReadOnlyDictionary<string, string> _cliRepairCommands = new Dictionary<string, string>
@@ -180,8 +180,7 @@ public partial class Cli : ComponentBase
                 -h, --help                        Display help
                 --wasm                            Use the WebAssembly standalone template
                 --server                          Use the Blazor Server (global interactivity) template
-                -p, --proj <NAME>                 Project name (also used as default output folder)
-                -n, --namespace <NS>              Root namespace for generated code
+                -p, --proj <NAME>                 Project name, root namespace, and default output folder
                 -o, --out <DIR>                   Output directory. Default: ./{proj}
                 --net <VERSION>         9         Target .NET version (9 only for now)
             """

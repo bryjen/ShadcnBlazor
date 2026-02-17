@@ -46,16 +46,31 @@ public class AddToServicesActionService
         if (content.Contains(implementationType))
             return;
 
-        var insertPoint = content.IndexOf("await builder.Build()", StringComparison.Ordinal);
-        if (insertPoint < 0)
-            insertPoint = content.IndexOf("builder.Build()", StringComparison.Ordinal);
+        var insertPoint = GetInsertPointAfterBuilderCreation(content);
         if (insertPoint < 0)
             return;
 
-        var serviceLine = $"builder.Services.{methodCall}";
-        content = content.Insert(insertPoint, "    " + serviceLine + "\n    ");
+        var serviceLine = $"builder.Services.{methodCall};";
+        content = content.Insert(insertPoint, "\n    " + serviceLine);
         File.WriteAllText(programCsFile.FullName, content);
         _console.MarkupLine("  Updated `[yellow]Program.cs[/]` with service registration.");
+    }
+
+    private static int GetInsertPointAfterBuilderCreation(string content)
+    {
+        var marker = content.IndexOf("CreateBuilder(args);", StringComparison.Ordinal);
+        var suffix = "CreateBuilder(args);";
+        if (marker < 0)
+        {
+            marker = content.IndexOf("CreateDefault(args);", StringComparison.Ordinal);
+            suffix = "CreateDefault(args);";
+        }
+        if (marker < 0)
+            return -1;
+
+        var afterSemicolon = marker + suffix.Length;
+        var newlineIndex = content.IndexOf('\n', afterSemicolon);
+        return newlineIndex >= 0 ? newlineIndex + 1 : afterSemicolon;
     }
 
     private static string GetNamespaceForType(string typeName)
