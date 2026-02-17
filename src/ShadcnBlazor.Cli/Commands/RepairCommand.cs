@@ -86,7 +86,7 @@ public class RepairCommand(
         }
         catch (CliException ex)
         {
-            console.MarkupLine($"[red]{ex.Message}[/]");
+            console.MarkupLine($"[red]{Markup.Escape(ex.Message)}[/]");
             console.MarkupLine("Repair cancelled.");
             return 1;
         }

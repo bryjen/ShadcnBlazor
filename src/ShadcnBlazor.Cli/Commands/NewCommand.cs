@@ -108,7 +108,7 @@ public class NewCommand(
         }
         catch (CliException ex)
         {
-            console.MarkupLine($"[red]{ex.Message}[/]");
+            console.MarkupLine($"[red]{Markup.Escape(ex.Message)}[/]");
             return 1;
         }
     }

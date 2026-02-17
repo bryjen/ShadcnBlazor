@@ -99,26 +99,27 @@ public class AddCommand(
                             continue;
                         }
 
-                        AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite, added);
+                        var effectiveOverwrite = settings.Overwrite || settings.AddAllComponents;
+                        AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, effectiveOverwrite, added);
                     }
                     catch (ComponentSourceNotFoundException ex)
                     {
                         failed.Add(ex.ComponentName);
                         failed.Add(component.Name);
                         if (!settings.Silent)
-                            console.MarkupLine($"[red]{ex.Message}[/]");
+                            console.MarkupLine($"[red]{Markup.Escape(ex.Message)}[/]");
                     }
                     catch (CliException ex)
                     {
                         failed.Add(component.Name);
                         if (!settings.Silent)
-                            console.MarkupLine($"[red]{ex.Message}[/]");
+                            console.MarkupLine($"[red]{Markup.Escape(ex.Message)}[/]");
                     }
                     catch (System.Exception ex)
                     {
                         failed.Add(component.Name);
                         if (!settings.Silent)
-                            console.MarkupLine($"[red]Failed to add {component.Name}: {ex.Message}[/]");
+                            console.MarkupLine($"[red]Failed to add {component.Name}: {Markup.Escape(ex.Message)}[/]");
                     }
                 }
 
@@ -141,7 +142,7 @@ public class AddCommand(
         }
         catch (CliException ex)
         {
-            console.MarkupLine($"[red]{ex.Message}[/]");
+            console.MarkupLine($"[red]{Markup.Escape(ex.Message)}[/]");
             console.MarkupLine("Component addition cancelled.");
             return 1;
         }
