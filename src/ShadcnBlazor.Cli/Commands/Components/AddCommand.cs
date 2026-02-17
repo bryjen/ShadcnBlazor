@@ -82,11 +82,51 @@ public class AddCommand(
             if (settings.AddAllComponents)
             {
                 var added = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                var failed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var component in components)
                 {
-                    var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
-                        outputProjectConfig, components, component.Name.Trim().ToLower());
-                    AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite, added);
+                    try
+                    {
+                        var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
+                            outputProjectConfig, components, component.Name.Trim().ToLower());
+
+                        if (HasFailedDependency(dependencyTree.RootNode, failed))
+                        {
+                            var failedDep = GetFirstFailedDependency(dependencyTree.RootNode, failed)!;
+                            if (!settings.Silent)
+                                console.MarkupLine($"[yellow]Skipping {component.Name} (depends on failed {failedDep}).[/]");
+                            failed.Add(component.Name);
+                            continue;
+                        }
+
+                        AddComponentWithDependencies(outputProjectConfig, cwdInfo, srcDirInfo, dependencyTree, blazorProjectType, csprojFile, settings.Silent, settings.Overwrite, added);
+                    }
+                    catch (ComponentSourceNotFoundException ex)
+                    {
+                        failed.Add(ex.ComponentName);
+                        failed.Add(component.Name);
+                        if (!settings.Silent)
+                            console.MarkupLine($"[red]{ex.Message}[/]");
+                    }
+                    catch (CliException ex)
+                    {
+                        failed.Add(component.Name);
+                        if (!settings.Silent)
+                            console.MarkupLine($"[red]{ex.Message}[/]");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        failed.Add(component.Name);
+                        if (!settings.Silent)
+                            console.MarkupLine($"[red]Failed to add {component.Name}: {ex.Message}[/]");
+                    }
+                }
+
+                if (failed.Count > 0)
+                {
+                    if (!settings.Silent)
+                        console.MarkupLine($"[yellow]Component addition completed with {failed.Count} failure(s): {string.Join(", ", failed.OrderBy(x => x))}[/]");
+                    return 1;
                 }
             }
             else
@@ -242,6 +282,26 @@ public class AddCommand(
                 case AddToServicesAction a: addToServicesActionService.Execute(a, context); break;
             }
         }
+    }
+
+    private static bool HasFailedDependency(ComponentDependencyNode node, HashSet<string> failed)
+    {
+        if (failed.Contains(node.Component.Name))
+            return true;
+        return node.ResolvedDependencies.Any(d => HasFailedDependency(d, failed));
+    }
+
+    private static string? GetFirstFailedDependency(ComponentDependencyNode node, HashSet<string> failed)
+    {
+        if (failed.Contains(node.Component.Name))
+            return node.Component.Name;
+        foreach (var dep in node.ResolvedDependencies)
+        {
+            var found = GetFirstFailedDependency(dep, failed);
+            if (found != null)
+                return found;
+        }
+        return null;
     }
 
     private static string GetTargetNamespaceForFile(DirectoryInfo componentRoot, DirectoryInfo fileDir, string targetNamespaceBase)

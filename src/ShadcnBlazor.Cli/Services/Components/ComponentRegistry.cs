@@ -95,12 +95,7 @@ public static class ComponentRegistry
             Description = "Checkbox input for boolean or multi-select form values.", 
             Dependencies = CreateDeps()
         },
-        new() 
-        {
-            Name = nameof(ComposableTextArea), 
-            Description = "Multi-line text input with optional header and footer slots.", 
-            Dependencies = CreateDeps()
-        },
+        // ComposableTextArea is bundled with Textarea (same folder) - add textarea to get both
         new() 
         {
             Name = nameof(Dialog), 
