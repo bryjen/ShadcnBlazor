@@ -135,6 +135,7 @@
         };
 
         _dialogReference?.Close(DialogResult.Ok(commandItem));
+        _dialogReference = null;
         NavigationManager.NavigateTo(href);
     }
 }

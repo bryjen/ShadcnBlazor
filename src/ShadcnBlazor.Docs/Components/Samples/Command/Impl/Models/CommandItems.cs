@@ -10,12 +10,12 @@ public sealed class PageCommandItem(string pageName) : CommandItem
 
 public sealed class ComponentCommandItem(string componentName) : CommandItem
 {
-    public string ComponentName => ComponentName;
+    public string ComponentName => componentName;
     public override string SearchString() => componentName.Trim();
 }
 
 public sealed class SampleCommandItem(string sampleName) : CommandItem
 {
-    public string SampleName => SampleName;
+    public string SampleName => sampleName;
     public override string SearchString() => sampleName.Trim();
 }

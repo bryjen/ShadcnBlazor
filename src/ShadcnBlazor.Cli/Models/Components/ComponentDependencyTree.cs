@@ -1,3 +1,4 @@
+using ShadcnBlazor.Services.Models;
 using Spectre.Console;
 
 namespace ShadcnBlazor.Cli.Models.Components;
