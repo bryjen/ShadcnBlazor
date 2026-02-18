@@ -236,6 +236,68 @@
     }
 }
 
+/* Blazor WASM loading screen */
+.blazor-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease-out;
+}
+
+.blazor-loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.blazor-loader-progress {
+    width: 12rem;
+    height: 0.25rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.blazor-loader-progress-fill {
+    height: 100%;
+    width: var(--blazor-load-percentage, 0%);
+    min-width: 20%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 9999px;
+    transition: width 0.3s ease-out;
+    animation: blazor-loader-pulse 2s ease-in-out infinite;
+}
+
+@keyframes blazor-loader-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.blazor-loader-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9375rem;
+    font-weight: 500;
+}
+
+.blazor-loader-dots span {
+    opacity: 0;
+    animation: blazor-loader-dots 1.4s ease-in-out infinite;
+}
+
+.blazor-loader-dots span:nth-child(1) { animation-delay: 0s; }
+.blazor-loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.blazor-loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blazor-loader-dots {
+    0%, 25% { opacity: 0; }
+    50%, 100% { opacity: 1; }
+}
+
 /* Blazor-specific styles that need to be outside Tailwind layers */
 #blazor-error-ui {
     color-scheme: light only;

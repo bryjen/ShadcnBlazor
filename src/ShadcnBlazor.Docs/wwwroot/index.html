@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark overflow-x-hidden">
 
 <head>
     <meta charset="utf-8" />
@@ -22,13 +22,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 
-<body>
+<body class="overflow-x-hidden">
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <!-- Blazor app will be rendered here -->
+    </div>
+
+    <!-- Loading overlay - persists until Blazor loads + 1 second delay -->
+    <div id="blazor-loader" class="blazor-loader">
+        <div class="blazor-loader-content">
+            <div class="blazor-loader-progress">
+                <div class="blazor-loader-progress-fill"></div>
+            </div>
+            <p class="blazor-loader-text">Loading<span class="blazor-loader-dots"><span>.</span><span>.</span><span>.</span></span></p>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
@@ -38,6 +44,7 @@
     </div>
 
     <script src="_framework/blazor.webassembly.js"></script>
+    <script src="js/loading.js"></script>
     <script src="_framework/aspnetcore-browser-refresh.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
