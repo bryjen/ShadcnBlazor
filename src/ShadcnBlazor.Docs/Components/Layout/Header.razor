@@ -1,25 +1,30 @@
-﻿@using ShadcnBlazor.Docs.Components.Samples.Command.Base
-@using ShadcnBlazor.Docs.Components.Samples.Command.Impl
+﻿@using ShadcnBlazor.Docs.Components.Samples.Command.Impl
 @using System.Text.Json.Serialization
 
 
 <div class="h-full w-full px-6 flex items-center justify-between gap-2">
-    <div class="h-full flex items-center gap-2">
-        <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm 
-          text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
-           href="">
-            <LuHouse class="size-5"/>
-        </a>
+    @* left side *@
+    <div class="h-full">
+        <div data-device="desktop" class="max-lg:hidden h-full flex items-center gap-2">
+            <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm 
+              text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
+               href="">
+                <LuHouse class="size-5"/>
+            </a>
 
-        @RenderNavButton("Docs", "introduction")
-        @RenderNavButton("Components", "components")
-        @RenderNavButton("Samples", "samples")
+            @RenderNavButton("Docs", "introduction")
+            @RenderNavButton("Components", "components")
+            @RenderNavButton("Samples", "samples")
+        </div>
+        
+        <div data-device="mobile" class="hidden max-lg:flex h-full items-center gap-2">
+            left
+        </div>
     </div>
     
-    <div class="h-full flex items-center gap-2">
-        
+    <div data-device="desktop" class="h-full flex items-center gap-2">
         <Command @ref="@_command">
-            <Button Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(_ => _command.OpenDialog())">
+            <Button Class="max-lg:hidden" Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(_ => _command.OpenDialog())">
                 <div class="flex gap-2 pr-3 items-center">
                     <LuSearch class="size-4"/>
                     <span class="text-sm">
@@ -68,8 +73,11 @@
         <Button Size="@Size.Lg" Variant="@Variant.Default">
             <div class="flex gap-2 items-center">
                 <LuPlus class="w-fit left-2 size-4"/>
-                <span class="flex-1 text-sm">
+                <span class="max-lg:hidden flex-1 text-sm">
                     New Project
+                </span>
+                <span class="hidden max-lg:block flex-1 text-sm">
+                    New
                 </span>
             </div>
         </Button>

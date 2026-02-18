@@ -33,6 +33,7 @@
     {
         if (firstRender)
         {
+            Instance.CloseHandler = CloseAsync;
             _dotNetRef = DotNetObjectReference.Create(this);
             try
             {
@@ -87,7 +88,7 @@
             // Ignore
         }
 
-        Instance.Reference.Close(result);
+        Instance.Reference.CompleteClose(result);
     }
 
     [JSInvokable]
@@ -150,6 +151,14 @@
         try
         {
             await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.dispose", Instance.Id.ToString("N"));
+        }
+        catch (JSException)
+        {
+            // Ignore
+        }
+        try
+        {
+            await ScrollLock.UnlockAsync();
         }
         catch (JSException)
         {

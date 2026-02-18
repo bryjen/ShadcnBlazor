@@ -34,6 +34,15 @@ public sealed class DialogReference : IDialogReference
     /// <inheritdoc />
     public void Close(DialogResult result)
     {
-        _dialogService.Close(this, result);
+        _ = _dialogService.CloseAsync(this, result);
+    }
+
+    /// <summary>
+    /// Completes the close after the container has run its close sequence.
+    /// Called by the container when animation and unlock are done.
+    /// </summary>
+    internal void CompleteClose(DialogResult result)
+    {
+        _dialogService.CompleteClose(this, result);
     }
 }

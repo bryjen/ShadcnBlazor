@@ -23,8 +23,13 @@
 
     @if (ApiDoc is not null)
     {
-        <DocsSection Title="API Reference" Id="api" AddToToc="false">
-            <ApiReference Doc="@ApiDoc" ShowHeader="false" />
+        <DocsSection Title="API Reference" Id="api" AddToToc="false" >
+            <div class="w-full h-full max-lg:hidden">
+                <ApiReference Doc="@ApiDoc" ShowHeader="false"/>
+            </div>
+            <div class="w-full h-full block lg:hidden">
+                Mobile support for API reference coming soon.
+            </div>
         </DocsSection>
     }
 </div>

@@ -1,0 +1,40 @@
+<div class="w-full flex flex-col gap-4">
+    <ComposableTextArea Class="w-full" Rows="4" Placeholder="Write your prompt here...">
+        <Header>
+            <Button Variant="@Variant.Outline" Class="text-xs text-muted-foreground">
+                <LuAtSign Class="h-3 w-3"/>
+                Add Context
+            </Button>
+        </Header>
+        <Footer>
+            <div class="flex items-center justify-between text-xs text-muted-foreground">
+                <div class="flex gap-2">
+                    <ToggleButton @bind-IsToggled="@_extendedThinkingToggle" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default" Class="rounded-xl">
+                        <LuBrain/>
+                    </ToggleButton>
+
+                    <Button Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
+                        <span>Auto</span>
+                    </Button>
+
+                    <Button Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
+                        <LuGlobe/>
+                        <span>Sources</span>
+                    </Button>
+                </div>
+
+                <Button Variant="@Variant.Default" Class="font-medium rounded-xl">
+                    <LuArrowUp/>
+                </Button>
+            </div>
+        </Footer>
+    </ComposableTextArea>
+
+    <SampleApiKeysView/>
+    <SampleBillingComponent/>
+</div>
+
+@code
+{
+    private bool _extendedThinkingToggle = true;
+}

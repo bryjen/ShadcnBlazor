@@ -8,71 +8,64 @@
 @inject NavigationManager Navigation
 
 <PageTitle>A shadcn/ui inspired Blazor component library</PageTitle>
-
 <HeadContent>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </HeadContent>
 
-<div class="w-full flex flex-col items-center pt-20 pb-40 gap-25 text-sm">
-    <div class="w-full flex flex-col items-center gap-4">
-        <h1 class="font-bold text-5xl w-5xl text-center">
-            A
-            <span class="bg-card px-1 rounded rounded-xl" style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>
-            inspired Blazor component library
-        </h1>
+<div class="w-full flex flex-col items-center text-sm">
+    <div class="flex flex-col items-center max-lg:px-4 max-lg:pt-12 lg:pt-20 max-lg:pb-6 lg:pb-40 max-lg:gap-16 lg:gap-25">
+        <div class="w-full flex flex-col items-center gap-4">
+            <h1 class="font-bold max-lg:text-3xl lg:text-5xl lg:w-5xl text-center">
+                A
+                <span class="bg-card px-1 rounded rounded-xl" style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>
+                inspired Blazor component library
+            </h1>
 
-        <p class="text-lg w-2xl text-center">
-            A Blazor component library that offers simple, customizable, and extensible components.
-            Similar to <span style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>, this library is open source and open code.
-        </p>
-        
-        <p class="text-sm w-2xl text-center text-muted-foreground/50">
-            * everything you see here was built solely using 
-            <span style="font-family: 'JetBrains Mono', monospace;">ShadcnBlazor</span>
-        </p>
-        
-        <div class="flex gap-4">
-            <Button Size="@Size.Lg" Variant="@Variant.Default" OnClick="@(() => Navigation.NavigateTo("introduction"))">
-                Getting Started
-            </Button>
-        
-            <Button Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(() => Navigation.NavigateTo("components"))">
-                View Components
-            </Button>
+            <p class="lg:text-lg lg:w-2xl text-center">
+                A Blazor component library that offers simple, customizable, and extensible components.
+                Similar to <span style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>, this library is open source and open code.
+            </p>
+
+            <p class="max-lg:hidden text-sm w-2xl text-center text-muted-foreground/50">
+                * everything you see here was built solely using
+                <span style="font-family: 'JetBrains Mono', monospace;">ShadcnBlazor</span>
+            </p>
+
+            <div class="flex gap-4">
+                <Button Size="@Size.Lg" Variant="@Variant.Default" OnClick="@(() => Navigation.NavigateTo("introduction"))">
+                    Getting Started
+                </Button>
+
+                <Button Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(() => Navigation.NavigateTo("components"))">
+                    View Components
+                </Button>
+            </div>
         </div>
-    </div>
-    
-    <div id="examples" class="px-24 w-full flex flex-col items-center gap-6">
-        <div id="examples-selector" class="w-full flex justify-start gap-4">
-            @foreach (var tab in Enum.GetValues<Tab>())
+
+        <div id="examples" class="lg:px-24 w-full flex flex-col items-center gap-6">
+            <div id="examples-selector" class="w-full flex justify-start gap-4">
+                @foreach (var tab in Enum.GetValues<Tab>())
+                {
+                    @RenderTabOption(tab)
+                }
+            </div>
+
+            @switch (_selectedTab)
             {
-                @RenderTabOption(tab)
+                case Tab.Examples:
+                    @RenderExamplesTab()
+                    break;
+                case Tab.AiChat:
+                    @RenderAiChatTab()
+                    break;
             }
         </div>
-
-        @switch (_selectedTab)
-        {
-            case Tab.Examples:
-                @RenderExamplesTab()
-                break;
-            case Tab.AiChat:
-                @RenderAiChatTab()
-                break;
-        }
     </div>
 </div>
 
 @code {
-    private bool _extendedThinkingToggle = true;
-    private double _demoSliderValue = 62;
-    private double _demoRangeStart = 25;
-    private double _demoRangeEnd = 75;
-    private bool _popoverOpen;
-    private bool _conditionalPopoverOpen;
-    private bool _closeOnOutsideClick = true;
-    
     private RenderFragment RenderTabOption(Tab tab) => __builder =>
     {
         var tabString = TabToString(tab);
@@ -84,233 +77,26 @@
     
     private RenderFragment RenderExamplesTab() => __builder =>
     {
-        <div class="grid grid-cols-4 gap-x-4 w-full">
+        <div data-device="desktop" class="max-lg:hidden grid grid-cols-4 gap-x-4 w-full">
             @* col 1 *@
-            <div class="w-full">
-                <SamplePaymentForm></SamplePaymentForm>
-            </div>
-            
+            <SamplePaymentForm />
             @* col 2 *@
-            <div class="w-full flex flex-col gap-4">
-                @* no team members card *@
-                <Card Variant="@CardVariant.Outline" Class="py-10 gap-4 justify-center items-center text-center">
-                    <AvatarGroup Size="@Size.Md">
-                        <Avatar Src="https://i.pravatar.cc/64?img=8" Alt="Bryan Miller" />
-                        <Avatar Src="https://i.pravatar.cc/64?img=11" Alt="Sam Moore" />
-                        <Avatar Src="https://i.pravatar.cc/64?img=12" Alt="Sam Moore" />
-                        <Avatar Src="https://i.pravatar.cc/64?img=420" Alt="Sam Moore" />
-                    </AvatarGroup>
-                    
-                    <div class="flex flex-col">
-                        <span class="text-base font-bold">Nobody's here yet</span>
-                        <span class="text-sm text-muted-foreground">Invite your friends to start messaging</span>
-                    </div>
-
-                    <Button Variant="@Variant.Default"><LuShare/>Share Invite Link</Button>
-                </Card>
-
-                @* we're processing your request card card *@
-                <Card Variant="@CardVariant.Outline" Class="gap-4 justify-center items-center text-center">
-                    <div class="p-2 rounded-xl bg-muted">
-                        <LuLoaderCircle class="animate-spin w-4 h-4"/>
-                    </div>
-                    
-                    <div class="flex flex-col">
-                        <span class="text-base font-bold">Processing your request</span>
-                        <span class="text-sm text-muted-foreground">Please wait while we process your request. Do not refresh the page.</span>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <Button Variant="@Variant.Outline">Cancel</Button>
-                    </div>
-                </Card>
-                
-                @* accordion demo *@
-                <Card Variant="@CardVariant.Outline" Class="p-4">
-                    <Accordion Collapsible DefaultValue="shipping" Class="max-w-lg">
-                        <AccordionItem Value="shipping">
-                            <AccordionTrigger>What are your shipping options?</AccordionTrigger>
-                            <AccordionContent>
-                                We offer standard (5-7 days), express (2-3 days), and overnight shipping. Free shipping on international orders.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem Value="returns">
-                            <AccordionTrigger>What is your return policy?</AccordionTrigger>
-                            <AccordionContent>
-                                Returns accepted within 30 days. Items must be unused and in original packaging. Refunds processed within 5-7 business days.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem Value="support">
-                            <AccordionTrigger>How can I contact customer support?</AccordionTrigger>
-                            <AccordionContent>
-                                Reach us via email, live chat, or phone. We respond within 24 hours during business days.
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
-                </Card>
-                @* badge demos *@
-                <div>
-                    <Badge Size="@Size.Lg"><LuLoaderCircle class="animate-spin"/>Syncing</Badge>
-                    <Badge Size="@Size.Md" Variant="@Variant.Secondary"><LuLoaderCircle class="animate-spin"/>Updating</Badge>
-                    <Badge Variant="@Variant.Outline"><LuLoaderCircle class="animate-spin"/>Loading</Badge>
-                </div>
-                
-                @* slider demo *@
-                <Card Variant="@CardVariant.Outline" Class="gap-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-muted-foreground font-bold">Volume</span>
-                        <span class="text-xs text-muted-foreground">@_demoSliderValue</span>
-                    </div>
-                    <Slider Value="@_demoSliderValue" ValueChanged="@(v => _demoSliderValue = v)" Min="0" Max="100" Step="1" />
-                </Card>
-                
-                @* range slider demo *@
-                @*
-                <Card Variant="@CardVariant.Outline" Class="gap-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-muted-foreground font-bold">Window</span>
-                        <span class="text-xs text-muted-foreground">@_demoRangeStart - @_demoRangeEnd</span>
-                    </div>
-                    <RangeSlider
-                        LowerValue="@_demoRangeStart"
-                        LowerValueChanged="@(v => _demoRangeStart = v)"
-                        UpperValue="@_demoRangeEnd"
-                        UpperValueChanged="@(v => _demoRangeEnd = v)"
-                        Min="0"
-                        Max="100"
-                        Step="1" />
-                </Card>
-                *@
-            </div>
-            
-            
+            <RandomComponents1 />
             @* col 3 *@
             <SampleInstanceCreateForm />
-            
             @* col 4 *@
-            <div class="w-full flex flex-col gap-4">
-                <ComposableTextArea Class="w-full" Rows="4" Placeholder="Write your prompt here...">
-                    <Header>
-                        <Button Variant="@Variant.Outline" Class="text-xs text-muted-foreground">
-                            <LuAtSign Class="h-3 w-3"/>
-                            Add Context
-                        </Button>
-                    </Header>
-                    <Footer>
-                        <div class="flex items-center justify-between text-xs text-muted-foreground">
-                            <div class="flex gap-2">
-                                <ToggleButton @bind-IsToggled="@_extendedThinkingToggle" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default" Class="rounded-xl">
-                                    <LuBrain/>
-                                </ToggleButton>
-
-                                <Button Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
-                                    <span>Auto</span>
-                                </Button>
-
-                                <Button Variant="@Variant.Ghost" Class="font-medium text-muted-foreground">
-                                    <LuGlobe/>
-                                    <span>Sources</span>
-                                </Button>
-                            </div>
-
-                            <Button Variant="@Variant.Default" Class="font-medium rounded-xl">
-                                <LuArrowUp/>
-                            </Button>
-                        </div>
-                    </Footer>
-                </ComposableTextArea>
-
-                <SampleApiKeysView/>
-                <SampleBillingComponent/>
-            </div>
+            <RandomComponents2 />
+        </div>
+        
+        <div data-device="desktop" class="hidden max-lg:flex grid grid-cols-4 gap-x-4 w-full">
+            <SampleInstanceCreateForm />
         </div>
     };
     
     private RenderFragment RenderAiChatTab() => __builder =>
     {
-        <Card Variant="@CardVariant.Outline" Class="w-full h-[55rem] h-max-[55rem]">
+        <Card Variant="@CardVariant.Outline" Class="w-full max-lg:p-2 h-[55rem] lg:h-max-[55rem]">
             <AiChat></AiChat>
         </Card>
     };
-    
-    private void TogglePopover()
-    {
-        _popoverOpen = !_popoverOpen;
-    }
-
-    private void ToggleConditionalPopover()
-    {
-        _conditionalPopoverOpen = !_conditionalPopoverOpen;
-    }
-
-    private void ToggleOutsideClickBehavior()
-    {
-        _closeOnOutsideClick = !_closeOnOutsideClick;
-    }
 }
-
-@*
-<div class="w-full flex flex-col gap-4">
-    <div class="p-6 rounded-xl border bg-card flex items-center justify-between">
-        <div class="flex flex-col gap-1">
-            <span class="text-sm font-semibold">Popover Demo</span>
-            <span class="text-xs text-muted-foreground">Adaptive width + list clamping</span>
-        </div>
-        <Popover @bind-Open="_popoverOpen"
-                 CloseOnOutsideClick="true"
-                 AnchorOrigin="PopoverPlacement.BottomLeft"
-                 TransformOrigin="PopoverPlacement.TopLeft"
-                 WidthMode="PopoverWidthMode.Adaptive"
-                 ClampList="true">
-            <Anchor>
-                <Button Variant="@Variant.Default" OnClick="TogglePopover">
-                    @(_popoverOpen ? "Close" : "Open") Popover
-                </Button>
-            </Anchor>
-            <ChildContent>
-                <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg">
-                    <div class="px-4 py-3 border-b text-sm font-semibold">Popover Content</div>
-                    <ul class="flex flex-col gap-1 px-3 py-2 text-sm">
-                        @for (var i = 1; i <= 16; i++)
-                        {
-                            <li class="rounded-md px-2 py-1 hover:bg-accent/40">Item @i</li>
-                        }
-                    </ul>
-                </div>
-            </ChildContent>
-        </Popover>
-    </div>
-
-    <div class="p-6 rounded-xl border bg-card flex items-center justify-between gap-4">
-        <div class="flex flex-col gap-2">
-            <span class="text-sm font-semibold">Conditional Outside Click</span>
-            <span class="text-xs text-muted-foreground">Toggle whether clicking outside closes this popover</span>
-            <Button Variant="@Variant.Outline" OnClick="ToggleOutsideClickBehavior">
-                CloseOnOutsideClick: @(_closeOnOutsideClick ? "On" : "Off")
-            </Button>
-        </div>
-        <Popover @bind-Open="_conditionalPopoverOpen"
-                 CloseOnOutsideClick="@_closeOnOutsideClick"
-                 AnchorOrigin="PopoverPlacement.BottomRight"
-                 TransformOrigin="PopoverPlacement.TopRight"
-                 WidthMode="PopoverWidthMode.Adaptive"
-                 ClampList="true">
-            <Anchor>
-                <Button Variant="@Variant.Default" OnClick="ToggleConditionalPopover">
-                    @(_conditionalPopoverOpen ? "Close" : "Open") Conditional Popover
-                </Button>
-            </Anchor>
-            <ChildContent>
-                <div class="w-64 rounded-lg border bg-popover text-popover-foreground shadow-lg p-4 text-sm">
-                    <p class="font-semibold">Outside click is @(_closeOnOutsideClick ? "enabled" : "disabled")</p>
-                    <p class="text-muted-foreground">Try clicking outside this popover.</p>
-                </div>
-            </ChildContent>
-        </Popover>
-    </div>
-</div>
-
-<div class="pt-[100rem]">
-    bait
-</div>
-*@
