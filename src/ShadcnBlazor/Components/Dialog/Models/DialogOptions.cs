@@ -41,6 +41,12 @@ public class DialogOptions
     public bool NoHeader { get; set; }
 
     /// <summary>
+    /// When true, the dialog applies no preset styling. The child content (e.g. a Card) fully controls
+    /// appearance. No wrapper background, border, padding, max-width, or header structure is applied.
+    /// </summary>
+    public bool Unstyled { get; set; }
+
+    /// <summary>
     /// Maximum width of the dialog.
     /// </summary>
     public DialogMaxWidth MaxWidth { get; set; } = DialogMaxWidth.Small;

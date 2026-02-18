@@ -1,7 +1,8 @@
 using System.Reflection;
 using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
-using ShadcnBlazor.Cli.Models.Components;
+using ShadcnBlazor.Services;
+using ShadcnBlazor.Services.Models;
 
 namespace ShadcnBlazor.Cli.Services.Components;
 

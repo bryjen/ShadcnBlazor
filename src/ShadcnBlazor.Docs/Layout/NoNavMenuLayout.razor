@@ -1,10 +1,8 @@
 @using ShadcnBlazor.Docs.Components.Layout
 @inherits LayoutComponentBase
 
-<PopoverProvider RepositionDebounceMilliseconds="1" />
-
 <div class="absolute bg-background text-foreground w-screen h-screen flex flex-col">
-    <div id="main-content" class="pt-14 h-full w-full">
+    <div id="main-content" class="pt-14 h-full w-full max-w-full">
         @Body
     </div>
 

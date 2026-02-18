@@ -1,17 +1,12 @@
 @using ShadcnBlazor.Docs.Components.Layout
-@using ShadcnBlazor.Docs.Components.Docs
-@using ShadcnBlazor.Components.Dialog
 @inherits LayoutComponentBase
-
-<PopoverProvider RepositionDebounceMilliseconds="1" />
-<DialogProvider />
 
 <header class="fixed top-0 left-0 right-0 z-50 h-14 w-full bg-background">
     <Header></Header>
 </header>
 
 <div class="min-h-screen bg-background text-foreground flex pt-14">
-    <div id="nav-area" class="fixed left-0 top-14 bottom-0 w-[17.5%]">
+    <div id="nav-area" data-device="desktop" class="max-lg:hidden fixed left-0 top-14 bottom-0 w-[17.5%]">
         <div class="absolute top-0 right-0 w-[1px] h-full z-20" 
              style="background: linear-gradient(to bottom, transparent 0%, transparent 5%, var(--border) 50%, transparent 95%, transparent 100%);"></div>
 
@@ -20,14 +15,14 @@
         <NavMenu></NavMenu>
     </div>
 
-    <div id="main-content" class="ml-[17.5%] mr-[17.5%] flex-1 min-w-0 grid text-sm p-10 pt-12 min-h-[calc(100vh-3.5rem)]">
-        <div class="mx-40 min-w-0 overflow-x-hidden">
+    <div id="main-content" class="lg:mx-[clamp(5%,17.5%,17.5%)] flex-1 min-w-0 grid text-sm max-lg:p-4 lg:p-10 pt-12 min-h-[calc(100vh-3.5rem)]">
+        <div class="lg:mx-[clamp(2rem,15%,20%)] min-w-0 overflow-x-hidden">
             @Body
         </div>
         <div class="w-[10rem] shrink-0"></div>
     </div>
     
-    <div class="fixed top-14 right-10 w-[10rem] pt-10 bg-background z-40">
+    <div data-device="desktop" class="max-lg:hidden fixed top-14 right-10 w-[10rem] pt-10 bg-background z-40">
         <OnThisPage />
     </div>
 </div>

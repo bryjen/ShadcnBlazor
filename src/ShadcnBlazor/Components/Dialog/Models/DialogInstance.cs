@@ -39,4 +39,11 @@ public sealed class DialogInstance
     /// Reference handle for the dialog.
     /// </summary>
     public required DialogReference Reference { get; init; }
+
+    /// <summary>
+    /// Close handler registered by the container when it mounts.
+    /// When set, <see cref="DialogReference.Close"/> routes through this handler
+    /// so animation and scroll unlock run before removal.
+    /// </summary>
+    internal Func<DialogResult, Task>? CloseHandler { get; set; }
 }

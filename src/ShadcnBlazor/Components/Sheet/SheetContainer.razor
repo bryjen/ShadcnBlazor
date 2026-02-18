@@ -1,0 +1,124 @@
+@implements IAsyncDisposable
+@using Microsoft.JSInterop
+@using ShadcnBlazor.Components.Shared.Services
+@inject IJSRuntime JSRuntime
+@inject IScrollLockService ScrollLock
+
+<div class="sheet-overlay"
+     data-sheet-overlay="@Instance.Id.ToString("N")"
+     data-state="@_overlayState">
+</div>
+
+<div class="sheet-container"
+     @onclick="OnBackdropClick">
+    <div class="sheet-content"
+         data-sheet-content="@Instance.Id.ToString("N")"
+         data-state="@_contentState"
+         @onclick:stopPropagation>
+        <CascadingValue TValue="ISheetInstance" Value="_sheetInstance">
+            <DynamicComponent Type="@Instance.ComponentType"
+                              Parameters="@GetComponentParameters()" />
+        </CascadingValue>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public required Models.SheetInstance Instance { get; set; }
+
+    private bool _isOpen = true;
+    private string _overlayState = "closed";
+    private string _contentState = "closed";
+    private DotNetObjectReference<SheetContainer>? _dotNetRef;
+    private SheetInstanceCascade _sheetInstance = null!;
+
+    protected override void OnInitialized()
+    {
+        _sheetInstance = new SheetInstanceCascade(result => _ = CloseAsync(result));
+        Instance.CloseHandler = CloseAsync;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await ScrollLock.LockAsync();
+                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.initialize", Instance.Id.ToString("N"), _dotNetRef);
+                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.open", Instance.Id.ToString("N"));
+                _overlayState = "open";
+                _contentState = "open";
+                StateHasChanged();
+            }
+            catch (JSException)
+            {
+                _overlayState = "open";
+                _contentState = "open";
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void OnBackdropClick()
+    {
+        _ = CloseAsync(Models.SheetResult.Cancel());
+    }
+
+    private async Task CloseAsync(Models.SheetResult result)
+    {
+        if (!_isOpen) return;
+
+        _isOpen = false;
+        _overlayState = "closed";
+        _contentState = "closed";
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.close", Instance.Id.ToString("N"));
+            await Task.Delay(250);
+        }
+        catch (JSException) { }
+
+        try
+        {
+            await ScrollLock.UnlockAsync();
+        }
+        catch (JSException) { }
+
+        Instance.Reference.CompleteClose(result);
+    }
+
+    [JSInvokable]
+    public void HandleEscape()
+    {
+        _ = InvokeAsync(() => CloseAsync(Models.SheetResult.Cancel()));
+    }
+
+    [JSInvokable]
+    public void HandleOverlayClick()
+    {
+        _ = InvokeAsync(() => CloseAsync(Models.SheetResult.Cancel()));
+    }
+
+    private Dictionary<string, object?> GetComponentParameters()
+    {
+        var dict = new Dictionary<string, object?>(Instance.Parameters);
+        return dict;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.dispose", Instance.Id.ToString("N"));
+        }
+        catch (JSException) { }
+        try
+        {
+            await ScrollLock.UnlockAsync();
+        }
+        catch (JSException) { }
+        _dotNetRef?.Dispose();
+    }
+}

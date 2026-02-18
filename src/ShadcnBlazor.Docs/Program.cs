@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ShadcnBlazor.Components.Dialog.Services;
+using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Docs.Services;
@@ -19,6 +20,7 @@ builder.Services.AddAiChat();
 builder.Services.AddTailwindMerge();
 builder.Services.AddScoped<PageTocService>();
 builder.Services.AddSingleton<ComponentRegistryService>();
+builder.Services.AddSingleton<PageRegistryService>();
 builder.Services.AddSingleton<SampleRegistryService>();
 
 builder.Services.AddScoped<IPopoverRegistry, PopoverRegistry>();
@@ -26,6 +28,7 @@ builder.Services.AddScoped<IPopoverService, PopoverService>();
 
 builder.Services.AddScoped<IScrollLockService, ScrollLockService>();
 builder.Services.AddScoped<IDialogService, DialogService>();
+builder.Services.AddScoped<ISheetService, SheetService>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 

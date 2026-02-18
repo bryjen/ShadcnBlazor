@@ -1,0 +1,35 @@
+@typeparam T
+<div class="bg-card w-[30vw] max-h-[50vh] rounded-xl p-1">
+    <div class="flex flex-col bg-background/50 w-full rounded-xl h-full max-h-[calc(50vh-0.5rem)]">
+        <div id="command-header" class="p-3 w-full shrink-0">
+            <CommandSearchInput Placeholder="Search documentation..." @bind-Value="_searchQuery"/>
+        </div>
+        <div id="command-content" class="w-full py-3 overflow-y-auto scrollbar-hide min-h-0">
+            @RenderCommandItems.Invoke(FilteredCommandItems)
+        </div>
+        <div id="command-footer" class="p-2 w-full bg-card shrink-0 rounded-b-xl">
+            <div class="flex items-center gap-2 text-muted-foreground">
+                <kbd class="inline-flex items-center justify-center size-5 rounded text-xs bg-background/50">↵</kbd>
+                <span class="text-xs">Jump to page</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public IDialogInstance? DialogInstance { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<T> CommandItems { get; set; } = [];
+
+    [Parameter]
+    public Func<IReadOnlyList<T>, string, IReadOnlyList<T>> Filter { get; set; } = null!;
+
+    [Parameter]
+    public Func<IReadOnlyList<T>, RenderFragment> RenderCommandItems { get; set; } = null!;
+
+    private string _searchQuery = string.Empty;
+
+    private IReadOnlyList<T> FilteredCommandItems => Filter(CommandItems, _searchQuery);
+}

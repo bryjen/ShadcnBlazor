@@ -9,7 +9,7 @@
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Alert component displays important messages or notifications. Use <code>ChildContent</code> to render your message. Set <code>Variant</code> to <code>AlertVariant.Default</code> or <code>AlertVariant.Destructive</code> for different styling.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertBasicExample })">
-            <div class="w-full px-20">
+            <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                 <AlertBasicExample />
             </div>
         </ComponentPreview>
@@ -19,7 +19,7 @@
         <DocsSubSection Title="Icons" Id="icons">
             <p class="mb-3">Although support for icons deos not natively exist, you can structure your alerts to use icons (for example from <code>Lucide</code>) like so:</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertWithIconsExample })">
-                <div class="w-full px-20">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AlertWithIconsExample />
                 </div>
             </ComponentPreview>
@@ -28,7 +28,7 @@
         <DocsSubSection Title="Variants" Id="variants">
             <p class="mb-3">Use the <code>Variant</code> parameter to switch between default and destructive styling for error or warning messages. Only two variants are provided by default.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertVariantExample })">
-                <div class="w-full px-20">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AlertVariantExample />
                 </div>
             </ComponentPreview>
@@ -37,7 +37,7 @@
         <DocsSubSection Title="Interactivity" Id="interactivity">
             <p class="mb-3">You can embed other components into alerts to add interactivity.</p>
             <ComponentPreview CodeFiles="@(new [] { Snippets.Components_Alert_Examples_AlertWithInteractivityExample })">
-                <div class="w-full px-20">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AlertWithInteractivityExample />
                 </div>
             </ComponentPreview>
@@ -46,7 +46,7 @@
         <DocsSubSection Title="Styling" Id="styling">
             <p class="mb-3">Customize alert colors by adding Tailwind classes like <code>bg-amber-50 dark:bg-amber-950</code>. Use the <code>group</code> utility on the Alert to trigger hover animations on child elements:</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_CustomAlertStylingExample })">
-                <div class="w-full px-20">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <CustomAlertStylingExample/>
                 </div>
             </ComponentPreview>

@@ -57,10 +57,12 @@ public class DialogService : IDialogService
 
     /// <summary>
     /// Closes the dialog with the specified reference and result.
+    /// When a close handler is registered (by the container), invokes it first
+    /// so animation and scroll unlock run before removal.
     /// </summary>
     /// <param name="reference">The dialog reference.</param>
     /// <param name="result">The result to return.</param>
-    internal void Close(DialogReference reference, DialogResult result)
+    internal async Task CloseAsync(DialogReference reference, DialogResult result)
     {
         var instance = DialogInstances.FirstOrDefault(x => x.Id == reference.Id);
         if (instance == null)
@@ -68,8 +70,51 @@ public class DialogService : IDialogService
             return;
         }
 
+        var handler = instance.CloseHandler;
+        if (handler != null)
+        {
+            try
+            {
+                await handler(result);
+            }
+            catch
+            {
+                // Handler may throw; we still complete the close
+            }
+            // Handler calls CompleteClose when done; if it didn't (e.g. exception), remove now
+            if (DialogInstances.Contains(instance))
+            {
+                CompleteClose(instance, result);
+            }
+            return;
+        }
+
+        CompleteClose(instance, result);
+    }
+
+    /// <summary>
+    /// Completes the close by removing the instance and setting the result.
+    /// Called by the container when its close sequence finishes, or when no handler is registered.
+    /// </summary>
+    internal void CompleteClose(DialogReference reference, DialogResult result)
+    {
+        var instance = DialogInstances.FirstOrDefault(x => x.Id == reference.Id);
+        if (instance == null)
+        {
+            return;
+        }
+
+        CompleteClose(instance, result);
+    }
+
+    private void CompleteClose(DialogInstance instance, DialogResult result)
+    {
+        if (!DialogInstances.Remove(instance))
+        {
+            return;
+        }
+
         instance.TaskCompletionSource.TrySetResult(result);
-        DialogInstances.Remove(instance);
         OnDialogsChanged?.Invoke();
     }
 }

@@ -1,16 +1,103 @@
-﻿<div class="h-full w-full px-6 flex items-center gap-2">
-    <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm 
-          text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
-       href="">
-        <LuHouse class="size-5" />
-    </a>
+@using ShadcnBlazor.Docs.Components.Samples.Command.Impl
+@using ShadcnBlazor.Docs.Components.Layout
+@using System.Text.Json.Serialization
+
+
+<div class="h-full w-full px-6 flex items-center justify-between gap-2">
+    @* left side *@
+    <div class="h-full">
+        <div data-device="desktop" class="max-lg:hidden h-full flex items-center gap-2">
+            <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm 
+              text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
+               href="">
+                <LuHouse class="size-5"/>
+            </a>
+
+            @RenderNavButton("Docs", "introduction")
+            @RenderNavButton("Components", "components")
+            @RenderNavButton("Samples", "samples")
+        </div>
+        
+        <div data-device="mobile" class="hidden max-lg:flex h-full items-center gap-2">
+            <Button Variant="@Variant.Ghost" Size="@Size.Sm" Class="size-8 px-2" OnClick="@OpenMobileMenu">
+                <LuMenu class="size-5" />
+            </Button>
+        </div>
+    </div>
     
-    @RenderNavButton("Docs", "introduction")
-    @RenderNavButton("Components", "components")
-    @RenderNavButton("Samples", "samples")
+    <div data-device="desktop" class="h-full flex items-center gap-2">
+        <Command @ref="@_command">
+            <Button Class="max-lg:hidden" Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(_ => _command.OpenDialog())">
+                <div class="flex gap-2 pr-3 items-center">
+                    <LuSearch class="size-4"/>
+                    <span class="text-sm">
+                        Search Documentation ...
+                    </span>
+                </div>
+            </Button>
+        </Command>
+
+        <div class="w-px h-4 bg-border"></div>
+
+        <Tooltip>
+            <Anchor>
+                <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm group
+                          text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
+                   href="https://github.com/bryjen/ShadcnBlazor">
+                    <LuGithub class="size-4"/>
+                    @if (_stars.HasValue)
+                    {
+                        <span class="text-muted-foreground text-xs transition-all duration-300 group-hover:text-foreground">@FormatStars(_stars.Value)</span>
+                    }
+                </a>
+            </Anchor>
+            <ChildContent>
+                <span class="block font-bold text-xs text-center text-foreground">GitHub Repo</span>
+            </ChildContent>
+        </Tooltip>
+
+        <div class="w-px h-4 bg-border"></div>
+
+        <Tooltip>
+            <Anchor>
+                <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm group
+                  text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
+                   href="https://github.com/bryjen/ShadcnBlazor">
+                    <LuSun class="size-4"/>
+                </a>
+            </Anchor>
+            <ChildContent>
+                <span class="block font-bold text-xs text-center text-foreground">Toggle Dark/Light Mode</span>
+            </ChildContent>
+        </Tooltip>
+
+        <div class="w-px h-4 bg-border"></div>
+
+        <Button Size="@Size.Lg" Variant="@Variant.Default">
+            <div class="flex gap-2 items-center">
+                <LuPlus class="w-fit left-2 size-4"/>
+                <span class="max-lg:hidden flex-1 text-sm">
+                    New Project
+                </span>
+                <span class="hidden max-lg:block flex-1 text-sm">
+                    New
+                </span>
+            </div>
+        </Button>
+    </div>
 </div>
 
 @code {
+    private Command _command = default!;
+
+    [Inject]
+    public required ISheetService SheetService { get; set; }
+
+    private void OpenMobileMenu()
+    {
+        SheetService.Show<MobileNavSheet>();
+    }
+    
     @*TODO: MERGE THIS WITH THAT IN MAVMENU*@
     private RenderFragment RenderNavButton(string text, string href) => __builder =>
     {
@@ -20,4 +107,20 @@
             @text
         </a>
     };
+    
+    [Inject] 
+    public HttpClient Http { get; set; } = null!;
+    
+    private int? _stars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var repo = await Http.GetFromJsonAsync<GitHubRepo>("https://api.github.com/repos/bryjen/ShadcnBlazor");
+        _stars = repo?.StargazersCount;
+    }
+
+    private static string FormatStars(int stars) =>
+        stars >= 1000 ? $"{stars / 1000.0:0.#}k" : stars.ToString();
+
+    private record GitHubRepo([property: JsonPropertyName("stargazers_count")] int StargazersCount);
 }

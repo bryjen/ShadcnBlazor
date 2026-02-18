@@ -1,5 +1,5 @@
 using ShadcnBlazor.Cli.Models;
-using ShadcnBlazor.Cli.Models.Components;
+using ShadcnBlazor.Services.Models;
 using Spectre.Console;
 
 namespace ShadcnBlazor.Cli.Services.Actions;
