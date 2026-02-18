@@ -1,4 +1,5 @@
-﻿@using ShadcnBlazor.Docs.Components.Samples.Command.Impl
+@using ShadcnBlazor.Docs.Components.Samples.Command.Impl
+@using ShadcnBlazor.Docs.Components.Layout
 @using System.Text.Json.Serialization
 
 
@@ -18,7 +19,9 @@
         </div>
         
         <div data-device="mobile" class="hidden max-lg:flex h-full items-center gap-2">
-            left
+            <Button Variant="@Variant.Ghost" Size="@Size.Sm" Class="size-8 px-2" OnClick="@OpenMobileMenu">
+                <LuMenu class="size-5" />
+            </Button>
         </div>
     </div>
     
@@ -86,6 +89,14 @@
 
 @code {
     private Command _command = default!;
+
+    [Inject]
+    public required ISheetService SheetService { get; set; }
+
+    private void OpenMobileMenu()
+    {
+        SheetService.Show<MobileNavSheet>();
+    }
     
     @*TODO: MERGE THIS WITH THAT IN MAVMENU*@
     private RenderFragment RenderNavButton(string text, string href) => __builder =>

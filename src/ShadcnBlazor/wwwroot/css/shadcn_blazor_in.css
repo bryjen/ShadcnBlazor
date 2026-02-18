@@ -499,6 +499,56 @@
         overflow-y: auto;
     }
 
+    /* Sheet - slide-in panel (e.g. mobile nav) */
+    .sheet-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1400;
+        background-color: oklch(0 0 0 / 0.5);
+        backdrop-filter: blur(16px) saturate(150%);
+        transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1),
+            backdrop-filter 200ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .sheet-overlay[data-state="closed"] {
+        opacity: 0;
+        backdrop-filter: blur(0px) saturate(100%);
+        pointer-events: none;
+    }
+
+    .sheet-container {
+        position: fixed;
+        inset: 0;
+        z-index: 1401;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .sheet-content {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        max-width: 20rem;
+        background-color: var(--background);
+        color: var(--foreground);
+        border-right: 1px solid var(--border);
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        display: flex;
+        flex-direction: column;
+        transition: transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .sheet-content[data-state="closed"] {
+        transform: translateX(-100%);
+    }
+
+    .sheet-content[data-state="open"] {
+        transform: translateX(0);
+    }
+
 }
 
 /* Blazor-specific styles that need to be outside Tailwind layers */

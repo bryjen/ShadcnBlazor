@@ -1,0 +1,38 @@
+@implements IDisposable
+@using ShadcnBlazor.Components.Sheet.Services
+@inject ISheetService SheetService
+
+@foreach (var instance in _instances)
+{
+    <SheetContainer Instance="@instance" />
+}
+
+@code {
+    private List<Models.SheetInstance> _instances = [];
+
+    protected override void OnInitialized()
+    {
+        if (SheetService is SheetService sheetService)
+        {
+            sheetService.OnSheetsChanged += Update;
+            Update();
+        }
+    }
+
+    private void Update()
+    {
+        if (SheetService is SheetService sheetService)
+        {
+            _instances = sheetService.SheetInstances.ToList();
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+        if (SheetService is SheetService sheetService)
+        {
+            sheetService.OnSheetsChanged -= Update;
+        }
+    }
+}
