@@ -26,6 +26,9 @@ builder.Services.AddSingleton<PageRegistryService>();
 builder.Services.AddSingleton<SampleRegistryService>();
 
 builder.Services.AddScoped<IPopoverRegistry, PopoverRegistry>();
+builder.Services.AddScoped(sp => new PopoverInterop(
+    sp.GetRequiredService<IJSRuntime>(),
+    PopoverInterop.DefaultModulePaths));
 builder.Services.AddScoped<IPopoverService, PopoverService>();
 
 // js

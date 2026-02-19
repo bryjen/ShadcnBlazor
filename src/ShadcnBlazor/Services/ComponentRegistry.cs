@@ -97,8 +97,9 @@ public static class ComponentRegistry
             Dependencies = CreateDeps(),
             RequiredActions =
             [
-                new AddToServicesAction(nameof(IPopoverService), nameof(PopoverService)),
                 new AddToServicesAction(nameof(IPopoverRegistry), nameof(PopoverRegistry)),
+                new AddToServicesAction(nameof(PopoverInterop)),
+                new AddToServicesAction(nameof(IPopoverService), nameof(PopoverService)),
                 new CopyJsAction("popovers.js"),
             ]
         },

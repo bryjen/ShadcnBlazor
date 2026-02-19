@@ -40,7 +40,9 @@ public class AddToServicesActionService
 
         var methodCall = action.ImplementationType == "ScrollLockInterop"
             ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
-            : interfaceType != null
+            : action.ImplementationType == "PopoverInterop"
+                ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
+                : interfaceType != null
                 ? $"{serviceCall}<{interfaceType}, {implementationType}>()"
                 : $"{serviceCall}<{implementationType}>()";
 
@@ -83,6 +85,7 @@ public class AddToServicesActionService
             "IScrollLockService" or "ScrollLockService" => "Shared.Services",
             "ScrollLockInterop" => "Shared.Services.Interop",
             "IPopoverService" or "PopoverService" => "Popover.Services",
+            "PopoverInterop" => "Popover.Services",
             "IPopoverRegistry" or "PopoverRegistry" => "Popover.Services",
             _ => "Shared.Services"
         };

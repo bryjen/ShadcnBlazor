@@ -32,7 +32,7 @@ Popover/
 ├── Services/
 │   ├── IPopoverRegistry.cs
 │   ├── IPopoverService.cs
-│   ├── PopoverJsInterop.cs
+│   ├── PopoverInterop.cs
 │   ├── PopoverRegistry.cs
 │   └── PopoverService.cs
 ├── Popover.razor
