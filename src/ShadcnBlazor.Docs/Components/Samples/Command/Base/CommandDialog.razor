@@ -26,6 +26,9 @@
     
     [Inject]
     public IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
     
     [CascadingParameter]
     public IDialogInstance? DialogInstance { get; set; }
@@ -73,14 +76,9 @@
         if (_scrollModule is not null)
             return;
 
-        try
-        {
-            _scrollModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Samples/Command/Base/CommandDialog.razor.js");
-        }
-        catch (JSException)
-        {
-            _scrollModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "/_content/ShadcnBlazor.Docs/Components/Samples/Command/Base/CommandDialog.razor.js");
-        }
+        _scrollModule = await JsRuntime.InvokeAsync<IJSObjectReference>(
+            "import",
+            $"{NavigationManager.BaseUri}Components/Samples/Command/Base/CommandDialog.razor.js");
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -163,3 +161,6 @@
         }
     }
 }
+
+
+
