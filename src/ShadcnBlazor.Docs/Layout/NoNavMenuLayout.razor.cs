@@ -8,6 +8,9 @@ public partial class NoNavMenuLayout : LayoutComponentBase, IAsyncDisposable
     [Inject]
     public IJSRuntime JsRuntime { get; set; } = null!;
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
+
     private IJSObjectReference? _shortcutModule;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -15,7 +18,7 @@ public partial class NoNavMenuLayout : LayoutComponentBase, IAsyncDisposable
         if (!firstRender)
             return;
 
-        _shortcutModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "/js/global-shortcut-manager.js");
+        _shortcutModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", $"{NavigationManager.BaseUri}js/global-shortcut-manager.js");
         await _shortcutModule.InvokeVoidAsync("registerGlobalShortcuts");
     }
 
