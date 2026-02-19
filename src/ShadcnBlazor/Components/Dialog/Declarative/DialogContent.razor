@@ -1,5 +1,5 @@
-@using Microsoft.JSInterop
-@inject IJSRuntime JSRuntime
+@using ShadcnBlazor.Components.Shared.Services
+@inject IDialogJsService DialogJs
 
 @if (Context?.Open == true)
 {
@@ -10,7 +10,7 @@
 
     <div class="dialog-container dialog-position-center"
          @onclick="OnBackdropClick">
-        <div class="dialog-content @Class"
+        <div class="@GetContentClass()"
              data-dialog-content="@Context.DialogId"
              data-state="@Context.AnimationState"
              style="@GetMaxWidthStyle()"
@@ -34,6 +34,9 @@
     public string MaxWidth { get; set; } = "444px";
 
     [Parameter]
+    public bool Unstyled { get; set; }
+
+    [Parameter]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     [CascadingParameter]
@@ -45,7 +48,7 @@
 
         try
         {
-            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.initialize", Context.DialogId, Context.DotNetRef);
+            await DialogJs.InitializeAsync(Context.DialogId, Context.DotNetRef!);
         }
         catch (JSException) { }
 
@@ -54,7 +57,7 @@
         if (Context?.Open == true && !Context.IsClosing && Context.AnimationState == "closed")
         {
             Context.SetAnimationState("open");
-            try { await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.focusFirstInDialog", Context.DialogId); }
+            try { await DialogJs.FocusFirstInDialogAsync(Context.DialogId); }
             catch (JSException) { }
         }
     }
@@ -64,5 +67,13 @@
         _ = Context?.CloseAsync();
     }
 
-    private string GetMaxWidthStyle() => $"max-width: {MaxWidth};";
+    private string GetMaxWidthStyle() => Unstyled ? string.Empty : $"max-width: {MaxWidth};";
+
+    private string GetContentClass()
+    {
+        if (Unstyled)
+            return string.IsNullOrWhiteSpace(Class) ? "dialog-unstyled" : $"dialog-unstyled {Class}";
+
+        return string.IsNullOrWhiteSpace(Class) ? "dialog-content" : $"dialog-content {Class}";
+    }
 }

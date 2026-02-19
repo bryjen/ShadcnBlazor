@@ -29,9 +29,9 @@ public class CommandParameters<T> : DialogParameters
     /// <summary>
     /// Renders the filtered items. Receives the filtered list; returns a <see cref="RenderFragment"/>.
     /// </summary>
-    public Func<IReadOnlyList<T>, RenderFragment> RenderCommandItems
+    public Func<IReadOnlyList<T>, int?, RenderFragment> RenderCommandItems
     {
-        get => (Func<IReadOnlyList<T>, RenderFragment>?)this[nameof(RenderCommandItems)]!;
+        get => (Func<IReadOnlyList<T>, int?, RenderFragment>?)this[nameof(RenderCommandItems)]!;
         set => this[nameof(RenderCommandItems)] = value;
     }
 }

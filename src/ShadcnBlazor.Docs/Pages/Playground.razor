@@ -1,0 +1,33 @@
+@page "/playground"
+@layout NoLayout
+@using ShadcnBlazor.Docs.Components.Samples.KeyInterceptor
+
+<PageTitle>Playground - ShadcnBlazor</PageTitle>
+
+<div class="min-h-screen bg-background p-8">
+    <div class="max-w-4xl mx-auto flex flex-col gap-8">
+        <div>
+            <h1 class="text-2xl font-bold">Playground</h1>
+            <p class="text-muted-foreground mt-1">Experimental samples and demos.</p>
+        </div>
+
+        <section>
+            <h2 class="text-lg font-semibold mb-4">Keyboard Interceptor</h2>
+            <KeyInterceptorSample />
+        </section>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
+
+    protected override void OnParametersSet()
+    {
+#if !DEBUG
+        NavigationManager.NavigateTo("/");
+#endif
+        base.OnParametersSet();
+    }
+
+}

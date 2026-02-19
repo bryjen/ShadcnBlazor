@@ -1,11 +1,14 @@
+@using ShadcnBlazor.Components.Button
 @inherits ShadcnComponentBase
 
 <Button
     Variant="@CurrentVariant"
     Size="@Size"
-    Disabled="@Disabled"
+    State="@(Disabled ? ButtonState.Disabled : null)"
     Type="@Type"
     Class="@CurrentClass"
+    role="button"
+    aria-pressed="@(CurrentState ? "true" : "false")"
     @onclick="HandleClick"
     @attributes="AdditionalAttributes">
     @ChildContent

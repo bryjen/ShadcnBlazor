@@ -14,10 +14,12 @@ using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Radio;
 using ShadcnBlazor.Components.Select;
 using ShadcnBlazor.Components.Shared.Services;
+using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Components.Skeleton;
 using ShadcnBlazor.Components.Slider;
 using ShadcnBlazor.Components.Switch;
 using ShadcnBlazor.Components.Textarea;
+using ShadcnBlazor.Components.ToggleButton;
 using ShadcnBlazor.Components.Tooltip;
 using ShadcnBlazor.Services.Models;
 
@@ -48,9 +50,15 @@ public static class ComponentRegistry
             [
                 new CopyCssAction("shadcn_blazor_in.css"),
                 new CopyCssAction("shadcn_blazor_out.css"),
+                new CopyJsAction("focus-scope.js"),
+                new CopyJsAction("key-interceptor.js"),
                 new AddCssLinksToRootAction(),
                 new AddNugetDependencyAction("TailwindMerge.NET", "1.2.0"),
                 new AddProgramServiceAction("TailwindMerge.Extensions", "AddTailwindMerge()"),
+                new AddToServicesAction(nameof(FocusScopeInterop)),
+                new AddToServicesAction(nameof(IFocusScopeService), nameof(FocusScopeService)),
+                new AddToServicesAction(nameof(KeyInterceptorInterop)),
+                new AddToServicesAction(nameof(IKeyInterceptorService), nameof(KeyInterceptorService)),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Shared",
                     "ShadcnBlazor.Components.Shared.Models",
@@ -64,6 +72,7 @@ public static class ComponentRegistry
         new() { Name = nameof(Avatar), Description = "Displays image avatars with text fallback for missing or loading images.", Dependencies = CreateDeps() },
         new() { Name = nameof(Badge), Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", Dependencies = CreateDeps() },
         new() { Name = nameof(Button), Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", Dependencies = CreateDeps() },
+        new() { Name = nameof(ToggleButton), Description = "Button that toggles between two visual states (on/off). Depends on Button.", Dependencies = CreateDeps(nameof(Button)) },
         new() { Name = nameof(Card), Description = "Container for content with header, body, and footer sections.", Dependencies = CreateDeps() },
         new() { Name = nameof(Checkbox), Description = "Checkbox input for boolean or multi-select form values.", Dependencies = CreateDeps() },
         new()
@@ -74,10 +83,12 @@ public static class ComponentRegistry
             RequiredActions =
             [
                 new AddToServicesAction(nameof(IDialogService), nameof(DialogService)),
-                new AddToServicesAction(nameof(IScrollLockService), nameof(ScrollLockService)),
+                new AddToServicesAction(nameof(DialogInterop)),
+                new AddToServicesAction(nameof(IDialogJsService), nameof(DialogJsService)),
+                new AddToServicesAction(nameof(ScrollLockInterop)),
+                new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("dialog.js"),
                 new CopyJsAction("scroll-lock.js"),
-                new CopyJsAction("keyInterceptor.js"),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Dialog",
                     "ShadcnBlazor.Components.Dialog.Declarative",
@@ -93,8 +104,9 @@ public static class ComponentRegistry
             Dependencies = CreateDeps(),
             RequiredActions =
             [
-                new AddToServicesAction(nameof(IPopoverService), nameof(PopoverService)),
                 new AddToServicesAction(nameof(IPopoverRegistry), nameof(PopoverRegistry)),
+                new AddToServicesAction(nameof(PopoverInterop)),
+                new AddToServicesAction(nameof(IPopoverService), nameof(PopoverService)),
                 new CopyJsAction("popovers.js"),
             ]
         },

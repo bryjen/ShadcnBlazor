@@ -1,126 +1,124 @@
 /**
  * Dialog component JavaScript interop.
  * Provides frosted backdrop animation, ESC handling, overlay click, and focus trap.
+ * Exported as ES module for Blazor JS interop.
  */
-(function () {
-    const dialogHandlers = new Map();
 
-    function getOverlayElement(dialogId) {
-        return document.querySelector(`[data-dialog-overlay="${dialogId}"]`);
-    }
+const dialogHandlers = new Map();
 
-    function getContentElement(dialogId) {
-        return document.querySelector(`[data-dialog-content="${dialogId}"]`);
-    }
+function getOverlayElement(dialogId) {
+    return document.querySelector(`[data-dialog-overlay="${dialogId}"]`);
+}
 
-    function initialize(dialogId, dotNetRef) {
-        if (dialogHandlers.has(dialogId)) return;
+function getContentElement(dialogId) {
+    return document.querySelector(`[data-dialog-content="${dialogId}"]`);
+}
 
-        const handler = {
-            dialogId,
-            dotNetRef,
-            handleEscape: (e) => {
-                if (e.key !== 'Escape') return;
-                const contentElement = getContentElement(dialogId);
-                if (contentElement && contentElement.getAttribute('data-state') === 'open') {
-                    dotNetRef.invokeMethodAsync('HandleEscape');
-                }
-            },
-            handleOverlayClick: (e) => {
-                const overlayElement = getOverlayElement(dialogId);
-                const contentElement = getContentElement(dialogId);
-                if (!overlayElement || !contentElement) return;
-                if (e.target === overlayElement && contentElement.getAttribute('data-state') === 'open') {
-                    dotNetRef.invokeMethodAsync('HandleOverlayClick');
-                }
-            },
-            trapFocus: (e) => {
-                if (e.key !== 'Tab') return;
-                const contentElement = getContentElement(dialogId);
-                if (!contentElement || contentElement.getAttribute('data-state') !== 'open') return;
+export function initialize(dialogId, dotNetRef) {
+    if (dialogHandlers.has(dialogId)) return;
 
-                const focusableElements = contentElement.querySelectorAll(
-                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-                );
-                if (focusableElements.length === 0) return;
-
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        e.preventDefault();
-                        lastElement?.focus();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        e.preventDefault();
-                        firstElement?.focus();
-                    }
-                }
+    const handler = {
+        dialogId,
+        dotNetRef,
+        handleEscape: (e) => {
+            if (e.key !== 'Escape') return;
+            const contentElement = getContentElement(dialogId);
+            if (contentElement && contentElement.getAttribute('data-state') === 'open') {
+                dotNetRef.invokeMethodAsync('HandleEscape');
             }
-        };
+        },
+        handleOverlayClick: (e) => {
+            const overlayElement = getOverlayElement(dialogId);
+            const contentElement = getContentElement(dialogId);
+            if (!overlayElement || !contentElement) return;
+            if (e.target === overlayElement && contentElement.getAttribute('data-state') === 'open') {
+                dotNetRef.invokeMethodAsync('HandleOverlayClick');
+            }
+        },
+        trapFocus: (e) => {
+            if (e.key !== 'Tab') return;
+            const contentElement = getContentElement(dialogId);
+            if (!contentElement || contentElement.getAttribute('data-state') !== 'open') return;
 
-        document.addEventListener('keydown', handler.handleEscape);
-        document.addEventListener('click', handler.handleOverlayClick, true);
-        document.addEventListener('keydown', handler.trapFocus);
-
-        dialogHandlers.set(dialogId, handler);
-    }
-
-    function open(dialogId) {
-        const handler = dialogHandlers.get(dialogId);
-        if (!handler) return;
-
-        const overlayElement = getOverlayElement(dialogId);
-        const contentElement = getContentElement(dialogId);
-        if (!overlayElement || !contentElement) return;
-
-        overlayElement.setAttribute('data-state', 'open');
-        contentElement.setAttribute('data-state', 'open');
-
-        focusFirstInDialog(dialogId);
-    }
-
-    function focusFirstInDialog(dialogId) {
-        const contentElement = getContentElement(dialogId);
-        if (!contentElement) return;
-        setTimeout(() => {
-            const firstFocusable = contentElement.querySelector(
+            const activeElement = document.activeElement;
+            const focusableElements = contentElement.querySelectorAll(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
-            firstFocusable?.focus();
-        }, 50);
-    }
+            const elements = Array.from(focusableElements).filter((el) => el.getAttribute('tabindex') !== '-1');
+            if (elements.length === 0) return;
+            const currentIndex = elements.indexOf(activeElement);
 
-    function close(dialogId) {
-        const handler = dialogHandlers.get(dialogId);
-        if (!handler) return;
+            if (currentIndex === -1) {
+                e.preventDefault();
+                elements[0]?.focus();
+                return;
+            }
 
-        const overlayElement = getOverlayElement(dialogId);
-        const contentElement = getContentElement(dialogId);
-        if (!overlayElement || !contentElement) return;
+            if (elements.length === 1) {
+                e.preventDefault();
+                elements[0]?.focus();
+                return;
+            }
 
-        overlayElement.setAttribute('data-state', 'closed');
-        contentElement.setAttribute('data-state', 'closed');
-    }
+            e.preventDefault();
+            const nextIndex = e.shiftKey
+                ? (currentIndex - 1 + elements.length) % elements.length
+                : (currentIndex + 1) % elements.length;
+            elements[nextIndex]?.focus();
+        }
+    };
 
-    function dispose(dialogId) {
-        const handler = dialogHandlers.get(dialogId);
-        if (!handler) return;
+    document.addEventListener('keydown', handler.handleEscape);
+    document.addEventListener('click', handler.handleOverlayClick, true);
+    document.addEventListener('keydown', handler.trapFocus);
 
-        document.removeEventListener('keydown', handler.handleEscape);
-        document.removeEventListener('click', handler.handleOverlayClick, true);
-        document.removeEventListener('keydown', handler.trapFocus);
+    dialogHandlers.set(dialogId, handler);
+}
 
-        dialogHandlers.delete(dialogId);
-    }
+export function open(dialogId) {
+    const handler = dialogHandlers.get(dialogId);
+    if (!handler) return;
 
-    window.ShadcnBlazor = window.ShadcnBlazor || {};
-    window.ShadcnBlazor.Dialog = window.ShadcnBlazor.Dialog || {};
-    window.ShadcnBlazor.Dialog.initialize = initialize;
-    window.ShadcnBlazor.Dialog.open = open;
-    window.ShadcnBlazor.Dialog.close = close;
-    window.ShadcnBlazor.Dialog.dispose = dispose;
-    window.ShadcnBlazor.Dialog.focusFirstInDialog = focusFirstInDialog;
-})();
+    const overlayElement = getOverlayElement(dialogId);
+    const contentElement = getContentElement(dialogId);
+    if (!overlayElement || !contentElement) return;
+
+    overlayElement.setAttribute('data-state', 'open');
+    contentElement.setAttribute('data-state', 'open');
+
+    focusFirstInDialog(dialogId);
+}
+
+export function focusFirstInDialog(dialogId) {
+    const contentElement = getContentElement(dialogId);
+    if (!contentElement) return;
+    setTimeout(() => {
+        const firstFocusable = contentElement.querySelector(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        firstFocusable?.focus();
+    }, 50);
+}
+
+export function close(dialogId) {
+    const handler = dialogHandlers.get(dialogId);
+    if (!handler) return;
+
+    const overlayElement = getOverlayElement(dialogId);
+    const contentElement = getContentElement(dialogId);
+    if (!overlayElement || !contentElement) return;
+
+    overlayElement.setAttribute('data-state', 'closed');
+    contentElement.setAttribute('data-state', 'closed');
+}
+
+export function dispose(dialogId) {
+    const handler = dialogHandlers.get(dialogId);
+    if (!handler) return;
+
+    document.removeEventListener('keydown', handler.handleEscape);
+    document.removeEventListener('click', handler.handleOverlayClick, true);
+    document.removeEventListener('keydown', handler.trapFocus);
+
+    dialogHandlers.delete(dialogId);
+}

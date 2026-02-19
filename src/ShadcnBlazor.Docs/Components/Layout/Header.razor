@@ -1,5 +1,6 @@
 @using ShadcnBlazor.Docs.Components.Samples.Command.Impl
 @using ShadcnBlazor.Docs.Components.Layout
+@using ShadcnBlazor.Docs.Components.Samples.Command.Inline
 @using System.Text.Json.Serialization
 
 
@@ -16,6 +17,12 @@
             @RenderNavButton("Docs", "introduction")
             @RenderNavButton("Components", "components")
             @RenderNavButton("Samples", "samples")
+            
+            @if (InDev)
+            {
+                <div class="w-px h-6 bg-border"></div>
+                @RenderNavButton("Playground", "playground")
+            }
         </div>
         
         <div data-device="mobile" class="hidden max-lg:flex h-full items-center gap-2">
@@ -26,8 +33,8 @@
     </div>
     
     <div data-device="desktop" class="h-full flex items-center gap-2">
-        <Command @ref="@_command">
-            <Button Class="max-lg:hidden" Size="@Size.Lg" Variant="@Variant.Outline" OnClick="@(_ => _command.OpenDialog())">
+        <CommandInline @ref="@_command">
+            <Button id="global-command-search-trigger" Class="max-lg:hidden" Size="@Size.Lg" Variant="@Variant.Outline">
                 <div class="flex gap-2 pr-3 items-center">
                     <LuSearch class="size-4"/>
                     <span class="text-sm">
@@ -35,7 +42,7 @@
                     </span>
                 </div>
             </Button>
-        </Command>
+        </CommandInline>
 
         <div class="w-px h-4 bg-border"></div>
 
@@ -88,10 +95,13 @@
 </div>
 
 @code {
-    private Command _command = default!;
+    private CommandInline _command = default!;
 
     [Inject]
     public required ISheetService SheetService { get; set; }
+    
+    [Inject] 
+    public HttpClient Http { get; set; } = null!;
 
     private void OpenMobileMenu()
     {
@@ -108,8 +118,6 @@
         </a>
     };
     
-    [Inject] 
-    public HttpClient Http { get; set; } = null!;
     
     private int? _stars;
 
@@ -123,4 +131,11 @@
         stars >= 1000 ? $"{stars / 1000.0:0.#}k" : stars.ToString();
 
     private record GitHubRepo([property: JsonPropertyName("stargazers_count")] int StargazersCount);
+
+    private bool InDev =>
+#if DEBUG
+        true;
+#else
+        false;
+#endif
 }

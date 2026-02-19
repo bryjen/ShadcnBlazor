@@ -1,8 +1,7 @@
 @implements IAsyncDisposable
-@using Microsoft.JSInterop
 @using ShadcnBlazor.Components.Shared.Services
-@inject IJSRuntime JSRuntime
-@inject IScrollLockService ScrollLock
+@inject ISheetJsService SheetJs
+@inject ScrollLockService ScrollLock
 
 <div class="sheet-overlay"
      data-sheet-overlay="@Instance.Id.ToString("N")"
@@ -46,8 +45,8 @@
             try
             {
                 await ScrollLock.LockAsync();
-                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.initialize", Instance.Id.ToString("N"), _dotNetRef);
-                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.open", Instance.Id.ToString("N"));
+                await SheetJs.InitializeAsync(Instance.Id.ToString("N"), _dotNetRef);
+                await SheetJs.OpenAsync(Instance.Id.ToString("N"));
                 _overlayState = "open";
                 _contentState = "open";
                 StateHasChanged();
@@ -75,7 +74,7 @@
         _contentState = "closed";
         try
         {
-            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.close", Instance.Id.ToString("N"));
+            await SheetJs.CloseAsync(Instance.Id.ToString("N"));
             await Task.Delay(250);
         }
         catch (JSException) { }
@@ -111,7 +110,7 @@
     {
         try
         {
-            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Sheet.dispose", Instance.Id.ToString("N"));
+            await SheetJs.DisposeSheetAsync(Instance.Id.ToString("N"));
         }
         catch (JSException) { }
         try

@@ -1,0 +1,13 @@
+<div class="flex flex-wrap gap-4">
+    <ToggleButton @bind-IsToggled="_toggled1" VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default">
+        Outline / Default
+    </ToggleButton>
+    <ToggleButton @bind-IsToggled="_toggled2" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Secondary">
+        Ghost / Secondary
+    </ToggleButton>
+</div>
+
+@code {
+    private bool _toggled1;
+    private bool _toggled2;
+}

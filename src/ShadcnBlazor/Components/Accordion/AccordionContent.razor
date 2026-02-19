@@ -5,7 +5,8 @@
     data-slot="accordion-content"
     data-state="@(IsOpen ? "open" : "closed")"
     class="@GetClass()"
-    style="max-height: @(IsOpen ? "2000px" : "0")">
+    style="max-height: @(IsOpen ? "2000px" : "0")"
+    @attributes="GetAttributes()">
     <div class="pb-4 pt-0 text-sm text-muted-foreground">
         @ChildContent
     </div>
@@ -30,5 +31,22 @@
             ? "opacity-100"
             : "opacity-0";
         return MergeCss(baseClasses, stateClasses, Class);
+    }
+
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        if (ItemContext is null)
+            return AdditionalAttributes;
+
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["id"] = ItemContext.ContentId,
+            ["aria-labelledby"] = ItemContext.TriggerId,
+            ["aria-hidden"] = IsOpen ? "false" : "true"
+        };
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+        return merged;
     }
 }

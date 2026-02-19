@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using ShadcnBlazor.Components.Button;
 using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Enums;
 
-namespace ShadcnBlazor.Components.Button;
+namespace ShadcnBlazor.Components.ToggleButton;
 
 /// <summary>
 /// A button that toggles between two visual states (on/off).
