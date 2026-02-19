@@ -40,3 +40,4 @@ public partial class NoNavMenuLayout : LayoutComponentBase, IAsyncDisposable
         _shortcutModule = null;
     }
 }
+

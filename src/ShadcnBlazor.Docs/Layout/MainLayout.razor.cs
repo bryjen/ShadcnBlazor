@@ -40,3 +40,4 @@ public partial class MainLayout : LayoutComponentBase, IAsyncDisposable
         _shortcutModule = null;
     }
 }
+

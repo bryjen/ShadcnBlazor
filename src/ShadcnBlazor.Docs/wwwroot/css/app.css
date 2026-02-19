@@ -277,11 +277,17 @@
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
+  .-top-0 {
+    top: calc(var(--spacing) * -0);
+  }
   .-top-0\.5 {
     top: calc(var(--spacing) * -0.5);
   }
   .top-0 {
     top: calc(var(--spacing) * 0);
+  }
+  .top-1 {
+    top: calc(var(--spacing) * 1);
   }
   .top-1\/2 {
     top: calc(1/2 * 100%);
@@ -291,6 +297,9 @@
   }
   .top-14 {
     top: calc(var(--spacing) * 14);
+  }
+  .-right-0 {
+    right: calc(var(--spacing) * -0);
   }
   .-right-0\.5 {
     right: calc(var(--spacing) * -0.5);
@@ -475,8 +484,15 @@
   .inline-flex {
     display: inline-flex;
   }
+  .table {
+    display: table;
+  }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
+  }
+  .size-1 {
+    width: calc(var(--spacing) * 1);
+    height: calc(var(--spacing) * 1);
   }
   .size-1\.5 {
     width: calc(var(--spacing) * 1.5);
@@ -778,11 +794,21 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
   }
   .table-auto {
     table-layout: auto;
+  }
+  .border-collapse {
+    border-collapse: collapse;
+  }
+  .-translate-y-1 {
+    --tw-translate-y: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
@@ -790,6 +816,9 @@
   }
   .rotate-180 {
     rotate: 180deg;
+  }
+  .transform {
+    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
   .animate-pulse {
     animation: var(--animate-pulse);
@@ -1105,6 +1134,9 @@
   .border-destructive {
     border-color: var(--color-destructive);
   }
+  .border-foreground {
+    border-color: var(--color-foreground);
+  }
   .border-foreground\/0 {
     border-color: var(--color-foreground);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1204,6 +1236,9 @@
   .bg-current {
     background-color: currentcolor;
   }
+  .bg-destructive {
+    background-color: var(--color-destructive);
+  }
   .bg-destructive\/10 {
     background-color: var(--color-destructive);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1251,6 +1286,9 @@
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
+  }
+  .bg-input {
+    background-color: var(--color-input);
   }
   .bg-input\/20 {
     background-color: var(--color-input);
@@ -3302,6 +3340,26 @@
   inherits: false;
   initial-value: 0;
 }
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-space-y-reverse {
   syntax: "*";
   inherits: false;
@@ -3533,6 +3591,11 @@
       --tw-translate-x: 0;
       --tw-translate-y: 0;
       --tw-translate-z: 0;
+      --tw-rotate-x: initial;
+      --tw-rotate-y: initial;
+      --tw-rotate-z: initial;
+      --tw-skew-x: initial;
+      --tw-skew-y: initial;
       --tw-space-y-reverse: 0;
       --tw-space-x-reverse: 0;
       --tw-border-style: solid;
