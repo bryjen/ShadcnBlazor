@@ -29,7 +29,7 @@ public partial class Badge : ShadcnComponentBase
 
         var sizeClasses = Size switch
         {
-            Size.Sm => "px-2 py-0.5 text-[0.6rem] [&>svg]:size-2",
+            Size.Sm => "px-1.5 py-0.25 text-[0.55rem] [&>svg]:size-2",
             Size.Md => "px-2.5 py-0.5 text-xs [&>svg]:size-2.5",
             Size.Lg => "px-2.5 py-1 text-sm [&>svg]:size-3",
         };

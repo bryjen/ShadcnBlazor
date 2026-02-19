@@ -67,14 +67,55 @@ public static class ComponentRegistry
                 ]),
             ]
         },
-        new() { Name = nameof(Accordion), Description = "A vertically stacked set of interactive headings that each reveal a section of content.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Alert), Description = "Displays important messages or notifications with variant styling (default, destructive).", Dependencies = CreateDeps() },
-        new() { Name = nameof(Avatar), Description = "Displays image avatars with text fallback for missing or loading images.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Badge), Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", Dependencies = CreateDeps() },
-        new() { Name = nameof(Button), Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", Dependencies = CreateDeps() },
-        new() { Name = nameof(ToggleButton), Description = "Button that toggles between two visual states (on/off). Depends on Button.", Dependencies = CreateDeps(nameof(Button)) },
-        new() { Name = nameof(Card), Description = "Container for content with header, body, and footer sections.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Checkbox), Description = "Checkbox input for boolean or multi-select form values.", Dependencies = CreateDeps() },
+        new() 
+        {
+            Name = nameof(Accordion), 
+            Description = "A vertically stacked set of interactive headings that each reveal a section of content.", 
+            Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.Beta]
+        },
+        new() 
+        {
+            Name = nameof(Alert), 
+            Description = "Displays important messages or notifications with variant styling (default, destructive).", 
+            Dependencies = CreateDeps()
+        },
+        new() 
+        {
+            Name = nameof(Avatar), 
+            Description = "Displays image avatars with text fallback for missing or loading images.", 
+            Dependencies = CreateDeps()
+        },
+        new() 
+        {
+            Name = nameof(Badge), 
+            Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", 
+            Dependencies = CreateDeps()
+        },
+        new() 
+        {
+            Name = nameof(Button), 
+            Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", 
+            Dependencies = CreateDeps(),
+        },
+        new() 
+        {
+            Name = nameof(ToggleButton), 
+            Description = "Button that toggles between two visual states (on/off). Depends on Button.", Dependencies = CreateDeps(nameof(Button))
+        },
+        new() 
+        {
+            Name = nameof(Card), 
+            Description = "Container for content with header, body, and footer sections.", 
+            Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.Beta]
+        },
+        new() 
+        {
+            Name = nameof(Checkbox), 
+            Description = "Checkbox input for boolean or multi-select form values.", 
+            Dependencies = CreateDeps()
+        },
         new()
         {
             Name = nameof(Dialog),
@@ -93,10 +134,22 @@ public static class ComponentRegistry
                     "ShadcnBlazor.Components.Dialog",
                     "ShadcnBlazor.Components.Dialog.Declarative",
                     "ShadcnBlazor.Components.Dialog.Models"]),
-            ]
+            ],
+            Tags = [ComponentDefinition.Tag.Beta]
         },
-        new() { Name = nameof(DropdownMenu), Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover)) },
-        new() { Name = nameof(Input), Description = "Single-line text input with variant styling.", Dependencies = CreateDeps() },
+        new()
+        {
+            Name = nameof(DropdownMenu), 
+            Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.", 
+            Dependencies = CreateDeps(nameof(Popover))
+        },
+        new()
+        {
+            Name = nameof(Input), 
+            Description = "Single-line text input with variant styling.", 
+            Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.Beta]
+        },
         new()
         {
             Name = nameof(Popover),
@@ -110,12 +163,47 @@ public static class ComponentRegistry
                 new CopyJsAction("popovers.js"),
             ]
         },
-        new() { Name = nameof(Radio), Description = "Radio and RadioCard options for single selection within a RadioGroup.", Dependencies = CreateDeps() },
-        new() { Name = "Select", Description = "Dropdown select for choosing a single value from a list of options; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover)) },
-        new() { Name = nameof(Skeleton), Description = "Loading placeholder with pulse animation.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Slider), Description = "Single-thumb slider for selecting a value within a min/max range.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Switch), Description = "Toggle switch for boolean on/off values.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Textarea), Description = "Multi-line text input for longer form content.", Dependencies = CreateDeps() },
-        new() { Name = nameof(Tooltip), Description = "Hover-triggered tooltip with pointer; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover)) },
+        new()
+        {
+            Name = nameof(Radio), 
+            Description = "Radio and RadioCard options for single selection within a RadioGroup.", 
+            Dependencies = CreateDeps()
+        },
+        new() 
+        {
+            Name = "Select", 
+            Description = "Dropdown select for choosing a single value from a list of options; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover))
+        },
+        new() 
+        {
+            Name = nameof(Skeleton), 
+            Description = "Loading placeholder with pulse animation.", 
+            Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.Beta]
+        },
+        new() 
+        {
+            Name = nameof(Slider), 
+            Description = "Single-thumb slider for selecting a value within a min/max range.", 
+            Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.Alpha]
+        },
+        new() 
+        {
+            Name = nameof(Switch), 
+            Description = "Toggle switch for boolean on/off values.", 
+            Dependencies = CreateDeps()
+        },
+        new() 
+        {
+            Name = nameof(Textarea), 
+            Description = "Multi-line text input for longer form content.", 
+            Dependencies = CreateDeps()
+        },
+        new() 
+        {
+            Name = nameof(Tooltip), 
+            Description = "Hover-triggered tooltip with pointer; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover))
+        },
     ];
 }

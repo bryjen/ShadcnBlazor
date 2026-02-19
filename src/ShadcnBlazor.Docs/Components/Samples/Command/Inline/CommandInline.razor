@@ -22,9 +22,9 @@
         <div id="@_elementId" tabindex="-1" class="bg-card w-[30vw] rounded-xl p-1">
             <div class="flex flex-col bg-background/50 w-full rounded-xl h-full max-h-[calc(75vh-0.5rem)]">
                 <div id="command-header" class="p-3 w-full shrink-0">
-                    <CommandSearchInput Placeholder="Search documentation..." @bind-Value="_searchQuery" />
+                    <CommandSearchInput Placeholder="Search documentation..." @bind-Value="_searchQuery" AdditionalAttributes="@GetSearchInputAttributes()" />
                 </div>
-                <div id="@_contentId" tabindex="-1" class="w-full py-3 overflow-y-auto scrollbar-hide min-h-0">
+                <div id="@_contentId" tabindex="-1" role="listbox" aria-label="Search results" class="w-full py-3 overflow-y-auto scrollbar-hide min-h-0">
                     @RenderCommandItems(GetFilteredCommandItems(), _selectedItem)
                 </div>
                 <div id="command-footer" tabindex="-1" class="p-3 grid grid-cols-2 gap-2 w-full bg-card shrink-0 rounded-b-xl">
@@ -47,7 +47,7 @@
                     : group.Key == typeof(SampleCommandItem) ? "Samples"
                     : "Other";
 
-                RenderFragment icon = group.Key switch
+                RenderFragment? icon = group.Key switch
                 {
                     _ when group.Key == typeof(PageCommandItem) => @<LuStickyNote class="size-4" />,
                     _ when group.Key == typeof(ComponentCommandItem) => @<LuComponent class="size-4" />,
@@ -60,11 +60,7 @@
                         @groupLabel
                     </div>
                     
-                    <div role="listbox"
-                         aria-label="Search results"
-                         aria-activedescendant="@(_selectedItem.GetHashCode())"
-                         class="w-full"
-                         tabindex="-1">
+                    <div class="w-full">
                         @foreach (var commandItem in group)
                         {
                             var id = commandItem.GetHashCode();
@@ -101,7 +97,7 @@
                     Previous Item:
                 </span>
                 <div class="flex-1 flex items-center">
-                    <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">CTRL</kbd>
+                    <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">SHIFT</kbd>
                     <span class="mx-1 text-xs">+</span>
                     <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">TAB</kbd>
                     <span class="mx-2 text-xs">/</span>
@@ -162,3 +158,4 @@
         </div>
     };
 }
+

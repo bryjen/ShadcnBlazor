@@ -3,13 +3,17 @@
 @inherits ShadcnComponentBase
 @implements IDisposable
 
-<div @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave" class="inline-flex">
+<div @onmouseenter="HandleMouseEnter"
+     @onmouseleave="HandleMouseLeave"
+     @onfocusin="HandleFocusIn"
+     @onfocusout="HandleFocusOut"
+     class="inline-flex">
     <Popover Open="@_open" OpenChanged="@(v => _open = v)" CloseOnOutsideClick="false" AnchorOrigin="PopoverPlacement.TopCenter" TransformOrigin="PopoverPlacement.BottomCenter" Animate="true" PopoverClass="tooltip-popover" ExitAnimationDurationMs="60" Offset="@Offset">
         <Anchor>
             @Anchor
         </Anchor>
         <ChildContent>
-            <div class="@MergeCss("relative z-50 rounded-full bg-popover px-3 py-2 text-sm text-popover-foreground shadow-md", ContentClass)">
+            <div id="@_contentId" role="tooltip" class="@MergeCss("relative z-50 rounded-full bg-popover px-3 py-2 text-sm text-popover-foreground shadow-md", ContentClass)">
                 <span class="tooltip-arrow"></span>
                 @if (ChildContent is not null)
                 {

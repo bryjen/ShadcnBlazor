@@ -16,6 +16,11 @@ public class DropdownMenuContext
     public bool Open { get; set; }
 
     /// <summary>
+    /// Trigger element id used for focus restoration.
+    /// </summary>
+    public string TriggerId { get; set; } = string.Empty;
+
+    /// <summary>
     /// Sets the open state.
     /// </summary>
     public Action<bool>? SetOpen { get; set; }

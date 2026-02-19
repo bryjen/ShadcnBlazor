@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Shared.Models.Accessibility;
+using ShadcnBlazor.Components.Shared.Services;
 
 namespace ShadcnBlazor.Components.Popover;
 
@@ -17,6 +18,7 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     private bool _visualOpen;
     private bool? _lastConnectedOpen;
     private bool _isClosing;
+    private bool _scrollLocked;
     private PopoverProvider? _registeredProvider;
     private DotNetObjectReference<Popover>? _outsideClickReference;
     private bool _outsideClickSubscriptionActive;
@@ -33,6 +35,12 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     /// </summary>
     [Inject]
     public required IPopoverRegistry PopoverRegistry { get; set; }
+
+    /// <summary>
+    /// Injected scroll lock service for optional body scroll lock.
+    /// </summary>
+    [Inject]
+    public required ScrollLockService ScrollLock { get; set; }
 
     /// <summary>
     /// Content rendered as the anchor/trigger element.
@@ -63,6 +71,12 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     /// </summary>
     [Parameter]
     public bool CloseOnOutsideClick { get; set; }
+
+    /// <summary>
+    /// Whether to lock body scroll while the popover is open.
+    /// </summary>
+    [Parameter]
+    public bool LockScroll { get; set; }
 
     /// <summary>
     /// Whether to animate open/close transitions.
@@ -254,6 +268,7 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         }
 
         await UpdateOutsideClickSubscriptionAsync();
+        await UpdateScrollLockAsync();
     }
 
     /// <summary>
@@ -287,6 +302,11 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         _outsideClickReference?.Dispose();
 
         await PopoverService.DisconnectAsync(_popoverId);
+        if (_scrollLocked)
+        {
+            await ScrollLock.UnlockAsync();
+            _scrollLocked = false;
+        }
     }
 
     private void StartCloseAnimation()
@@ -368,5 +388,20 @@ public partial class Popover : ComponentBase, IAsyncDisposable
 
         await PopoverService.DisableOutsideClickCloseAsync(_popoverId);
         _outsideClickSubscriptionActive = false;
+    }
+
+    private async Task UpdateScrollLockAsync()
+    {
+        var shouldLock = LockScroll && _visualOpen;
+        if (shouldLock && !_scrollLocked)
+        {
+            await ScrollLock.LockAsync();
+            _scrollLocked = true;
+        }
+        else if (!shouldLock && _scrollLocked)
+        {
+            await ScrollLock.UnlockAsync();
+            _scrollLocked = false;
+        }
     }
 }

@@ -1,15 +1,15 @@
-@using ShadcnBlazor.Components.Button
+@using Microsoft.AspNetCore.Components.Web
 
-<div class="dropdown-menu-trigger" @onclick="OnClick" @onclick:preventDefault="true">
-    @if (AsChild)
-    {
-        @ChildContent
-    }
-    else
-    {
-        <Button Variant="Variant.Outline" Type="ButtonType.Button">@ChildContent</Button>
-    }
-</div>
+<button id="@TriggerId"
+        type="button"
+        class="dropdown-menu-trigger"
+        aria-haspopup="menu"
+        aria-expanded="@Open"
+        @onclick="OnClick"
+        @onclick:preventDefault="true"
+        @onkeydown="HandleKeyDown">
+    @ChildContent
+</button>
 
 @code {
     [Parameter]
@@ -19,5 +19,19 @@
     public bool AsChild { get; set; }
 
     [Parameter]
+    public bool Open { get; set; }
+
+    [Parameter]
+    public string TriggerId { get; set; } = string.Empty;
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " " or "ArrowDown")
+        {
+            await OnClick.InvokeAsync();
+        }
+    }
 }

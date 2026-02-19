@@ -426,7 +426,7 @@ class PopoverManager {
             callbackReference.invokeMethodAsync('HandleOutsidePointerDown');
         };
 
-        document.addEventListener('pointerdown', handler, true);
+        document.addEventListener('click', handler, false);
         this.outsideClickSubscriptions.set(popoverId, {
             handler,
             callbackReference
@@ -439,7 +439,7 @@ class PopoverManager {
             return;
         }
 
-        document.removeEventListener('pointerdown', subscription.handler, true);
+        document.removeEventListener('click', subscription.handler, false);
         this.outsideClickSubscriptions.delete(popoverId);
     }
 
@@ -491,3 +491,4 @@ export function disableOutsideClickClose(popoverId) {
 export function dispose() {
     popoverManager.dispose();
 }
+

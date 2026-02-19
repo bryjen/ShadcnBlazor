@@ -1,4 +1,8 @@
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
 @inherits ShadcnComponentBase
+@inject IJSRuntime JsRuntime
+@implements IAsyncDisposable
 
 @code {
     [CascadingParameter]
@@ -10,23 +14,90 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    private readonly string _contentId = $"dropdown-submenu-{Guid.NewGuid():N}";
+    private bool _wasOpen;
+    private IJSObjectReference? _module;
+
     private RenderFragment ContentFragment => Context is not null
         ? @<CascadingValue TValue="DropdownMenuSubContext" Value="Context">
             @if (Context!.RootMenuContext is not null)
             {
                 <CascadingValue TValue="DropdownMenuContext" Value="Context.RootMenuContext" IsFixed="true">
-                    <div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>
+                    <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>
                 </CascadingValue>
             }
             else
             {
-                <div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>
+                <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>
             }
         </CascadingValue>
-        : @<div class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes">@ChildContent</div>;
+        : @<div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>;
 
     protected override void OnInitialized()
     {
         Context?.RegisterContent(ContentFragment);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var isOpen = Context?.Open == true;
+        if (isOpen && !_wasOpen)
+        {
+            await EnsureModuleAsync();
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("focusMenu", _contentId);
+            }
+        }
+        _wasOpen = isOpen;
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                await EnsureModuleAsync();
+                if (_module is not null)
+                    await _module.InvokeVoidAsync("moveFocus", _contentId, 1);
+                break;
+            case "ArrowUp":
+                await EnsureModuleAsync();
+                if (_module is not null)
+                    await _module.InvokeVoidAsync("moveFocus", _contentId, -1);
+                break;
+            case "Home":
+                await EnsureModuleAsync();
+                if (_module is not null)
+                    await _module.InvokeVoidAsync("focusMenu", _contentId);
+                break;
+            case "End":
+                await EnsureModuleAsync();
+                if (_module is not null)
+                    await _module.InvokeVoidAsync("focusLastItem", _contentId);
+                break;
+            case "Escape":
+                Context?.SetOpen?.Invoke(false);
+                break;
+        }
+    }
+
+    private async Task EnsureModuleAsync()
+    {
+        if (_module is not null)
+            return;
+
+        _module = await JsRuntime.InvokeAsync<IJSObjectReference>(
+            "import",
+            "/ShadcnBlazor/_content/ShadcnBlazor/Components/DropdownMenu/DropdownMenuSubContent.razor.js");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is not null)
+        {
+            await _module.DisposeAsync();
+            _module = null;
+        }
     }
 }

@@ -1,13 +1,15 @@
+@using ShadcnBlazor.Services.Models
+@inherits ShadcnComponentBase
 @implements IDisposable
 
 <div class="relative py-20 px-12 w-full h-screen-minus-header w-max-full flex flex-col gap-12 overflow-x-hidden overflow-y-scroll scrollbar-hide">
 
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Sections", includeTopMargin: false)
-        @RenderNavButton("Introduction", "introduction")
-        @RenderNavButton("Components", "components")
-        @RenderNavButton("Samples", "samples")
-        @RenderNavButton("CLI", "cli")
+        @RenderNavButton("Introduction", "introduction", [])
+        @RenderNavButton("Components", "components", [])
+        @RenderNavButton("Samples", "samples", [])
+        @RenderNavButton("CLI", "cli", [])
     </div>
     
     @*
@@ -25,7 +27,7 @@
         @RenderSectionHeader("Components", includeTopMargin: false)
         @foreach (var component in ComponentRegistry.Components)
         {
-            @RenderNavButton(component.Name, $"components/{component.Slug}")
+            @RenderNavButton(component.Name, $"components/{component.Slug}", component.Tags)
         }
     </div>
 
@@ -33,7 +35,7 @@
         @RenderSectionHeader("Samples", includeTopMargin: false)
         @foreach (var sample in SampleRegistry.SamplesList)
         {
-            @RenderNavButton(sample.Name, $"samples/{sample.Slug}")
+            @RenderNavButton(sample.Name, $"samples/{sample.Slug}", [])
         }
     </div>
 </div>
@@ -54,7 +56,7 @@
         </span>
     };
 
-    private RenderFragment RenderNavButton(string text, string href) => __builder =>
+    private RenderFragment RenderNavButton(string text, string href, ComponentDefinition.Tag[] tags) => __builder =>
     {
         var active = IsActive(href);
         var spanClass = active
@@ -65,23 +67,20 @@
            @onclick="@(_ => HandleNav(href))"
            @onclick:preventDefault="true">
             <span class="@spanClass">@text</span>
+            @foreach(var tag in tags)
+            {
+#pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
+                var classes = tag switch {
+                    ComponentDefinition.Tag.Alpha => "bg-cyan-800",
+                    ComponentDefinition.Tag.Beta => "bg-sky-700",
+                };
+                <Badge Size="@Size.Sm" Class="@(MergeCss(classes))">
+                    @(tag.ToString().ToLower())
+                </Badge>
+            }
         </a>
     };
     
-    private RenderFragment RenderSubNavButton(string text, string href) => __builder =>
-    {
-        var active = IsActive(href);
-        var spanClass = active
-            ? "bg-accent text-white rounded-md px-2 py-1"
-            : "text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors";
-        <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 ml-4 px-2 text-[0.8rem] antialiased group" 
-           href="@href"
-           @onclick="@(_ => HandleNav(href))"
-           @onclick:preventDefault="true">
-            <span class="@spanClass">@text</span>
-        </a>
-    };
-
     private string CurrentPath => Nav.ToBaseRelativePath(Nav.Uri).TrimStart('/');
 
     private bool IsActive(string href)

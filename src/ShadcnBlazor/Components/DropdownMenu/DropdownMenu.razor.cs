@@ -10,6 +10,7 @@ namespace ShadcnBlazor.Components.DropdownMenu;
 public partial class DropdownMenu : ComponentBase
 {
     private readonly DropdownMenuContext _context = new();
+    private readonly string _triggerId = $"dropdown-trigger-{Guid.NewGuid():N}";
     private bool _open;
 
     /// <summary>
@@ -21,6 +22,7 @@ public partial class DropdownMenu : ComponentBase
     /// <inheritdoc />
     protected override void OnInitialized()
     {
+        _context.TriggerId = _triggerId;
         _context.SetOpen = v =>
         {
             _open = v;
@@ -33,5 +35,6 @@ public partial class DropdownMenu : ComponentBase
     protected override void OnParametersSet()
     {
         _context.Open = _open;
+        _context.TriggerId = _triggerId;
     }
 }

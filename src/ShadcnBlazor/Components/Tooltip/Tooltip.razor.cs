@@ -60,6 +60,7 @@ public partial class Tooltip
     [Category("Appearance")]
     public int Offset { get; set; } = 8;
 
+    private readonly string _contentId = $"tooltip-{Guid.NewGuid():N}";
     private bool _open;
     private CancellationTokenSource? _showCts;
     private CancellationTokenSource? _hideCts;
@@ -89,6 +90,10 @@ public partial class Tooltip
         }
         catch (OperationCanceledException) { }
     }
+
+    private Task HandleFocusIn() => HandleMouseEnter();
+
+    private Task HandleFocusOut() => HandleMouseLeave();
 
     private void CancelShow()
     {

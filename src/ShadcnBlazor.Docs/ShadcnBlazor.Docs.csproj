@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="**/*.razor.js" />
+        <Content Include="**/*.razor.js" Exclude="bin/**;obj/**" />
     </ItemGroup>
 
     <!-- Run docs compiler before build (build ShadcnBlazor and compiler first, then run) -->
