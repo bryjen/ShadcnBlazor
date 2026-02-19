@@ -1,5 +1,5 @@
-@using Microsoft.JSInterop
-@inject IJSRuntime JSRuntime
+@using ShadcnBlazor.Components.Shared.Services
+@inject IDialogJsService DialogJs
 
 @if (Context?.Open == true)
 {
@@ -45,7 +45,7 @@
 
         try
         {
-            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.initialize", Context.DialogId, Context.DotNetRef);
+            await DialogJs.InitializeAsync(Context.DialogId, Context.DotNetRef!);
         }
         catch (JSException) { }
 
@@ -54,7 +54,7 @@
         if (Context?.Open == true && !Context.IsClosing && Context.AnimationState == "closed")
         {
             Context.SetAnimationState("open");
-            try { await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.focusFirstInDialog", Context.DialogId); }
+            try { await DialogJs.FocusFirstInDialogAsync(Context.DialogId); }
             catch (JSException) { }
         }
     }

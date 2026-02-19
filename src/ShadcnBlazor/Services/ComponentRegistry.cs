@@ -80,6 +80,8 @@ public static class ComponentRegistry
             RequiredActions =
             [
                 new AddToServicesAction(nameof(IDialogService), nameof(DialogService)),
+                new AddToServicesAction(nameof(DialogInterop)),
+                new AddToServicesAction(nameof(IDialogJsService), nameof(DialogJsService)),
                 new AddToServicesAction(nameof(ScrollLockInterop)),
                 new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("dialog.js"),

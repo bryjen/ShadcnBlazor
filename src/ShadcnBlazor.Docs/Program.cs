@@ -41,7 +41,15 @@ builder.Services.AddScoped(sp => new ScrollLockInterop(
     ScrollLockInterop.DefaultModulePaths));
 builder.Services.AddScoped<ScrollLockService>();
 
+builder.Services.AddScoped(sp => new DialogInterop(
+    sp.GetRequiredService<IJSRuntime>(),
+    DialogInterop.DefaultModulePaths));
+builder.Services.AddScoped<IDialogJsService, DialogJsService>();
 builder.Services.AddScoped<IDialogService, DialogService>();
+builder.Services.AddScoped(sp => new SheetInterop(
+    sp.GetRequiredService<IJSRuntime>(),
+    SheetInterop.DefaultModulePaths));
+builder.Services.AddScoped<ISheetJsService, SheetJsService>();
 builder.Services.AddScoped<ISheetService, SheetService>();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

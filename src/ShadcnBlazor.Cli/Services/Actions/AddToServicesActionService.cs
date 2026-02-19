@@ -38,7 +38,11 @@ public class AddToServicesActionService
             _ => "AddScoped"
         };
 
-        var methodCall = action.ImplementationType == "ScrollLockInterop"
+        var methodCall = action.ImplementationType == "DialogInterop"
+            ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
+            : action.ImplementationType == "SheetInterop"
+                ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
+                : action.ImplementationType == "ScrollLockInterop"
             ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
             : action.ImplementationType == "PopoverInterop"
                 ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
@@ -84,6 +88,11 @@ public class AddToServicesActionService
         return typeName switch
         {
             "IDialogService" or "DialogService" => "Dialog.Services",
+            "DialogInterop" => "Shared.Services.Interop",
+            "IDialogJsService" or "DialogJsService" => "Shared.Services",
+            "SheetInterop" => "Shared.Services.Interop",
+            "ISheetJsService" or "SheetJsService" => "Shared.Services",
+            "ISheetService" or "SheetService" => "Sheet.Services",
             "IScrollLockService" or "ScrollLockService" => "Shared.Services",
             "ScrollLockInterop" or "FocusScopeInterop" => "Shared.Services.Interop",
             "IFocusScopeService" or "FocusScopeService" => "Shared.Services",

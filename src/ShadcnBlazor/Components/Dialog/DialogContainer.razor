@@ -1,7 +1,6 @@
 @implements IAsyncDisposable
-@using Microsoft.JSInterop
 @using ShadcnBlazor.Components.Shared.Services
-@inject IJSRuntime JSRuntime
+@inject IDialogJsService DialogJs
 @inject ScrollLockService ScrollLock
 
 <div class="dialog-overlay"
@@ -38,14 +37,14 @@
             try
             {
                 await ScrollLock.LockAsync();
-                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.initialize", Instance.Id.ToString("N"), _dotNetRef);
-                await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.open", Instance.Id.ToString("N"));
+                await DialogJs.InitializeAsync(Instance.Id.ToString("N"), _dotNetRef);
+                await DialogJs.OpenAsync(Instance.Id.ToString("N"));
                 _overlayState = "open";
                 StateHasChanged();
             }
             catch (JSException)
             {
-                // dialog.js / scroll-lock.js may not be loaded; dialog will still work without animation
+                // dialog / scroll-lock modules may not be loaded; dialog will still work without animation
                 _overlayState = "open";
                 StateHasChanged();
             }
@@ -71,7 +70,7 @@
         _overlayState = "closed";
         try
         {
-            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.close", Instance.Id.ToString("N"));
+            await DialogJs.CloseAsync(Instance.Id.ToString("N"));
             await Task.Delay(250); // Allow close animation to complete
         }
         catch (JSException)
@@ -150,7 +149,7 @@
     {
         try
         {
-            await JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.dispose", Instance.Id.ToString("N"));
+            await DialogJs.DisposeDialogAsync(Instance.Id.ToString("N"));
         }
         catch (JSException)
         {

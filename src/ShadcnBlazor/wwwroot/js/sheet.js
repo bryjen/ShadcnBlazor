@@ -2,126 +2,118 @@
  * Sheet component JavaScript interop.
  * Provides overlay animation, ESC handling, overlay click, and focus trap.
  * Uses data-sheet-* attributes to avoid conflicts with Dialog.
+ * Exported as ES module for Blazor JS interop.
  */
-(function () {
-    const sheetHandlers = new Map();
 
-    function getOverlayElement(sheetId) {
-        return document.querySelector(`[data-sheet-overlay="${sheetId}"]`);
-    }
+const sheetHandlers = new Map();
 
-    function getContentElement(sheetId) {
-        return document.querySelector(`[data-sheet-content="${sheetId}"]`);
-    }
+function getOverlayElement(sheetId) {
+    return document.querySelector(`[data-sheet-overlay="${sheetId}"]`);
+}
 
-    function initialize(sheetId, dotNetRef) {
-        if (sheetHandlers.has(sheetId)) return;
+function getContentElement(sheetId) {
+    return document.querySelector(`[data-sheet-content="${sheetId}"]`);
+}
 
-        const handler = {
-            sheetId,
-            dotNetRef,
-            handleEscape: (e) => {
-                if (e.key !== 'Escape') return;
-                const contentElement = getContentElement(sheetId);
-                if (contentElement && contentElement.getAttribute('data-state') === 'open') {
-                    dotNetRef.invokeMethodAsync('HandleEscape');
-                }
-            },
-            handleOverlayClick: (e) => {
-                const overlayElement = getOverlayElement(sheetId);
-                const contentElement = getContentElement(sheetId);
-                if (!overlayElement || !contentElement) return;
-                if (e.target === overlayElement && contentElement.getAttribute('data-state') === 'open') {
-                    dotNetRef.invokeMethodAsync('HandleOverlayClick');
-                }
-            },
-            trapFocus: (e) => {
-                if (e.key !== 'Tab') return;
-                const contentElement = getContentElement(sheetId);
-                if (!contentElement || contentElement.getAttribute('data-state') !== 'open') return;
+export function initialize(sheetId, dotNetRef) {
+    if (sheetHandlers.has(sheetId)) return;
 
-                const focusableElements = contentElement.querySelectorAll(
-                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-                );
-                if (focusableElements.length === 0) return;
-
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        e.preventDefault();
-                        lastElement?.focus();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        e.preventDefault();
-                        firstElement?.focus();
-                    }
-                }
+    const handler = {
+        sheetId,
+        dotNetRef,
+        handleEscape: (e) => {
+            if (e.key !== 'Escape') return;
+            const contentElement = getContentElement(sheetId);
+            if (contentElement && contentElement.getAttribute('data-state') === 'open') {
+                dotNetRef.invokeMethodAsync('HandleEscape');
             }
-        };
+        },
+        handleOverlayClick: (e) => {
+            const overlayElement = getOverlayElement(sheetId);
+            const contentElement = getContentElement(sheetId);
+            if (!overlayElement || !contentElement) return;
+            if (e.target === overlayElement && contentElement.getAttribute('data-state') === 'open') {
+                dotNetRef.invokeMethodAsync('HandleOverlayClick');
+            }
+        },
+        trapFocus: (e) => {
+            if (e.key !== 'Tab') return;
+            const contentElement = getContentElement(sheetId);
+            if (!contentElement || contentElement.getAttribute('data-state') !== 'open') return;
 
-        document.addEventListener('keydown', handler.handleEscape);
-        document.addEventListener('click', handler.handleOverlayClick, true);
-        document.addEventListener('keydown', handler.trapFocus);
-
-        sheetHandlers.set(sheetId, handler);
-    }
-
-    function open(sheetId) {
-        const handler = sheetHandlers.get(sheetId);
-        if (!handler) return;
-
-        const overlayElement = getOverlayElement(sheetId);
-        const contentElement = getContentElement(sheetId);
-        if (!overlayElement || !contentElement) return;
-
-        overlayElement.setAttribute('data-state', 'open');
-        contentElement.setAttribute('data-state', 'open');
-
-        focusFirstInSheet(sheetId);
-    }
-
-    function focusFirstInSheet(sheetId) {
-        const contentElement = getContentElement(sheetId);
-        if (!contentElement) return;
-        setTimeout(() => {
-            const firstFocusable = contentElement.querySelector(
+            const focusableElements = contentElement.querySelectorAll(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
-            firstFocusable?.focus();
-        }, 50);
-    }
+            if (focusableElements.length === 0) return;
 
-    function close(sheetId) {
-        const handler = sheetHandlers.get(sheetId);
-        if (!handler) return;
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
 
-        const overlayElement = getOverlayElement(sheetId);
-        const contentElement = getContentElement(sheetId);
-        if (!overlayElement || !contentElement) return;
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement?.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement?.focus();
+                }
+            }
+        }
+    };
 
-        overlayElement.setAttribute('data-state', 'closed');
-        contentElement.setAttribute('data-state', 'closed');
-    }
+    document.addEventListener('keydown', handler.handleEscape);
+    document.addEventListener('click', handler.handleOverlayClick, true);
+    document.addEventListener('keydown', handler.trapFocus);
 
-    function dispose(sheetId) {
-        const handler = sheetHandlers.get(sheetId);
-        if (!handler) return;
+    sheetHandlers.set(sheetId, handler);
+}
 
-        document.removeEventListener('keydown', handler.handleEscape);
-        document.removeEventListener('click', handler.handleOverlayClick, true);
-        document.removeEventListener('keydown', handler.trapFocus);
+export function open(sheetId) {
+    const handler = sheetHandlers.get(sheetId);
+    if (!handler) return;
 
-        sheetHandlers.delete(sheetId);
-    }
+    const overlayElement = getOverlayElement(sheetId);
+    const contentElement = getContentElement(sheetId);
+    if (!overlayElement || !contentElement) return;
 
-    window.ShadcnBlazor = window.ShadcnBlazor || {};
-    window.ShadcnBlazor.Sheet = window.ShadcnBlazor.Sheet || {};
-    window.ShadcnBlazor.Sheet.initialize = initialize;
-    window.ShadcnBlazor.Sheet.open = open;
-    window.ShadcnBlazor.Sheet.close = close;
-    window.ShadcnBlazor.Sheet.dispose = dispose;
-    window.ShadcnBlazor.Sheet.focusFirstInSheet = focusFirstInSheet;
-})();
+    overlayElement.setAttribute('data-state', 'open');
+    contentElement.setAttribute('data-state', 'open');
+
+    focusFirstInSheet(sheetId);
+}
+
+export function focusFirstInSheet(sheetId) {
+    const contentElement = getContentElement(sheetId);
+    if (!contentElement) return;
+    setTimeout(() => {
+        const firstFocusable = contentElement.querySelector(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        firstFocusable?.focus();
+    }, 50);
+}
+
+export function close(sheetId) {
+    const handler = sheetHandlers.get(sheetId);
+    if (!handler) return;
+
+    const overlayElement = getOverlayElement(sheetId);
+    const contentElement = getContentElement(sheetId);
+    if (!overlayElement || !contentElement) return;
+
+    overlayElement.setAttribute('data-state', 'closed');
+    contentElement.setAttribute('data-state', 'closed');
+}
+
+export function dispose(sheetId) {
+    const handler = sheetHandlers.get(sheetId);
+    if (!handler) return;
+
+    document.removeEventListener('keydown', handler.handleEscape);
+    document.removeEventListener('click', handler.handleOverlayClick, true);
+    document.removeEventListener('keydown', handler.trapFocus);
+
+    sheetHandlers.delete(sheetId);
+}
