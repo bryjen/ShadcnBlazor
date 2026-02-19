@@ -5,7 +5,7 @@
     <div
         data-slot="accordion-item"
         class="@GetClass()"
-        @attributes="AdditionalAttributes">
+        @attributes="GetAttributes()">
         @ChildContent
     </div>
 </CascadingValue>
@@ -33,18 +33,19 @@
     public RenderFragment? ChildContent { get; set; }
 
     private AccordionItemContext _itemContext = null!;
+    private readonly string _elementId = $"accordion-{Guid.NewGuid():N}";
 
     protected override void OnInitialized()
     {
         if (AccordionContext is null)
             throw new InvalidOperationException("AccordionItem must be used inside an Accordion.");
 
-        _itemContext = new AccordionItemContext(AccordionContext, Value, Disabled);
+        _itemContext = new AccordionItemContext(AccordionContext, Value, Disabled, $"{_elementId}-trigger", $"{_elementId}-content");
     }
 
     protected override void OnParametersSet()
     {
-        _itemContext = new AccordionItemContext(AccordionContext!, Value, Disabled);
+        _itemContext = new AccordionItemContext(AccordionContext!, Value, Disabled, $"{_elementId}-trigger", $"{_elementId}-content");
     }
 
     private string GetClass()
@@ -53,20 +54,39 @@
         return MergeCss(baseClasses, Class);
     }
 
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["role"] = "region",
+            ["aria-labelledby"] = _itemContext.TriggerId
+        };
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+        return merged;
+    }
+
     internal sealed class AccordionItemContext
     {
         private readonly Accordion.AccordionContext _accordion;
 
-        public AccordionItemContext(Accordion.AccordionContext accordion, string value, bool disabled)
+        public AccordionItemContext(Accordion.AccordionContext accordion, string value, bool disabled, string triggerId, string contentId)
         {
             _accordion = accordion;
             Value = value;
             Disabled = disabled;
+            TriggerId = triggerId;
+            ContentId = contentId;
         }
 
         public string Value { get; }
 
         public bool Disabled { get; }
+
+        public string TriggerId { get; }
+
+        public string ContentId { get; }
 
         public bool IsOpen => _accordion.IsItemOpen(Value);
 

@@ -6,9 +6,24 @@ namespace ShadcnBlazor.Components.Button;
 
 internal static class ButtonStyles
 {
-    public static string Build(Func<string[], string> mergeCallback, Variant variant, Size size, string @class)
+    public static string Build(Func<string[], string> mergeCallback, Variant variant, Size size, ButtonState? state, string @class)
     {
-        var baseClasses = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/40 aria-invalid:border-destructive active:scale-95 cursor-pointer";
+        var baseClasses = string.Join(" ",
+            "inline-flex items-center justify-center gap-2 shrink-0 whitespace-nowrap",
+            "text-sm font-medium rounded-md",
+            "transition-all duration-200 active:scale-95 cursor-pointer",
+            "disabled:pointer-events-none disabled:opacity-50",
+            "outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+            "aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+            "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0"
+        );
+        
+        var stateClasses = state switch
+        {
+            ButtonState.Loading => "cursor-wait",
+            ButtonState.Disabled => "cursor-not-allowed",
+            null => string.Empty,
+        };
 
         var variantClasses = variant switch
         {
@@ -27,8 +42,19 @@ internal static class ButtonStyles
             Size.Lg => "h-8 rounded-md px-3.5 py-1.75 has-[>svg]:px-2.75 [&_svg:not([class*='size-'])]:size-3.5",
         };
 
-        return mergeCallback([baseClasses, variantClasses, sizeClasses, @class]);
+        return mergeCallback([baseClasses, variantClasses, sizeClasses, stateClasses, @class]);
     }
+}
+
+/// <summary>
+/// The state of the button (loading, disabled, or normal when null).
+/// </summary>
+public enum ButtonState
+{
+    /// <summary>Button is loading; disabled with aria-busy.</summary>
+    Loading,
+    /// <summary>Button is disabled.</summary>
+    Disabled,
 }
 
 /// <summary>
@@ -42,27 +68,4 @@ public enum ButtonType
     Submit,
     /// <summary>Resets the containing form to its initial state.</summary>
     Reset
-}
-
-internal static class ButtonTypeExtensions
-{
-    public static string ToString(this ButtonType buttonType)
-    {
-        return buttonType switch
-        {
-            ButtonType.Button => "button",
-            ButtonType.Submit => "submit",
-            ButtonType.Reset => "reset",
-        };
-    }
-    
-    public static ButtonType FromString(string buttonString)
-    {
-        return buttonString.Trim().ToLowerInvariant() switch
-        {
-            "submit" => ButtonType.Button,
-            "reset" => ButtonType.Reset,
-            _ => ButtonType.Button,
-        };
-    }
 }

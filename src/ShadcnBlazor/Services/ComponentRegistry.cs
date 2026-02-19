@@ -18,6 +18,7 @@ using ShadcnBlazor.Components.Skeleton;
 using ShadcnBlazor.Components.Slider;
 using ShadcnBlazor.Components.Switch;
 using ShadcnBlazor.Components.Textarea;
+using ShadcnBlazor.Components.ToggleButton;
 using ShadcnBlazor.Components.Tooltip;
 using ShadcnBlazor.Services.Models;
 
@@ -64,6 +65,7 @@ public static class ComponentRegistry
         new() { Name = nameof(Avatar), Description = "Displays image avatars with text fallback for missing or loading images.", Dependencies = CreateDeps() },
         new() { Name = nameof(Badge), Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", Dependencies = CreateDeps() },
         new() { Name = nameof(Button), Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", Dependencies = CreateDeps() },
+        new() { Name = nameof(ToggleButton), Description = "Button that toggles between two visual states (on/off). Depends on Button.", Dependencies = CreateDeps(nameof(Button)) },
         new() { Name = nameof(Card), Description = "Container for content with header, body, and footer sections.", Dependencies = CreateDeps() },
         new() { Name = nameof(Checkbox), Description = "Checkbox input for boolean or multi-select form values.", Dependencies = CreateDeps() },
         new()

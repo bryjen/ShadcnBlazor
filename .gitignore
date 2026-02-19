@@ -10,4 +10,5 @@ context/
 scratch/
 
 Models/Generated/
-src/ShadcnBlazor.Docs/Models/Generated/
+/src/ShadcnBlazor.Docs/Models/Generated/
+!/src/ShadcnBlazor/Components/Shared/

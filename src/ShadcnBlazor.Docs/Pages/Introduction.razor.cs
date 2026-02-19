@@ -18,8 +18,7 @@ Components/Core/Shared/
 Button/
 ├── Button.razor
 ├── ButtonGroup.razor
-├── ButtonShared.cs
-└── ToggleButton.razor
+└── ButtonShared.cs
 """;
     
     private const string ExamplePopoverComponentDirectoryAscii = 
