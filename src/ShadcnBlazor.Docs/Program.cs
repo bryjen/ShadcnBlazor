@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Shared.Services;
+using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Docs.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
@@ -26,7 +28,12 @@ builder.Services.AddSingleton<SampleRegistryService>();
 builder.Services.AddScoped<IPopoverRegistry, PopoverRegistry>();
 builder.Services.AddScoped<IPopoverService, PopoverService>();
 
-builder.Services.AddScoped<IScrollLockService, ScrollLockService>();
+// js
+builder.Services.AddScoped(sp => new ScrollLockInterop(
+    sp.GetRequiredService<IJSRuntime>(),
+    ScrollLockInterop.DefaultModulePaths));
+builder.Services.AddScoped<ScrollLockService>();
+
 builder.Services.AddScoped<IDialogService, DialogService>();
 builder.Services.AddScoped<ISheetService, SheetService>();
 

@@ -1,8 +1,7 @@
 @implements IDisposable
-@using Microsoft.JSInterop
 @using ShadcnBlazor.Components.Shared.Services
 @inject IJSRuntime JSRuntime
-@inject IScrollLockService ScrollLock
+@inject ScrollLockService ScrollLock
 
 <CascadingValue Value="_context">
     @ChildContent

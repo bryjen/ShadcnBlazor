@@ -14,6 +14,7 @@ using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Radio;
 using ShadcnBlazor.Components.Select;
 using ShadcnBlazor.Components.Shared.Services;
+using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Components.Skeleton;
 using ShadcnBlazor.Components.Slider;
 using ShadcnBlazor.Components.Switch;
@@ -76,7 +77,8 @@ public static class ComponentRegistry
             RequiredActions =
             [
                 new AddToServicesAction(nameof(IDialogService), nameof(DialogService)),
-                new AddToServicesAction(nameof(IScrollLockService), nameof(ScrollLockService)),
+                new AddToServicesAction(nameof(ScrollLockInterop)),
+                new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("dialog.js"),
                 new CopyJsAction("scroll-lock.js"),
                 new CopyJsAction("keyInterceptor.js"),

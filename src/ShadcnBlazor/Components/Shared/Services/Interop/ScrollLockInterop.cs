@@ -7,23 +7,29 @@ namespace ShadcnBlazor.Components.Shared.Services.Interop;
 /// </summary>
 public class ScrollLockInterop : IAsyncDisposable
 {
+    /// <summary>
+    /// Default module paths used when none are provided.
+    /// </summary>
+    public static readonly string[] DefaultModulePaths =
+    [
+        "/_content/ShadcnBlazor/js/scroll-lock.js",
+        "/js/scroll-lock.js"
+    ];
+
     private readonly IJSRuntime _jsRuntime;
+    private readonly string[] _modulePaths;
     private IJSObjectReference? _module;
     private readonly SemaphoreSlim _lock = new(1, 1);
-
-    private static readonly string[] ModulePaths =
-    [
-        "_content/ShadcnBlazor/js/scroll-lock.js",
-        "js/scroll-lock.js"
-    ];
 
     /// <summary>
     /// Creates a new <see cref="ScrollLockInterop"/> instance.
     /// </summary>
     /// <param name="jsRuntime">The JavaScript runtime for interop calls.</param>
-    public ScrollLockInterop(IJSRuntime jsRuntime)
+    /// <param name="modulePaths">Paths to try when loading the scroll-lock module (e.g. <c>/_content/ShadcnBlazor/js/scroll-lock.js</c>). Uses <see cref="DefaultModulePaths"/> if null or empty.</param>
+    public ScrollLockInterop(IJSRuntime jsRuntime, string[]? modulePaths = null)
     {
         _jsRuntime = jsRuntime;
+        _modulePaths = modulePaths is { Length: > 0 } ? modulePaths : DefaultModulePaths;
     }
 
     private async ValueTask<IJSObjectReference> GetModuleAsync(CancellationToken cancellationToken = default)
@@ -38,7 +44,7 @@ public class ScrollLockInterop : IAsyncDisposable
                 return _module;
 
             Exception? lastEx = null;
-            foreach (var path in ModulePaths)
+            foreach (var path in _modulePaths)
             {
                 try
                 {

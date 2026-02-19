@@ -38,9 +38,11 @@ public class AddToServicesActionService
             _ => "AddScoped"
         };
 
-        var methodCall = interfaceType != null
-            ? $"{serviceCall}<{interfaceType}, {implementationType}>()"
-            : $"{serviceCall}<{implementationType}>()";
+        var methodCall = action.ImplementationType == "ScrollLockInterop"
+            ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
+            : interfaceType != null
+                ? $"{serviceCall}<{interfaceType}, {implementationType}>()"
+                : $"{serviceCall}<{implementationType}>()";
 
         var content = File.ReadAllText(programCsFile.FullName);
         if (content.Contains(implementationType))
@@ -79,6 +81,7 @@ public class AddToServicesActionService
         {
             "IDialogService" or "DialogService" => "Dialog.Services",
             "IScrollLockService" or "ScrollLockService" => "Shared.Services",
+            "ScrollLockInterop" => "Shared.Services.Interop",
             "IPopoverService" or "PopoverService" => "Popover.Services",
             "IPopoverRegistry" or "PopoverRegistry" => "Popover.Services",
             _ => "Shared.Services"
