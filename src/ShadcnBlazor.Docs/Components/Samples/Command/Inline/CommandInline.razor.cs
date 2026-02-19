@@ -138,7 +138,7 @@ public partial class CommandInline : ShadcnComponentBase
         if (_scrollModule is not null)
             return;
 
-        var modulePath = "./Components/Samples/Command/Inline/CommandInline.razor.js";
+        var modulePath = $"{NavigationManager.BaseUri}Components/Samples/Command/Inline/CommandInline.razor.js";
         _scrollModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", modulePath);
     }
 
@@ -188,3 +188,4 @@ public partial class CommandInline : ShadcnComponentBase
         }
     }
 }
+

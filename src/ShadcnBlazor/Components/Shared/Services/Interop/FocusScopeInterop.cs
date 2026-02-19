@@ -12,8 +12,7 @@ public class FocusScopeInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/_content/ShadcnBlazor/js/focus-scope.js",
-        "/js/focus-scope.js"
+        "/ShadcnBlazor/_content/ShadcnBlazor/js/focus-scope.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;

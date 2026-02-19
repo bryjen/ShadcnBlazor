@@ -14,8 +14,7 @@ public class KeyInterceptorInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/_content/ShadcnBlazor/js/key-interceptor.js",
-        "/js/key-interceptor.js"
+        "/ShadcnBlazor/_content/ShadcnBlazor/js/key-interceptor.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;

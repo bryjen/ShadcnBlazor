@@ -12,8 +12,7 @@ public class ScrollLockInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/_content/ShadcnBlazor/js/scroll-lock.js",
-        "/js/scroll-lock.js"
+        "/ShadcnBlazor/_content/ShadcnBlazor/js/scroll-lock.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;
