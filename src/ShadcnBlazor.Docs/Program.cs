@@ -36,6 +36,10 @@ builder.Services.AddScoped(sp => new FocusScopeInterop(
     sp.GetRequiredService<IJSRuntime>(),
     FocusScopeInterop.DefaultModulePaths));
 builder.Services.AddScoped<IFocusScopeService, FocusScopeService>();
+builder.Services.AddScoped(sp => new KeyInterceptorInterop(
+    sp.GetRequiredService<IJSRuntime>(),
+    KeyInterceptorInterop.DefaultModulePaths));
+builder.Services.AddScoped<IKeyInterceptorService, KeyInterceptorService>();
 builder.Services.AddScoped(sp => new ScrollLockInterop(
     sp.GetRequiredService<IJSRuntime>(),
     ScrollLockInterop.DefaultModulePaths));

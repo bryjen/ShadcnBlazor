@@ -1,6 +1,7 @@
 @using ShadcnBlazor.Docs.Components.Samples.Command.Base
 @using ShadcnBlazor.Docs.Components.Samples.Command.Base.Models
 @using ShadcnBlazor.Docs.Components.Samples.Command.Impl.Models
+@inherits ShadcnComponentBase
 
 @ChildContent
 
@@ -87,7 +88,7 @@
     }
 
     /// impl
-    private RenderFragment RenderCommandItems(IReadOnlyList<CommandItem> commandItems) => __builder =>
+    private RenderFragment RenderCommandItems(IReadOnlyList<CommandItem> commandItems, int? selectedItem) => __builder =>
     {
         <div class="w-full flex flex-col gap-4 px-4">
             @foreach (var group in commandItems.GroupBy(x => x.GetType()))
@@ -112,7 +113,13 @@
                     <div class="w-full"> @* command items container *@
                         @foreach (var commandItem in group)
                         {
-                            <button class="w-full px-3 py-2 gap-3 flex rounded-lg items-center justify-start border border-foreground/0 duration-300 transition-all hover:bg-card hover:border-foreground/50" 
+                            var isSelected = selectedItem is not null && selectedItem == commandItem.GetHashCode();
+                            var baseClasses = "w-full px-3 py-2 gap-3 flex rounded-lg items-center justify-start border border-foreground/0 duration-150 transition-all";
+                            var selectedClasses = "bg-card border-foreground/50";
+                            var @class = MergeCss(baseClasses, isSelected ? selectedClasses : string.Empty);
+                            
+                            <button id="@(commandItem.GetHashCode())" 
+                                    class="@(@class)" 
                                     @onclick="@(_ => NavigateToPage(commandItem))">
                                 @icon
                                 <span class="text-muted-foreground font-semibold text-sm">@commandItem.SearchString()</span>

@@ -51,11 +51,14 @@ public static class ComponentRegistry
                 new CopyCssAction("shadcn_blazor_in.css"),
                 new CopyCssAction("shadcn_blazor_out.css"),
                 new CopyJsAction("focus-scope.js"),
+                new CopyJsAction("key-interceptor.js"),
                 new AddCssLinksToRootAction(),
                 new AddNugetDependencyAction("TailwindMerge.NET", "1.2.0"),
                 new AddProgramServiceAction("TailwindMerge.Extensions", "AddTailwindMerge()"),
                 new AddToServicesAction(nameof(FocusScopeInterop)),
                 new AddToServicesAction(nameof(IFocusScopeService), nameof(FocusScopeService)),
+                new AddToServicesAction(nameof(KeyInterceptorInterop)),
+                new AddToServicesAction(nameof(IKeyInterceptorService), nameof(KeyInterceptorService)),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Shared",
                     "ShadcnBlazor.Components.Shared.Models",
@@ -86,7 +89,6 @@ public static class ComponentRegistry
                 new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("dialog.js"),
                 new CopyJsAction("scroll-lock.js"),
-                new CopyJsAction("keyInterceptor.js"),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Dialog",
                     "ShadcnBlazor.Components.Dialog.Declarative",

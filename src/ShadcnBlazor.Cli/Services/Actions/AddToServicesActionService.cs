@@ -48,7 +48,9 @@ public class AddToServicesActionService
                 ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
                 : action.ImplementationType == "FocusScopeInterop"
                     ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
-                    : interfaceType != null
+                    : action.ImplementationType == "KeyInterceptorInterop"
+                        ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
+                        : interfaceType != null
                 ? $"{serviceCall}<{interfaceType}, {implementationType}>()"
                 : $"{serviceCall}<{implementationType}>()";
 
@@ -94,8 +96,9 @@ public class AddToServicesActionService
             "ISheetJsService" or "SheetJsService" => "Shared.Services",
             "ISheetService" or "SheetService" => "Sheet.Services",
             "IScrollLockService" or "ScrollLockService" => "Shared.Services",
-            "ScrollLockInterop" or "FocusScopeInterop" => "Shared.Services.Interop",
+            "ScrollLockInterop" or "FocusScopeInterop" or "KeyInterceptorInterop" => "Shared.Services.Interop",
             "IFocusScopeService" or "FocusScopeService" => "Shared.Services",
+            "IKeyInterceptorService" or "KeyInterceptorService" => "Shared.Services",
             "IPopoverService" or "PopoverService" => "Popover.Services",
             "PopoverInterop" => "Popover.Services",
             "IPopoverRegistry" or "PopoverRegistry" => "Popover.Services",

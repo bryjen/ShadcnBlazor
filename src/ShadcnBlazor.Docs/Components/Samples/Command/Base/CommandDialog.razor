@@ -1,11 +1,14 @@
+@using ShadcnBlazor.Components.Shared.Models.Options
+@using ShadcnBlazor.Components.Shared.Services
 @typeparam T
-<div class="bg-card w-[30vw] max-h-[50vh] rounded-xl p-1">
+
+<div id="@_elementId" tabindex="-1" class="bg-card w-[30vw] max-h-[50vh] rounded-xl p-1">
     <div class="flex flex-col bg-background/50 w-full rounded-xl h-full max-h-[calc(50vh-0.5rem)]">
         <div id="command-header" class="p-3 w-full shrink-0">
             <CommandSearchInput Placeholder="Search documentation..." @bind-Value="_searchQuery"/>
         </div>
         <div id="command-content" class="w-full py-3 overflow-y-auto scrollbar-hide min-h-0">
-            @RenderCommandItems.Invoke(FilteredCommandItems)
+            @RenderCommandItems.Invoke(GetFilteredCommandItems(), _selectedItem)
         </div>
         <div id="command-footer" class="p-2 w-full bg-card shrink-0 rounded-b-xl">
             <div class="flex items-center gap-2 text-muted-foreground">
@@ -17,6 +20,12 @@
 </div>
 
 @code {
+    [Inject]
+    public IKeyInterceptorService KeyInterceptor { get; set; } = null!;
+    
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; } = null!;
+    
     [CascadingParameter]
     public IDialogInstance? DialogInstance { get; set; }
 
@@ -27,9 +36,93 @@
     public Func<IReadOnlyList<T>, string, IReadOnlyList<T>> Filter { get; set; } = null!;
 
     [Parameter]
-    public Func<IReadOnlyList<T>, RenderFragment> RenderCommandItems { get; set; } = null!;
+    public Func<IReadOnlyList<T>, int?, RenderFragment> RenderCommandItems { get; set; } = null!;
 
+    // side-effect-ful
+    private IReadOnlyList<T> GetFilteredCommandItems()
+    {
+        var filtered = Filter(CommandItems, _searchQuery);
+
+        if (_selectedItem is null ||
+            !filtered.Select(t => t?.GetHashCode()).Where(t => t is not null).Contains(_selectedItem))  // if selected item is not in filtered list, reset selection to first item
+        {
+            _selectedItem = filtered.FirstOrDefault()?.GetHashCode();
+        }
+        
+        return filtered;
+    }
+    
     private string _searchQuery = string.Empty;
+    
+    // current item selection
+    private int? _selectedItem;  // hash of item
+    
+    // key interceptor properties
+    private readonly string _elementId = "command-dialog-" + Guid.NewGuid().ToString("N")[..8];
+    private DotNetObjectReference<CommandDialog<T>>? _dotNetRef;
+    private KeyInterceptorEventArgs? _lastKeyEvent;
+    private bool _keyInterceptorConnected;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && _dotNetRef is null)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            var options = new KeyInterceptorOptions(
+                new KeyOptions("ArrowUp", subscribeDown: true, preventDown: "key+none"),
+                new KeyOptions("ArrowDown", subscribeDown: true, preventDown: "key+none"),
+                new KeyOptions("Enter", subscribeDown: true, preventDown: "key+none")
+            );
+            await KeyInterceptor.ConnectAsync(_elementId, _dotNetRef, options);
+            _keyInterceptorConnected = true;
+        }
+    }
+   
+    // key interceptor callback (via js)
+    [JSInvokable]
+    public async void OnKeyDown(string elementId, KeyInterceptorEventArgs args)
+    {
+        try
+        {
+            _lastKeyEvent = args with { Type = "keydown" };
+            var filtered = GetFilteredCommandItems();
+            var idx = filtered.Select((item, i) => (item, i)).First(x => x.item!.GetHashCode() == _selectedItem).i;
+            
+            switch (args.Key)
+            {
+                case "ArrowUp":
+                    var prevIdx = (idx - 1 + filtered.Count) % filtered.Count;
+                    _selectedItem = filtered[prevIdx]?.GetHashCode();
+                    break;
+                case "ArrowDown":
+                    var nextIdx = (idx + 1) % filtered.Count;
+                    _selectedItem = filtered[nextIdx]?.GetHashCode();
+                    break;
+                case "Enter":
+                    if (_selectedItem is not null)
+                        await JsRuntime.InvokeVoidAsync("eval", $"document.getElementById('{_selectedItem}')?.click()");
+                    break;
+            }
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            // ignored
+        }
+    }
 
-    private IReadOnlyList<T> FilteredCommandItems => Filter(CommandItems, _searchQuery);
+    [JSInvokable]
+    public void OnKeyUp(string elementId, KeyInterceptorEventArgs args)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (_keyInterceptorConnected)
+        {
+            _ = KeyInterceptor.DisconnectAsync(_elementId);
+            _dotNetRef?.Dispose();
+        }
+    }
 }

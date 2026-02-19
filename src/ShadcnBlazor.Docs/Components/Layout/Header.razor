@@ -16,6 +16,12 @@
             @RenderNavButton("Docs", "introduction")
             @RenderNavButton("Components", "components")
             @RenderNavButton("Samples", "samples")
+            
+            @if (InDev)
+            {
+                <div class="w-px h-6 bg-border"></div>
+                @RenderNavButton("Playground", "playground")
+            }
         </div>
         
         <div data-device="mobile" class="hidden max-lg:flex h-full items-center gap-2">
@@ -92,6 +98,9 @@
 
     [Inject]
     public required ISheetService SheetService { get; set; }
+    
+    [Inject] 
+    public HttpClient Http { get; set; } = null!;
 
     private void OpenMobileMenu()
     {
@@ -108,8 +117,6 @@
         </a>
     };
     
-    [Inject] 
-    public HttpClient Http { get; set; } = null!;
     
     private int? _stars;
 
@@ -123,4 +130,11 @@
         stars >= 1000 ? $"{stars / 1000.0:0.#}k" : stars.ToString();
 
     private record GitHubRepo([property: JsonPropertyName("stargazers_count")] int StargazersCount);
+
+    private bool InDev =>
+#if DEBUG
+        true;
+#else
+        false;
+#endif
 }
