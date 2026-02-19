@@ -117,6 +117,8 @@ public partial class CommandInline : ShadcnComponentBase
     private void OnTriggerClick()
     {
         _openRequested = true;
+        _selectedItem = null;
+        _pendingScrollItem = null;
         _ = InvokeAsync(StateHasChanged);
     }
 
@@ -125,6 +127,8 @@ public partial class CommandInline : ShadcnComponentBase
         if (e.Key is "Enter" or " " )
         {
             _openRequested = true;
+            _selectedItem = null;
+            _pendingScrollItem = null;
             _ = InvokeAsync(StateHasChanged);
         }
     }

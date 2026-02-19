@@ -307,6 +307,9 @@
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
   }
+  .bottom-2 {
+    bottom: calc(var(--spacing) * 2);
+  }
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
@@ -330,6 +333,9 @@
   }
   .z-50 {
     z-index: 50;
+  }
+  .z-\[100\] {
+    z-index: 100;
   }
   .container {
     width: 100%;
@@ -694,6 +700,12 @@
   .w-\[30vw\] {
     width: 30vw;
   }
+  .w-\[35\%\] {
+    width: 35%;
+  }
+  .w-\[40vw\] {
+    width: 40vw;
+  }
   .w-\[94\%\] {
     width: 94%;
   }
@@ -811,6 +823,9 @@
   }
   .list-disc {
     list-style-type: disc;
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1179,6 +1194,12 @@
   }
   .bg-card {
     background-color: var(--color-card);
+  }
+  .bg-card\/90 {
+    background-color: var(--color-card);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-card) 90%, transparent);
+    }
   }
   .bg-current {
     background-color: currentcolor;
