@@ -10,7 +10,7 @@
 
     <div class="dialog-container dialog-position-center"
          @onclick="OnBackdropClick">
-        <div class="dialog-content @Class"
+        <div class="@GetContentClass()"
              data-dialog-content="@Context.DialogId"
              data-state="@Context.AnimationState"
              style="@GetMaxWidthStyle()"
@@ -32,6 +32,9 @@
 
     [Parameter]
     public string MaxWidth { get; set; } = "444px";
+
+    [Parameter]
+    public bool Unstyled { get; set; }
 
     [Parameter]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
@@ -64,5 +67,13 @@
         _ = Context?.CloseAsync();
     }
 
-    private string GetMaxWidthStyle() => $"max-width: {MaxWidth};";
+    private string GetMaxWidthStyle() => Unstyled ? string.Empty : $"max-width: {MaxWidth};";
+
+    private string GetContentClass()
+    {
+        if (Unstyled)
+            return string.IsNullOrWhiteSpace(Class) ? "dialog-unstyled" : $"dialog-unstyled {Class}";
+
+        return string.IsNullOrWhiteSpace(Class) ? "dialog-content" : $"dialog-content {Class}";
+    }
 }

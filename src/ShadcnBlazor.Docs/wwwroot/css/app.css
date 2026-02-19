@@ -355,6 +355,9 @@
   .mx-1 {
     margin-inline: calc(var(--spacing) * 1);
   }
+  .mx-2 {
+    margin-inline: calc(var(--spacing) * 2);
+  }
   .mx-4 {
     margin-inline: calc(var(--spacing) * 4);
   }
@@ -429,6 +432,18 @@
   }
   .ml-6 {
     margin-left: calc(var(--spacing) * 6);
+  }
+  .ml-12 {
+    margin-left: calc(var(--spacing) * 12);
+  }
+  .ml-13 {
+    margin-left: calc(var(--spacing) * 13);
+  }
+  .ml-\[3\.1rem\] {
+    margin-left: 3.1rem;
+  }
+  .ml-\[3rem\] {
+    margin-left: 3rem;
   }
   .ml-auto {
     margin-left: auto;
@@ -556,6 +571,9 @@
   .h-\[60\%\] {
     height: 60%;
   }
+  .h-\[75vh\] {
+    height: 75vh;
+  }
   .h-\[125px\] {
     height: 125px;
   }
@@ -577,8 +595,17 @@
   .max-h-\[50vh\] {
     max-height: 50vh;
   }
+  .max-h-\[60vh\] {
+    max-height: 60vh;
+  }
+  .max-h-\[75vh\] {
+    max-height: 75vh;
+  }
   .max-h-\[calc\(50vh-0\.5rem\)\] {
     max-height: calc(50vh - 0.5rem);
+  }
+  .max-h-\[calc\(75vh-0\.5rem\)\] {
+    max-height: calc(75vh - 0.5rem);
   }
   .max-h-\[var\(--radix-select-content-available-height\)\] {
     max-height: var(--radix-select-content-available-height);
@@ -640,6 +667,9 @@
   .w-64 {
     width: calc(var(--spacing) * 64);
   }
+  .w-100 {
+    width: calc(var(--spacing) * 100);
+  }
   .w-\[1px\] {
     width: 1px;
   }
@@ -654,6 +684,12 @@
   }
   .w-\[17\.5\%\] {
     width: 17.5%;
+  }
+  .w-\[20\%\] {
+    width: 20%;
+  }
+  .w-\[25\%\] {
+    width: 25%;
   }
   .w-\[30vw\] {
     width: 30vw;
@@ -708,6 +744,9 @@
   }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);
+  }
+  .min-w-5 {
+    min-width: calc(var(--spacing) * 5);
   }
   .min-w-24 {
     min-width: calc(var(--spacing) * 24);
@@ -1035,6 +1074,18 @@
   }
   .border-border {
     border-color: var(--color-border);
+  }
+  .border-border\/0 {
+    border-color: var(--color-border);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-border) 0%, transparent);
+    }
+  }
+  .border-border\/50 {
+    border-color: var(--color-border);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-border) 50%, transparent);
+    }
   }
   .border-destructive {
     border-color: var(--color-destructive);
@@ -1707,6 +1758,14 @@
     transition-property: transform, translate, scale, rotate;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-50 {
+    --tw-duration: 50ms;
+    transition-duration: 50ms;
+  }
+  .duration-75 {
+    --tw-duration: 75ms;
+    transition-duration: 75ms;
   }
   .duration-150 {
     --tw-duration: 150ms;

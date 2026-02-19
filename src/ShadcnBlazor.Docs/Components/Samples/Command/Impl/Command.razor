@@ -114,7 +114,7 @@
                         @foreach (var commandItem in group)
                         {
                             var isSelected = selectedItem is not null && selectedItem == commandItem.GetHashCode();
-                            var baseClasses = "w-full px-3 py-2 gap-3 flex rounded-lg items-center justify-start border border-foreground/0 duration-150 transition-all";
+                            var baseClasses = "w-full px-3 py-2 gap-3 flex rounded-lg items-center justify-start border border-foreground/0";
                             var selectedClasses = "bg-card border-foreground/50";
                             var @class = MergeCss(baseClasses, isSelected ? selectedClasses : string.Empty);
                             

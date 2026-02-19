@@ -40,25 +40,31 @@ export function initialize(dialogId, dotNetRef) {
             const contentElement = getContentElement(dialogId);
             if (!contentElement || contentElement.getAttribute('data-state') !== 'open') return;
 
+            const activeElement = document.activeElement;
             const focusableElements = contentElement.querySelectorAll(
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
             );
-            if (focusableElements.length === 0) return;
+            const elements = Array.from(focusableElements).filter((el) => el.getAttribute('tabindex') !== '-1');
+            if (elements.length === 0) return;
+            const currentIndex = elements.indexOf(activeElement);
 
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-
-            if (e.shiftKey) {
-                if (document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement?.focus();
-                }
-            } else {
-                if (document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement?.focus();
-                }
+            if (currentIndex === -1) {
+                e.preventDefault();
+                elements[0]?.focus();
+                return;
             }
+
+            if (elements.length === 1) {
+                e.preventDefault();
+                elements[0]?.focus();
+                return;
+            }
+
+            e.preventDefault();
+            const nextIndex = e.shiftKey
+                ? (currentIndex - 1 + elements.length) % elements.length
+                : (currentIndex + 1) % elements.length;
+            elements[nextIndex]?.focus();
         }
     };
 

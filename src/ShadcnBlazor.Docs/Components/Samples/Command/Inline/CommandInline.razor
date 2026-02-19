@@ -1,0 +1,118 @@
+@using ShadcnBlazor.Docs.Components.Samples.Command.Base
+@using ShadcnBlazor.Docs.Components.Samples.Command.Base.Models
+@using ShadcnBlazor.Docs.Components.Samples.Command.Impl.Models
+
+@inherits ShadcnComponentBase
+
+<DialogRoot>
+    <div @onclick="OnTriggerClick" @onkeydown="OnTriggerKeyDown">
+        <DialogTrigger>
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            <Button Variant="@Variant.Outline">Open Command</Button>
+        }
+        </DialogTrigger>
+    </div>
+
+    <DialogContent Class="p-0" Unstyled>
+        <div id="@_elementId" tabindex="-1" class="bg-card w-[30vw] rounded-xl p-1">
+            <div class="flex flex-col bg-background/50 w-full rounded-xl h-full max-h-[calc(75vh-0.5rem)]">
+                <div id="command-header" class="p-3 w-full shrink-0">
+                    <CommandSearchInput Placeholder="Search documentation..." @bind-Value="_searchQuery" />
+                </div>
+                <div id="@_contentId" tabindex="-1" class="w-full py-3 overflow-y-auto scrollbar-hide min-h-0">
+                    @RenderCommandItems(GetFilteredCommandItems(), _selectedItem)
+                </div>
+                <div id="command-footer" tabindex="-1" class="p-3 flex flex-col gap-2 w-full bg-card shrink-0 rounded-b-xl">
+                    <div tabindex="-1" class="flex items-center text-muted-foreground w-full select-none">
+                        <span class="mx-2 text-xs flex items-center w-[20%]">
+                            Previous Item:
+                        </span>
+                        <div class="flex-1 flex items-center">
+                            <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">CTRL</kbd>
+                            <span class="mx-1 text-xs">+</span>
+                            <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">TAB</kbd>
+                            <span class="mx-2 text-xs">/</span>
+                            <kbd class="inline-flex items-center justify-center size-5 rounded text-xs bg-background/50">&#8593;</kbd>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-muted-foreground w-full">
+                        <span class="mx-2 text-xs flex items-center w-[20%]">
+                            Next Item:
+                        </span>
+                        <div class="flex-1 flex items-center">
+                            <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">TAB</kbd>
+                            <span class="mx-2 text-xs">/</span>
+                            <kbd class="inline-flex items-center justify-center size-5 rounded text-xs bg-background/50">&#8595;</kbd>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-muted-foreground">
+                        <span class="mx-2 text-xs flex items-center w-[20%]">
+                            Jump to Page:
+                        </span>
+                        <div class="flex-1 flex items-center">
+                            <kbd class="inline-flex h-5 min-w-5 items-center justify-center rounded bg-background/50 px-1 text-xs leading-none font-mono">↵</kbd>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </DialogContent>
+</DialogRoot>
+
+@* Only rendering related components, no logic. Logic is delegated to other classes. *@
+@code {
+    private RenderFragment RenderCommandItems(IReadOnlyList<CommandItem> commandItems, int? selectedItem) => __builder =>
+    {
+        <div class="w-full flex flex-col gap-4 px-4">
+            @foreach (var group in commandItems.GroupBy(x => x.GetType()))
+            {
+                var groupLabel = group.Key == typeof(PageCommandItem) ? "Pages"
+                    : group.Key == typeof(ComponentCommandItem) ? "Components"
+                    : group.Key == typeof(SampleCommandItem) ? "Samples"
+                    : "Other";
+
+                RenderFragment icon = group.Key switch
+                {
+                    _ when group.Key == typeof(PageCommandItem) => @<LuStickyNote class="size-4" />,
+                    _ when group.Key == typeof(ComponentCommandItem) => @<LuComponent class="size-4" />,
+                    _ when group.Key == typeof(SampleCommandItem) => @<LuCodeXml class="size-4" />,
+                    _ => null
+                };
+
+                <div>
+                    <div class="w-full text-xs text-muted-foreground pb-2 font-semibold">
+                        @groupLabel
+                    </div>
+                    <div class="w-full">
+                        @foreach (var commandItem in group)
+                        {
+                            var id = commandItem.GetHashCode();
+                            var isSelected = selectedItem is not null && selectedItem == commandItem.GetHashCode();
+                            var baseClasses = "w-full px-3 py-2 gap-3 flex rounded-lg items-center justify-start border border-border/0 duration-50 transition-all text-muted-foreground ";
+                            var selectedClasses = "bg-card border-border text-foreground";
+                            var @class = MergeCss(baseClasses, isSelected ? selectedClasses : string.Empty);
+
+                            <DialogClose AdditionalAttributes="@(new Dictionary<string, object> { ["tabindex"] = "-1" })" class="w-full">
+                                <button id="@id"
+                                        tabindex="-1"
+                                        class="@(@class)"
+                                        @onmouseover="@(_ => HandleHover(id))"
+                                        @onclick="@(_ => NavigateToPage(commandItem))">
+                                    @icon
+                                    <span class="font-semibold text-sm">@commandItem.SearchString()</span>
+                                </button>
+                            </DialogClose>
+                        }
+                    </div>
+                    <div class="h-px my-2 bg-border w-full"></div>
+                </div>
+            }
+        </div>
+    };
+
+}
