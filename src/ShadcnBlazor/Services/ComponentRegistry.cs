@@ -50,9 +50,12 @@ public static class ComponentRegistry
             [
                 new CopyCssAction("shadcn_blazor_in.css"),
                 new CopyCssAction("shadcn_blazor_out.css"),
+                new CopyJsAction("focus-scope.js"),
                 new AddCssLinksToRootAction(),
                 new AddNugetDependencyAction("TailwindMerge.NET", "1.2.0"),
                 new AddProgramServiceAction("TailwindMerge.Extensions", "AddTailwindMerge()"),
+                new AddToServicesAction(nameof(FocusScopeInterop)),
+                new AddToServicesAction(nameof(IFocusScopeService), nameof(FocusScopeService)),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Shared",
                     "ShadcnBlazor.Components.Shared.Models",

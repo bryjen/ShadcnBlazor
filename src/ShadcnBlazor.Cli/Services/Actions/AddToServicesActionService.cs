@@ -42,7 +42,9 @@ public class AddToServicesActionService
             ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
             : action.ImplementationType == "PopoverInterop"
                 ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
-                : interfaceType != null
+                : action.ImplementationType == "FocusScopeInterop"
+                    ? $"{serviceCall}(sp => new {implementationType}(sp.GetRequiredService<IJSRuntime>(), {implementationType}.DefaultModulePaths))"
+                    : interfaceType != null
                 ? $"{serviceCall}<{interfaceType}, {implementationType}>()"
                 : $"{serviceCall}<{implementationType}>()";
 
@@ -83,7 +85,8 @@ public class AddToServicesActionService
         {
             "IDialogService" or "DialogService" => "Dialog.Services",
             "IScrollLockService" or "ScrollLockService" => "Shared.Services",
-            "ScrollLockInterop" => "Shared.Services.Interop",
+            "ScrollLockInterop" or "FocusScopeInterop" => "Shared.Services.Interop",
+            "IFocusScopeService" or "FocusScopeService" => "Shared.Services",
             "IPopoverService" or "PopoverService" => "Popover.Services",
             "PopoverInterop" => "Popover.Services",
             "IPopoverRegistry" or "PopoverRegistry" => "Popover.Services",

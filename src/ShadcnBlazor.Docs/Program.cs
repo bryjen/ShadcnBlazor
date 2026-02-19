@@ -31,7 +31,11 @@ builder.Services.AddScoped(sp => new PopoverInterop(
     PopoverInterop.DefaultModulePaths));
 builder.Services.AddScoped<IPopoverService, PopoverService>();
 
-// js
+// js interop + services
+builder.Services.AddScoped(sp => new FocusScopeInterop(
+    sp.GetRequiredService<IJSRuntime>(),
+    FocusScopeInterop.DefaultModulePaths));
+builder.Services.AddScoped<IFocusScopeService, FocusScopeService>();
 builder.Services.AddScoped(sp => new ScrollLockInterop(
     sp.GetRequiredService<IJSRuntime>(),
     ScrollLockInterop.DefaultModulePaths));
