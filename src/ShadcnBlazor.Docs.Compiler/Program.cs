@@ -81,6 +81,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         "ShadcnBlazor.Components.Avatar.Avatar",
         "ShadcnBlazor.Components.Badge.Badge",
         "ShadcnBlazor.Components.Button.Button",
+        "ShadcnBlazor.Components.ToggleButton.ToggleButton",
         "ShadcnBlazor.Components.Card.Card",
         "ShadcnBlazor.Components.Checkbox.Checkbox",
         "ShadcnBlazor.Components.Textarea.ComposableTextArea",

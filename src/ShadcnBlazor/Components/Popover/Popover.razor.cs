@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
+using ShadcnBlazor.Components.Shared.Models.Accessibility;
 
 namespace ShadcnBlazor.Components.Popover;
 
@@ -129,7 +130,20 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     [Parameter]
     public int Offset { get; set; }
 
+    /// <summary>
+    /// Value for aria-haspopup on the trigger. Use "menu" for dropdown menus, "listbox" for selects, "dialog" for dialogs.
+    /// </summary>
+    [Parameter]
+    public string AriaHasPopup { get; set; } = "dialog";
+
     private string AnchorId => $"anchor-{_popoverId}";
+
+    private PopoverTriggerContext _popoverTriggerContext => new()
+    {
+        Open = _visualOpen,
+        PopoverId = _popoverId,
+        AriaHasPopup = AriaHasPopup
+    };
 
     private string AnchorClassValue
     {

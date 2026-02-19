@@ -8,7 +8,8 @@
     data-disabled="@(Disabled ? "true" : "false")"
     disabled="@Disabled"
     class="@GetClass()"
-    @onclick="OnClick">
+    @onclick="OnClick"
+    @attributes="GetAttributes()">
     <span class="text-left">
         @ChildContent
     </span>
@@ -54,5 +55,23 @@
         var baseClasses = "flex w-full items-center justify-between py-4 text-sm font-medium transition-all hover:underline";
         var disabledClasses = Disabled ? "pointer-events-none opacity-50" : "";
         return MergeCss(baseClasses, disabledClasses, Class);
+    }
+
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        if (ItemContext is null)
+            return AdditionalAttributes;
+
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["id"] = ItemContext.TriggerId,
+            ["aria-expanded"] = IsOpen ? "true" : "false",
+            ["aria-controls"] = ItemContext.ContentId,
+            ["aria-disabled"] = Disabled ? "true" : "false"
+        };
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+        return merged;
     }
 }

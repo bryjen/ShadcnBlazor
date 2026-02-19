@@ -1,8 +1,7 @@
 @implements IDisposable
-@using Microsoft.JSInterop
 @using ShadcnBlazor.Components.Shared.Services
-@inject IJSRuntime JSRuntime
-@inject IScrollLockService ScrollLock
+@inject IDialogJsService DialogJs
+@inject ScrollLockService ScrollLock
 
 <CascadingValue Value="_context">
     @ChildContent
@@ -71,7 +70,7 @@
 
     public void Dispose()
     {
-        try { _ = JSRuntime.InvokeVoidAsync("ShadcnBlazor.Dialog.dispose", _dialogId); }
+        try { _ = DialogJs.DisposeDialogAsync(_dialogId); }
         catch { }
         _dotNetRef?.Dispose();
     }

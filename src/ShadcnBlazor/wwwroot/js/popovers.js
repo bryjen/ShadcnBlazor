@@ -2,8 +2,10 @@
  * Simplified popover positioning system
  * Features: basic positioning, auto-flip, width modes, list clamping, debouncing
  * Future: animations, nested popovers
+ * Exported as ES module for Blazor JS interop.
  */
-window.popoverHelper = {
+
+const popoverHelper = {
     containerClass: 'popover-provider',
     overflowPadding: 10,
     flipMargin: 0,
@@ -297,7 +299,8 @@ window.popoverHelper = {
 };
 
 class PopoverManager {
-    constructor() {
+    constructor(helper) {
+        this.helper = helper;
         this.popovers = new Map();
         this.observer = null;
         this.repositionDebounceMilliseconds = 25;
@@ -307,12 +310,12 @@ class PopoverManager {
     }
 
     bindWindowListeners() {
-        this.onResize = window.popoverHelper.debounce(() => {
-            window.popoverHelper.repositionAll();
+        this.onResize = this.helper.debounce(() => {
+            this.helper.repositionAll();
         }, this.repositionDebounceMilliseconds);
 
-        this.onScroll = window.popoverHelper.debounce(() => {
-            window.popoverHelper.repositionAll();
+        this.onScroll = this.helper.debounce(() => {
+            this.helper.repositionAll();
         }, this.repositionDebounceMilliseconds);
 
         window.addEventListener('resize', this.onResize, { passive: true });
@@ -350,10 +353,10 @@ class PopoverManager {
     }
 
     initialize(containerClass, flipMargin, overflowPadding, baseZIndex) {
-        window.popoverHelper.containerClass = containerClass;
-        window.popoverHelper.flipMargin = flipMargin;
-        window.popoverHelper.overflowPadding = overflowPadding;
-        window.popoverHelper.baseZIndex = baseZIndex;
+        this.helper.containerClass = containerClass;
+        this.helper.flipMargin = flipMargin;
+        this.helper.overflowPadding = overflowPadding;
+        this.helper.baseZIndex = baseZIndex;
 
         this.unbindWindowListeners();
         this.bindWindowListeners();
@@ -362,7 +365,7 @@ class PopoverManager {
     }
 
     observeProvider() {
-        const provider = document.querySelector('.' + window.popoverHelper.containerClass);
+        const provider = document.querySelector('.' + this.helper.containerClass);
         if (!provider) {
             console.error('Popover provider not found');
             return;
@@ -375,7 +378,7 @@ class PopoverManager {
                     if (target.classList.contains('popover-open')) {
                         const anchorId = target.getAttribute('data-anchor-id');
                         if (anchorId) {
-                            window.popoverHelper.placePopover(anchorId, target.id);
+                            this.helper.placePopover(anchorId, target.id);
                         }
                     }
                 }
@@ -396,7 +399,7 @@ class PopoverManager {
         if (popover) {
             popover.setAttribute('data-anchor-id', anchorId);
             if (popover.classList.contains('popover-open')) {
-                window.popoverHelper.placePopover(anchorId, popoverId);
+                this.helper.placePopover(anchorId, popoverId);
             }
         }
     }
@@ -459,4 +462,32 @@ class PopoverManager {
     }
 }
 
-window.popoverManager = new PopoverManager();
+const popoverManager = new PopoverManager(popoverHelper);
+
+export function initialize(containerClass, flipMargin, overflowPadding, baseZIndex) {
+    popoverManager.initialize(containerClass, flipMargin, overflowPadding, baseZIndex);
+}
+
+export function setRepositionDebounce(debounceMilliseconds) {
+    popoverManager.setRepositionDebounce(debounceMilliseconds);
+}
+
+export function connect(anchorId, popoverId) {
+    popoverManager.connect(anchorId, popoverId);
+}
+
+export function disconnect(popoverId) {
+    popoverManager.disconnect(popoverId);
+}
+
+export function enableOutsideClickClose(anchorId, popoverId, callbackReference) {
+    popoverManager.enableOutsideClickClose(anchorId, popoverId, callbackReference);
+}
+
+export function disableOutsideClickClose(popoverId) {
+    popoverManager.disableOutsideClickClose(popoverId);
+}
+
+export function dispose() {
+    popoverManager.dispose();
+}

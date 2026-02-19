@@ -1,0 +1,32 @@
+@page "/components/togglebutton"
+@using ShadcnBlazor.Docs.Pages.Components.ToggleButton.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.ToggleButton">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">A button that toggles between two visual states (on/off). Uses <code>Button</code> internally. Bind <code>IsToggled</code> for two-way state, or use <code>IsToggledChanged</code> for one-way updates. Set <code>VariantUntoggled</code> and <code>VariantToggled</code> for the two states.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ToggleButton_Examples_ToggleButtonBasicExample })">
+            <ToggleButtonBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Variants" Id="variants">
+            <p class="mb-3">Use <code>VariantUntoggled</code> and <code>VariantToggled</code> to control the appearance in each state.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ToggleButton_Examples_ToggleButtonVariantExample })">
+                <ToggleButtonVariantExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("ToggleButton");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add togglebutton",
+    };
+}

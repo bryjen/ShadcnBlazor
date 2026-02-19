@@ -18,8 +18,7 @@ Components/Core/Shared/
 Button/
 ├── Button.razor
 ├── ButtonGroup.razor
-├── ButtonShared.cs
-└── ToggleButton.razor
+└── ButtonShared.cs
 """;
     
     private const string ExamplePopoverComponentDirectoryAscii = 
@@ -33,7 +32,7 @@ Popover/
 ├── Services/
 │   ├── IPopoverRegistry.cs
 │   ├── IPopoverService.cs
-│   ├── PopoverJsInterop.cs
+│   ├── PopoverInterop.cs
 │   ├── PopoverRegistry.cs
 │   └── PopoverService.cs
 ├── Popover.razor

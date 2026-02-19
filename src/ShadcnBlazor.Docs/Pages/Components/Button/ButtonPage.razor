@@ -42,10 +42,24 @@
             </ComponentPreview>
         </DocsSubSection>
 
+        <DocsSubSection Title="Icon-only and accessibility" Id="icon-only-accessibility">
+            <p class="mb-3">For icon-only buttons, screen readers need an accessible name. Pass <code>aria-label</code> via <code>AdditionalAttributes</code>—we keep it attribute-only to avoid parameter bloat and stay consistent with HTML.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonIconOnlyExample })">
+                <ButtonIconOnlyExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
         <DocsSubSection Title="Spinner" Id="spinner">
-            <p class="mb-3">Render a spinner inside the button to show a loading state. Use <code>LuLoaderCircle</code> with <code>animate-spin</code> for a Tailwind-based spinner. Place it before the text for inline-start or after for inline-end.</p>
+            <p class="mb-3">Use <code>State="ButtonState.Loading"</code> for async actions. The button is disabled and gets <code>aria-busy="true"</code> so screen readers announce that it's processing. Render a spinner inside for visual feedback.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonSpinnerExample })">
                 <ButtonSpinnerExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p class="mb-3">Use <code>State="ButtonState.Disabled"</code> when the action is unavailable. Unlike Loading, this sets <code>aria-disabled="true"</code> (not <code>aria-busy</code>)—screen readers announce "disabled" rather than "busy", so users understand the control is inactive, not processing.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonDisabledExample })">
+                <ButtonDisabledExample />
             </ComponentPreview>
         </DocsSubSection>
 

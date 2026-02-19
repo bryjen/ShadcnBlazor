@@ -1,0 +1,25 @@
+@using ShadcnBlazor.Components.Form
+
+<div class="flex flex-col gap-4 w-full max-w-sm">
+    <FormValidationProvider Invalid="_showInvalid" ErrorMessageId="email-error">
+        <div class="flex flex-col gap-2">
+            <label for="email" class="text-sm font-medium">Email</label>
+            <Input id="email" @bind-Value="_email" Placeholder="you@example.com" />
+            <span id="email-error" class="text-sm text-destructive" aria-live="polite">
+                @(_showInvalid ? "Please enter a valid email address." : null)
+            </span>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <Button Type="ButtonType.Submit" OnClick="HandleSubmit">Submit</Button>
+            <Button Variant="Variant.Outline" OnClick="ToggleInvalid">Toggle invalid state</Button>
+        </div>
+    </FormValidationProvider>
+</div>
+
+@code {
+    private string _email = "";
+    private bool _showInvalid;
+
+    private void HandleSubmit() => _showInvalid = string.IsNullOrWhiteSpace(_email) || !_email.Contains('@');
+    private void ToggleInvalid() => _showInvalid = !_showInvalid;
+}

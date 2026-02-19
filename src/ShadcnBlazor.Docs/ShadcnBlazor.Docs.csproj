@@ -7,6 +7,10 @@
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Content Include="**/*.razor.js" />
+    </ItemGroup>
+
     <!-- Run docs compiler before build (build ShadcnBlazor and compiler first, then run) -->
     <Target Name="GenerateDocs" BeforeTargets="BeforeBuild" DependsOnTargets="ResolveProjectReferences" Condition="'$(DesignTimeBuild)' != 'true'">
         <Message Text="Generating Docs (API + Snippets)" Importance="high" />

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Models.Accessibility;
 using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Input;
@@ -50,6 +51,28 @@ public partial class Input : ShadcnComponentBase
     /// </summary>
     [Parameter]
     public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    [CascadingParameter]
+    private FormValidationContext? FormValidationContext { get; set; }
+
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        if (FormValidationContext is null)
+            return AdditionalAttributes;
+
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["aria-invalid"] = FormValidationContext.Invalid
+        };
+        if (!string.IsNullOrEmpty(FormValidationContext.ErrorMessageId))
+            merged["aria-errormessage"] = FormValidationContext.ErrorMessageId;
+
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+
+        return merged;
+    }
 
     private string GetClass()
     {
