@@ -3,24 +3,19 @@ using GaelJ.BlazorCodeMirror6;
 using GaelJ.BlazorCodeMirror6.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using ShadcnBlazor.Components.Select;
-using ShadcnBlazor.Docs.Services;
 
 namespace ShadcnBlazor.Docs.Pages.Customize.Tabs;
 
-public partial class CodeTab : ComponentBase
+public partial class CodeTab : ComponentBase, IAsyncDisposable
 {
     [Inject]
-    public required ThemeService ThemeService { get; set; }
-    
-    [Inject]
     public required IJSRuntime JsRuntime { get; set; }
-    
+
     private const double EditorLineHeightPx = 19.8;
 
     private CodeMirror6Wrapper? _editorRef;
     private ElementReference _editorHost;
-    private DotNetObjectReference<Customize>? _selfRef;
+    private DotNetObjectReference<CodeTab>? _selfRef;
     private long? _scrollObserverId;
 
     private double _editorScrollTop;
@@ -36,15 +31,6 @@ public partial class CodeTab : ComponentBase
 
     protected override void OnInitialized()
     {
-        _themePresetOptions = ThemeService.Themes
-            .Select(preset => new SelectOption<ThemePreset>(preset, preset.Name))
-            .ToArray();
-
-        _selectedThemePreset = _themePresetOptions
-            .FirstOrDefault(option => option.Value.Name == "Default").Value
-            ?? _themePresetOptions.FirstOrDefault().Value;
-
-        SyncSelectedColorFromCurrentTheme();
         RebuildLineMarkers(_editorText);
     }
 
@@ -129,68 +115,8 @@ public partial class CodeTab : ComponentBase
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     public record ColorLineMarker(int LineNumber, string Token);
-    public record ColorOption(string Name, string Hex);
 
-    private readonly SelectOption<ColorOption>[] _colorOptions =
-    [
-        new (new ("Neutral", "#737373"), "Neutral"),
-        new (new ("Amber", "#F59E0B"), "Amber"),
-        new (new ("Blue", "#3B82F6"), "Blue"),
-        new (new ("Cyan", "#06B6D4"), "Cyan"),
-        new (new ("Emerald", "#10B981"), "Emerald"),
-        new (new ("Fuchsia", "#D946EF"), "Fuchsia"),
-        new (new ("Green", "#22C55E"), "Green"),
-        new (new ("Indigo", "#6366F1"), "Indigo"),
-        new (new ("Lime", "#84CC16"), "Lime"),
-        new (new ("Orange", "#F97316"), "Orange"),
-        new (new ("Pink", "#EC4899"), "Pink"),
-        new (new ("Purple", "#A855F7"), "Purple"),
-        new (new ("Red", "#EF4444"), "Red"),
-        new (new ("Rose", "#F43F5E"), "Rose"),
-        new (new ("Sky", "#0EA5E9"), "Sky"),
-        new (new ("Teal", "#14B8A6"), "Teal"),
-        new (new ("Violet", "#8B5CF6"), "Violet"),
-        new (new ("Yellow", "#EAB308"), "Yellow")
-    ];
-
-    private SelectOption<ThemePreset>[] _themePresetOptions = [];
-    private ThemePreset? _selectedThemePreset;
-    private ColorOption? _selectedColor;
-
-    private string CurrentPrimaryValue => _selectedColor?.Hex ?? ThemeService.CurrentTheme.Primary;
-    
-    private async Task OnThemePresetChanged(ThemePreset? option)
-    {
-        _selectedThemePreset = option;
-        if (_selectedThemePreset is null)
-        {
-            return;
-        }
-
-        await ThemeService.ApplyPresetAsync(_selectedThemePreset);
-        SyncSelectedColorFromCurrentTheme();
-    }
-
-    private async Task OnColorChanged(ColorOption? option)
-    {
-        _selectedColor = option;
-        if (_selectedColor is null)
-        {
-            return;
-        }
-
-        await ThemeService.SetPrimaryAsync(_selectedColor.Hex);
-    }
-
-    private void SyncSelectedColorFromCurrentTheme()
-    {
-        var currentPrimary = ThemeService.CurrentTheme.Primary;
-        _selectedColor = _colorOptions
-            .Select(color => color.Value)
-            .FirstOrDefault(color => string.Equals(color.Hex, currentPrimary, StringComparison.OrdinalIgnoreCase));
-    }
-    
-    private string _editorText = 
+    private string _editorText =
 """
 :root {
     --radius: 0.65rem;

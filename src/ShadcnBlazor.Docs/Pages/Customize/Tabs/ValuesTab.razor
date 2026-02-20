@@ -1,0 +1,34 @@
+<div class="h-full overflow-y-auto scrollbar-hide pr-1">
+    <div class="rounded-lg border border-border bg-card overflow-hidden">
+        @for (var sectionIndex = 0; sectionIndex < Sections.Count; sectionIndex++)
+        {
+            var sectionIdx = sectionIndex;
+            var group = Sections[sectionIdx];
+
+            <section class="@(sectionIdx == 0 ? "" : "border-t border-border")" @key="group.Title">
+                <header class="px-3 py-2.5 border-b border-border/70 bg-muted/20">
+                    <h3 class="text-sm font-semibold text-card-foreground">@group.Title</h3>
+                </header>
+
+                <div class="p-3 grid grid-cols-2 gap-3">
+                    @for (var fieldIndex = 0; fieldIndex < group.Fields.Count; fieldIndex++)
+                    {
+                        var fieldIdx = fieldIndex;
+                        var field = group.Fields[fieldIdx];
+                        var isValid = IsValidCssColor(field.Value);
+
+                        <div class="space-y-1" @key="field.Label">
+                            <label class="text-[11px] font-medium text-foreground">@field.Label</label>
+                            <div class="grid grid-cols-[1.75rem_1fr] gap-2 items-center">
+                                <div class="h-7 w-7 rounded-md border border-border" style="@GetSwatchStyle(field.Value, isValid)"></div>
+                                <input class="h-9 w-full rounded-md border px-3 text-sm bg-background text-foreground outline-none transition-colors @(isValid ? "border-input" : "border-red-500")"
+                                       value="@field.Value"
+                                       @oninput="@(e => UpdateFieldValue(sectionIdx, fieldIdx, e.Value?.ToString() ?? string.Empty))" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+</div>

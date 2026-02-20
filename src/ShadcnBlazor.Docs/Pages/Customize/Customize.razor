@@ -1,9 +1,7 @@
 @page "/customize"
 @layout NoNavMenuLayout
 @inject ThemeService ThemeService
-@inject IJSRuntime JsRuntime
 @using ShadcnBlazor.Docs.Pages.Customize.Tabs
-@implements IAsyncDisposable
 
 <div class="p-4 h-full min-h-0 w-full flex gap-4">
     <div class="border-2 border-border flex-1 min-h-0 p-4 rounded-lg">
@@ -15,9 +13,9 @@
             </div>
         </div>
     </div>
-    
+
     <div id="customization-panel" class="w-[30vw] flex flex-col gap-4">
-        <div id="customization-tabs">
+        <div id="customization-tabs" class="flex gap-2">
             <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
                           IsToggled="@(_selectedTab == Tab.Code)" OnClick="@(_ => _selectedTab = Tab.Code)">
                 <LuCode class="size-3 font-bold"/>
@@ -34,69 +32,21 @@
                 Presets
             </ToggleButton>
         </div>
-        
+
         <div class="w-full h-full overflow-y-auto scrollbar-hide rounded-lg">
-            <CodeTab />
+            @if (_selectedTab == Tab.Code)
+            {
+                <CodeTab />
+            }
+            else if (_selectedTab == Tab.Values)
+            {
+                <ValuesTab />
+            }
+            else
+            {
+                <PresetsTab />
+            }
         </div>
     </div>
-    
-    @*
-    <div class="w-[16rem] p-4 rounded-2xl space-y-6">
-        <div class="space-y-2">
-            <label class="text-xs text-muted-foreground">Theme Preset</label>
-            <Select T="ThemePreset"
-                    Value="@_selectedThemePreset"
-                    ValueChanged="OnThemePresetChanged"
-                    Label="Theme Preset"
-                    Items="@_themePresetOptions"
-                    RenderItem="@RenderThemePresetItem"
-                    Placeholder="Select a theme"></Select>
-        </div>
-
-        <div class="space-y-2">
-            <label class="text-xs text-muted-foreground">Color</label>
-            <Select T="ColorOption"
-                    Value="@_selectedColor"
-                    ValueChanged="OnColorChanged"
-                    Label="Color"
-                    Items="@_colorOptions"
-                    RenderItem="@RenderColorItem"
-                    Placeholder="Select a color"></Select>
-        </div>
-    </div>
-    *@
 </div>
-
-@code {
-    private RenderFragment RenderCodePanel => __builder =>
-    {
-    };
-    
-    private RenderFragment<SelectOption<ColorOption>> RenderColorItem => item => __builder =>
-    {
-        <span>@item.DisplayText</span>
-    };
-
-    private RenderFragment<SelectOption<ThemePreset>> RenderThemePresetItem => item => __builder =>
-    {
-        <div class="flex items-center gap-3 py-1">
-            <div class="flex items-center gap-1">
-                @foreach (var swatch in item.Value.Swatches)
-                {
-                    <span class="inline-block size-3 rounded-sm" style="background-color:@swatch"></span>
-                }
-            </div>
-            <span class="font-medium">@item.DisplayText</span>
-        </div>
-    };
-}
-
-
-
-
-
-
-
-
-
 
