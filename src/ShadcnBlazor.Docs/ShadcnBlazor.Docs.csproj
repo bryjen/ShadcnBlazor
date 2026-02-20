@@ -40,6 +40,7 @@
     
     <ItemGroup>
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
+        <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
         <PackageReference Include="Markdig" Version="0.45.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" PrivateAssets="all" />
