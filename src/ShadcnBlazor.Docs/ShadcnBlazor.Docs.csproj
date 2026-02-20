@@ -47,7 +47,9 @@
     </ItemGroup>
     
     <ItemGroup>
+        <Folder Include="Components\Customize\" />
         <Folder Include="Components\Samples\MarkdownEditor\Services\" />
+        <Folder Include="Services\Interop\" />
     </ItemGroup>
     
     <ItemGroup>

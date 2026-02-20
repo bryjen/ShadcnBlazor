@@ -1,0 +1,82 @@
+@page "/customize"
+@layout NoNavMenuLayout
+@using ShadcnBlazor.Docs.Services
+@inject ThemeService ThemeService
+
+<div class="p-4 h-full w-full flex gap-4">
+    <div class="border-2 border-border flex-1 p-4 rounded-lg">
+        <div class="max-w-md rounded-xl border border-border bg-card p-4 space-y-3">
+            <div class="text-sm font-medium text-card-foreground">Primary Preview</div>
+            <div class="flex items-center gap-3">
+                <div class="size-8 rounded-md border border-border" style="background-color: @CurrentPrimaryValue;"></div>
+                <div class="text-sm text-muted-foreground">@CurrentPrimaryValue</div>
+            </div>
+        </div>
+    </div>
+    <div class="w-[12.5vw] p-4 rounded-2xl">
+        <div class="space-y-2">
+            <label class="text-xs text-muted-foreground">Color</label>
+            <Select T="ColorOption"
+                    Value="@_selectedColor"
+                    ValueChanged="OnColorChanged"
+                    Label="Color"
+                    Items="@_colorOptions"
+                    RenderItem="@RenderItem"
+                    Placeholder="Select a color"></Select>
+        </div>
+    </div>
+</div>
+
+@code {
+    public record ColorOption(string Name, string Hex);
+
+    private readonly SelectOption<ColorOption>[] _colorOptions =
+    [
+        new (new ("Neutral", "#737373"), "Neutral"),
+        new (new ("Amber", "#F59E0B"), "Amber"),
+        new (new ("Blue", "#3B82F6"), "Blue"),
+        new (new ("Cyan", "#06B6D4"), "Cyan"),
+        new (new ("Emerald", "#10B981"), "Emerald"),
+        new (new ("Fuchsia", "#D946EF"), "Fuchsia"),
+        new (new ("Green", "#22C55E"), "Green"),
+        new (new ("Indigo", "#6366F1"), "Indigo"),
+        new (new ("Lime", "#84CC16"), "Lime"),
+        new (new ("Orange", "#F97316"), "Orange"),
+        new (new ("Pink", "#EC4899"), "Pink"),
+        new (new ("Purple", "#A855F7"), "Purple"),
+        new (new ("Red", "#EF4444"), "Red"),
+        new (new ("Rose", "#F43F5E"), "Rose"),
+        new (new ("Sky", "#0EA5E9"), "Sky"),
+        new (new ("Teal", "#14B8A6"), "Teal"),
+        new (new ("Violet", "#8B5CF6"), "Violet"),
+        new (new ("Yellow", "#EAB308"), "Yellow")
+    ];
+
+    private ColorOption? _selectedColor;
+
+    private string CurrentPrimaryValue => _selectedColor?.Hex ?? ThemeService.CurrentTheme.Primary;
+
+    private RenderFragment<SelectOption<ColorOption>> RenderItem => item => __builder =>
+    {
+        <span>@item.DisplayText</span>
+    };
+
+    protected override void OnInitialized()
+    {
+        var currentPrimary = ThemeService.CurrentTheme.Primary;
+        _selectedColor = _colorOptions
+            .Select(option => option.Value)
+            .FirstOrDefault(option => string.Equals(option.Hex, currentPrimary, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private async Task OnColorChanged(ColorOption? option)
+    {
+        _selectedColor = option;
+        if (_selectedColor is null)
+        {
+            return;
+        }
+
+        await ThemeService.SetPrimaryAsync(_selectedColor.Hex);
+    }
+}

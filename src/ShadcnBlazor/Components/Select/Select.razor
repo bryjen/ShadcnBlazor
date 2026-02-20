@@ -10,6 +10,7 @@
 <Popover Open="@_open"
          OpenChanged="HandleOpenChanged"
          CloseOnOutsideClick="true"
+         LockScroll="@LockScroll"
          AnchorOrigin="PopoverPlacement.BottomLeft"
          TransformOrigin="PopoverPlacement.TopLeft"
          WidthMode="@(PopoverFitContent ? PopoverWidthMode.Adaptive : PopoverWidthMode.Relative)"
@@ -23,11 +24,14 @@
                 aria-controls="@_listboxId"
                 aria-activedescendant="@GetActiveDescendant()"
                 aria-disabled="@Disabled"
+                aria-label="@GetAriaLabel()"
                 data-size="@Size.ToString().ToLower()"
                 class="@GetTriggerClass()"
                 disabled="@Disabled"
                 @onclick="ToggleOpen"
                 @onkeydown="HandleTriggerKeyDown"
+                @onkeydown:preventDefault="true"
+                @onkeydown:stopPropagation="true"
                 @attributes="AdditionalAttributes">
             <span class="truncate">@GetDisplayText()</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="@(_open ? "rotate-180" : "") transition-transform duration-200">
@@ -60,16 +64,22 @@
                             tabindex="-1"
                             aria-selected="@isSelected"
                             class="@GetOptionClass(isSelected, isActive)"
-                            @onpointerdown="() => SelectOptionAtIndexAsync(optionIndex)"
-                            @onpointerdown:preventDefault="true"
-                            @onpointerdown:stopPropagation="true">
-                        @if (isSelected)
+                            @onclick="() => SelectOptionAtIndexAsync(optionIndex)"
+                            @onclick:stopPropagation="true">
+                        @if (RenderItem is not null)
                         {
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
+                            @RenderItem(item)
                         }
-                        <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@item.DisplayText</span>
+                        else
+                        {
+                            @if (isSelected)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            }
+                            <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@item.DisplayText</span>
+                        }
                     </button>
                 }
             </div>
@@ -78,23 +88,37 @@
 </Popover>
 
 @code {
-    [Parameter] public string? Label { get; set; }
-    [Parameter] public T? Value { get; set; }
-    [Parameter] public EventCallback<T?> ValueChanged { get; set; }
-    [Parameter, EditorRequired] public required IEnumerable<SelectOption<T>> Items { get; set; }
-    [Parameter] public string Placeholder { get; set; } = "Select...";
-    [Parameter] public Size Size { get; set; } = Size.Md;
+    [Parameter] 
+    public string? Label { get; set; }
+    [Parameter] 
+    public T? Value { get; set; }
+    [Parameter] 
+    public EventCallback<T?> ValueChanged { get; set; }
+    [Parameter, EditorRequired] 
+    public required IEnumerable<SelectOption<T>> Items { get; set; }
+    [Parameter] 
+    public string Placeholder { get; set; } = "Select...";
+    [Parameter] 
+    public Size Size { get; set; } = Size.Md;
+    
     /// <summary>
     /// When true, the popover expands to fit the width of its option content instead of matching the trigger width.
     /// </summary>
-    [Parameter] public bool PopoverFitContent { get; set; }
-    [Parameter] public bool Disabled { get; set; }
-    [Parameter] public string TriggerClass { get; set; } = string.Empty;
+    [Parameter] 
+    public bool PopoverFitContent { get; set; }
+    [Parameter] 
+    public bool LockScroll { get; set; } = true;
+    [Parameter] 
+    public bool Disabled { get; set; }
+    [Parameter] 
+    public string TriggerClass { get; set; } = string.Empty;
+
+    [Parameter] 
+    public RenderFragment<SelectOption<T>>? RenderItem { get; set; } = null;
 
     private readonly string _triggerId = $"select-trigger-{Guid.NewGuid():N}";
     private readonly string _listboxId = $"select-listbox-{Guid.NewGuid():N}";
     private bool _open;
-    private bool _suppressNextToggle;
     private int? _activeIndex;
     private string? _pendingScrollOptionId;
     private IJSObjectReference? _module;
@@ -108,7 +132,7 @@
 
     private string GetTriggerClass()
     {
-        var baseClasses = "flex w-full items-center justify-between gap-2 rounded-md border border-input bg-input/30 shadow-xs transition-colors hover:bg-input/50 focus-visible:outline-none focus-visible:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0";
+        var baseClasses = "flex w-full items-center justify-between gap-2 rounded-md border border-input bg-input/30 shadow-xs transition-colors hover:bg-input/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0";
         var sizeClasses = Size switch
         {
             Size.Sm => "h-6 px-1.75 py-0.75 text-[0.6rem]",
@@ -124,8 +148,16 @@
         var selectedClasses = isSelected
             ? "bg-primary text-primary-foreground"
             : "hover:bg-accent hover:text-accent-foreground";
-        var activeClasses = isActive ? "brightness-110" : string.Empty;
-        return MergeCss(selectedClasses, activeClasses, "flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none focus-visible:outline-none focus-visible:brightness-110 transition-colors");
+        var activeClasses = isActive ? "" : string.Empty;
+        return MergeCss(selectedClasses, activeClasses, "flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none focus-visible:outline-none transition-colors");
+    }
+
+    private string GetAriaLabel()
+    {
+        if (!string.IsNullOrWhiteSpace(Label))
+            return Label;
+
+        return Placeholder;
     }
 
     private string GetDisplayText()
@@ -205,12 +237,6 @@
         if (Disabled)
             return Task.CompletedTask;
 
-        if (_suppressNextToggle)
-        {
-            _suppressNextToggle = false;
-            return Task.CompletedTask;
-        }
-
         _open = !_open;
         if (_open)
         {
@@ -232,6 +258,7 @@
         switch (e.Key)
         {
             case "ArrowDown":
+            case "Down":
                 if (!_open)
                 {
                     _open = true;
@@ -244,6 +271,7 @@
                 }
                 break;
             case "ArrowUp":
+            case "Up":
                 if (!_open)
                 {
                     _open = true;
@@ -278,6 +306,7 @@
                 }
                 break;
             case "Escape":
+            case "Esc":
                 _open = false;
                 break;
             case "Tab":
@@ -295,7 +324,6 @@
         Value = options[index].Value;
         SetActiveIndex(index);
         await ValueChanged.InvokeAsync(Value);
-        _suppressNextToggle = true;
         _open = false;
     }
 
@@ -331,7 +359,6 @@
         }
     }
 }
-
 
 
 
