@@ -18,15 +18,17 @@
 
             <div class="docs-codeblock-codemirror rounded-lg overflow-hidden">
                 <CodeMirror6Wrapper
+                    @ref="_editorRef"
                     Doc="@_editorText"
                     DocChanged="OnEditorChanged"
                     Language="CodeMirrorLanguage.Css"
                     Height="320px"
                     Theme="@ThemeMirrorTheme.TokyoNight"
-                    LineWrapping="@false"
-                    AllowVerticalResize="@false"
-                    AllowHorizontalResize="@false"
-                    Setup="@_editorSetup" />
+                    LineWrapping="false"
+                    AllowVerticalResize="false"
+                    AllowHorizontalResize="false"
+                    Setup="@_editorSetup"
+                    Selection="@_topSelection" />
             </div>
 
             <div class="flex flex-wrap items-center gap-2 pt-1">
@@ -51,11 +53,18 @@
     [Inject]
     public required NavigationManager NavigationManager { get; set; }
 
+    private CodeMirror6Wrapper? _editorRef;
+
     private readonly CodeMirrorSetup _editorSetup = new()
     {
         ScrollToStart = true,
         FocusOnCreation = true
     };
+
+    private readonly List<SelectionRange> _topSelection =
+    [
+        new SelectionRange { From = 0, To = 0 }
+    ];
 
     private string _editorText = @"/* CSS example */
 :root {
@@ -88,6 +97,17 @@
         NavigationManager.NavigateTo("/");
 #endif
         base.OnParametersSet();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _editorRef?.CommandDispatcher is null)
+        {
+            return;
+        }
+
+        await _editorRef.CommandDispatcher.Dispatch(CodeMirrorSimpleCommand.Focus);
+        await _editorRef.CommandDispatcher.Dispatch(CodeMirrorSimpleCommand.ScrollIntoView);
     }
 
     private Task OnEditorChanged(string value)

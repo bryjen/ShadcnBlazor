@@ -1,10 +1,11 @@
 @page "/customize"
 @layout NoNavMenuLayout
+@using System.Text.RegularExpressions
 @using ShadcnBlazor.Docs.Services
 @inject ThemeService ThemeService
 
-<div class="p-4 h-full w-full flex gap-4">
-    <div class="border-2 border-border flex-1 p-4 rounded-lg">
+<div class="p-4 h-full min-h-0 w-full flex gap-4">
+    <div class="border-2 border-border flex-1 min-h-0 p-4 rounded-lg">
         <div class="max-w-md rounded-xl border border-border bg-card p-4 space-y-3">
             <div class="text-sm font-medium text-card-foreground">Primary Preview</div>
             <div class="flex items-center gap-3">
@@ -13,6 +14,24 @@
             </div>
         </div>
     </div>
+    
+    
+    <div class="docs-codeblock-codemirror rounded-lg overflow-hidden w-[30vw] shrink-0 overflow-y-scroll scrollbar-hide">
+        <CodeMirror6Wrapper
+            @ref="_editorRef"
+            Doc="@_editorText"
+            DocChanged="OnEditorChanged"
+            Language="CodeMirrorLanguage.Css"
+            Height="100vh"
+            Theme="@ThemeMirrorTheme.OneDark"
+            LineWrapping="false"
+            AllowVerticalResize="false"
+            AllowHorizontalResize="false"
+            Setup="@_editorSetup"
+            Selection="@_topSelection" />
+    </div>
+    
+    @*
     <div class="w-[16rem] p-4 rounded-2xl space-y-6">
         <div class="space-y-2">
             <label class="text-xs text-muted-foreground">Theme Preset</label>
@@ -36,9 +55,39 @@
                     Placeholder="Select a color"></Select>
         </div>
     </div>
+*@
 </div>
 
 @code {
+    private CodeMirror6Wrapper? _editorRef;
+    private Task OnEditorChanged(string value)
+    {
+        _editorText = value;
+        return Task.CompletedTask;
+    }
+    private readonly CodeMirrorSetup _editorSetup = new()
+    {
+        ScrollToStart = true,
+        FocusOnCreation = true,
+    };
+
+    private readonly List<SelectionRange> _topSelection =
+    [
+        new SelectionRange { From = 0, To = 0 }
+    ];
+    
+    private static readonly Regex ColorTokenRegex = new(
+        """#(?:[0-9a-fA-F]{3,8})\b|(?:oklch|oklab|lch|lab|hsl|hsla|rgb|rgba|hwb|color)\([^\n\r;{}]+\)""",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    private IReadOnlyList<string> ExtractedColors =>
+        ColorTokenRegex.Matches(_editorText)
+            .Select(match => match.Value.Trim())
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Take(24)
+            .ToArray();
+    
     public record ColorOption(string Name, string Hex);
 
     private readonly SelectOption<ColorOption>[] _colorOptions =
@@ -131,3 +180,5 @@
             .FirstOrDefault(color => string.Equals(color.Hex, currentPrimary, StringComparison.OrdinalIgnoreCase));
     }
 }
+
+

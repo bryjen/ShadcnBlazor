@@ -304,8 +304,7 @@
 .docs-codeblock-codemirror .cm-gutters {
     background: color-mix(in oklab, var(--card) 92%, black 8%) !important;
     border-right: 1px solid hsl(var(--border));
-    color: hsl(var(--muted-foreground) / 0.5);
-}
+    color: hsl(var(--muted-foreground) / 0.5);`n}
 .docs-codeblock-codemirror .cm-activeLineGutter {
     background: color-mix(in oklab, var(--card) 85%, black 15%);
     color: hsl(var(--muted-foreground));
@@ -429,3 +428,6 @@
     width: 0;
     height: 0;
 }
+
+
+
