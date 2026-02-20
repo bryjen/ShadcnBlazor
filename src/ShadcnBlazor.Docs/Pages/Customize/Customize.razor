@@ -13,7 +13,18 @@
             </div>
         </div>
     </div>
-    <div class="w-[12.5vw] p-4 rounded-2xl">
+    <div class="w-[16rem] p-4 rounded-2xl space-y-6">
+        <div class="space-y-2">
+            <label class="text-xs text-muted-foreground">Theme Preset</label>
+            <Select T="ThemePreset"
+                    Value="@_selectedThemePreset"
+                    ValueChanged="OnThemePresetChanged"
+                    Label="Theme Preset"
+                    Items="@_themePresetOptions"
+                    RenderItem="@RenderThemePresetItem"
+                    Placeholder="Select a theme"></Select>
+        </div>
+
         <div class="space-y-2">
             <label class="text-xs text-muted-foreground">Color</label>
             <Select T="ColorOption"
@@ -21,7 +32,7 @@
                     ValueChanged="OnColorChanged"
                     Label="Color"
                     Items="@_colorOptions"
-                    RenderItem="@RenderItem"
+                    RenderItem="@RenderColorItem"
                     Placeholder="Select a color"></Select>
         </div>
     </div>
@@ -52,21 +63,53 @@
         new (new ("Yellow", "#EAB308"), "Yellow")
     ];
 
+    private SelectOption<ThemePreset>[] _themePresetOptions = [];
+    private ThemePreset? _selectedThemePreset;
     private ColorOption? _selectedColor;
 
     private string CurrentPrimaryValue => _selectedColor?.Hex ?? ThemeService.CurrentTheme.Primary;
 
-    private RenderFragment<SelectOption<ColorOption>> RenderItem => item => __builder =>
+    private RenderFragment<SelectOption<ColorOption>> RenderColorItem => item => __builder =>
     {
         <span>@item.DisplayText</span>
     };
 
+    private RenderFragment<SelectOption<ThemePreset>> RenderThemePresetItem => item => __builder =>
+    {
+        <div class="flex items-center gap-3 py-1">
+            <div class="flex items-center gap-1">
+                @foreach (var swatch in item.Value.Swatches)
+                {
+                    <span class="inline-block size-3 rounded-sm" style="background-color:@swatch"></span>
+                }
+            </div>
+            <span class="font-medium">@item.DisplayText</span>
+        </div>
+    };
+
     protected override void OnInitialized()
     {
-        var currentPrimary = ThemeService.CurrentTheme.Primary;
-        _selectedColor = _colorOptions
-            .Select(option => option.Value)
-            .FirstOrDefault(option => string.Equals(option.Hex, currentPrimary, StringComparison.OrdinalIgnoreCase));
+        _themePresetOptions = ThemeService.Themes
+            .Select(preset => new SelectOption<ThemePreset>(preset, preset.Name))
+            .ToArray();
+
+        _selectedThemePreset = _themePresetOptions
+            .FirstOrDefault(option => option.Value.Name == "Default").Value
+            ?? _themePresetOptions.FirstOrDefault().Value;
+
+        SyncSelectedColorFromCurrentTheme();
+    }
+
+    private async Task OnThemePresetChanged(ThemePreset? option)
+    {
+        _selectedThemePreset = option;
+        if (_selectedThemePreset is null)
+        {
+            return;
+        }
+
+        await ThemeService.ApplyPresetAsync(_selectedThemePreset);
+        SyncSelectedColorFromCurrentTheme();
     }
 
     private async Task OnColorChanged(ColorOption? option)
@@ -78,5 +121,13 @@
         }
 
         await ThemeService.SetPrimaryAsync(_selectedColor.Hex);
+    }
+
+    private void SyncSelectedColorFromCurrentTheme()
+    {
+        var currentPrimary = ThemeService.CurrentTheme.Primary;
+        _selectedColor = _colorOptions
+            .Select(color => color.Value)
+            .FirstOrDefault(color => string.Equals(color.Hex, currentPrimary, StringComparison.OrdinalIgnoreCase));
     }
 }
