@@ -6,4 +6,10 @@ namespace ShadcnBlazor.Docs.Services;
 /// <param name="Name">Preset display name.</param>
 /// <param name="Swatches">Preview swatches shown in the UI.</param>
 /// <param name="Theme">Theme token values for the preset.</param>
-public sealed record ThemePreset(string Name, string[] Swatches, ThemeState Theme);
+public sealed record ThemePreset(string Name, string[] Swatches, ThemeStateFull Theme)
+{
+    public ThemePreset(string Name, string[] Swatches, ThemeState darkTheme)
+        : this(Name, Swatches, ThemeStateFull.FromDark(darkTheme))
+    {
+    }
+}

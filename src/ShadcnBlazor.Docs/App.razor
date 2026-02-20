@@ -1,3 +1,8 @@
+@inject ShadcnBlazor.Docs.Services.ThemeService ThemeService
+@implements IDisposable
+
+<style id="shadcn-runtime-theme">@ThemeService.RuntimeStyleSheet</style>
+
 <PopoverProvider RepositionDebounceMilliseconds="1" />
 <DialogProvider />
 <SheetProvider />
@@ -11,3 +16,20 @@
         <NotFound />
     </NotFound>
 </Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ThemeService.ThemeChanged += OnThemeChanged;
+    }
+
+    private void OnThemeChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        ThemeService.ThemeChanged -= OnThemeChanged;
+    }
+}

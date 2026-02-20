@@ -71,8 +71,8 @@
             {
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
                 var classes = tag switch {
-                    ComponentDefinition.Tag.Alpha => "bg-cyan-800",
-                    ComponentDefinition.Tag.Beta => "bg-sky-700",
+                    ComponentDefinition.Tag.Alpha => "bg-secondary/25",
+                    ComponentDefinition.Tag.Beta => "bg-primary/25",
                 };
                 <Badge Size="@Size.Sm" Class="@(MergeCss(classes))">
                     @(tag.ToString().ToLower())

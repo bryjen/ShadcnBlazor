@@ -17,13 +17,13 @@
                         var field = group.Fields[fieldIdx];
                         var isValid = IsValidCssColor(field.Value);
 
-                        <div class="space-y-1" @key="field.Label">
+                        <div class="space-y-1" @key="field.CssVarName">
                             <label class="text-[11px] font-medium text-foreground">@field.Label</label>
                             <div class="grid grid-cols-[1.75rem_1fr] gap-2 items-center">
                                 <div class="h-7 w-7 rounded-md border border-border" style="@GetSwatchStyle(field.Value, isValid)"></div>
                                 <input class="h-9 w-full rounded-md border px-3 text-sm bg-background text-foreground outline-none transition-colors @(isValid ? "border-input" : "border-red-500")"
                                        value="@field.Value"
-                                       @oninput="@(e => UpdateFieldValue(sectionIdx, fieldIdx, e.Value?.ToString() ?? string.Empty))" />
+                                       @oninput="@(async e => await UpdateFieldValueAsync(field.CssVarName, e.Value?.ToString() ?? string.Empty))" />
                             </div>
                         </div>
                     }
@@ -32,3 +32,4 @@
         }
     </div>
 </div>
+

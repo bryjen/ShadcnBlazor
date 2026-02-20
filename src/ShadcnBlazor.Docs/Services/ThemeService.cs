@@ -1,23 +1,18 @@
-using ShadcnBlazor.Docs.Services.Interop;
-
 namespace ShadcnBlazor.Docs.Services;
 
 /// <summary>
-/// Theme service that manages the current theme state and applies updates via JS interop.
+/// Theme service that manages the current theme state and exposes runtime stylesheet output.
 /// </summary>
 public sealed class ThemeService
 {
-    private readonly ThemeInterop _themeInterop;
     private readonly List<ThemePreset> _themes;
 
     /// <summary>
     /// Creates a new <see cref="ThemeService"/> instance.
     /// </summary>
-    /// <param name="themeInterop">The theme JavaScript interop.</param>
-    public ThemeService(ThemeInterop themeInterop)
+    public ThemeService()
     {
-        _themeInterop = themeInterop;
-        CurrentTheme = new ThemeState();
+        CurrentTheme = CreateDefaultTheme();
 
         _themes =
         [
@@ -32,7 +27,17 @@ public sealed class ThemeService
     /// <summary>
     /// Gets the current theme state.
     /// </summary>
-    public ThemeState CurrentTheme { get; private set; }
+    public ThemeStateFull CurrentTheme { get; private set; }
+
+    /// <summary>
+    /// Gets the current runtime stylesheet text injected by <c>App.razor</c>.
+    /// </summary>
+    public string RuntimeStyleSheet => ThemeStateFullConverter.ToStyleSheet(CurrentTheme);
+
+    /// <summary>
+    /// Raised when theme state changes and the app should re-render the runtime style block.
+    /// </summary>
+    public event Action? ThemeChanged;
 
     /// <summary>
     /// Gets the available themes.
@@ -49,10 +54,11 @@ public sealed class ThemeService
     /// </summary>
     /// <param name="theme">Theme state to apply.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    public async Task SaveThemeAsync(ThemeState theme, CancellationToken cancellationToken = default)
+    public Task SaveThemeAsync(ThemeStateFull theme, CancellationToken cancellationToken = default)
     {
         CurrentTheme = theme.Clone();
-        await _themeInterop.SetVarsAsync(CurrentTheme.ToCssVarMap(), cancellationToken);
+        ThemeChanged?.Invoke();
+        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -70,18 +76,64 @@ public sealed class ThemeService
     /// </summary>
     /// <param name="value">CSS color value.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    public async Task SetPrimaryAsync(string value, CancellationToken cancellationToken = default)
+    public Task SetPrimaryAsync(string value, CancellationToken cancellationToken = default)
     {
-        CurrentTheme.Primary = value;
-        await _themeInterop.SetVarAsync("--primary", value, cancellationToken);
+        CurrentTheme.Dark.Primary = value;
+        ThemeChanged?.Invoke();
+        return Task.CompletedTask;
     }
+    private static ThemeStateFull CreateDefaultTheme()
+    {
+        var light = new ThemeState();
+        var dark = new ThemeState
+        {
+            Background = "oklch(0.1448 0 0)",
+            Foreground = "oklch(0.985 0 0)",
+            Card = "oklch(0.21 0.006 285.885)",
+            CardForeground = "oklch(0.985 0 0)",
+            Popover = "oklch(0.21 0.006 285.885)",
+            PopoverForeground = "oklch(0.985 0 0)",
+            Primary = "oklch(0.488 0.243 264.376)",
+            PrimaryForeground = "oklch(0.97 0.014 254.604)",
+            Secondary = "oklch(0.274 0.006 286.033)",
+            SecondaryForeground = "oklch(0.985 0 0)",
+            Muted = "oklch(0.274 0.006 286.033)",
+            MutedForeground = "oklch(0.705 0.015 286.067)",
+            Accent = "oklch(0.274 0.006 286.033)",
+            AccentForeground = "oklch(0.985 0 0)",
+            Destructive = "oklch(0.704 0.191 22.216)",
+            DestructiveForeground = "oklch(1 0 0)",
+            Border = "oklch(1 0 0 / 0.1)",
+            Input = "oklch(1 0 0 / 0.15)",
+            Ring = "oklch(0.556 0 0)",
+            Chart1 = "oklch(0.809 0.105 251.813)",
+            Chart2 = "oklch(0.623 0.214 259.815)",
+            Chart3 = "oklch(0.546 0.245 262.881)",
+            Chart4 = "oklch(0.488 0.243 264.376)",
+            Chart5 = "oklch(0.424 0.199 265.638)",
+            Sidebar = "oklch(0.21 0.006 285.885)",
+            SidebarForeground = "oklch(0.985 0 0)",
+            SidebarPrimary = "oklch(0.623 0.214 259.815)",
+            SidebarPrimaryForeground = "oklch(0.97 0.014 254.604)",
+            SidebarAccent = "oklch(0.274 0.006 286.033)",
+            SidebarAccentForeground = "oklch(0.985 0 0)",
+            SidebarBorder = "oklch(1 0 0 / 0.1)",
+            SidebarRing = "oklch(0.439 0 0)"
+        };
 
-    private static string[] BuildSwatches(ThemeState theme) =>
+        return new ThemeStateFull
+        {
+            Light = light,
+            Dark = dark,
+            Shared = light.Clone()
+        };
+    }
+    private static string[] BuildSwatches(ThemeStateFull theme) =>
     [
-        theme.Primary,
-        theme.Secondary,
-        theme.Accent,
-        theme.Background
+        theme.Dark.Primary,
+        theme.Dark.Secondary,
+        theme.Dark.Accent,
+        theme.Dark.Background
     ];
 
     private static ThemePreset CreateAmethystHazePreset() => new(
@@ -320,3 +372,11 @@ public sealed class ThemeService
             Shadow2xl = "0 1px 3px 0px hsl(0 0% 0% / 0.25)"
         });
 }
+
+
+
+
+
+
+
+

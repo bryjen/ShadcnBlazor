@@ -14,37 +14,45 @@
         </div>
     </div>
 
-    <div id="customization-panel" class="w-[30vw] flex flex-col gap-4">
-        <div id="customization-tabs" class="flex gap-2">
-            <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
-                          IsToggled="@(_selectedTab == Tab.Code)" OnClick="@(_ => _selectedTab = Tab.Code)">
-                <LuCode class="size-3 font-bold"/>
-                Code
-            </ToggleButton>
-            <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
-                          IsToggled="@(_selectedTab == Tab.Values)" OnClick="@(_ => _selectedTab = Tab.Values)">
-                <LuPencil class="size-3 font-bold"/>
-                Values
-            </ToggleButton>
-            <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
-                          IsToggled="@(_selectedTab == Tab.Presets)" OnClick="@(_ => _selectedTab = Tab.Presets)">
-                <LuBox class="size-3 font-bold"/>
-                Presets
-            </ToggleButton>
+    <div class="w-[30vw] flex flex-col gap-4">
+        <div class="flex gap-2 items-center justify-between">
+            <div class="flex gap-2 h-full">
+                <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                              IsToggled="@(_selectedTab == Tab.Code)" OnClick="@(_ => _selectedTab = Tab.Code)">
+                    <LuCode class="size-3 font-bold"/>
+                    Code
+                </ToggleButton>
+                <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                              IsToggled="@(_selectedTab == Tab.Values)" OnClick="@(_ => _selectedTab = Tab.Values)">
+                    <LuPencil class="size-3 font-bold"/>
+                    Values
+                </ToggleButton>
+            </div>
+            
+            @if (_selectedTab == Tab.Code)
+            {
+                <div class="flex gap-2 h-full">
+                    <Button Variant="@Variant.Ghost" OnClick="@(_ => _codeTab.Clear())">
+                        <LuX class="size-3 font-bold"/>
+                        Clear
+                    </Button>
+                    
+                    <Button aria-label="Info" Variant="@Variant.Ghost" OnClick="@(_ => OpenDialog())">
+                        <LuInfo class="size-3"/>
+                        Help
+                    </Button>
+                </div>
+            }
         </div>
 
         <div class="w-full h-full overflow-y-auto scrollbar-hide rounded-lg">
             @if (_selectedTab == Tab.Code)
             {
-                <CodeTab />
+                <CodeTab @ref="_codeTab" />
             }
             else if (_selectedTab == Tab.Values)
             {
                 <ValuesTab />
-            }
-            else
-            {
-                <PresetsTab />
             }
         </div>
     </div>

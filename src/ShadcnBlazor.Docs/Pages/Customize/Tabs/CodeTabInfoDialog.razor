@@ -1,0 +1,13 @@
+<div class="grid gap-4 py-4">
+    Instructions are supposed to be here. WIP.
+</div>
+<div class="flex justify-end gap-2 pt-4">
+    <Button Variant="@Variant.Default" OnClick="OnSave">Close</Button>
+</div>
+
+@code {
+    [CascadingParameter]
+    public IDialogInstance? DialogInstance { get; set; }
+
+    private void OnSave() => DialogInstance?.Close(DialogResult.Ok(new object()));
+}

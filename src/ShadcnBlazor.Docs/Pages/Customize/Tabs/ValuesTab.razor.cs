@@ -1,28 +1,89 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
+using ShadcnBlazor.Docs.Services;
 
 namespace ShadcnBlazor.Docs.Pages.Customize.Tabs;
 
-public partial class ValuesTab : ComponentBase
+public partial class ValuesTab : ComponentBase, IDisposable
 {
-    private readonly List<ColorSection> Sections =
+    [Inject]
+    public required ThemeService ThemeService { get; set; }
+
+    private List<ColorSection> Sections { get; set; } = [];
+
+    private static readonly (string Title, (string Label, string CssVar)[] Fields)[] SectionDefinitions =
     [
-        new("Primary Colors", [ new("Primary", "#3b82f6"), new("Primary Foreground", "#ffffff") ]),
-        new("Secondary Colors", [ new("Secondary", "#262626"), new("Secondary Foreground", "#e5e5e5") ]),
-        new("Accent Colors", [ new("Accent", "#1e3a8a"), new("Accent Foreground", "#bfdbfe") ]),
-        new("Base Colors", [ new("Background", "#171717"), new("Foreground", "#e5e5e5") ]),
-        new("Card Colors", [ new("Card Background", "#262626"), new("Card Foreground", "#e5e5e5") ]),
-        new("Popover Colors", [ new("Popover Background", "#262626"), new("Popover Foreground", "#e5e5e5") ]),
-        new("Muted Colors", [ new("Muted", "#1f1f1f"), new("Muted Foreground", "#a3a3a3") ]),
-        new("Destructive Colors", [ new("Destructive", "#ef4444"), new("Destructive Foreground", "#ffffff") ]),
-        new("Border & Input Colors", [ new("Border", "#404040"), new("Input", "#404040"), new("Ring", "#3b82f6") ]),
-        new("Chart Colors", [ new("Chart 1", "#60a5fa"), new("Chart 2", "#3b82f6"), new("Chart 3", "#2563eb"), new("Chart 4", "#1d4ed8"), new("Chart 5", "#1e40af") ]),
-        new("Sidebar Colors", [ new("Sidebar Background", "#171717"), new("Sidebar Foreground", "#e5e5e5"), new("Sidebar Primary", "#3b82f6"), new("Sidebar Primary Foreground", "#ffffff"), new("Sidebar Accent", "#1e3a8a"), new("Sidebar Accent Foreground", "#bfdbfe"), new("Sidebar Border", "#404040"), new("Sidebar Ring", "#3b82f6") ]),
+        ("Primary Colors", [("Primary", "--primary"), ("Primary Foreground", "--primary-foreground")]),
+        ("Secondary Colors", [("Secondary", "--secondary"), ("Secondary Foreground", "--secondary-foreground")]),
+        ("Accent Colors", [("Accent", "--accent"), ("Accent Foreground", "--accent-foreground")]),
+        ("Base Colors", [("Background", "--background"), ("Foreground", "--foreground")]),
+        ("Card Colors", [("Card Background", "--card"), ("Card Foreground", "--card-foreground")]),
+        ("Popover Colors", [("Popover Background", "--popover"), ("Popover Foreground", "--popover-foreground")]),
+        ("Muted Colors", [("Muted", "--muted"), ("Muted Foreground", "--muted-foreground")]),
+        ("Destructive Colors", [("Destructive", "--destructive"), ("Destructive Foreground", "--destructive-foreground")]),
+        ("Border & Input Colors", [("Border", "--border"), ("Input", "--input"), ("Ring", "--ring")]),
+        ("Chart Colors", [("Chart 1", "--chart-1"), ("Chart 2", "--chart-2"), ("Chart 3", "--chart-3"), ("Chart 4", "--chart-4"), ("Chart 5", "--chart-5")]),
+        ("Sidebar Colors", [("Sidebar Background", "--sidebar"), ("Sidebar Foreground", "--sidebar-foreground"), ("Sidebar Primary", "--sidebar-primary"), ("Sidebar Primary Foreground", "--sidebar-primary-foreground"), ("Sidebar Accent", "--sidebar-accent"), ("Sidebar Accent Foreground", "--sidebar-accent-foreground"), ("Sidebar Border", "--sidebar-border"), ("Sidebar Ring", "--sidebar-ring")]),
     ];
 
     private static readonly Regex CssColorRegex = new(
         @"^(#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(rgba?|hsla?|hwb|oklab|oklch|lab|lch|color)\([^\)]+\))$",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    protected override void OnInitialized()
+    {
+        BuildSectionsFromTheme();
+        ThemeService.ThemeChanged += OnThemeChanged;
+    }
+
+    public void Dispose()
+    {
+        ThemeService.ThemeChanged -= OnThemeChanged;
+    }
+
+    private void OnThemeChanged()
+    {
+        BuildSectionsFromTheme();
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void BuildSectionsFromTheme()
+    {
+        var darkVars = ThemeService.CurrentTheme.Dark.ToCssVarMap();
+
+        Sections = SectionDefinitions
+            .Select(section => new ColorSection(
+                section.Title,
+                section.Fields
+                    .Select(field => new ColorField(
+                        field.Label,
+                        field.CssVar,
+                        darkVars.TryGetValue(field.CssVar, out var value) ? value : string.Empty))
+                    .ToList()))
+            .ToList();
+    }
+
+    private async Task UpdateFieldValueAsync(string cssVarName, string value)
+    {
+        var field = Sections
+            .SelectMany(section => section.Fields)
+            .FirstOrDefault(current => string.Equals(current.CssVarName, cssVarName, StringComparison.Ordinal));
+
+        if (field is null)
+        {
+            return;
+        }
+
+        field.Value = value;
+
+        var next = ThemeService.CurrentTheme.Clone();
+        next.Dark.ApplyCssVarMap(new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            [cssVarName] = value
+        });
+
+        await ThemeService.SaveThemeAsync(next);
+    }
 
     private static bool IsValidCssColor(string value)
         => !string.IsNullOrWhiteSpace(value) && CssColorRegex.IsMatch(value.Trim());
@@ -32,31 +93,16 @@ public partial class ValuesTab : ComponentBase
             ? $"background-color: {value.Trim()};"
             : "background: linear-gradient(135deg, transparent 42%, rgb(239 68 68 / 0.9) 42%, rgb(239 68 68 / 0.9) 58%, transparent 58%);";
 
-    private void UpdateFieldValue(int sectionIndex, int fieldIndex, string value)
-    {
-        if (sectionIndex < 0 || sectionIndex >= Sections.Count)
-        {
-            return;
-        }
-
-        var fields = Sections[sectionIndex].Fields;
-        if (fieldIndex < 0 || fieldIndex >= fields.Count)
-        {
-            return;
-        }
-
-        fields[fieldIndex].Value = value;
-    }
-
     private sealed class ColorSection(string title, List<ColorField> fields)
     {
         public string Title { get; } = title;
         public List<ColorField> Fields { get; } = fields;
     }
 
-    private sealed class ColorField(string label, string value)
+    private sealed class ColorField(string label, string cssVarName, string value)
     {
         public string Label { get; } = label;
+        public string CssVarName { get; } = cssVarName;
         public string Value { get; set; } = value;
     }
 }

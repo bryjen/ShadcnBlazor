@@ -1,8 +1,7 @@
-@using ShadcnBlazor.Docs.Components.Samples.Command.Impl
-@using ShadcnBlazor.Docs.Components.Layout
 @using ShadcnBlazor.Docs.Components.Samples.Command.Inline
 @using System.Text.Json.Serialization
 
+@implements IAsyncDisposable
 
 <div class="h-full w-full px-6 flex items-center justify-between gap-2">
     @* left side *@
@@ -68,11 +67,13 @@
 
         <Tooltip>
             <Anchor>
-                <a class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm group
-                  text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
-                   href="https://github.com/bryjen/ShadcnBlazor">
+                <button class="inline-flex items-center justify-center h-8 rounded-md gap-1.5 px-2 font-semibold text-sm group
+                               text-foreground/70 antialiased transition-colors hover:bg-accent hover:text-white hover:opacity-100"
+                        type="button"
+                        aria-label="Toggle Dark/Light Mode"
+                        @onclick="ToggleThemeAsync">
                     <LuSun class="size-4"/>
-                </a>
+                </button>
             </Anchor>
             <ChildContent>
                 <span class="block font-bold text-xs text-center text-foreground">Toggle Dark/Light Mode</span>
@@ -97,18 +98,25 @@
 
 @code {
     private CommandInline _command = default!;
+    private IJSObjectReference? _themeModule;
 
     [Inject]
     public required ISheetService SheetService { get; set; }
-    
-    [Inject] 
+
+    [Inject]
     public HttpClient Http { get; set; } = null!;
+
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; } = null!;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
 
     private void OpenMobileMenu()
     {
         SheetService.Show<MobileNavSheet>();
     }
-    
+
     @*TODO: MERGE THIS WITH THAT IN MAVMENU*@
     private RenderFragment RenderNavButton(string text, string href) => __builder =>
     {
@@ -118,8 +126,8 @@
             @text
         </a>
     };
-    
-    
+
+
     private int? _stars;
 
     protected override async Task OnInitializedAsync()
@@ -128,10 +136,46 @@
         _stars = repo?.StargazersCount;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        _themeModule = await JsRuntime.InvokeAsync<IJSObjectReference>(
+            "import",
+            $"{NavigationManager.BaseUri}Components/Layout/Header.razor.js");
+
+        await _themeModule.InvokeVoidAsync("initializeTheme");
+    }
+
+    private async Task ToggleThemeAsync()
+    {
+        if (_themeModule is null)
+        {
+            return;
+        }
+
+        await _themeModule.InvokeVoidAsync("toggleTheme");
+    }
+
     private static string FormatStars(int stars) =>
         stars >= 1000 ? $"{stars / 1000.0:0.#}k" : stars.ToString();
 
     private record GitHubRepo([property: JsonPropertyName("stargazers_count")] int StargazersCount);
+
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_themeModule is null)
+        {
+            return;
+        }
+
+        await _themeModule.DisposeAsync();
+        _themeModule = null;
+    }
 
     private bool InDev =>
 #if DEBUG
@@ -140,3 +184,5 @@
         false;
 #endif
 }
+
+
