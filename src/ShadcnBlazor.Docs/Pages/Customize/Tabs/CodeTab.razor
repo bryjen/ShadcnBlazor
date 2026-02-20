@@ -1,0 +1,27 @@
+<div @ref="_editorHost" class="docs-codeblock-codemirror docs-codeblock-codemirror-with-rail rounded-lg overflow-hidden w-full shrink-0">
+    <div class="docs-codeblock-codemirror-rail" aria-hidden="true">
+        @foreach (var marker in VisibleMarkers)
+        {
+            <button type="button"
+                    class="docs-codeblock-codemirror-swatch"
+                    style="top:@GetMarkerTopPx(marker.LineNumber)px;background-color:@marker.Token;"
+                    title="@($"Line {marker.LineNumber}: {marker.Token}")"
+                    tabindex="-1"></button>
+        }
+    </div>
+
+    <div class="docs-codeblock-codemirror-editor">
+        <CodeMirror6Wrapper
+            @ref="_editorRef"
+            Doc="@_editorText"
+            DocChanged="OnEditorChanged"
+            Language="CodeMirrorLanguage.Css"
+            Height="100vh"
+            Theme="@ThemeMirrorTheme.OneDark"
+            LineWrapping="false"
+            AllowVerticalResize="false"
+            AllowHorizontalResize="false"
+            Setup="@_editorSetup"
+            Selection="@_topSelection" />
+    </div>
+</div>

@@ -1,8 +1,9 @@
 @page "/customize"
 @layout NoNavMenuLayout
-@using System.Text.RegularExpressions
-@using ShadcnBlazor.Docs.Services
 @inject ThemeService ThemeService
+@inject IJSRuntime JsRuntime
+@using ShadcnBlazor.Docs.Pages.Customize.Tabs
+@implements IAsyncDisposable
 
 <div class="p-4 h-full min-h-0 w-full flex gap-4">
     <div class="border-2 border-border flex-1 min-h-0 p-4 rounded-lg">
@@ -15,20 +16,28 @@
         </div>
     </div>
     
-    
-    <div class="docs-codeblock-codemirror rounded-lg overflow-hidden w-[30vw] shrink-0 overflow-y-scroll scrollbar-hide">
-        <CodeMirror6Wrapper
-            @ref="_editorRef"
-            Doc="@_editorText"
-            DocChanged="OnEditorChanged"
-            Language="CodeMirrorLanguage.Css"
-            Height="100vh"
-            Theme="@ThemeMirrorTheme.OneDark"
-            LineWrapping="false"
-            AllowVerticalResize="false"
-            AllowHorizontalResize="false"
-            Setup="@_editorSetup"
-            Selection="@_topSelection" />
+    <div id="customization-panel" class="w-[30vw] flex flex-col gap-4">
+        <div id="customization-tabs">
+            <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                          IsToggled="@(_selectedTab == Tab.Code)" OnClick="@(_ => _selectedTab = Tab.Code)">
+                <LuCode class="size-3 font-bold"/>
+                Code
+            </ToggleButton>
+            <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                          IsToggled="@(_selectedTab == Tab.Values)" OnClick="@(_ => _selectedTab = Tab.Values)">
+                <LuPencil class="size-3 font-bold"/>
+                Values
+            </ToggleButton>
+            <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                          IsToggled="@(_selectedTab == Tab.Presets)" OnClick="@(_ => _selectedTab = Tab.Presets)">
+                <LuBox class="size-3 font-bold"/>
+                Presets
+            </ToggleButton>
+        </div>
+        
+        <div class="w-full h-full overflow-y-auto scrollbar-hide rounded-lg">
+            <CodeTab />
+        </div>
     </div>
     
     @*
@@ -55,69 +64,14 @@
                     Placeholder="Select a color"></Select>
         </div>
     </div>
-*@
+    *@
 </div>
 
 @code {
-    private CodeMirror6Wrapper? _editorRef;
-    private Task OnEditorChanged(string value)
+    private RenderFragment RenderCodePanel => __builder =>
     {
-        _editorText = value;
-        return Task.CompletedTask;
-    }
-    private readonly CodeMirrorSetup _editorSetup = new()
-    {
-        ScrollToStart = true,
-        FocusOnCreation = true,
     };
-
-    private readonly List<SelectionRange> _topSelection =
-    [
-        new SelectionRange { From = 0, To = 0 }
-    ];
     
-    private static readonly Regex ColorTokenRegex = new(
-        """#(?:[0-9a-fA-F]{3,8})\b|(?:oklch|oklab|lch|lab|hsl|hsla|rgb|rgba|hwb|color)\([^\n\r;{}]+\)""",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-    private IReadOnlyList<string> ExtractedColors =>
-        ColorTokenRegex.Matches(_editorText)
-            .Select(match => match.Value.Trim())
-            .Where(value => !string.IsNullOrWhiteSpace(value))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .Take(24)
-            .ToArray();
-    
-    public record ColorOption(string Name, string Hex);
-
-    private readonly SelectOption<ColorOption>[] _colorOptions =
-    [
-        new (new ("Neutral", "#737373"), "Neutral"),
-        new (new ("Amber", "#F59E0B"), "Amber"),
-        new (new ("Blue", "#3B82F6"), "Blue"),
-        new (new ("Cyan", "#06B6D4"), "Cyan"),
-        new (new ("Emerald", "#10B981"), "Emerald"),
-        new (new ("Fuchsia", "#D946EF"), "Fuchsia"),
-        new (new ("Green", "#22C55E"), "Green"),
-        new (new ("Indigo", "#6366F1"), "Indigo"),
-        new (new ("Lime", "#84CC16"), "Lime"),
-        new (new ("Orange", "#F97316"), "Orange"),
-        new (new ("Pink", "#EC4899"), "Pink"),
-        new (new ("Purple", "#A855F7"), "Purple"),
-        new (new ("Red", "#EF4444"), "Red"),
-        new (new ("Rose", "#F43F5E"), "Rose"),
-        new (new ("Sky", "#0EA5E9"), "Sky"),
-        new (new ("Teal", "#14B8A6"), "Teal"),
-        new (new ("Violet", "#8B5CF6"), "Violet"),
-        new (new ("Yellow", "#EAB308"), "Yellow")
-    ];
-
-    private SelectOption<ThemePreset>[] _themePresetOptions = [];
-    private ThemePreset? _selectedThemePreset;
-    private ColorOption? _selectedColor;
-
-    private string CurrentPrimaryValue => _selectedColor?.Hex ?? ThemeService.CurrentTheme.Primary;
-
     private RenderFragment<SelectOption<ColorOption>> RenderColorItem => item => __builder =>
     {
         <span>@item.DisplayText</span>
@@ -135,50 +89,14 @@
             <span class="font-medium">@item.DisplayText</span>
         </div>
     };
-
-    protected override void OnInitialized()
-    {
-        _themePresetOptions = ThemeService.Themes
-            .Select(preset => new SelectOption<ThemePreset>(preset, preset.Name))
-            .ToArray();
-
-        _selectedThemePreset = _themePresetOptions
-            .FirstOrDefault(option => option.Value.Name == "Default").Value
-            ?? _themePresetOptions.FirstOrDefault().Value;
-
-        SyncSelectedColorFromCurrentTheme();
-    }
-
-    private async Task OnThemePresetChanged(ThemePreset? option)
-    {
-        _selectedThemePreset = option;
-        if (_selectedThemePreset is null)
-        {
-            return;
-        }
-
-        await ThemeService.ApplyPresetAsync(_selectedThemePreset);
-        SyncSelectedColorFromCurrentTheme();
-    }
-
-    private async Task OnColorChanged(ColorOption? option)
-    {
-        _selectedColor = option;
-        if (_selectedColor is null)
-        {
-            return;
-        }
-
-        await ThemeService.SetPrimaryAsync(_selectedColor.Hex);
-    }
-
-    private void SyncSelectedColorFromCurrentTheme()
-    {
-        var currentPrimary = ThemeService.CurrentTheme.Primary;
-        _selectedColor = _colorOptions
-            .Select(color => color.Value)
-            .FirstOrDefault(color => string.Equals(color.Hex, currentPrimary, StringComparison.OrdinalIgnoreCase));
-    }
 }
+
+
+
+
+
+
+
+
 
 

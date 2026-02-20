@@ -6,36 +6,15 @@ using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Select;
 using ShadcnBlazor.Docs.Services;
 
-namespace ShadcnBlazor.Docs.Pages.Customize;
+namespace ShadcnBlazor.Docs.Pages.Customize.Tabs;
 
-public partial class Customize : ComponentBase
+public partial class CodeTab : ComponentBase
 {
-    // inline tabbing logic
-    private Tab _selectedTab = Tab.Code;
+    [Inject]
+    public required ThemeService ThemeService { get; set; }
     
-    private enum Tab
-    {
-        Code,
-        Values,
-        Presets,
-    }
-    
-#pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
-    private static string TabToString(Tab tab) => tab switch
-    {
-        Tab.Code => "code",
-        Tab.Values => "values",
-        Tab.Presets => "presets",
-    };
-    
-#pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
-    private static Tab StringToTab(string tab) => tab switch
-    {
-        "code" => Tab.Code,
-        "values" => Tab.Values,
-        "presets" => Tab.Presets
-    };
-    
+    [Inject]
+    public required IJSRuntime JsRuntime { get; set; }
     
     private const double EditorLineHeightPx = 19.8;
 
