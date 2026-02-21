@@ -1,0 +1,58 @@
+@page "/customize"
+@layout NoNavMenuLayout
+@inject ThemeService ThemeService
+@using ShadcnBlazor.Docs.Services.Theme
+@using ShadcnBlazor.Docs.Pages.Customize.Tabs
+
+<div class="p-4 h-full min-h-0 w-full flex gap-4" xmlns="http://www.w3.org/1999/html">
+    
+    <div class="max-lg:hidden border-2 border-border flex-1 min-h-0 p-4 rounded-lg flex items-center justify-center text-muted-foreground text-center">
+        Nothing to see here ... yet.
+        <br/>
+        WIP
+    </div>
+
+    <div class="max-lg:w-full lg:w-[27.5vw] flex flex-col gap-4">
+        <div class="flex gap-2 items-center justify-between">
+            <div class="flex gap-2 h-full">
+                <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                              IsToggled="@(_selectedTab == Tab.Values)" OnClick="@(_ => _selectedTab = Tab.Values)">
+                    <LuPencil class="size-3 font-bold"/>
+                    Values
+                </ToggleButton>
+                <ToggleButton VariantUntoggled="@Variant.Outline" VariantToggled="@Variant.Default" Size="@Size.Lg"
+                              IsToggled="@(_selectedTab == Tab.Code)" OnClick="@(_ => _selectedTab = Tab.Code)" Class="max-lg:hidden">
+                    <LuCode class="size-3 font-bold"/>
+                    Code
+                </ToggleButton>
+            </div>
+            
+            <div class="flex gap-2 h-full">
+                @if (_selectedTab == Tab.Code)
+                {
+                    <Button Variant="@Variant.Ghost" OnClick="@(_ => _codeTab.Clear())">
+                        <LuX class="size-3 font-bold"/>
+                        Clear
+                    </Button>
+                }
+                    
+                <Button aria-label="Info" Variant="@Variant.Ghost" OnClick="@(_ => OpenDialog())">
+                    <LuInfo class="size-3"/>
+                    Info
+                </Button>
+            </div>
+        </div>
+
+        <div class="w-full h-full overflow-y-auto scrollbar-hide rounded-lg">
+            @if (_selectedTab == Tab.Code)
+            {
+                <CodeTab @ref="_codeTab" />
+            }
+            else if (_selectedTab == Tab.Values)
+            {
+                <ValuesTab />
+            }
+        </div>
+    </div>
+</div>
+

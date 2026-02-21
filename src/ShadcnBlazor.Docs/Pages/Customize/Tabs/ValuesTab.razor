@@ -1,0 +1,243 @@
+@using ShadcnBlazor.Docs.Models.Theme
+<div class="h-full overflow-y-auto overflow-hidden scrollbar-hide flex flex-col gap-8">
+    <div id="presets">
+        <label class="text-xs text-muted-foreground">Theme Preset</label>
+        <Select T="ThemePreset"
+                Value="@_selectedThemePreset"
+                ValueChanged="OnThemePresetChanged"
+                Label="Theme Preset"
+                Items="@(GetThemeOptions())"
+                RenderItem="@RenderThemePresetItem"
+                Placeholder="Select a theme"
+                Disabled="@_loadingPresets">
+        </Select>
+        
+        <div class="mt-2 text-xs text-muted-foreground">
+            For more themes, see <a class="underline font-semibold text-foreground" href="https://tweakcn.com/community" target="_blank">tweakcn.com/community</a>.
+            To copy a theme, select a theme, click <code>Code</code>, copy the CSS, and then paste it in the css editor in the other tab.
+        </div>
+        <div class="mt-2 text-xs text-muted-foreground/50">
+            * Refresh the page to reset to the default theme.
+        </div>
+        
+        <Alert Variant="@AlertVariant.Destructive" Class="lg:hidden mt-4 flex items-center">
+            <p class="text-xs text-destructive/75">
+                Unfortunately, the code tab is not available for mobile devices.
+                To view the theme in action, you can view any other page - the theme will persist.
+            </p>
+        </Alert>
+    </div>
+    
+    <div id="colors">
+        <h2 class="font-bold text-2xl text-foreground mb-4">
+            Colors
+        </h2>
+
+        @for (var sectionIndex = 0; sectionIndex < Sections.Count; sectionIndex++)
+        {
+            var sectionIdx = sectionIndex;
+            var group = Sections[sectionIdx];
+
+            <section class="pb-6" @key="group.Title">
+                <h3 class="text-sm font-semibold text-card-foreground">@group.Title</h3>
+                <div class="grid grid-cols-2 gap-x-2">
+                    @for (var fieldIndex = 0; fieldIndex < group.Fields.Count; fieldIndex++)
+                    {
+                        var fieldIdx = fieldIndex;
+                        var field = group.Fields[fieldIdx];
+
+                        <div class="space-y-1" @key="field.CssVarName">
+                            <label class="text-[11px] font-medium text-muted-foreground">
+                                @field.Label
+                            </label>
+                            <div class="grid grid-cols-[1.75rem_1fr] gap-2 items-center">
+                                <input type="color"
+                                       class="h-7 w-7 rounded-md border border-border bg-transparent p-0"
+                                       value="@GetColorPickerValue(field.Value)"
+                                       title="@field.Label"
+                                       @onchange="@(async e => await UpdateColorPickerValueAsync(field.CssVarName, e.Value?.ToString()))" />
+                                <Input Value="@field.Value"
+                                       Class="text-[0.775rem] text-foreground/75"
+                                       OnChange="@(async e => await UpdateFieldValueAsync(field.CssVarName, e.Value?.ToString() ?? string.Empty))"/>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
+    
+    <div id="typography">
+        <h2 class="font-bold text-2xl text-foreground mb-4">
+            Typography
+        </h2>
+
+        <div class="flex flex-col gap-6">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-3">
+                <div>
+                    <label class="text-xs text-muted-foreground">Sans-Serif Font</label>
+                    <Select T="FontMetadata"
+                            Value="@_selectedSansSerifFont"
+                            ValueChanged="OnSansSerifFontChanged"
+                            Label="Sans-Serif Font"
+                            Items="_sansSerifFontOptions"
+                            Placeholder="Select a sans-serif font"
+                            Disabled="@_loadingFonts">
+                    </Select>
+                </div>
+                <div>
+                    <label class="text-xs text-muted-foreground">Serif Font</label>
+                    <Select T="FontMetadata"
+                            Value="@_selectedSerifFont"
+                            ValueChanged="OnSerifFontChanged"
+                            Label="Serif Font"
+                            Items="_serifFontOptions"
+                            Placeholder="Select a serif font"
+                            Disabled="@_loadingFonts">
+                    </Select>
+                </div>
+                <div>
+                    <label class="text-xs text-muted-foreground">Monospace Font</label>
+                    <Select T="FontMetadata"
+                            Value="@_selectedMonospaceFont"
+                            ValueChanged="OnMonospaceFontChanged"
+                            Label="Monospace Font"
+                            Items="_monospaceFontOptions"
+                            Placeholder="Select a monospace font"
+                            Disabled="@_loadingFonts">
+                    </Select>
+                </div>
+            </div>
+        
+            <div>
+                <div class="flex justify-between items-center">
+                    <label class="text-sm text-muted-foreground">Letter Spacing</label>
+                    <div class="flex items-center gap-2">
+                        <Input Size="@Size.Md"
+                               Class="w-[5rem] shrink-0"
+                               Value="@LetterSpacingInputValue"
+                               OnChange="OnLetterSpacingInputChanged"></Input>
+                        <p class="text-sm text-muted-foreground">em</p>
+                    </div>
+                </div>
+                <Slider Size="Size.Md"
+                        Value="@_letterSpacingEm"
+                        ValueChanged="OnLetterSpacingSliderChanged"
+                        Min="-0.10"
+                        Max="0.25"
+                        Step="0.005" />
+            </div>
+            
+            <div>
+                <div class="flex justify-between items-center">
+                    <label class="text-sm text-muted-foreground">Line Spacing</label>
+                    <div class="flex items-center gap-2">
+                        <Input Size="@Size.Md"
+                               Class="w-[5rem] shrink-0"
+                               Value="@LineSpacingInputValue"
+                               OnChange="OnLineSpacingInputChanged"></Input>
+                        <p class="text-sm text-muted-foreground">rem</p>
+                    </div>
+                </div>
+                <Slider Size="Size.Md"
+                        Value="@_lineSpacingRem"
+                        ValueChanged="OnLineSpacingSliderChanged"
+                        Min="0.125"
+                        Max="1.0"
+                        Step="0.025" />
+            </div>
+        </div>
+    </div>
+    
+    <div id="other">
+        <h2 class="font-bold text-2xl text-foreground mb-4">
+            Other
+        </h2>
+
+        <div class="flex flex-col gap-2">
+            <div>
+                <div class="flex justify-between items-center">
+                    <label class="text-sm text-muted-foreground">Radius</label>
+                    <div class="flex items-center gap-2">
+                        <Input Size="@Size.Md"
+                               Class="w-[5rem] shrink-0"
+                               Value="@RadiusInputValue"
+                               OnChange="OnRadiusInputChanged"></Input>
+                        <p class="text-sm text-muted-foreground">rem</p>
+                    </div>
+                </div>
+                <Slider Size="Size.Md"
+                        Value="@_radiusRem"
+                        ValueChanged="OnRadiusSliderChanged"
+                        Min="0"
+                        Max="2.0"
+                        Step="0.025" />
+            </div>
+        </div>
+        
+        <div class="flex flex-col gap-2 mt-4">
+            <h3>Shadow</h3>
+            
+            <div>
+                <div class="flex justify-between items-center">
+                    <label class="text-sm text-muted-foreground">Radius</label>
+                    <div class="flex items-center gap-2">
+                        <Input Size="@Size.Md"
+                               Class="w-[5rem] shrink-0"
+                               Value="@ShadowBlurInputValue"
+                               OnChange="OnShadowBlurInputChanged"></Input>
+                        <p class="text-sm text-muted-foreground">px</p>
+                    </div>
+                </div>
+                <Slider Size="Size.Md"
+                        Value="@_shadowBlurPx"
+                        ValueChanged="OnShadowBlurSliderChanged"
+                        Min="0"
+                        Max="64"
+                        Step="1"/>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center">
+                    <label class="text-sm text-muted-foreground">Shadow</label>
+                    <div class="flex items-center gap-2">
+                        <Input Size="@Size.Md"
+                               Class="w-[5rem] shrink-0"
+                               Value="@ShadowSpreadInputValue"
+                               OnChange="OnShadowSpreadInputChanged"></Input>
+                        <p class="text-sm text-muted-foreground">px</p>
+                    </div>
+                </div>
+                <Slider Size="Size.Md"
+                        Value="@_shadowSpreadPx"
+                        ValueChanged="OnShadowSpreadSliderChanged"
+                        Min="-50"
+                        Max="50"
+                        Step="1"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RenderFragment<SelectOption<ThemePreset>> RenderThemePresetItem => item => __builder =>
+    {
+        <div class="flex items-center gap-3 py-1">
+            <div class="flex items-center gap-1">
+                @foreach (var swatch in item.Value.Swatches)
+                {
+                    <span class="inline-block size-3 rounded-sm" style="background-color:@swatch"></span>
+                }
+            </div>
+            <span class="font-medium">@item.DisplayText</span>
+        </div>
+    };
+}
+
+
+
+
+
+
+
+

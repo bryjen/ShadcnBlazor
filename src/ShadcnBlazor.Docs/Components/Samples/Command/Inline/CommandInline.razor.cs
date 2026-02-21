@@ -133,6 +133,21 @@ public partial class CommandInline : ShadcnComponentBase
         }
     }
 
+    private IReadOnlyDictionary<string, object?> GetSearchInputAttributes()
+    {
+        var attributes = new Dictionary<string, object?>(StringComparer.Ordinal)
+        {
+            ["aria-controls"] = _contentId
+        };
+
+        if (_selectedItem is not null)
+        {
+            attributes["aria-activedescendant"] = _selectedItem.Value.ToString();
+        }
+
+        return attributes;
+    }
+
     private async ValueTask EnsureScrollModuleAsync()
     {
         if (_scrollModule is not null)
@@ -188,4 +203,3 @@ public partial class CommandInline : ShadcnComponentBase
         }
     }
 }
-

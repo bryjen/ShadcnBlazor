@@ -1,5 +1,6 @@
 @page "/playground"
 @layout NoLayout
+@using System.Text.RegularExpressions
 @using ShadcnBlazor.Docs.Components.Samples.KeyInterceptor
 
 <PageTitle>Playground - ShadcnBlazor</PageTitle>
@@ -11,9 +12,43 @@
             <p class="text-muted-foreground mt-1">Experimental samples and demos.</p>
         </div>
 
+        <section class="space-y-4">
+            <h2 class="text-lg font-semibold">CodeMirror 6</h2>
+            <p class="text-sm text-muted-foreground">BlazorCodeMirror6 component (GaelJ.BlazorCodeMirror6), CSS language. Styled to match the docs code block.</p>
+
+            <div class="docs-codeblock-codemirror rounded-lg overflow-hidden">
+                <CodeMirror6Wrapper
+                    @ref="_editorRef"
+                    Doc="@_editorText"
+                    DocChanged="OnEditorChanged"
+                    Language="CodeMirrorLanguage.Css"
+                    Height="320px"
+                    Theme="@ThemeMirrorTheme.TokyoNight"
+                    LineWrapping="false"
+                    AllowVerticalResize="false"
+                    AllowHorizontalResize="false"
+                    Setup="@_editorSetup"
+                    Selection="@_topSelection" />
+            </div>
+            
+            <div>
+                <input type="color"/>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+                @foreach (var color in ExtractedColors)
+                {
+                    <div class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-2 py-1 text-xs">
+                        <span class="inline-block size-3 rounded-sm border border-border" style="background-color:@color"></span>
+                        <code class="font-mono text-[11px]">@color</code>
+                    </div>
+                }
+            </div>
+        </section>
+
         <section>
             <h2 class="text-lg font-semibold mb-4">Keyboard Interceptor</h2>
-            <KeyInterceptorSample />
+            <KeyInterceptorSample/>
         </section>
     </div>
 </div>
@@ -21,6 +56,44 @@
 @code {
     [Inject]
     public required NavigationManager NavigationManager { get; set; }
+
+    private CodeMirror6Wrapper? _editorRef;
+
+    private readonly CodeMirrorSetup _editorSetup = new()
+    {
+        ScrollToStart = true,
+        FocusOnCreation = true
+    };
+
+    private readonly List<SelectionRange> _topSelection =
+    [
+        new SelectionRange { From = 0, To = 0 }
+    ];
+
+    private string _editorText = @"/* CSS example */
+:root {
+  --primary: oklch(0.6 0.2 293);
+  --muted: hsl(250 21% 28%);
+  --accent: #a995c9;
+}
+
+.dark {
+  --background: #232030;
+  --foreground: oklch(0.93 0.03 273);
+  --ring: rgba(169, 149, 201, 0.5);
+}";
+
+    private static readonly Regex ColorTokenRegex = new(
+        """#(?:[0-9a-fA-F]{3,8})\b|(?:oklch|oklab|lch|lab|hsl|hsla|rgb|rgba|hwb|color)\([^\n\r;{}]+\)""",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+    private IReadOnlyList<string> ExtractedColors =>
+        ColorTokenRegex.Matches(_editorText)
+            .Select(match => match.Value.Trim())
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Take(24)
+            .ToArray();
 
     protected override void OnParametersSet()
     {
@@ -30,4 +103,20 @@
         base.OnParametersSet();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _editorRef?.CommandDispatcher is null)
+        {
+            return;
+        }
+
+        await _editorRef.CommandDispatcher.Dispatch(CodeMirrorSimpleCommand.Focus);
+        await _editorRef.CommandDispatcher.Dispatch(CodeMirrorSimpleCommand.ScrollIntoView);
+    }
+
+    private Task OnEditorChanged(string value)
+    {
+        _editorText = value;
+        return Task.CompletedTask;
+    }
 }

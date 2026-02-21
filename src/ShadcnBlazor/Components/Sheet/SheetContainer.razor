@@ -13,6 +13,8 @@
     <div class="sheet-content"
          data-sheet-content="@Instance.Id.ToString("N")"
          data-state="@_contentState"
+         role="dialog"
+         aria-modal="true"
          @onclick:stopPropagation>
         <CascadingValue TValue="ISheetInstance" Value="_sheetInstance">
             <DynamicComponent Type="@Instance.ComponentType"

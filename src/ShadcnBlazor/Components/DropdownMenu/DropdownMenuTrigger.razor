@@ -15,7 +15,7 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    private RenderFragment TriggerFragment => @<DropdownMenuTriggerInner OnClick="HandleClick" AsChild="AsChild">@ChildContent</DropdownMenuTriggerInner>;
+    private RenderFragment TriggerFragment => @<DropdownMenuTriggerInner OnClick="HandleClick" AsChild="AsChild" Open="@(Context?.Open ?? false)" TriggerId="@(Context?.TriggerId ?? string.Empty)">@ChildContent</DropdownMenuTriggerInner>;
 
     protected override void OnInitialized()
     {

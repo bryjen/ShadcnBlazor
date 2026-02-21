@@ -4,17 +4,21 @@
      class="@GetContentClass()"
      data-dialog-content="@Instance.Id.ToString("N")"
      data-state="closed"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="@(_hasHeader ? _titleId : null)"
+     aria-describedby="@(_hasDescription ? _descriptionId : null)"
      style="@GetDialogStyle()"
      @onclick:stopPropagation
      @attributes="AdditionalAttributes">
-    @if (!Options.Unstyled && !Options.NoHeader)
+    @if (_hasHeader)
     {
         <div class="dialog-header">
             <div class="dialog-header-text">
-                <h2 class="dialog-title">@Instance.Title</h2>
-                @if (!string.IsNullOrWhiteSpace(Options.Description))
+                <h2 class="dialog-title" id="@_titleId">@Instance.Title</h2>
+                @if (_hasDescription)
                 {
-                    <p class="dialog-description">@Options.Description</p>
+                    <p class="dialog-description" id="@_descriptionId">@Options.Description</p>
                 }
             </div>
             @if (Options.CloseButton)
@@ -61,7 +65,12 @@
     public EventCallback<Models.DialogResult> OnCloseRequested { get; set; }
 
     private readonly string _elementId = $"dialog-{Guid.NewGuid():N}";
+    private readonly string _titleId = $"dialog-title-{Guid.NewGuid():N}";
+    private readonly string _descriptionId = $"dialog-description-{Guid.NewGuid():N}";
     private DialogInstanceCascade _dialogInstance = null!;
+
+    private bool _hasHeader => !Options.Unstyled && !Options.NoHeader;
+    private bool _hasDescription => _hasHeader && !string.IsNullOrWhiteSpace(Options.Description);
 
     protected override void OnInitialized()
     {

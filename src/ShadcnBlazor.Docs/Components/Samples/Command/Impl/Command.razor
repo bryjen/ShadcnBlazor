@@ -98,7 +98,7 @@
                     : group.Key == typeof(SampleCommandItem) ? "Samples"
                     : "Other";
                 
-                RenderFragment icon = group.Key switch
+                RenderFragment? icon = group.Key switch
                 {
                     _ when group.Key == typeof(PageCommandItem) => @<LuStickyNote class="size-4"/>,
                     _ when group.Key == typeof(ComponentCommandItem) => @<LuComponent class="size-4"/>,

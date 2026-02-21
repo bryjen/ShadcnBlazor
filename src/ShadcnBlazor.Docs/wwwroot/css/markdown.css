@@ -280,3 +280,182 @@
     background: hsl(var(--muted));
     font-weight: 600;
 }
+
+/* Playground CodeMirror 6 – match docs-codeblock (VS Code Dark+ look, JetBrains Mono, var(--card)) */
+.docs-codeblock-codemirror {
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    border: 1px solid hsl(var(--border));
+}
+.docs-codeblock-codemirror .cm-editor {
+    background: var(--card) !important;
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    border-radius: var(--radius-lg);
+}
+.docs-codeblock-codemirror .cm-scroller {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+    line-height: 1.65;
+}
+.docs-codeblock-codemirror .cm-content {
+    color: #d4d4d4;
+    caret-color: #d4d4d4;
+}
+.docs-codeblock-codemirror .cm-gutters {
+    background: color-mix(in oklab, var(--card) 92%, black 8%) !important;
+    border-right: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground) / 0.5);`n}
+.docs-codeblock-codemirror .cm-activeLineGutter {
+    background: color-mix(in oklab, var(--card) 85%, black 15%);
+    color: hsl(var(--muted-foreground));
+}
+.docs-codeblock-codemirror .cm-activeLine {
+    background: color-mix(in oklab, var(--card) 88%, white 12%);
+}
+.docs-codeblock-codemirror .cm-selectionMatch,
+.docs-codeblock-codemirror .cm-selectionBackground {
+    background: hsl(var(--primary) / 0.25);
+}
+.docs-codeblock-codemirror .cm-cursor {
+    border-left-color: #d4d4d4;
+}
+/* Syntax highlighting: identical to .docs-codeblock (VS Code Dark+). cm- and cmt- (CodeMirror classHighlightStyle). */
+.docs-codeblock-codemirror .cm-content,
+.docs-codeblock-codemirror .cm-line { color: #d4d4d4; }
+.docs-codeblock-codemirror .cm-content { caret-color: #d4d4d4; }
+/* .hljs-keyword, .hljs-selector-tag → #c586c0 */
+.docs-codeblock-codemirror .cm-keyword,
+.docs-codeblock-codemirror .cmt-keyword { color: #c586c0 !important; }
+/* .hljs-string, .hljs-link, etc. → #ce9178 */
+.docs-codeblock-codemirror .cm-string,
+.docs-codeblock-codemirror .cmt-string,
+.docs-codeblock-codemirror .cmt-string2,
+.docs-codeblock-codemirror .cmt-link,
+.docs-codeblock-codemirror .cmt-url,
+.docs-codeblock-codemirror .cmt-deleted { color: #ce9178 !important; }
+/* .hljs-title, .hljs-title.class_, .hljs-title.function_ → #dcdcaa */
+.docs-codeblock-codemirror .cm-def,
+.docs-codeblock-codemirror .cm-definition,
+.docs-codeblock-codemirror .cmt-className,
+.docs-codeblock-codemirror .cmt-labelName,
+.docs-codeblock-codemirror .cmt-heading { color: #dcdcaa !important; }
+.docs-codeblock-codemirror .cmt-heading { font-weight: bold; }
+/* .hljs-built_in, .hljs-variable, .hljs-params, .hljs-attr → #9cdcfe */
+.docs-codeblock-codemirror .cm-property,
+.docs-codeblock-codemirror .cm-variableName,
+.docs-codeblock-codemirror .cm-attributeName,
+.docs-codeblock-codemirror .cmt-variableName,
+.docs-codeblock-codemirror .cmt-propertyName,
+.docs-codeblock-codemirror .cmt-variableName2 { color: #9cdcfe !important; }
+/* .hljs-type, .hljs-attribute → #4ec9b0 */
+.docs-codeblock-codemirror .cm-typeName,
+.docs-codeblock-codemirror .cmt-typeName,
+.docs-codeblock-codemirror .cmt-namespace { color: #4ec9b0 !important; }
+/* .hljs-tag, .hljs-name, .hljs-regexp, .hljs-meta → #569cd6 */
+.docs-codeblock-codemirror .cm-tag,
+.docs-codeblock-codemirror .cm-meta,
+.docs-codeblock-codemirror .cmt-meta,
+.docs-codeblock-codemirror .cmt-macroName { color: #569cd6 !important; }
+/* .hljs-number, .hljs-literal, .hljs-symbol → #b5cea8 */
+.docs-codeblock-codemirror .cm-number,
+.docs-codeblock-codemirror .cm-unit,
+.docs-codeblock-codemirror .cm-color,
+.docs-codeblock-codemirror .cmt-number,
+.docs-codeblock-codemirror .cmt-atom,
+.docs-codeblock-codemirror .cmt-literal,
+.docs-codeblock-codemirror .cmt-bool,
+.docs-codeblock-codemirror .cmt-inserted { color: #b5cea8 !important; }
+/* .hljs-comment, .hljs-quote, .hljs-doctag → #6a9955 */
+.docs-codeblock-codemirror .cm-comment,
+.docs-codeblock-codemirror .cmt-comment { color: #6a9955 !important; }
+/* .hljs-operator, .hljs-punctuation, .hljs-subst → #d4d4d4 */
+.docs-codeblock-codemirror .cm-operator,
+.docs-codeblock-codemirror .cm-punctuation,
+.docs-codeblock-codemirror .cmt-operator,
+.docs-codeblock-codemirror .cmt-punctuation,
+.docs-codeblock-codemirror .cmt-strong,
+.docs-codeblock-codemirror .cmt-emphasis { color: #d4d4d4 !important; }
+.docs-codeblock-codemirror .cmt-strong { font-weight: bold; }
+.docs-codeblock-codemirror .cmt-emphasis { font-style: italic; }
+.docs-codeblock-codemirror .cmt-invalid { color: #f44747 !important; }
+/* Scrollbar – subtle like docs codeblock */
+.docs-codeblock-codemirror .cm-scroller::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.docs-codeblock-codemirror .cm-scroller::-webkit-scrollbar-track {
+    background: transparent;
+}
+.docs-codeblock-codemirror .cm-scroller::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+}
+.docs-codeblock-codemirror .cm-scroller::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* CodeMirror docs-block hard overrides */
+.docs-codeblock-codemirror {
+    box-shadow: var(--shadow-xs);
+}
+
+.docs-codeblock-codemirror .cm-editor {
+    border-radius: 0;
+}
+
+.docs-codeblock-codemirror .cm-scroller {
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+}
+
+.docs-codeblock-codemirror .cm-activeLine {
+    background: color-mix(in oklab, var(--card) 94%, white 6%);
+}
+
+.docs-codeblock-codemirror .cm-selectionMatch,
+.docs-codeblock-codemirror .cm-selectionBackground {
+    background: hsl(var(--primary) / 0.2);
+}
+
+/* Hide CodeMirror scrollbar while preserving scrolling */
+.docs-codeblock-codemirror .cm-scroller {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.docs-codeblock-codemirror .cm-scroller::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+
+
+
+/* Customize page: CodeMirror color preview rail */
+.docs-codeblock-codemirror-with-rail {
+    position: relative;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+}
+
+.docs-codeblock-codemirror-rail {
+    position: relative;
+    background: color-mix(in oklab, var(--card) 94%, black 6%);
+    border-right: 1px solid hsl(var(--border));
+}
+
+.docs-codeblock-codemirror-swatch {
+    position: absolute;
+    left: 5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid hsl(var(--border));
+    box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.35);
+    pointer-events: none;
+}
+
+.docs-codeblock-codemirror-editor {
+    min-width: 0;
+}

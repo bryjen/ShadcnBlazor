@@ -186,9 +186,14 @@ const popoverHelper = {
 
         popover.style.maxWidth = 'none';
         popover.style.minWidth = 'none';
+        popover.style.width = 'auto';
+
+        popover.style.setProperty('--popover-width', anchorRect.width + 'px');
 
         if (isRelativeWidth) {
+            popover.style.width = anchorRect.width + 'px';
             popover.style.maxWidth = anchorRect.width + 'px';
+            popover.style.minWidth = anchorRect.width + 'px';
         } else if (isAdaptiveWidth) {
             popover.style.minWidth = anchorRect.width + 'px';
         }
@@ -426,7 +431,7 @@ class PopoverManager {
             callbackReference.invokeMethodAsync('HandleOutsidePointerDown');
         };
 
-        document.addEventListener('pointerdown', handler, true);
+        document.addEventListener('click', handler, false);
         this.outsideClickSubscriptions.set(popoverId, {
             handler,
             callbackReference
@@ -439,7 +444,7 @@ class PopoverManager {
             return;
         }
 
-        document.removeEventListener('pointerdown', subscription.handler, true);
+        document.removeEventListener('click', subscription.handler, false);
         this.outsideClickSubscriptions.delete(popoverId);
     }
 
@@ -491,3 +496,4 @@ export function disableOutsideClickClose(popoverId) {
 export function dispose() {
     popoverManager.dispose();
 }
+

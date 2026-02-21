@@ -11,6 +11,16 @@
           "Microsoft.AspNetCore.Components.Web": "9.0.5"
         }
       },
+      "GaelJ.BlazorCodeMirror6": {
+        "type": "Direct",
+        "requested": "[0.10.0, )",
+        "resolved": "0.10.0",
+        "contentHash": "UWt1pMf0pZsCWT6gqaV+Pcc8iY4sud0Zgmiu55AsC/CPN3tyFo+a83qpWxym1OKljy/fdPPWV9YlksYfHL+PQQ==",
+        "dependencies": {
+          "BuildBundlerMinifier": "3.2.449",
+          "Microsoft.AspNetCore.Components.Web": "9.0.2"
+        }
+      },
       "Markdig": {
         "type": "Direct",
         "requested": "[0.45.0, )",
@@ -57,6 +67,11 @@
           "Microsoft.Extensions.Options": "9.0.2",
           "Planetarium.LruCacheNet": "1.2.0"
         }
+      },
+      "BuildBundlerMinifier": {
+        "type": "Transitive",
+        "resolved": "3.2.449",
+        "contentHash": "uA9sYDy4VepL3xwzBTLcP2LyuVYMt0ZIT3gaSiXvGoX15Ob+rOP+hGydhevlSVd+rFo+Y+VQFEHDuWU8HBW+XA=="
       },
       "Microsoft.AspNetCore.Authorization": {
         "type": "Transitive",

@@ -28,4 +28,10 @@
     </ItemGroup>
 
     <!-- wwwroot content is automatically included as static web assets by the Razor SDK -->
+    <ItemGroup>
+        <Content Include="Components/**/*.razor.js" />
+    </ItemGroup>
 </Project>
+
+
+

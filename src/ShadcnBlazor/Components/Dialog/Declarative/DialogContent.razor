@@ -13,6 +13,8 @@
         <div class="@GetContentClass()"
              data-dialog-content="@Context.DialogId"
              data-state="@Context.AnimationState"
+             role="dialog"
+             aria-modal="true"
              style="@GetMaxWidthStyle()"
              @onclick:stopPropagation
              @attributes="AdditionalAttributes">
