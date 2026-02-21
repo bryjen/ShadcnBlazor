@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using ShadcnBlazor.Docs.Models.Theme;
 
 namespace ShadcnBlazor.Docs.Services.Theme;
@@ -7,6 +8,14 @@ namespace ShadcnBlazor.Docs.Services.Theme;
 /// </summary>
 public static class ThemeStateFullConverter
 {
+    private static readonly Regex ScopeBlockRegex = new(
+        """(?<scope>:root|\.dark)\s*\{(?<body>[^}]*)\}""",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+    private static readonly Regex VarDeclarationRegex = new(
+        """(?<name>--[a-z0-9-]+)\s*:\s*(?<value>[^;]+);""",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
     /// <summary>
     /// Builds the runtime variable map currently applied by the docs app (shared + dark).
     /// </summary>
@@ -50,6 +59,68 @@ public static class ThemeStateFullConverter
     }
 
     /// <summary>
+    /// Parses stylesheet text into a full theme state, starting from defaults.
+    /// </summary>
+    public static ThemeStateFull FromStyleSheet(string css)
+        => FromStyleSheet(css, baseline: null);
+
+    /// <summary>
+    /// Parses stylesheet text into a full theme state, overlaying values on an optional baseline.
+    /// </summary>
+    public static ThemeStateFull FromStyleSheet(string css, ThemeStateFull? baseline)
+    {
+        ArgumentNullException.ThrowIfNull(css);
+
+        var state = baseline?.Clone() ?? new ThemeStateFull();
+        var rootVars = new Dictionary<string, string>(StringComparer.Ordinal);
+        var darkVars = new Dictionary<string, string>(StringComparer.Ordinal);
+
+        foreach (Match scopeMatch in ScopeBlockRegex.Matches(css))
+        {
+            if (!scopeMatch.Success)
+            {
+                continue;
+            }
+
+            var scope = scopeMatch.Groups["scope"].Value;
+            var body = scopeMatch.Groups["body"].Value;
+            var target = string.Equals(scope, ".dark", StringComparison.OrdinalIgnoreCase)
+                ? darkVars
+                : rootVars;
+
+            foreach (Match varMatch in VarDeclarationRegex.Matches(body))
+            {
+                if (!varMatch.Success)
+                {
+                    continue;
+                }
+
+                var name = varMatch.Groups["name"].Value.Trim();
+                var value = varMatch.Groups["value"].Value.Trim();
+                if (name.Length == 0 || value.Length == 0)
+                {
+                    continue;
+                }
+
+                target[name] = value;
+            }
+        }
+
+        if (rootVars.Count > 0)
+        {
+            state.Light.ApplyCssVarMap(rootVars);
+            state.Shared.ApplyCssVarMap(rootVars);
+        }
+
+        if (darkVars.Count > 0)
+        {
+            state.Dark.ApplyCssVarMap(darkVars);
+        }
+
+        return state;
+    }
+
+    /// <summary>
     /// Serializes full theme state to CSS for a runtime style block.
     /// </summary>
     public static string ToStyleSheet(ThemeStateFull state)
@@ -79,6 +150,6 @@ public static class ThemeStateFullConverter
             .Where(pair => !string.IsNullOrWhiteSpace(pair.Value))
             .Select(pair => $"  {pair.Key}: {pair.Value};");
 
-        return string.Join("\n", [$"{selector} {{", .. lines, "}"]); 
+        return string.Join("\n", [$"{selector} {{", .. lines, "}"]);
     }
 }

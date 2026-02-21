@@ -63,6 +63,7 @@ builder.Services.AddScoped(sp => new SheetInterop(
 builder.Services.AddScoped<ISheetJsService, SheetJsService>();
 builder.Services.AddScoped<ISheetService, SheetService>();
 
+builder.Services.AddScoped<ThemeFetcher>();
 builder.Services.AddScoped<ThemeService>();
 
 await builder.Build().RunAsync();

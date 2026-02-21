@@ -3,7 +3,6 @@ using GaelJ.BlazorCodeMirror6;
 using GaelJ.BlazorCodeMirror6.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using ShadcnBlazor.Docs.Models.Theme;
 using ShadcnBlazor.Docs.Services;
 using ShadcnBlazor.Docs.Services.Theme;
 
@@ -40,7 +39,7 @@ public partial class CodeTab : ComponentBase, IAsyncDisposable
         _editorText = value;
         RebuildLineMarkers(value);
 
-        var parsedTheme = ParseThemeState(value, ThemeService.CurrentTheme);
+        var parsedTheme = ThemeStateFullConverter.FromStyleSheet(value, ThemeService.CurrentTheme);
         await ThemeService.SaveThemeAsync(parsedTheme);
 
         await InvokeAsync(StateHasChanged);
@@ -132,63 +131,6 @@ public partial class CodeTab : ComponentBase, IAsyncDisposable
     [
         new SelectionRange { From = 0, To = 0 }
     ];
-
-    private static readonly Regex ScopeBlockRegex = new(
-        """(?<scope>:root|\.dark)\s*\{(?<body>[^}]*)\}""",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-    private static readonly Regex VarDeclarationRegex = new(
-        """(?<name>--[a-z0-9-]+)\s*:\s*(?<value>[^;]+);""",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-    private static ThemeStateFull ParseThemeState(string css, ThemeStateFull baseline)
-    {
-        var next = baseline.Clone();
-        var rootVars = new Dictionary<string, string>(StringComparer.Ordinal);
-        var darkVars = new Dictionary<string, string>(StringComparer.Ordinal);
-
-        foreach (Match scopeMatch in ScopeBlockRegex.Matches(css))
-        {
-            if (!scopeMatch.Success)
-            {
-                continue;
-            }
-
-            var scope = scopeMatch.Groups["scope"].Value;
-            var body = scopeMatch.Groups["body"].Value;
-            var target = string.Equals(scope, ".dark", StringComparison.OrdinalIgnoreCase) ? darkVars : rootVars;
-
-            foreach (Match varMatch in VarDeclarationRegex.Matches(body))
-            {
-                if (!varMatch.Success)
-                {
-                    continue;
-                }
-
-                var name = varMatch.Groups["name"].Value.Trim();
-                var value = varMatch.Groups["value"].Value.Trim();
-                if (name.Length == 0 || value.Length == 0)
-                {
-                    continue;
-                }
-
-                target[name] = value;
-            }
-        }
-
-        if (rootVars.Count > 0)
-        {
-            next.Light.ApplyCssVarMap(rootVars);
-            next.Shared.ApplyCssVarMap(rootVars);
-        }
-
-        if (darkVars.Count > 0)
-        {
-            next.Dark.ApplyCssVarMap(darkVars);
-        }
-
-        return next;
-    }
     private static readonly Regex ColorTokenRegex = new(
         """#(?:[0-9a-fA-F]{3,8})\b|(?:oklch|oklab|lch|lab|hsl|hsla|rgb|rgba|hwb|color)\([^\n\r;{}]+\)""",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -366,6 +308,8 @@ public partial class CodeTab : ComponentBase, IAsyncDisposable
 }
 """;
 }
+
+
 
 
 
