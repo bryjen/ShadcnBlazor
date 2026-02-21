@@ -10,6 +10,7 @@ using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Services.Interop;
 using ShadcnBlazor.Docs.Services.Theme;
 using TailwindMerge.Extensions;
 
@@ -64,8 +65,7 @@ builder.Services.AddScoped<ISheetJsService, SheetJsService>();
 builder.Services.AddScoped<ISheetService, SheetService>();
 
 builder.Services.AddScoped<ThemeFetcher>();
+builder.Services.AddScoped<ThemeInterop>();
 builder.Services.AddScoped<ThemeService>();
 
 await builder.Build().RunAsync();
-
-

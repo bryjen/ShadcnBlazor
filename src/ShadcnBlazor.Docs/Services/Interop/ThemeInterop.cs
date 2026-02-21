@@ -34,4 +34,10 @@ public sealed class ThemeInterop
     /// <param name="cancellationToken">Cancellation token.</param>
     public ValueTask SetVarsAsync(IReadOnlyDictionary<string, string> values, CancellationToken cancellationToken = default)
         => _jsRuntime.InvokeVoidAsync("shadcnTheme.setVars", cancellationToken, values);
+
+    /// <summary>
+    /// Injects a stylesheet link if it is not already present in the document.
+    /// </summary>
+    public ValueTask InjectStylesheetAsync(string url, CancellationToken cancellationToken = default)
+        => _jsRuntime.InvokeVoidAsync("shadcnTheme.injectStylesheet", cancellationToken, url);
 }

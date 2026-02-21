@@ -21,7 +21,6 @@
             {
                 <div class="w-px h-6 bg-border"></div>
                 @RenderNavButton("Playground", "playground")
-                @RenderNavButton("Customize", "customize")
             }
         </div>
         
@@ -82,11 +81,11 @@
 
         <div class="w-px h-4 bg-border"></div>
 
-        <Button Size="@Size.Lg" Variant="@Variant.Default">
+        <Button Size="@Size.Lg" Variant="@Variant.Default" OnClick="@(_ => NavigationManager.NavigateTo("customize"))">
             <div class="flex gap-2 items-center">
-                <LuPlus class="w-fit left-2 size-4"/>
+                <LuPalette class="w-fit left-2 size-4"/>
                 <span class="max-lg:hidden flex-1 text-sm">
-                    New Project
+                    Customize Theme
                 </span>
                 <span class="hidden max-lg:block flex-1 text-sm">
                     New

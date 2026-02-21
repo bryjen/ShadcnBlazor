@@ -16,6 +16,13 @@ public static class ThemeStateFullConverter
         """(?<name>--[a-z0-9-]+)\s*:\s*(?<value>[^;]+);""",
         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+    private static readonly string[] SharedFontVars =
+    [
+        "--font-sans",
+        "--font-serif",
+        "--font-mono"
+    ];
+
     /// <summary>
     /// Builds the runtime variable map currently applied by the docs app (shared + dark).
     /// </summary>
@@ -127,8 +134,10 @@ public static class ThemeStateFullConverter
     {
         ArgumentNullException.ThrowIfNull(state);
 
+        var sharedVars = state.Shared.ToCssVarMap();
+
         var rootVars = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (var pair in state.Shared.ToCssVarMap())
+        foreach (var pair in sharedVars)
         {
             rootVars[pair.Key] = pair.Value;
         }
@@ -138,10 +147,34 @@ public static class ThemeStateFullConverter
             rootVars[pair.Key] = pair.Value;
         }
 
+        var darkVars = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var pair in state.Dark.ToCssVarMap())
+        {
+            darkVars[pair.Key] = pair.Value;
+        }
+
+        // Fonts are modeled as shared tokens. Always apply shared font vars last so
+        // mode-specific defaults do not overwrite runtime user selections.
+        ApplySharedFontVars(rootVars, sharedVars);
+        ApplySharedFontVars(darkVars, sharedVars);
+
         return string.Concat(
             SerializeSelector(":root", rootVars),
             "\n",
-            SerializeSelector(".dark", state.Dark.ToCssVarMap()));
+            SerializeSelector(".dark", darkVars));
+    }
+
+    private static void ApplySharedFontVars(
+        IDictionary<string, string> target,
+        IReadOnlyDictionary<string, string> sharedVars)
+    {
+        foreach (var varName in SharedFontVars)
+        {
+            if (sharedVars.TryGetValue(varName, out var value) && !string.IsNullOrWhiteSpace(value))
+            {
+                target[varName] = value;
+            }
+        }
     }
 
     private static string SerializeSelector(string selector, IReadOnlyDictionary<string, string> values)

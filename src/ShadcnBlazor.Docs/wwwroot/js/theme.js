@@ -20,6 +20,21 @@
         });
     };
 
+    window.shadcnTheme.injectStylesheet = function (url) {
+        if (!url) {
+            return;
+        }
+
+        if (document.querySelector('link[href="' + url + '"]')) {
+            return;
+        }
+
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        document.head.appendChild(link);
+    };
+
     window.shadcnTheme.setPrimary = function (hex) {
         window.shadcnTheme.setVar('--primary', hex);
     };
