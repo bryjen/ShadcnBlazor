@@ -51,7 +51,16 @@ public class ThemeFetcher(HttpClient http)
     
     public static readonly string[] BuiltInThemes = 
     [
-        "brownie", "claude", "claude+", "default", "modern-minimal", "portfolio-theme", "sage-green", "vtron", "zen-inspired-theme"
+        "brownie", 
+        "claude", 
+        "claude+", 
+        "default", 
+        "modern-minimal", 
+        "portfolio-theme", 
+        "sage-green", 
+        "vtron", 
+        "zen-inspired-theme",
+        "verscrow-1.2"
     ];
     
     private static string FormatThemeName(string fileName) =>

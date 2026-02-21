@@ -93,8 +93,19 @@ public sealed class ThemeService
             .Where(preset => preset is not null)
             .Cast<ThemePreset>()
             .ToList();
+        
+        // By default, this service is initialized with a hard-coded version of the default theme as a C# object.
+        // This prevents the current theme preset from being a null value, which is "frustrating" for consumer code.
+        // Here, we replace the hard-coded default theme with the default from the above, if present.
+        var defaultPreset = filtered.FirstOrDefault(preset =>
+            string.Equals(preset.Name, "Default", StringComparison.InvariantCultureIgnoreCase));
+        if (defaultPreset is not null)
+        {
+            _themes.Clear();
+            CurrentTheme = defaultPreset.Theme;
+        }
+        
         _themes.AddRange(filtered);
-
         _loadedExternalThemes = true;
     }
 

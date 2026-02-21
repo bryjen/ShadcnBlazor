@@ -69,14 +69,6 @@ public partial class PopoverProvider : ComponentBase, IDisposable
 
     internal void RegisterOrUpdate(PopoverRegistration registration)
     {
-        if (_registrations.TryGetValue(registration.PopoverId, out var existing))
-        {
-            if (AreEquivalent(existing, registration))
-            {
-                return;
-            }
-        }
-
         _registrations[registration.PopoverId] = registration;
         StateHasChanged();
     }
@@ -89,21 +81,6 @@ public partial class PopoverProvider : ComponentBase, IDisposable
         }
     }
 
-    private static bool AreEquivalent(PopoverRegistration left, PopoverRegistration right)
-    {
-        return left.PopoverId == right.PopoverId
-            && left.AnchorId == right.AnchorId
-            && left.Content == right.Content
-            && left.Render == right.Render
-            && left.Open == right.Open
-            && left.AnchorOrigin == right.AnchorOrigin
-            && left.TransformOrigin == right.TransformOrigin
-            && left.WidthMode == right.WidthMode
-            && left.ClampList == right.ClampList
-            && left.PopoverClass == right.PopoverClass
-            && left.PopoverAttributes == right.PopoverAttributes
-            && left.Offset == right.Offset;
-    }
 
     private Dictionary<string, object> GetPopoverAttributes(PopoverRegistration registration)
     {

@@ -5,4 +5,5 @@ namespace ShadcnBlazor.Components.Select;
 /// </summary>
 /// <param name="Value">The value of the option.</param>
 /// <param name="DisplayText">The text displayed to the user.</param>
-public readonly record struct SelectOption<T>(T Value, string DisplayText);
+/// <param name="Disabled">Whether the option is disabled and cannot be selected.</param>
+public readonly record struct SelectOption<T>(T Value, string DisplayText, bool Disabled = false);

@@ -493,7 +493,11 @@ export function disableOutsideClickClose(popoverId) {
     popoverManager.disableOutsideClickClose(popoverId);
 }
 
+export function repositionAll() {
+    popoverManager.helper.repositionAll();
+}
 export function dispose() {
     popoverManager.dispose();
 }
+
 
