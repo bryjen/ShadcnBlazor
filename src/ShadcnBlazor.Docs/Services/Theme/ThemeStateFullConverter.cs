@@ -1,4 +1,6 @@
-namespace ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Models.Theme;
+
+namespace ShadcnBlazor.Docs.Services.Theme;
 
 /// <summary>
 /// Converts full theme state to and from runtime CSS variable maps.

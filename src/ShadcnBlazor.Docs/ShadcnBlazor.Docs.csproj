@@ -57,4 +57,15 @@
         <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
     </ItemGroup>
     
+    <ItemGroup>
+      <None Include="wwwroot\themes\brownie.css" />
+      <None Include="wwwroot\themes\claude+.css" />
+      <None Include="wwwroot\themes\claude.css" />
+      <None Include="wwwroot\themes\modern-minimal.css" />
+      <None Include="wwwroot\themes\portfolio-theme.css" />
+      <None Include="wwwroot\themes\sage-green.css" />
+      <None Include="wwwroot\themes\vtron.css" />
+      <None Include="wwwroot\themes\zen-inspired-theme.css" />
+    </ItemGroup>
+    
 </Project>

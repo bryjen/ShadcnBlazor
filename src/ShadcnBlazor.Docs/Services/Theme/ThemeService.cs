@@ -1,4 +1,6 @@
-namespace ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Models.Theme;
+
+namespace ShadcnBlazor.Docs.Services.Theme;
 
 /// <summary>
 /// Theme service that manages the current theme state and exposes runtime stylesheet output.
@@ -82,6 +84,7 @@ public sealed class ThemeService
         ThemeChanged?.Invoke();
         return Task.CompletedTask;
     }
+    
     private static ThemeStateFull CreateDefaultTheme()
     {
         var light = new ThemeState();

@@ -10,6 +10,7 @@ using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Services.Theme;
 using TailwindMerge.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

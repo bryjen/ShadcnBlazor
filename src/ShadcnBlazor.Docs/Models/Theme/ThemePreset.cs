@@ -1,4 +1,6 @@
-namespace ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Services;
+
+namespace ShadcnBlazor.Docs.Models.Theme;
 
 /// <summary>
 /// Named preset theme with display swatches and full token values.

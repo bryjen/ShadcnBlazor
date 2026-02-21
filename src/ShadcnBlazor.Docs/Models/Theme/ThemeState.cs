@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Docs.Services;
+namespace ShadcnBlazor.Docs.Models.Theme;
 
 /// <summary>
 /// Represents the current theme values for the docs app.

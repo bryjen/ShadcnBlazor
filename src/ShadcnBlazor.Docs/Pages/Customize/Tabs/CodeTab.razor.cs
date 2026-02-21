@@ -3,7 +3,9 @@ using GaelJ.BlazorCodeMirror6;
 using GaelJ.BlazorCodeMirror6.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using ShadcnBlazor.Docs.Models.Theme;
 using ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Services.Theme;
 
 namespace ShadcnBlazor.Docs.Pages.Customize.Tabs;
 

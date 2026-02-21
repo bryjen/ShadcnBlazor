@@ -710,8 +710,14 @@
   .w-\[15rem\] {
     width: 15rem;
   }
+  .w-\[16rem\] {
+    width: 16rem;
+  }
   .w-\[17\.5\%\] {
     width: 17.5%;
+  }
+  .w-\[27\.5vw\] {
+    width: 27.5vw;
   }
   .w-\[30vw\] {
     width: 30vw;
@@ -1524,6 +1530,9 @@
   .pt-1 {
     padding-top: calc(var(--spacing) * 1);
   }
+  .pt-2 {
+    padding-top: calc(var(--spacing) * 2);
+  }
   .pt-3 {
     padding-top: calc(var(--spacing) * 3);
   }
@@ -1559,6 +1568,21 @@
   }
   .pb-4 {
     padding-bottom: calc(var(--spacing) * 4);
+  }
+  .pb-6 {
+    padding-bottom: calc(var(--spacing) * 6);
+  }
+  .pb-7 {
+    padding-bottom: calc(var(--spacing) * 7);
+  }
+  .pb-8 {
+    padding-bottom: calc(var(--spacing) * 8);
+  }
+  .pb-36 {
+    padding-bottom: calc(var(--spacing) * 36);
+  }
+  .pb-67 {
+    padding-bottom: calc(var(--spacing) * 67);
   }
   .pl-0 {
     padding-left: calc(var(--spacing) * 0);
@@ -1633,6 +1657,9 @@
   }
   .text-\[0\.67rem\] {
     font-size: 0.67rem;
+  }
+  .text-\[0\.775rem\] {
+    font-size: 0.775rem;
   }
   .text-\[10px\] {
     font-size: 10px;
@@ -1717,6 +1744,12 @@
     color: var(--foreground);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--foreground) 70%, transparent);
+    }
+  }
+  .text-foreground\/75 {
+    color: var(--foreground);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--foreground) 75%, transparent);
     }
   }
   .text-foreground\/85 {

@@ -1,8 +1,24 @@
-<div class="grid gap-4 py-4">
-    Instructions are supposed to be here. WIP.
-</div>
-<div class="flex justify-end gap-2 pt-4">
-    <Button Variant="@Variant.Default" OnClick="OnSave">Close</Button>
+<div class="flex flex-col text-sm text-muted-foreground gap-4">
+    <div class="space-y-4">
+        <div>
+            There are two main tabs, <code>Values</code> and <code>Code</code>. 
+            <code>Values</code> present a cleaner and more structured way to edit theme values.
+        </div>
+        <div>
+            <code>Code</code> presents the current theme as raw CSS. It is compatible with any <code>shadcn/ui</code> theme.
+            It is mainly for <b>pasting</b> existing themes. For example themes, see <a class="underline font-semibold text-foreground" href="https://tweakcn.com/community" target="_blank">tweakcn.com/community</a>.
+            To copy a theme, select a theme, click <code>Code</code>, copy the CSS, and then paste it in the editor.
+        </div>
+        
+        <Alert Variant="@AlertVariant.Destructive">
+            <LuTriangleAlert />
+            <p class="text-muted-foreground">Note that not all fonts are supported.</p>
+        </Alert>
+    </div>
+    
+    <div class="flex justify-end">
+        <Button Variant="@Variant.Outline" OnClick="OnSave">Close</Button>
+    </div>
 </div>
 
 @code {

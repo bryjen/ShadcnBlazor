@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Docs.Services;
+namespace ShadcnBlazor.Docs.Models.Theme;
 
 /// <summary>
 /// Full theme state with separate light, dark, and shared token sets.

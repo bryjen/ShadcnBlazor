@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Docs.Services;
+using ShadcnBlazor.Docs.Services.Theme;
 
 namespace ShadcnBlazor.Docs.Pages.Customize.Tabs;
 

@@ -10,7 +10,7 @@ public partial class Customize : ComponentBase
     [Inject]
     private IDialogService DialogService { get; set; } = null!;
     
-    private Tab _selectedTab = Tab.Code;
+    private Tab _selectedTab = Tab.Values;
 
     private CodeTab _codeTab = null!;
 
@@ -26,7 +26,11 @@ public partial class Customize : ComponentBase
     private void OpenDialog()
     {
         var parameters = new DialogParameters();
-        DialogService.Show<CodeTabInfoDialog>(string.Empty, parameters);
+        var options = new DialogOptions
+        {
+            NoHeader = true
+        };
+        DialogService.Show<CodeTabInfoDialog>(string.Empty, parameters, options);
     }
 }
 
