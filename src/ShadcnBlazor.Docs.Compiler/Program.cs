@@ -90,6 +90,8 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         "ShadcnBlazor.Components.Input.Input",
         "ShadcnBlazor.Components.Popover.Popover",
         "ShadcnBlazor.Components.Radio.Radio",
+        "ShadcnBlazor.Components.Combobox.Combobox`1",
+        "ShadcnBlazor.Components.MultiSelect.MultiSelect`1",
         "ShadcnBlazor.Components.Select.Select`1",
         "ShadcnBlazor.Components.Skeleton.Skeleton",
         "ShadcnBlazor.Components.Slider.Slider",

@@ -1,0 +1,70 @@
+@page "/components/combobox"
+@using ShadcnBlazor.Docs.Pages.Components.Combobox.Examples
+
+<ComponentDocPage Metadata="@Metadata"
+                  InstallOptions="@InstallOptions"
+                  ApiDoc="@ApiDocumentation.Combobox">
+    <UnderHeader>
+        <div class="w-fit">
+            <Tooltip>
+                <Anchor>
+                    <div @onclick="@(_ => NavigateToWaiAriaPage())">
+                        <Badge Size="@Size.Md" Class="cursor-pointer w-full h-full">
+                            <span class="font-semibold">WAI-ARIA Compliant*</span>
+                        </Badge>
+                    </div>
+                </Anchor>
+                <ChildContent>
+                    <span class="text-[0.7rem] text-center text-muted-foreground">Excludes browser and OS-intercepted behaviors*</span>
+                </ChildContent>
+            </Tooltip>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Combobox" />
+
+        <DocsSection Title="Examples" Id="examples">
+            <DocsSubSection Title="Usage" Id="usage">
+                <p class="mb-3">The Combobox is a searchable single-select dropdown. Type to filter the list in real time. Use <code>@@bind-Value</code> for two-way binding. Provide options via <code>Items</code> or declarative children. Requires <code>PopoverProvider</code> in your layout.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Combobox_Examples_ComboboxBasicExample })">
+                    <ComboboxBasicExample />
+                </ComponentPreview>
+            </DocsSubSection>
+
+            <DocsSubSection Title="Declarative" Id="declarative">
+                <p class="mb-3">Use <code>SelectItem</code>, <code>SelectLabel</code>, <code>SelectSeparator</code>, and <code>SelectGroup</code> as child content for inline option declaration. When search text is active, labels and separators are hidden so the filtered results are clean.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Combobox_Examples_ComboboxDeclarativeExample })">
+                    <ComboboxDeclarativeExample />
+                </ComponentPreview>
+            </DocsSubSection>
+        </DocsSection>
+    </ChildContent>
+</ComponentDocPage>
+
+@code {
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; } = null!;
+
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Combobox");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add combobox",
+    };
+
+    private async Task NavigateToWaiAriaPage() =>
+        await JsRuntime.InvokeVoidAsync("open", "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/", "_blank");
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Real-time text filtering as you type</div> },
+        __builder => { <div>Controlled (<code>@@bind-Value</code>, <code>ValueChanged</code>)</div> },
+        __builder => { <div>Two option modes: <code>Items</code> or declarative children</div> },
+        __builder => { <div>Keyboard navigation (arrows, Enter, Escape, Tab)</div> },
+        __builder => { <div>ARIA-compliant combobox/listbox semantics (<code>aria-autocomplete="list"</code>)</div> },
+        __builder => { <div>Disabled support (trigger + per-item)</div> },
+        __builder => { <div>"No results" empty state</div> },
+        __builder => { <div>Placeholder + selected-value display</div> },
+    };
+}

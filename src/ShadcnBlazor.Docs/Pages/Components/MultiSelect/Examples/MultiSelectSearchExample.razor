@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-4">
+    <MultiSelect T="string"
+                 Label="Technologies"
+                 @bind-Values="_selected"
+                 Items="@_options"
+                 Placeholder="Select technologies"
+                 Search="true"
+                 ClearButton="true" />
+
+    <p class="text-sm text-muted-foreground">
+        Selected: @((_selected.Count > 0) ? string.Join(", ", _selected) : "none")
+    </p>
+</div>
+
+@code {
+    private IReadOnlyList<string> _selected = [];
+
+    private readonly SelectOption<string>[] _options =
+    [
+        new("blazor", ".NET / Blazor"),
+        new("csharp", "C#"),
+        new("aspnet", "ASP.NET Core"),
+        new("ef", "Entity Framework"),
+        new("signalr", "SignalR"),
+        new("grpc", "gRPC"),
+        new("azure", "Azure"),
+        new("docker", "Docker"),
+        new("kubernetes", "Kubernetes"),
+        new("react", "React"),
+        new("typescript", "TypeScript"),
+    ];
+}

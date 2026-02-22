@@ -67,12 +67,18 @@ public static class ComponentRegistry
                 ]),
             ]
         },
-        new() 
+        new()
         {
-            Name = nameof(Accordion), 
+            Name = "Combobox",
+            Description = "Searchable dropdown that lets the user filter and pick a single value; requires PopoverProvider in layout.",
+            Dependencies = CreateDeps(nameof(Popover)),
+            Tags = [ComponentDefinition.Tag.Alpha]
+        },
+        new()
+        {
+            Name = nameof(Accordion),
             Description = "A vertically stacked set of interactive headings that each reveal a section of content.", 
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.Beta]
         },
         new() 
         {
@@ -108,7 +114,6 @@ public static class ComponentRegistry
             Name = nameof(Card), 
             Description = "Container for content with header, body, and footer sections.", 
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.Beta]
         },
         new() 
         {
@@ -135,7 +140,6 @@ public static class ComponentRegistry
                     "ShadcnBlazor.Components.Dialog.Declarative",
                     "ShadcnBlazor.Components.Dialog.Models"]),
             ],
-            Tags = [ComponentDefinition.Tag.Beta]
         },
         new()
         {
@@ -148,7 +152,6 @@ public static class ComponentRegistry
             Name = nameof(Input), 
             Description = "Single-line text input with variant styling.", 
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.Beta]
         },
         new()
         {
@@ -169,24 +172,29 @@ public static class ComponentRegistry
             Description = "Radio and RadioCard options for single selection within a RadioGroup.", 
             Dependencies = CreateDeps()
         },
-        new() 
+        new()
         {
-            Name = "Select", 
+            Name = "Select",
             Description = "Dropdown select for choosing a single value from a list of options; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover))
+        },
+        new()
+        {
+            Name = "MultiSelect",
+            Description = "Dropdown select for choosing multiple values from a list; requires PopoverProvider in layout.",
+            Dependencies = CreateDeps(nameof(Popover)),
+            Tags = [ComponentDefinition.Tag.Alpha]
         },
         new() 
         {
             Name = nameof(Skeleton), 
             Description = "Loading placeholder with pulse animation.", 
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.Beta]
         },
         new() 
         {
             Name = nameof(Slider), 
             Description = "Single-thumb slider for selecting a value within a min/max range.", 
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.Alpha]
         },
         new() 
         {

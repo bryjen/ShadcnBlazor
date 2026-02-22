@@ -2,25 +2,26 @@ using Microsoft.AspNetCore.Components;
 
 namespace ShadcnBlazor.Components.Select;
 
-internal enum SelectNodeKind
+public enum SelectNodeKind
 {
     Item,
     Label,
     Separator,
+    Action,
 }
 
-internal sealed class SelectDeclarativeNode
+public sealed class SelectDeclarativeNode
 {
     public int Id { get; init; }
     public SelectNodeKind Kind { get; init; }
     public object? Value { get; set; }
     public string Text { get; set; } = string.Empty;
     public bool Disabled { get; set; }
-    
     public RenderFragment? Render { get; set; }
+    public Func<Task>? Callback { get; set; }
 }
 
-internal sealed class SelectDeclarativeRegistry
+public sealed class SelectDeclarativeRegistry
 {
     private readonly List<SelectDeclarativeNode> _nodes = [];
     private int _nextId = 1;
@@ -74,7 +75,10 @@ internal sealed class SelectDeclarativeRegistry
         if (node is null)
             return;
 
-        if (Equals(node.Value, value) && string.Equals(node.Text, text, StringComparison.Ordinal) && node.Disabled == disabled)
+        if (Equals(node.Value, value)
+            && string.Equals(node.Text, text, StringComparison.Ordinal)
+            && node.Disabled == disabled
+            && ReferenceEquals(node.Render, render))
             return;
 
         node.Value = value;

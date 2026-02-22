@@ -68,9 +68,5 @@
       <None Include="wwwroot\themes\zen-inspired-theme.css" />
     </ItemGroup>
     
-    <ItemGroup>
-      <AdditionalFiles Include="Components\Samples\Command\CommandInline.razor" />
-      <AdditionalFiles Include="Components\Samples\Command\CommandSearchInput.razor" />
-    </ItemGroup>
     
 </Project>
