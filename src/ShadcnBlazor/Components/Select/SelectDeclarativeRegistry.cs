@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components;
+
 namespace ShadcnBlazor.Components.Select;
 
 internal enum SelectNodeKind
@@ -14,6 +16,8 @@ internal sealed class SelectDeclarativeNode
     public object? Value { get; set; }
     public string Text { get; set; } = string.Empty;
     public bool Disabled { get; set; }
+    
+    public RenderFragment? Render { get; set; }
 }
 
 internal sealed class SelectDeclarativeRegistry
@@ -22,8 +26,8 @@ internal sealed class SelectDeclarativeRegistry
     private int _nextId = 1;
 
     public event Action? Changed;
-
-    public int RegisterItem(object? value, string text, bool disabled)
+    
+    public int RegisterItem(object? value, string text, bool disabled, RenderFragment? render = null)
     {
         var id = _nextId++;
         _nodes.Add(new SelectDeclarativeNode
@@ -32,7 +36,8 @@ internal sealed class SelectDeclarativeRegistry
             Kind = SelectNodeKind.Item,
             Value = value,
             Text = text,
-            Disabled = disabled
+            Disabled = disabled,
+            Render = render
         });
         Changed?.Invoke();
         return id;
@@ -63,7 +68,7 @@ internal sealed class SelectDeclarativeRegistry
         return id;
     }
 
-    public void UpdateItem(int id, object? value, string text, bool disabled)
+    public void UpdateItem(int id, object? value, string text, bool disabled, RenderFragment? render = null)
     {
         var node = _nodes.FirstOrDefault(x => x.Id == id && x.Kind == SelectNodeKind.Item);
         if (node is null)
@@ -75,6 +80,7 @@ internal sealed class SelectDeclarativeRegistry
         node.Value = value;
         node.Text = text;
         node.Disabled = disabled;
+        node.Render = render;
         Changed?.Invoke();
     }
 

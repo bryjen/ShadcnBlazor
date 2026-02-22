@@ -7,6 +7,7 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JsRuntime
 
+@* does not render anything, it just allows the registry to be built *@
 @if (ChildContent is not null)
 {
     <CascadingValue Value="_declarativeRegistry">
@@ -79,6 +80,7 @@
                     var isSelected = IsSelected(node);
                     var isDisabled = node.Disabled;
                     var isActive = !isDisabled && _activeIndex == index;
+                    
                     <button type="button"
                             id="@GetOptionId(index)"
                             role="option"
@@ -90,9 +92,9 @@
                             @onmouseenter="@(_ => HandleOptionMouseEnter(index))"
                             @onclick="() => SelectOptionAtIndexAsync(index)"
                             @onclick:stopPropagation="true">
-                        @if (RenderItem is not null)
+                        @if (node.Render is not null)
                         {
-                            @RenderItem(ToSelectOption(node))
+                            @node.Render
                         }
                         else
                         {
@@ -102,6 +104,7 @@
                                     <polyline points="20 6 9 17 4 12"/>
                                 </svg>
                             }
+
                             <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@node.Text</span>
                         }
                     </button>

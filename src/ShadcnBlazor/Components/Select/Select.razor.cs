@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Select;
@@ -8,7 +9,7 @@ namespace ShadcnBlazor.Components.Select;
 /// <summary>
 /// Dropdown select component for choosing a single value from a list of options.
 /// </summary>
-public partial class Select<T>
+public partial class Select<T> : ShadcnComponentBase
 {
     /// <summary>
     /// Optional label displayed at the top of the dropdown content and used as the trigger aria-label.
@@ -217,7 +218,7 @@ public partial class Select<T>
     private List<SelectDeclarativeNode> GetRenderNodes()
     {
         var declarativeNodes = _declarativeRegistry.Snapshot();
-        var programmaticNodes = Items?.ToList() ?? [];
+        var programmaticNodes = Items.ToList();
 
         if (declarativeNodes.Count > 0 && programmaticNodes.Count > 0)
         {
@@ -233,6 +234,7 @@ public partial class Select<T>
             Value = x.Value,
             Text = x.DisplayText,
             Disabled = x.Disabled,
+            Render = RenderItem is not null ? builder => RenderItem(x)(builder) : null
         })];
     }
 
@@ -651,6 +653,7 @@ public partial class Select<T>
             "/ShadcnBlazor/_content/ShadcnBlazor/Components/Select/Select.razor.js");
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         _declarativeRegistry.Changed -= HandleDeclarativeChanged;
