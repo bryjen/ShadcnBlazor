@@ -1,4 +1,4 @@
-namespace ShadcnBlazor.Docs.Components.Samples.Command.Base.Models;
+namespace ShadcnBlazor.Docs.Components.Samples.Command.Models;
 
 public abstract class CommandItem
 {

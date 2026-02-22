@@ -7,6 +7,13 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JsRuntime
 
+@if (ChildContent is not null)
+{
+    <CascadingValue Value="_declarativeRegistry">
+        @ChildContent
+    </CascadingValue>
+}
+
 <Popover Open="@_open"
          OpenChanged="HandleOpenChanged"
          CloseOnOutsideClick="true"
@@ -50,29 +57,42 @@
                  aria-labelledby="@_triggerId"
                  class="max-h-[var(--radix-select-content-available-height)] overflow-y-auto overflow-x-hidden">
                 @{
-                    var options = GetOptions();
+                    var nodes = GetRenderNodes();
                 }
-                @for (var i = 0; i < options.Count; i++)
+                @for (var i = 0; i < nodes.Count; i++)
                 {
-                    var optionIndex = i;
-                    var item = options[optionIndex];
-                    var isSelected = IsSelected(item.Value);
-                    var isDisabled = item.Disabled;
-                    var isActive = !isDisabled && _activeIndex == optionIndex;
+                    var index = i;
+                    var node = nodes[index];
+
+                    if (node.Kind == SelectNodeKind.Label)
+                    {
+                        <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground" role="presentation">@node.Text</div>
+                        continue;
+                    }
+
+                    if (node.Kind == SelectNodeKind.Separator)
+                    {
+                        <div class="my-1 h-px bg-border" role="separator"></div>
+                        continue;
+                    }
+
+                    var isSelected = IsSelected(node);
+                    var isDisabled = node.Disabled;
+                    var isActive = !isDisabled && _activeIndex == index;
                     <button type="button"
-                            id="@GetOptionId(optionIndex)"
+                            id="@GetOptionId(index)"
                             role="option"
                             tabindex="-1"
                             aria-selected="@isSelected"
                             aria-disabled="@isDisabled"
                             disabled="@isDisabled"
                             class="@GetOptionClass(isSelected, isActive, isDisabled)"
-                            @onmouseenter="@(_ => HandleOptionMouseEnter(optionIndex))"
-                            @onclick="() => SelectOptionAtIndexAsync(optionIndex)"
+                            @onmouseenter="@(_ => HandleOptionMouseEnter(index))"
+                            @onclick="() => SelectOptionAtIndexAsync(index)"
                             @onclick:stopPropagation="true">
                         @if (RenderItem is not null)
                         {
-                            @RenderItem(item)
+                            @RenderItem(ToSelectOption(node))
                         }
                         else
                         {
@@ -82,7 +102,7 @@
                                     <polyline points="20 6 9 17 4 12"/>
                                 </svg>
                             }
-                            <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@item.DisplayText</span>
+                            <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@node.Text</span>
                         }
                     </button>
                 }

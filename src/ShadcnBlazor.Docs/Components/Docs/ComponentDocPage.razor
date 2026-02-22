@@ -11,7 +11,12 @@
 <div class="flex flex-col gap-8 min-w-0">
     <div class="flex flex-col gap-1">
         <h1 class="text-3xl font-bold">@Metadata.Name</h1>
-        <p class="text-base text-muted-foreground">@Metadata.Description</p>
+        <p class="text-base text-muted-foreground mb-4">@Metadata.Description</p>
+        
+        @if (UnderHeader is not null)
+        {
+            @UnderHeader
+        }
     </div>
 
     <DocsSection Title="Installation" Id="installation">
@@ -49,6 +54,9 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+    
+    [Parameter]
+    public RenderFragment? UnderHeader { get; set; }
 
     protected override void OnParametersSet()
     {

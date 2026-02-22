@@ -10,16 +10,45 @@ namespace ShadcnBlazor.Components.Select;
 /// </summary>
 public partial class Select<T>
 {
+    /// <summary>
+    /// Optional label displayed at the top of the dropdown content and used as the trigger aria-label.
+    /// </summary>
     [Parameter]
     public string? Label { get; set; }
+
+    /// <summary>
+    /// Currently selected value.
+    /// </summary>
     [Parameter]
     public T? Value { get; set; }
+
+    /// <summary>
+    /// Callback invoked when the selected value changes.
+    /// </summary>
     [Parameter]
     public EventCallback<T?> ValueChanged { get; set; }
-    [Parameter, EditorRequired]
-    public required IEnumerable<SelectOption<T>> Items { get; set; }
+
+    /// <summary>
+    /// Programmatic list of options to render. Do not use together with declarative child items.
+    /// </summary>
+    [Parameter]
+    public IEnumerable<SelectOption<T>> Items { get; set; } = [];
+
+    /// <summary>
+    /// Declarative option content (for example SelectItem, SelectLabel, SelectSeparator, SelectGroup).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Placeholder text shown when no value is selected.
+    /// </summary>
     [Parameter]
     public string Placeholder { get; set; } = "Select...";
+
+    /// <summary>
+    /// Size variant applied to the trigger.
+    /// </summary>
     [Parameter]
     public Size Size { get; set; } = Size.Md;
 
@@ -28,10 +57,22 @@ public partial class Select<T>
     /// </summary>
     [Parameter]
     public bool PopoverFitContent { get; set; }
+
+    /// <summary>
+    /// When true, body scroll is locked while the popover is open.
+    /// </summary>
     [Parameter]
     public bool LockScroll { get; set; } = true;
+
+    /// <summary>
+    /// Disables the trigger and prevents interaction.
+    /// </summary>
     [Parameter]
     public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Additional CSS classes applied to the trigger element.
+    /// </summary>
     [Parameter]
     public string TriggerClass { get; set; } = string.Empty;
 
@@ -41,18 +82,34 @@ public partial class Select<T>
     [Parameter]
     public int? MaxVisibleItems { get; set; }
 
+    /// <summary>
+    /// Custom template used to render each selectable item.
+    /// </summary>
     [Parameter]
     public RenderFragment<SelectOption<T>>? RenderItem { get; set; }
 
+    private readonly SelectDeclarativeRegistry _declarativeRegistry = new();
     private readonly string _triggerId = $"select-trigger-{Guid.NewGuid():N}";
     private readonly string _listboxId = $"select-listbox-{Guid.NewGuid():N}";
+
     private bool _open;
     private int? _activeIndex;
     private string? _pendingScrollOptionId;
     private IJSObjectReference? _module;
     private bool _maxVisibleItemsListenerRegistered;
-    private int _lastMeasuredOptionCount = -1;
+    private int _lastMeasuredNodeCount = -1;
     private int? _lastMeasuredMaxVisibleItems;
+    private const int PageJumpSize = 10;
+
+    protected override void OnInitialized()
+    {
+        _declarativeRegistry.Changed += HandleDeclarativeChanged;
+    }
+
+    private void HandleDeclarativeChanged()
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
 
     private string GetContentClass()
     {
@@ -65,8 +122,8 @@ public partial class Select<T>
     {
         var baseClasses = string.Join(" ", [
             "flex w-full items-center justify-between gap-2 rounded-md border border-input",
-            "bg-input/30 shadow-xs transition-colors hover:bg-input/50",
-            "focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+            "bg-input/30 shadow-xs hover:bg-input/50",
+            "transition-all duration-200 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
             "[&>svg]:size-4 [&>svg]:shrink-0",
         ]);
         var sizeClasses = Size switch
@@ -107,15 +164,44 @@ public partial class Select<T>
         if (Value is null)
             return Placeholder;
 
-        var option = GetOptions().FirstOrDefault(o => EqualityComparer<T>.Default.Equals(o.Value, Value));
-        return option.DisplayText;
+        var nodes = GetRenderNodes();
+        var selected = nodes.FirstOrDefault(IsSelected);
+        return selected?.Text ?? Placeholder;
     }
 
-    private bool IsSelected(T? value)
+    private bool IsSelected(SelectDeclarativeNode node)
     {
-        if (value is null && Value is null) return true;
-        if (value is null || Value is null) return false;
-        return EqualityComparer<T>.Default.Equals(value, Value);
+        if (node.Kind != SelectNodeKind.Item)
+            return false;
+
+        if (!TryGetNodeValue(node, out var nodeValue))
+            return false;
+
+        if (nodeValue is null && Value is null)
+            return true;
+
+        if (nodeValue is null || Value is null)
+            return false;
+
+        return EqualityComparer<T>.Default.Equals(nodeValue, Value);
+    }
+
+    private bool TryGetNodeValue(SelectDeclarativeNode node, out T? typedValue)
+    {
+        if (node.Value is null)
+        {
+            typedValue = default;
+            return true;
+        }
+
+        if (node.Value is T value)
+        {
+            typedValue = value;
+            return true;
+        }
+
+        typedValue = default;
+        return false;
     }
 
     private string? GetActiveDescendant()
@@ -128,76 +214,127 @@ public partial class Select<T>
 
     private string GetOptionId(int index) => $"{_listboxId}-option-{index}";
 
-    private List<SelectOption<T>> GetOptions() => [.. Items];
-
-    private int? GetSelectedIndex(List<SelectOption<T>> options)
+    private List<SelectDeclarativeNode> GetRenderNodes()
     {
-        for (var i = 0; i < options.Count; i++)
+        var declarativeNodes = _declarativeRegistry.Snapshot();
+        var programmaticNodes = Items?.ToList() ?? [];
+
+        if (declarativeNodes.Count > 0 && programmaticNodes.Count > 0)
         {
-            if (EqualityComparer<T>.Default.Equals(options[i].Value, Value))
+            throw new InvalidOperationException("Select cannot use both Items and declarative child items at the same time. Use one mode only.");
+        }
+
+        if (declarativeNodes.Count > 0)
+            return [.. declarativeNodes];
+
+        return [.. programmaticNodes.Select(x => new SelectDeclarativeNode
+        {
+            Kind = SelectNodeKind.Item,
+            Value = x.Value,
+            Text = x.DisplayText,
+            Disabled = x.Disabled,
+        })];
+    }
+
+    private static bool IsSelectable(List<SelectDeclarativeNode> nodes, int index)
+    {
+        return index >= 0
+               && index < nodes.Count
+               && nodes[index].Kind == SelectNodeKind.Item
+               && !nodes[index].Disabled;
+    }
+
+    private static int? GetSelectedIndex(List<SelectDeclarativeNode> nodes, Func<SelectDeclarativeNode, bool> isSelected)
+    {
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            if (isSelected(nodes[i]))
                 return i;
         }
 
         return null;
     }
 
-    private static bool IsIndexEnabled(List<SelectOption<T>> options, int index)
+    private static int? GetFirstSelectableIndex(List<SelectDeclarativeNode> nodes)
     {
-        return index >= 0 && index < options.Count && !options[index].Disabled;
-    }
-
-    private static int? GetFirstEnabledIndex(List<SelectOption<T>> options)
-    {
-        for (var i = 0; i < options.Count; i++)
+        for (var i = 0; i < nodes.Count; i++)
         {
-            if (!options[i].Disabled)
+            if (IsSelectable(nodes, i))
                 return i;
         }
 
         return null;
     }
 
-    private static int? GetLastEnabledIndex(List<SelectOption<T>> options)
+    private static int? GetLastSelectableIndex(List<SelectDeclarativeNode> nodes)
     {
-        for (var i = options.Count - 1; i >= 0; i--)
+        for (var i = nodes.Count - 1; i >= 0; i--)
         {
-            if (!options[i].Disabled)
+            if (IsSelectable(nodes, i))
                 return i;
         }
 
         return null;
     }
 
-    private static int? GetNextEnabledIndex(List<SelectOption<T>> options, int? current)
+    private static int? GetNextSelectableIndex(List<SelectDeclarativeNode> nodes, int? current, int steps = 1)
     {
-        if (options.Count == 0)
+        if (nodes.Count == 0)
             return null;
 
-        var start = current ?? -1;
-        for (var step = 1; step <= options.Count; step++)
+        var index = current ?? -1;
+        var moveCount = Math.Max(1, steps);
+
+        for (var move = 0; move < moveCount; move++)
         {
-            var i = (start + step) % options.Count;
-            if (!options[i].Disabled)
-                return i;
+            var candidate = index + 1;
+            while (candidate < nodes.Count && !IsSelectable(nodes, candidate))
+            {
+                candidate++;
+            }
+
+            if (candidate >= nodes.Count)
+            {
+                break;
+            }
+
+            index = candidate;
         }
 
-        return null;
+        if (index == -1)
+            return GetFirstSelectableIndex(nodes);
+
+        return index;
     }
 
-    private static int? GetPreviousEnabledIndex(List<SelectOption<T>> options, int? current)
+    private static int? GetPreviousSelectableIndex(List<SelectDeclarativeNode> nodes, int? current, int steps = 1)
     {
-        if (options.Count == 0)
+        if (nodes.Count == 0)
             return null;
 
-        var start = current ?? 0;
-        for (var step = 1; step <= options.Count; step++)
+        var index = current ?? nodes.Count;
+        var moveCount = Math.Max(1, steps);
+
+        for (var move = 0; move < moveCount; move++)
         {
-            var i = (start - step + options.Count) % options.Count;
-            if (!options[i].Disabled)
-                return i;
+            var candidate = index - 1;
+            while (candidate >= 0 && !IsSelectable(nodes, candidate))
+            {
+                candidate--;
+            }
+
+            if (candidate < 0)
+            {
+                break;
+            }
+
+            index = candidate;
         }
 
-        return null;
+        if (index == nodes.Count)
+            return GetLastSelectableIndex(nodes);
+
+        return index;
     }
 
     private void SetActiveIndex(int? index)
@@ -211,30 +348,38 @@ public partial class Select<T>
 
     private void HandleOptionMouseEnter(int index)
     {
-        var options = GetOptions();
-        if (!IsIndexEnabled(options, index))
+        var nodes = GetRenderNodes();
+        if (!IsSelectable(nodes, index))
             return;
 
         SetActiveIndex(index);
     }
 
+    private SelectOption<T> ToSelectOption(SelectDeclarativeNode node)
+    {
+        if (!TryGetNodeValue(node, out var value))
+            return new SelectOption<T>(default!, node.Text, node.Disabled);
+
+        return new SelectOption<T>(value!, node.Text, node.Disabled);
+    }
+
     private void EnsureActiveOnOpen()
     {
-        var options = GetOptions();
-        if (options.Count == 0)
+        var nodes = GetRenderNodes();
+        if (nodes.Count == 0)
         {
             SetActiveIndex(null);
             return;
         }
 
-        var selectedIndex = GetSelectedIndex(options);
-        if (selectedIndex is not null && IsIndexEnabled(options, selectedIndex.Value))
+        var selectedIndex = GetSelectedIndex(nodes, IsSelected);
+        if (selectedIndex is not null && IsSelectable(nodes, selectedIndex.Value))
         {
             SetActiveIndex(selectedIndex);
             return;
         }
 
-        SetActiveIndex(GetFirstEnabledIndex(options));
+        SetActiveIndex(GetFirstSelectableIndex(nodes));
     }
 
     private Task HandleOpenChanged(bool open)
@@ -267,15 +412,21 @@ public partial class Select<T>
         if (Disabled)
             return;
 
-        var options = GetOptions();
-        if (options.Count == 0)
+        if (string.Equals(e.Key, "Tab", StringComparison.Ordinal))
+        {
+            await HandleTabKeyAsync(e.ShiftKey);
+            return;
+        }
+
+        var nodes = GetRenderNodes();
+        if (nodes.Count == 0)
             return;
 
-        if (GetFirstEnabledIndex(options) is null)
+        if (GetFirstSelectableIndex(nodes) is null)
             return;
 
         // Single-character typeahead: jump to the next enabled option whose text starts with the typed letter.
-        if (TryHandleFirstLetterTypeahead(e.Key, options))
+        if (TryHandleFirstLetterTypeahead(e.Key, nodes))
         {
             if (!_open)
             {
@@ -297,7 +448,7 @@ public partial class Select<T>
                 }
                 else
                 {
-                    SetActiveIndex(GetNextEnabledIndex(options, _activeIndex));
+                    SetActiveIndex(GetNextSelectableIndex(nodes, _activeIndex));
                 }
                 break;
             case "ArrowUp":
@@ -309,18 +460,34 @@ public partial class Select<T>
                 }
                 else
                 {
-                    SetActiveIndex(GetPreviousEnabledIndex(options, _activeIndex));
+                    SetActiveIndex(GetPreviousSelectableIndex(nodes, _activeIndex));
                 }
                 break;
             case "Home":
                 if (!_open)
                     _open = true;
-                SetActiveIndex(GetFirstEnabledIndex(options));
+                SetActiveIndex(GetFirstSelectableIndex(nodes));
                 break;
             case "End":
                 if (!_open)
                     _open = true;
-                SetActiveIndex(GetLastEnabledIndex(options));
+                SetActiveIndex(GetLastSelectableIndex(nodes));
+                break;
+            case "PageDown":
+                if (!_open)
+                {
+                    _open = true;
+                    EnsureActiveOnOpen();
+                }
+                SetActiveIndex(GetNextSelectableIndex(nodes, _activeIndex, PageJumpSize));
+                break;
+            case "PageUp":
+                if (!_open)
+                {
+                    _open = true;
+                    EnsureActiveOnOpen();
+                }
+                SetActiveIndex(GetPreviousSelectableIndex(nodes, _activeIndex, PageJumpSize));
                 break;
             case "Enter":
             case " ":
@@ -338,15 +505,36 @@ public partial class Select<T>
             case "Esc":
                 _open = false;
                 break;
-            case "Tab":
-                _open = false;
-                break;
         }
 
         await InvokeAsync(StateHasChanged);
     }
 
-    private bool TryHandleFirstLetterTypeahead(string? key, List<SelectOption<T>> options)
+    private async Task HandleTabKeyAsync(bool shiftKey)
+    {
+        var nodes = GetRenderNodes();
+
+        if (_open)
+        {
+            if (_activeIndex is int activeIndex && IsSelectable(nodes, activeIndex))
+            {
+                await SelectOptionAtIndexAsync(activeIndex);
+            }
+            else
+            {
+                _open = false;
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+
+        await EnsureModuleAsync();
+        if (_module is not null)
+        {
+            await _module.InvokeVoidAsync("focusAdjacentFocusable", _triggerId, !shiftKey);
+        }
+    }
+
+    private bool TryHandleFirstLetterTypeahead(string? key, List<SelectDeclarativeNode> nodes)
     {
         if (string.IsNullOrWhiteSpace(key) || key!.Length != 1)
             return false;
@@ -356,13 +544,13 @@ public partial class Select<T>
             return false;
 
         var start = (_activeIndex ?? -1) + 1;
-        for (var offset = 0; offset < options.Count; offset++)
+        for (var offset = 0; offset < nodes.Count; offset++)
         {
-            var i = (start + offset) % options.Count;
-            if (options[i].Disabled)
+            var i = (start + offset) % nodes.Count;
+            if (!IsSelectable(nodes, i))
                 continue;
 
-            var text = options[i].DisplayText;
+            var text = nodes[i].Text;
             if (!string.IsNullOrEmpty(text) &&
                 char.ToUpperInvariant(text[0]) == char.ToUpperInvariant(ch))
             {
@@ -376,14 +564,17 @@ public partial class Select<T>
 
     private async Task SelectOptionAtIndexAsync(int index)
     {
-        var options = GetOptions();
-        if (index < 0 || index >= options.Count)
+        var nodes = GetRenderNodes();
+        if (!IsSelectable(nodes, index))
             return;
 
-        if (options[index].Disabled)
-            return;
+        var node = nodes[index];
+        if (!TryGetNodeValue(node, out var nodeValue))
+        {
+            throw new InvalidOperationException($"SelectItem value type '{node.Value?.GetType().Name}' is incompatible with Select<{typeof(T).Name}>.");
+        }
 
-        Value = options[index].Value;
+        Value = nodeValue;
         SetActiveIndex(index);
         await ValueChanged.InvokeAsync(Value);
         _open = false;
@@ -423,22 +614,22 @@ public partial class Select<T>
 
     private bool NeedsMaxVisibleItemsMeasurement()
     {
-        var optionCount = GetOptions().Count;
+        var nodeCount = GetRenderNodes().Count;
         return !_maxVisibleItemsListenerRegistered
-               || _lastMeasuredOptionCount != optionCount
+               || _lastMeasuredNodeCount != nodeCount
                || _lastMeasuredMaxVisibleItems != MaxVisibleItems;
     }
 
     private void MarkMaxVisibleItemsMeasured()
     {
-        _lastMeasuredOptionCount = GetOptions().Count;
+        _lastMeasuredNodeCount = GetRenderNodes().Count;
         _lastMeasuredMaxVisibleItems = MaxVisibleItems;
     }
 
     private void ResetMaxVisibleItemsMeasurementState()
     {
         _maxVisibleItemsListenerRegistered = false;
-        _lastMeasuredOptionCount = -1;
+        _lastMeasuredNodeCount = -1;
         _lastMeasuredMaxVisibleItems = null;
     }
 
@@ -462,6 +653,8 @@ public partial class Select<T>
 
     public async ValueTask DisposeAsync()
     {
+        _declarativeRegistry.Changed -= HandleDeclarativeChanged;
+
         if (_maxVisibleItemsListenerRegistered)
         {
             await DisposeMaxVisibleItemsListenerAsync();
@@ -475,3 +668,8 @@ public partial class Select<T>
         }
     }
 }
+
+
+
+
+

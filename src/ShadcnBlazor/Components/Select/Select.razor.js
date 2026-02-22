@@ -94,3 +94,53 @@ export function disposeListboxMaxVisibleItems(listboxId) {
     listboxResizeHandlers.delete(listboxId);
   }
 }
+
+function isFocusableElement(element) {
+  if (!element) {
+    return false;
+  }
+
+  if (element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true') {
+    return false;
+  }
+
+  if (element.getAttribute('tabindex') === '-1') {
+    return false;
+  }
+
+  const style = window.getComputedStyle(element);
+  if (style.display === 'none' || style.visibility === 'hidden') {
+    return false;
+  }
+
+  return true;
+}
+
+export function focusAdjacentFocusable(triggerId, moveForward) {
+  const trigger = document.getElementById(triggerId);
+  if (!trigger) {
+    return;
+  }
+
+  const selector = [
+    'a[href]',
+    'button',
+    'input',
+    'select',
+    'textarea',
+    '[tabindex]'
+  ].join(',');
+
+  const focusables = Array.from(document.querySelectorAll(selector)).filter(isFocusableElement);
+  const currentIndex = focusables.findIndex((element) => element === trigger);
+  if (currentIndex < 0) {
+    return;
+  }
+
+  const nextIndex = moveForward ? currentIndex + 1 : currentIndex - 1;
+  if (nextIndex < 0 || nextIndex >= focusables.length) {
+    return;
+  }
+
+  focusables[nextIndex].focus();
+}

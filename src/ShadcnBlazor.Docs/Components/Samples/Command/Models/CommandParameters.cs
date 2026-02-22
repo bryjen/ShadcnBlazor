@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Dialog.Models;
 
-namespace ShadcnBlazor.Docs.Components.Samples.Command.Base.Models;
+namespace ShadcnBlazor.Docs.Components.Samples.Command.Models;
 
 /// <summary>
 /// Typed parameters for <see cref="CommandDialog{T}"/>. Extends <see cref="DialogParameters"/>.

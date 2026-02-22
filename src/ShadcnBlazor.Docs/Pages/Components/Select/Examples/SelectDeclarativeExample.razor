@@ -1,0 +1,23 @@
+<Select T="string"
+        Label="Framework"
+        @bind-Value="_framework"
+        Placeholder="Select a framework"
+        MaxVisibleItems="6">
+    <SelectGroup>
+        <SelectLabel Text="Frontend" />
+        <SelectItem Value='@("react")' Text="React" />
+        <SelectItem Value='@("svelte")' Text="Svelte" />
+        <SelectItem Value='@("vue")' Text="Vue" />
+
+        <SelectSeparator />
+
+        <SelectLabel Text="Backend" />
+        <SelectItem Value='@("dotnet")' Text=".NET" />
+        <SelectItem Value='@("node")' Text="Node.js" />
+        <SelectItem Value='@("rails")' Text="Rails (Disabled)" Disabled="true" />
+    </SelectGroup>
+</Select>
+
+@code {
+    private string? _framework = "dotnet";
+}

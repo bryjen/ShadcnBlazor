@@ -1,0 +1,19 @@
+@using ShadcnBlazor.Components.Popover.Models
+
+@if (Registration.Render)
+{
+    <div id="@Registration.PopoverId"
+         class="@GetPopoverClass(Registration)"
+         @attributes="GetPopoverAttributes(Registration)">
+        @if (Registration.ClampList)
+        {
+            <div class="popover-list">
+                @Registration.Content
+            </div>
+        }
+        else
+        {
+            @Registration.Content
+        }
+    </div>
+}

@@ -1,11 +1,11 @@
-using ShadcnBlazor.Docs.Components.Samples.Command.Base.Models;
+using ShadcnBlazor.Docs.Services;
 
-namespace ShadcnBlazor.Docs.Components.Samples.Command.Impl.Models;
+namespace ShadcnBlazor.Docs.Components.Samples.Command.Models;
 
-public sealed class PageCommandItem(string pageName) : CommandItem
+public sealed class PageCommandItem(PageRegistryEntry pageRegistryEntry) : CommandItem
 {
-    public string PageName => pageName;
-    public override string SearchString() => pageName.Trim();
+    public string PageName => pageRegistryEntry.Name;
+    public override string SearchString() => pageRegistryEntry.Name.Trim();
 }
 
 public sealed class ComponentCommandItem(string componentName) : CommandItem

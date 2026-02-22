@@ -2,7 +2,7 @@ using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Options;
 
-namespace ShadcnBlazor.Docs.Components.Samples.Command.Inline;
+namespace ShadcnBlazor.Docs.Components.Samples.Command;
 
 // Logic for key-interceptor specific logic (properties & callback methods).
 // Logic for executing certain operations (ex. registration & disposing) is delegated to main component.
@@ -11,7 +11,7 @@ public partial class CommandInline : ShadcnComponentBase
 {
     private readonly string _elementId = "command-inline-" + Guid.NewGuid().ToString("N")[..8];
     private readonly string _contentId = "command-inline-content-" + Guid.NewGuid().ToString("N")[..8];
-    private DotNetObjectReference<CommandInline>? _dotNetRef;
+    private DotNetObjectReference<Command.CommandInline>? _dotNetRef;
     private KeyInterceptorEventArgs? _lastKeyEvent;
     private IJSObjectReference? _scrollModule;
     
