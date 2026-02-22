@@ -28,7 +28,7 @@
                 id="@_triggerId"
                 type="button"
                 role="combobox"
-                aria-expanded="@_open"
+                aria-expanded="@(_open ? "true" : "false")"
                 aria-haspopup="listbox"
                 aria-controls="@_listboxId"
                 aria-activedescendant="@GetActiveDescendant()"

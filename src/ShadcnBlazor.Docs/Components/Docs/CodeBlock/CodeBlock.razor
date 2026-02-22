@@ -18,14 +18,14 @@
     <div class="@CodeBlockClass flex min-w-0 overflow-x-auto">
         @if (ShowLineNumbers)
         {
-            <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right max-lg:text-[0.6rem] lg:text-xs text-muted-foreground/50 leading-[1.65]">
+            <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right max-lg:text-[0.6rem] lg:text-xs text-muted-foreground leading-[1.65]">
                 @foreach (var lineNum in _lineNumbers)
                 {
                     <div>@lineNum</div>
                 }
             </div>
         }
-        <pre class="flex-1 min-w-0 pr-4 @(ShowLineNumbers ? "pl-0" : "pl-4") overflow-x-auto max-lg:text-[0.6rem] lg:text-xs font-mono leading-[1.65] m-0 border-0" @key="_selectedIndex"><code class="language-@_language" id="@_id">@_code</code></pre>
+        <pre class="flex-1 min-w-0 pr-4 @(ShowLineNumbers ? "pl-0" : "pl-4") overflow-x-auto max-lg:text-[0.6rem] lg:text-xs font-mono leading-[1.65] m-0 border-0" tabindex="@(Focusable ? "0" : "-1")" @key="_selectedIndex"><code class="language-@_language" id="@_id">@_code</code></pre>
     </div>
     @if (ShowCopyButton)
     {

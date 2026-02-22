@@ -312,9 +312,6 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
-  .top-1 {
-    top: calc(var(--spacing) * 1);
-  }
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
@@ -474,6 +471,9 @@
   .block {
     display: block;
   }
+  .contents {
+    display: contents;
+  }
   .flex {
     display: flex;
   }
@@ -492,15 +492,8 @@
   .inline-flex {
     display: inline-flex;
   }
-  .table {
-    display: table;
-  }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
-  }
-  .size-1 {
-    width: calc(var(--spacing) * 1);
-    height: calc(var(--spacing) * 1);
   }
   .size-1\.5 {
     width: calc(var(--spacing) * 1.5);
@@ -787,21 +780,11 @@
   .flex-1 {
     flex: 1;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
   }
   .table-auto {
     table-layout: auto;
-  }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .-translate-y-1 {
-    --tw-translate-y: calc(var(--spacing) * -1);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
@@ -955,13 +938,6 @@
       --tw-space-y-reverse: 0;
       margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
       margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
-    }
-  }
-  .space-y-3 {
-    :where(& > :not(:last-child)) {
-      --tw-space-y-reverse: 0;
-      margin-block-start: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));
-      margin-block-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
   .space-y-4 {
@@ -1182,9 +1158,6 @@
   .border-transparent {
     border-color: transparent;
   }
-  .bg-\[hsl\(var\(--background-dark\)\)\] {
-    background-color: hsl(var(--background-dark));
-  }
   .bg-accent {
     background-color: var(--accent);
   }
@@ -1217,9 +1190,6 @@
   }
   .bg-current {
     background-color: currentcolor;
-  }
-  .bg-destructive {
-    background-color: var(--destructive);
   }
   .bg-destructive\/10 {
     background-color: var(--destructive);
@@ -1268,9 +1238,6 @@
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
-  }
-  .bg-input {
-    background-color: var(--input);
   }
   .bg-input\/20 {
     background-color: var(--input);
@@ -1706,10 +1673,10 @@
   .text-foreground {
     color: var(--foreground);
   }
-  .text-foreground\/35 {
+  .text-foreground\/50 {
     color: var(--foreground);
     @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--foreground) 35%, transparent);
+      color: color-mix(in oklab, var(--foreground) 50%, transparent);
     }
   }
   .text-foreground\/70 {

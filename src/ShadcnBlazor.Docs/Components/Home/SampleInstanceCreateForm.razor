@@ -70,8 +70,8 @@
         <div class="flex flex-col justify-center item-center w-full">
             <ButtonGroup Role="toolbar" Class="w-fit">
                 <div class="px-4">@(_count)</div>
-                <Button Size="@Size.Sm" Class="px-2.5" OnClick="@(_ => DecCount())"><LuMinus/></Button>
-                <Button Size="@Size.Sm" Class="px-2.5" OnClick="@(_ => IncCount())"><LuPlus/></Button>
+                <Button Size="@Size.Sm" Class="px-2.5" OnClick="@(_ => DecCount())" aria-label="Decrease"><LuMinus/></Button>
+                <Button Size="@Size.Sm" Class="px-2.5" OnClick="@(_ => IncCount())" aria-label="Increase"><LuPlus/></Button>
             </ButtonGroup>
         </div>
     </div>

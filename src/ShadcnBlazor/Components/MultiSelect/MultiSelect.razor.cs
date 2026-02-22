@@ -139,7 +139,9 @@ public partial class MultiSelect<T>
     {
         _open = false;
         await InvokeAsync(StateHasChanged);
-        await _triggerRef.FocusAsync();
+        await EnsureModuleAsync();
+        if (_module is not null)
+            await _module.InvokeVoidAsync("focusAdjacentFocusable", _triggerId, !shiftKey);
     }
 #endregion
 

@@ -9,7 +9,7 @@
         <Footer>
             <div class="flex items-center justify-between text-xs text-muted-foreground">
                 <div class="flex gap-2">
-                    <ToggleButton @bind-IsToggled="@_extendedThinkingToggle" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default" Class="rounded-xl">
+                    <ToggleButton @bind-IsToggled="@_extendedThinkingToggle" VariantUntoggled="@Variant.Ghost" VariantToggled="@Variant.Default" Class="rounded-xl" aria-label="Extended thinking">
                         <LuBrain/>
                     </ToggleButton>
 
@@ -23,7 +23,7 @@
                     </Button>
                 </div>
 
-                <Button Variant="@Variant.Default" Class="font-medium rounded-xl">
+                <Button Variant="@Variant.Default" Class="font-medium rounded-xl" aria-label="Send">
                     <LuArrowUp/>
                 </Button>
             </div>

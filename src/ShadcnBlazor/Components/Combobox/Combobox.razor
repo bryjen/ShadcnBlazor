@@ -31,7 +31,7 @@
                    autocorrect="off"
                    autocapitalize="off"
                    spellcheck="false"
-                   aria-expanded="@_open"
+                   aria-expanded="@(_open ? "true" : "false")"
                    aria-haspopup="listbox"
                    aria-controls="@_listboxId"
                    aria-activedescendant="@GetActiveDescendant()"
