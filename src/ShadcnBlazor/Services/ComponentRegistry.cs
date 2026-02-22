@@ -143,8 +143,19 @@ public static class ComponentRegistry
         },
         new()
         {
-            Name = nameof(DropdownMenu), 
-            Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.", 
+            Name = "ContextMenu",
+            Description = "Right-click context menu with support for items, checkboxes, radio groups, and submenus.",
+            Dependencies = CreateDeps(nameof(Popover)),
+            RequiredActions =
+            [
+                new CopyJsAction("context-menu.js"),
+                new MergeToImportsAction(["ShadcnBlazor.Components.ContextMenu"]),
+            ]
+        },
+        new()
+        {
+            Name = nameof(DropdownMenu),
+            Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.",
             Dependencies = CreateDeps(nameof(Popover))
         },
         new()
