@@ -1,0 +1,33 @@
+@using ShadcnBlazor.Components.Combobox
+@using ShadcnBlazor.Components.Select
+
+<div class="flex flex-col gap-4 w-64">
+    <Combobox T="string"
+              Label="Country"
+              @bind-Value="_value"
+              Placeholder="Search countries..."
+              MaxVisibleItems="6">
+        <SelectGroup>
+            <SelectLabel Text="Americas" />
+            <SelectItem Value='@("us")' Text="United States" />
+            <SelectItem Value='@("ca")' Text="Canada" />
+            <SelectItem Value='@("mx")' Text="Mexico" />
+
+            <SelectSeparator />
+
+            <SelectLabel Text="Europe" />
+            <SelectItem Value='@("gb")' Text="United Kingdom" />
+            <SelectItem Value='@("de")' Text="Germany" />
+            <SelectItem Value='@("fr")' Text="France" />
+            <SelectItem Value='@("es")' Text="Spain" />
+        </SelectGroup>
+    </Combobox>
+
+    <p class="text-sm text-muted-foreground">
+        Selected: <span class="font-medium text-foreground">@(_value ?? "none")</span>
+    </p>
+</div>
+
+@code {
+    private string? _value;
+}

@@ -1,0 +1,29 @@
+@using ShadcnBlazor.Components.Combobox
+@using ShadcnBlazor.Components.Select
+
+<div class="flex flex-col gap-4 w-64">
+    <Combobox T="string"
+              Label="Framework"
+              @bind-Value="_value"
+              Items="@_options"
+              Placeholder="Search frameworks..." />
+
+    <p class="text-sm text-muted-foreground">
+        Selected: <span class="font-medium text-foreground">@(_value ?? "none")</span>
+    </p>
+</div>
+
+@code {
+    private string? _value;
+
+    private readonly SelectOption<string>[] _options =
+    [
+        new("blazor", ".NET / Blazor"),
+        new("react", "React"),
+        new("svelte", "Svelte"),
+        new("vue", "Vue"),
+        new("angular", "Angular"),
+        new("solid", "SolidJS"),
+        new("qwik", "Qwik (Disabled)", Disabled: true),
+    ];
+}

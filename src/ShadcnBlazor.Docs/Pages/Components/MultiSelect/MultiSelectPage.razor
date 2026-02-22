@@ -1,0 +1,76 @@
+@page "/components/multiselect"
+@using ShadcnBlazor.Docs.Pages.Components.MultiSelect.Examples
+
+<ComponentDocPage Metadata="@Metadata"
+                  InstallOptions="@InstallOptions"
+                  ApiDoc="@ApiDocumentation.MultiSelect">
+    <UnderHeader>
+        <div class="w-fit">
+            <Tooltip>
+                <Anchor>
+                    <div @onclick="@(_ => NavigateToWaiAriaPage())">
+                        <Badge Size="@Size.Md" Class="cursor-pointer w-full h-full">
+                            <span class="font-semibold">WAI-ARIA Compliant*</span>
+                        </Badge>
+                    </div>
+                </Anchor>
+                <ChildContent>
+                    <span class="text-[0.7rem] text-center text-muted-foreground">Excludes browser and OS-intercepted behaviors*</span>
+                </ChildContent>
+            </Tooltip>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="MultiSelect" />
+
+        <DocsSection Title="Examples" Id="examples">
+            <DocsSubSection Title="Usage" Id="usage">
+                <p class="mb-3">The MultiSelect component displays a dropdown for choosing multiple values from a list. Use <code>Values</code> and <code>ValuesChanged</code> (or <code>@@bind-Values</code>) for two-way binding. The dropdown stays open after each selection — click outside or press Escape to close. Requires <code>PopoverProvider</code> in your layout.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_MultiSelect_Examples_MultiSelectBasicExample })">
+                    <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                        <MultiSelectBasicExample />
+                    </div>
+                </ComponentPreview>
+            </DocsSubSection>
+
+            <DocsSubSection Title="Search &amp; Clear" Id="search-clear">
+                <p class="mb-3">Enable <code>Search</code> to add a filter input at the top of the dropdown. Enable <code>ClearButton</code> to add a divider and Clear button at the bottom that resets all selected values.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_MultiSelect_Examples_MultiSelectSearchExample })">
+                    <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                        <MultiSelectSearchExample />
+                    </div>
+                </ComponentPreview>
+            </DocsSubSection>
+        </DocsSection>
+    </ChildContent>
+</ComponentDocPage>
+
+@code {
+    [Inject]
+    public IJSRuntime JsRuntime { get; set; } = null!;
+
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("MultiSelect");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add multiselect",
+    };
+
+    private async Task NavigateToWaiAriaPage() =>
+        await JsRuntime.InvokeVoidAsync("open", "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/", "_blank");
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Multi-value selection with toggle behaviour (stays open after each pick)</div> },
+        __builder => { <div>Controlled (<code>@@bind-Values</code>, <code>ValuesChanged</code>)</div> },
+        __builder => { <div>Two option modes: <code>Items</code> or declarative children</div> },
+        __builder => { <div>Optional search input with real-time filtering (<code>Search</code>)</div> },
+        __builder => { <div>Optional Clear button to reset all selections (<code>ClearButton</code>)</div> },
+        __builder => { <div>Full keyboard support (arrows, Home/End, Space to toggle, Escape to close, Tab)</div> },
+        __builder => { <div>ARIA-compliant multiselectable listbox semantics (<code>aria-multiselectable</code>, <code>aria-checked</code>)</div> },
+        __builder => { <div>Typeahead navigation (single-character jump)</div> },
+        __builder => { <div>Disabled support (trigger + per-item)</div> },
+        __builder => { <div>Configurable display text (up to N selected, then "+X more")</div> },
+    };
+}

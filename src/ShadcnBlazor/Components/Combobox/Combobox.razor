@@ -2,10 +2,11 @@
 @using Microsoft.AspNetCore.Components.Web
 @using ShadcnBlazor.Components.Popover
 @using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Components.Select
 @using ShadcnBlazor.Components.Select.Base
 @inherits SelectBase<T>
 
-@* does not render anything, it just allows the registry to be built *@
+@* Declarative child items register themselves via the cascaded registry *@
 @if (ChildContent is not null)
 {
     <CascadingValue Value="_declarativeRegistry">
@@ -22,28 +23,36 @@
          WidthMode="@(PopoverFitContent ? PopoverWidthMode.Adaptive : PopoverWidthMode.Relative)"
          AnchorClass="min-w-full max-w-full w-full">
     <Anchor>
-        <button id="@_triggerId"
-                type="button"
-                role="combobox"
-                aria-expanded="@_open"
-                aria-haspopup="listbox"
-                aria-controls="@_listboxId"
-                aria-activedescendant="@GetActiveDescendant()"
-                aria-disabled="@Disabled"
-                aria-label="@GetAriaLabel()"
-                data-size="@Size.ToString().ToLower()"
-                class="@GetTriggerClass()"
-                disabled="@Disabled"
-                @onclick="ToggleOpen"
-                @onkeydown="HandleTriggerKeyDown"
-                @onkeydown:preventDefault="true"
-                @onkeydown:stopPropagation="true"
-                @attributes="AdditionalAttributes">
-            <span class="truncate">@GetDisplayText()</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="@(_open ? "rotate-180" : "") transition-transform duration-200">
-                <path d="m6 9 6 6 6-6" />
-            </svg>
-        </button>
+        <div class="relative w-full">
+            <input id="@_triggerId"
+                   type="text"
+                   role="combobox"
+                   autocomplete="off"
+                   autocorrect="off"
+                   autocapitalize="off"
+                   spellcheck="false"
+                   aria-expanded="@_open"
+                   aria-haspopup="listbox"
+                   aria-controls="@_listboxId"
+                   aria-activedescendant="@GetActiveDescendant()"
+                   aria-autocomplete="list"
+                   aria-disabled="@Disabled"
+                   aria-label="@GetAriaLabel()"
+                   data-size="@Size.ToString().ToLower()"
+                   placeholder="@(Value is null ? Placeholder : string.Empty)"
+                   value="@GetDisplayValue()"
+                   class="@GetTriggerClass() pr-7 w-full"
+                   disabled="@Disabled"
+                   @oninput="HandleSearchInput"
+                   @onkeydown="HandleComboboxKeyDown"
+                   @onclick="ToggleOpen"
+                   @attributes="AdditionalAttributes" />
+            <span class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-muted-foreground">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 @(_open ? "rotate-180" : "") transition-transform duration-200">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </span>
+        </div>
     </Anchor>
     <ChildContent>
         <div class="@GetContentClass() rounded-lg border border-input bg-popover text-popover-foreground shadow-lg p-1 min-w-[8rem]">
@@ -54,9 +63,13 @@
             <div id="@_listboxId"
                  role="listbox"
                  aria-labelledby="@_triggerId"
-                 class="max-h-[var(--radix-select-content-available-height)] overflow-y-auto overflow-x-hidden">
+                 class="max-h-60 overflow-y-auto overflow-x-hidden">
                 @{
                     var nodes = GetRenderNodes();
+                }
+                @if (nodes.Count == 0)
+                {
+                    <div class="px-2 py-4 text-center text-sm text-muted-foreground">No results found.</div>
                 }
                 @for (var i = 0; i < nodes.Count; i++)
                 {
@@ -99,10 +112,13 @@
                             @if (isSelected)
                             {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
-                                    <polyline points="20 6 9 17 4 12"/>
+                                    <polyline points="20 6 9 17 4 12" />
                                 </svg>
                             }
-
+                            else
+                            {
+                                <span class="size-4 shrink-0"></span>
+                            }
                             <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@node.Text</span>
                         }
                     </button>

@@ -1,8 +1,10 @@
 @typeparam T
-@using Microsoft.AspNetCore.Components.Web
+
 @using ShadcnBlazor.Components.Popover
 @using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Components.Select
 @using ShadcnBlazor.Components.Select.Base
+
 @inherits SelectBase<T>
 
 @* does not render anything, it just allows the registry to be built *@
@@ -22,7 +24,8 @@
          WidthMode="@(PopoverFitContent ? PopoverWidthMode.Adaptive : PopoverWidthMode.Relative)"
          AnchorClass="min-w-full max-w-full w-full">
     <Anchor>
-        <button id="@_triggerId"
+        <button @ref="_triggerRef"
+                id="@_triggerId"
                 type="button"
                 role="combobox"
                 aria-expanded="@_open"
@@ -51,17 +54,41 @@
             {
                 <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">@Label</div>
             }
+            @if (Search)
+            {
+                <div class="flex items-center gap-1.5 px-2 py-1 border-b border-border mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-muted-foreground">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input @ref="_searchInputRef"
+                           id="@_searchInputId"
+                           type="text"
+                           placeholder="Search..."
+                           value="@_searchText"
+                           aria-label="Search options"
+                           aria-controls="@_listboxId"
+                           aria-autocomplete="list"
+                           class="w-full bg-transparent py-1 text-sm outline-none placeholder:text-muted-foreground"
+                           @oninput="HandleSearchInput"
+                           @onkeydown="HandleSearchKeyDown"
+                           @onclick:stopPropagation="true" />
+                </div>
+            }
             <div id="@_listboxId"
                  role="listbox"
+                 aria-multiselectable="true"
                  aria-labelledby="@_triggerId"
                  class="max-h-[var(--radix-select-content-available-height)] overflow-y-auto overflow-x-hidden">
                 @{
                     var nodes = GetRenderNodes();
+                    var itemNodes = nodes.Where(n => n.Kind != SelectNodeKind.Action).ToList();
+                    var actionNodes = nodes.Where(n => n.Kind == SelectNodeKind.Action).ToList();
+                    var actionStartIndex = nodes.Count - actionNodes.Count;
                 }
-                @for (var i = 0; i < nodes.Count; i++)
+                @for (var i = 0; i < itemNodes.Count; i++)
                 {
                     var index = i;
-                    var node = nodes[index];
+                    var node = itemNodes[index];
 
                     if (node.Kind == SelectNodeKind.Label)
                     {
@@ -83,7 +110,7 @@
                             id="@GetOptionId(index)"
                             role="option"
                             tabindex="-1"
-                            aria-selected="@isSelected"
+                            aria-checked="@isSelected"
                             aria-disabled="@isDisabled"
                             disabled="@isDisabled"
                             class="@GetOptionClass(isSelected, isActive, isDisabled)"
@@ -96,18 +123,43 @@
                         }
                         else
                         {
-                            @if (isSelected)
-                            {
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
-                                    <polyline points="20 6 9 17 4 12"/>
-                                </svg>
-                            }
-
+                            <span class="size-4 shrink-0 flex items-center justify-center">
+                                @if (isSelected)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                }
+                            </span>
                             <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@node.Text</span>
                         }
                     </button>
                 }
             </div>
+            @if (actionNodes.Count > 0)
+            {
+                <div class="mt-1 border-t border-border pt-1">
+                    @for (var i = 0; i < actionNodes.Count; i++)
+                    {
+                        var nodeIndex = actionStartIndex + i;
+                        var actionNode = actionNodes[i];
+                        var isActionActive = _activeIndex == nodeIndex;
+
+                        <button type="button"
+                                id="@GetOptionId(nodeIndex)"
+                                role="button"
+                                tabindex="-1"
+                                aria-controls="@_listboxId"
+                                class="@GetActionClass(isActionActive)"
+                                @onmouseenter="@(_ => HandleOptionMouseEnter(nodeIndex))"
+                                @onclick="() => SelectOptionAtIndexAsync(nodeIndex)"
+                                @onclick:stopPropagation="true">
+                            <span class="size-4 shrink-0"></span>
+                            <span>@actionNode.Text</span>
+                        </button>
+                    }
+                </div>
+            }
         </div>
     </ChildContent>
 </Popover>

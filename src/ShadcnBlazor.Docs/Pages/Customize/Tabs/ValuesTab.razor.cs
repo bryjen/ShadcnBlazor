@@ -99,13 +99,13 @@ public partial class ValuesTab : ComponentBase, IDisposable
 
     private async Task OnThemePresetChanged(ThemePreset? option)
     {
-        _selectedThemePreset = option;
-        if (_selectedThemePreset is null)
+        if (option is null)
         {
             return;
         }
 
-        await ThemeService.ApplyPresetAsync(_selectedThemePreset);
+        _selectedThemePreset = option;
+        await ThemeService.ApplyPresetAsync(option);
     }
 
     private void OnThemeUpdated()

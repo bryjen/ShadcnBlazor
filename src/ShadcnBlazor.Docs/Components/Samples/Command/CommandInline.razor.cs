@@ -4,11 +4,10 @@ using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Options;
 using ShadcnBlazor.Components.Shared.Services;
-using ShadcnBlazor.Docs.Components.Samples.Command.Base.Models;
-using ShadcnBlazor.Docs.Components.Samples.Command.Impl.Models;
+using ShadcnBlazor.Docs.Components.Samples.Command.Models;
 using ShadcnBlazor.Docs.Services;
 
-namespace ShadcnBlazor.Docs.Components.Samples.Command.Inline;
+namespace ShadcnBlazor.Docs.Components.Samples.Command;
 
 public partial class CommandInline : ShadcnComponentBase
 {
@@ -63,7 +62,7 @@ public partial class CommandInline : ShadcnComponentBase
 
     private IReadOnlyList<CommandItem> BuildCommandItems()
     {
-        var items = PageRegistry.PagesList.Select(page => new PageCommandItem(page.Name)).Cast<CommandItem>().ToList();
+        var items = PageRegistry.PagesList.Select(page => new PageCommandItem(page)).Cast<CommandItem>().ToList();
         items.AddRange(ComponentRegistry.Components.Select(component => new ComponentCommandItem(component.Name)).Cast<CommandItem>());
         items.AddRange(SampleRegistry.SamplesList.Select(sample => new SampleCommandItem(sample.Name)).Cast<CommandItem>());
         return items;
@@ -153,7 +152,7 @@ public partial class CommandInline : ShadcnComponentBase
         if (_scrollModule is not null)
             return;
 
-        var modulePath = $"{NavigationManager.BaseUri}Components/Samples/Command/Inline/CommandInline.razor.js";
+        var modulePath = $"{NavigationManager.BaseUri}Components/Samples/Command/CommandInline.razor.js";
         _scrollModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", modulePath);
     }
 
@@ -170,7 +169,7 @@ public partial class CommandInline : ShadcnComponentBase
             );
             try
             {
-                await KeyInterceptor.ConnectAsync(_elementId, _dotNetRef, options);
+                await KeyInterceptor.ConnectAsync<CommandInline>(_elementId, _dotNetRef, options);
                 await EnsureScrollModuleAsync();
             }
             catch

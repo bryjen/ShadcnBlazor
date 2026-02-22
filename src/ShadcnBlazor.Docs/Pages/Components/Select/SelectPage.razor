@@ -1,24 +1,71 @@
 @page "/components/select"
-@using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Select.Examples
-@using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
-                 ApiDoc="@ApiDocumentation.Select">
-    <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Select component displays a dropdown for choosing a single value from a list. Use <code>Value</code> and <code>ValueChanged</code> (or <code>@@bind-Value</code>) for two-way binding. Provide <code>Items</code> as a collection of <code>SelectOption&lt;T&gt;</code>. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Select_Examples_SelectBasicExample })">
-            <SelectBasicExample />
-        </ComponentPreview>
-    </DocsSection>
+                  InstallOptions="@InstallOptions"
+                  ApiDoc="@ApiDocumentation.Select">
+    <UnderHeader>
+        <div class="w-fit">
+            <Tooltip>
+                <Anchor>
+                    <div @onclick="@(_ => NavigateToWaiAriaPage())">
+                        <Badge Size="@Size.Md" Class="cursor-pointer w-full h-full">
+                            <span class="font-semibold">WAI-ARIA Compliant*</span>
+                        </Badge>
+                    </div>
+                </Anchor>
+                <ChildContent>
+                    <span class="text-[0.7rem] text-center text-muted-foreground">Excludes browser and OS-intercepted behaviors*</span>
+                </ChildContent>
+            </Tooltip>
+        </div>
+    </UnderHeader>
+    
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Select" />
+        
+        <DocsSection Title="Examples" Id="examples">
+            <DocsSubSection Title="Usage" Id="usage">
+                <p class="mb-3">The Select component displays a dropdown for choosing a single value from a list. Use <code>Value</code> and <code>ValueChanged</code> (or <code>@@bind-Value</code>) for two-way binding. Provide <code>Items</code> as a collection of <code>SelectOption&lt;T&gt;</code>. Use <code>new SelectOption&lt;T&gt;(value, text, Disabled: true)</code> to disable individual items. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Select_Examples_SelectBasicExample })">
+                    <SelectBasicExample/>
+                </ComponentPreview>
+            </DocsSubSection>
+
+            <DocsSubSection Title="Declarative" Id="declarative">
+                <p class="mb-3">Use child components when you want to declare options inline. <code>SelectItem</code>, <code>SelectLabel</code>, <code>SelectSeparator</code>, and <code>SelectGroup</code> map to the same selection/keyboard/scroll behavior as the <code>Items</code> mode.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Select_Examples_SelectDeclarativeExample })">
+                    <SelectDeclarativeExample/>
+                </ComponentPreview>
+            </DocsSubSection>
+        </DocsSection>
+        
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
+    [Inject] 
+    public IJSRuntime JsRuntime { get; set; } = null!;
+    
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Select");
 
     private static readonly Dictionary<string, string> InstallOptions = new()
     {
         ["shell"] = "shadcnblazor component add select",
+    };
+    
+    private async Task NavigateToWaiAriaPage() => 
+        await JsRuntime.InvokeVoidAsync("open", "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/", "_blank");
+    
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Custom rendering (<code>RenderItem</code>) and sizing/layout options (<code>Size</code>, <code>PopoverFitContent</code>, <code>MaxVisibleItems</code>)</div> },
+        __builder => { <div>Controlled/uncontrolled (<code>@@bind-Value</code>, <code>ValueChanged</code>)</div> },
+        __builder => { <div>Two option modes: <code>Items</code> or declarative children</div> },
+        __builder => { <div>Full keyboard support (arrows, Home/End, PageUp/PageDown, Enter/Escape, Tab)</div> },
+        __builder => { <div>ARIA-compliant combobox/listbox/option semantics</div> },
+        __builder => { <div>Disabled support (select + per-item)</div> },
+        __builder => { <div>Typeahead support (single-character jump)</div> },
+        __builder => { <div>Placeholder + selected value display</div> },
     };
 }
