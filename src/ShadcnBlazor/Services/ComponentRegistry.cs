@@ -202,11 +202,17 @@ public static class ComponentRegistry
             Description = "Toggle switch for boolean on/off values.", 
             Dependencies = CreateDeps()
         },
-        new() 
+        new()
         {
-            Name = nameof(Textarea), 
-            Description = "Multi-line text input for longer form content.", 
+            Name = nameof(Textarea),
+            Description = "Multi-line text input for longer form content.",
             Dependencies = CreateDeps()
+        },
+        new()
+        {
+            Name = "Tabs",
+            Description = "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+            Dependencies = CreateDeps(),
         },
         new() 
         {

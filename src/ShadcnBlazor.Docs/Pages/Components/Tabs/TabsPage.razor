@@ -1,0 +1,57 @@
+@page "/components/tabs"
+@using ShadcnBlazor.Docs.Pages.Components.Tabs.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">
+            The Tabs component displays one panel of content at a time.
+            Use <code>TabsList</code> to hold the triggers and <code>TabsContent</code> for each panel.
+            Each trigger and content requires a matching <code>Value</code>.
+            Set <code>DefaultValue</code> to pre-select a tab.
+        </p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsBasicExample })">
+            <TabsBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p class="mb-3">Set <code>Disabled="true"</code> on a <code>TabsTrigger</code> to prevent it from being selected. Disabled triggers are skipped during keyboard navigation.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsDisabledExample })">
+                <TabsDisabledExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Vertical" Id="vertical">
+            <p class="mb-3">Set <code>Orientation="vertical"</code> on the <code>Tabs</code> root to arrange the trigger list and content side by side.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsVerticalExample })">
+                <TabsVerticalExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="With Icons" Id="with-icons">
+            <p class="mb-3">Place an icon before the label text inside a <code>TabsTrigger</code> to enrich the tab labels visually.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsWithIconsExample })">
+                <TabsWithIconsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Inside a Card" Id="inside-a-card">
+            <p class="mb-3">Tabs compose naturally inside a <code>Card</code> for settings panels, dashboards, or grouped content views.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsCardExample })">
+                <TabsCardExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Tabs");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add tabs",
+    };
+}

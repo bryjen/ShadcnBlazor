@@ -312,6 +312,9 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
+  .top-1 {
+    top: calc(var(--spacing) * 1);
+  }
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
@@ -408,6 +411,9 @@
   .my-10 {
     margin-block: calc(var(--spacing) * 10);
   }
+  .mt-0 {
+    margin-top: calc(var(--spacing) * 0);
+  }
   .mt-1 {
     margin-top: calc(var(--spacing) * 1);
   }
@@ -492,8 +498,15 @@
   .inline-flex {
     display: inline-flex;
   }
+  .table {
+    display: table;
+  }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
+  }
+  .size-1 {
+    width: calc(var(--spacing) * 1);
+    height: calc(var(--spacing) * 1);
   }
   .size-1\.5 {
     width: calc(var(--spacing) * 1.5);
@@ -564,6 +577,9 @@
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
+  .h-9 {
+    height: calc(var(--spacing) * 9);
+  }
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
@@ -602,6 +618,9 @@
   }
   .h-\[calc\(100\%\+2\.5rem\)\] {
     height: calc(100% + 2.5rem);
+  }
+  .h-auto {
+    height: auto;
   }
   .h-full {
     height: 100%;
@@ -711,6 +730,9 @@
   .w-\[94\%\] {
     width: 94%;
   }
+  .w-\[140px\] {
+    width: 140px;
+  }
   .w-\[200px\] {
     width: 200px;
   }
@@ -719,6 +741,12 @@
   }
   .w-\[350px\] {
     width: 350px;
+  }
+  .w-\[400px\] {
+    width: 400px;
+  }
+  .w-\[500px\] {
+    width: 500px;
   }
   .w-\[var\(--popover-width\)\] {
     width: var(--popover-width);
@@ -780,11 +808,21 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .shrink-0 {
     flex-shrink: 0;
   }
   .table-auto {
     table-layout: auto;
+  }
+  .border-collapse {
+    border-collapse: collapse;
+  }
+  .-translate-y-1 {
+    --tw-translate-y: calc(var(--spacing) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
@@ -864,6 +902,9 @@
   }
   .flex-col-reverse {
     flex-direction: column-reverse;
+  }
+  .flex-row {
+    flex-direction: row;
   }
   .flex-wrap {
     flex-wrap: wrap;
@@ -1191,6 +1232,9 @@
   .bg-current {
     background-color: currentcolor;
   }
+  .bg-destructive {
+    background-color: var(--destructive);
+  }
   .bg-destructive\/10 {
     background-color: var(--destructive);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1238,6 +1282,9 @@
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
+  }
+  .bg-input {
+    background-color: var(--input);
   }
   .bg-input\/20 {
     background-color: var(--input);

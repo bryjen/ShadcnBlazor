@@ -48,7 +48,7 @@
                    @onclick="ToggleOpen"
                    @attributes="AdditionalAttributes" />
             <span class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-muted-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 @(_open ? "rotate-180" : "") transition-transform duration-200">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 @(_open ? "rotate-180" : "") transition-transform duration-200">
                     <path d="m6 9 6 6 6-6" />
                 </svg>
             </span>
@@ -62,14 +62,14 @@
             }
             <div id="@_listboxId"
                  role="listbox"
-                 aria-labelledby="@_triggerId"
+                 aria-label="@GetAriaLabel()"
                  class="max-h-60 overflow-y-auto overflow-x-hidden">
                 @{
                     var nodes = GetRenderNodes();
                 }
                 @if (nodes.Count == 0)
                 {
-                    <div class="px-2 py-4 text-center text-sm text-muted-foreground">No results found.</div>
+                    <div role="status" aria-live="polite" class="px-2 py-4 text-center text-sm text-muted-foreground">No results found.</div>
                 }
                 @for (var i = 0; i < nodes.Count; i++)
                 {
@@ -96,8 +96,8 @@
                             id="@GetOptionId(index)"
                             role="option"
                             tabindex="-1"
-                            aria-selected="@isSelected"
-                            aria-disabled="@isDisabled"
+                            aria-selected="@isSelected.ToString().ToLower()"
+                            aria-disabled="@isDisabled.ToString().ToLower()"
                             disabled="@isDisabled"
                             class="@GetOptionClass(isSelected, isActive, isDisabled)"
                             @onmouseenter="@(_ => HandleOptionMouseEnter(index))"

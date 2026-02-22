@@ -1,0 +1,26 @@
+@namespace ShadcnBlazor.Components.Tabs
+@inherits ShadcnComponentBase
+
+<div
+    role="tablist"
+    data-slot="tabs-list"
+    data-orientation="@Context?.Orientation"
+    aria-orientation="@Context?.Orientation"
+    class="@GetClass()"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter]
+    private TabsContext? Context { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string GetClass()
+    {
+        var baseClasses = "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground";
+        return MergeCss(baseClasses, Class);
+    }
+}
