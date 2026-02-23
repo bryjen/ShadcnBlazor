@@ -21,7 +21,7 @@ let popoverModulePromise;
 
 function getPopoverModule() {
   if (!popoverModulePromise) {
-    popoverModulePromise = import('/ShadcnBlazor/_content/ShadcnBlazor/js/popovers.js');
+    popoverModulePromise = import('/_content/ShadcnBlazor/js/popovers.js');
   }
 
   return popoverModulePromise;
