@@ -1,0 +1,194 @@
+{
+  "Button": [
+    {
+      "name": "basic",
+      "description": "Default button",
+      "razor": "<Button>Click me</Button>"
+    },
+    {
+      "name": "variants",
+      "description": "All button variants",
+      "razor": "<Button Variant=\"Variant.Default\">Default</Button>\n<Button Variant=\"Variant.Destructive\">Destructive</Button>\n<Button Variant=\"Variant.Outline\">Outline</Button>\n<Button Variant=\"Variant.Secondary\">Secondary</Button>\n<Button Variant=\"Variant.Ghost\">Ghost</Button>\n<Button Variant=\"Variant.Link\">Link</Button>"
+    },
+    {
+      "name": "sizes",
+      "description": "Button sizes",
+      "razor": "<Button Size=\"Size.Sm\">Small</Button>\n<Button Size=\"Size.Default\">Default</Button>\n<Button Size=\"Size.Lg\">Large</Button>"
+    },
+    {
+      "name": "with-icon",
+      "description": "Button with Lucide icon",
+      "razor": "<Button>\n    <LucideIcon Name=\"Mail\" />\n    Send Email\n</Button>"
+    },
+    {
+      "name": "disabled",
+      "description": "Disabled button",
+      "razor": "<Button Disabled=\"true\">Cannot Click</Button>"
+    }
+  ],
+  "Accordion": [
+    {
+      "name": "basic",
+      "description": "Basic accordion with single open item",
+      "razor": "<Accordion>\n    <AccordionItem>\n        <AccordionTrigger>Is it accessible?</AccordionTrigger>\n        <AccordionContent>Yes. It follows WAI-ARIA patterns.</AccordionContent>\n    </AccordionItem>\n    <AccordionItem>\n        <AccordionTrigger>Is it styled?</AccordionTrigger>\n        <AccordionContent>Yes. Styled with Tailwind CSS.</AccordionContent>\n    </AccordionItem>\n</Accordion>"
+    },
+    {
+      "name": "multiple",
+      "description": "Accordion allowing multiple open items",
+      "razor": "<Accordion Multiple=\"true\">\n    <AccordionItem>\n        <AccordionTrigger>Section 1</AccordionTrigger>\n        <AccordionContent>Content 1</AccordionContent>\n    </AccordionItem>\n    <AccordionItem>\n        <AccordionTrigger>Section 2</AccordionTrigger>\n        <AccordionContent>Content 2</AccordionContent>\n    </AccordionItem>\n</Accordion>"
+    }
+  ],
+  "Alert": [
+    {
+      "name": "basic",
+      "description": "Default alert",
+      "razor": "<Alert>\n    <AlertTitle>Heads up!</AlertTitle>\n    <AlertDescription>You can add components using the CLI.</AlertDescription>\n</Alert>"
+    },
+    {
+      "name": "destructive",
+      "description": "Destructive alert variant",
+      "razor": "<Alert Variant=\"Variant.Destructive\">\n    <AlertTitle>Error</AlertTitle>\n    <AlertDescription>Your session has expired. Please log in again.</AlertDescription>\n</Alert>"
+    }
+  ],
+  "Avatar": [
+    {
+      "name": "basic",
+      "description": "Avatar with image and fallback",
+      "razor": "<Avatar>\n    <AvatarImage Src=\"https://example.com/avatar.jpg\" Alt=\"User\" />\n    <AvatarFallback>JD</AvatarFallback>\n</Avatar>"
+    }
+  ],
+  "Badge": [
+    {
+      "name": "basic",
+      "description": "Default badge",
+      "razor": "<Badge>New</Badge>"
+    },
+    {
+      "name": "variants",
+      "description": "Badge variants",
+      "razor": "<Badge Variant=\"Variant.Default\">Default</Badge>\n<Badge Variant=\"Variant.Secondary\">Secondary</Badge>\n<Badge Variant=\"Variant.Outline\">Outline</Badge>\n<Badge Variant=\"Variant.Destructive\">Destructive</Badge>"
+    }
+  ],
+  "Card": [
+    {
+      "name": "basic",
+      "description": "Card with header and content",
+      "razor": "<Card>\n    <CardHeader>\n        <CardTitle>Card Title</CardTitle>\n        <CardDescription>Card description text.</CardDescription>\n    </CardHeader>\n    <CardContent>\n        <p>Card content goes here.</p>\n    </CardContent>\n    <CardFooter>\n        <Button>Action</Button>\n    </CardFooter>\n</Card>"
+    }
+  ],
+  "Checkbox": [
+    {
+      "name": "basic",
+      "description": "Checkbox with label",
+      "razor": "<Checkbox @bind-Value=\"isChecked\">\n    <CheckboxLabel>Accept terms and conditions</CheckboxLabel>\n</Checkbox>\n\n@code {\n    bool isChecked = false;\n}"
+    }
+  ],
+  "Dialog": [
+    {
+      "name": "imperative",
+      "description": "Open a dialog via IDialogService",
+      "razor": "@inject IDialogService DialogService\n\n<Button OnClick=\"OpenDialog\">Open Dialog</Button>\n\n@code {\n    async Task OpenDialog()\n    {\n        var result = await DialogService.Show<MyDialog>(\"My Title\").Result;\n    }\n}"
+    },
+    {
+      "name": "declarative",
+      "description": "Declarative dialog using DialogRoot",
+      "razor": "<DialogRoot>\n    <DialogTrigger>\n        <Button>Open</Button>\n    </DialogTrigger>\n    <DialogContent>\n        <DialogHeader>\n            <DialogTitle>Edit Profile</DialogTitle>\n            <DialogDescription>Make changes to your profile here.</DialogDescription>\n        </DialogHeader>\n        <p>Dialog body content</p>\n        <DialogFooter>\n            <DialogClose><Button Variant=\"Variant.Outline\">Cancel</Button></DialogClose>\n            <Button>Save</Button>\n        </DialogFooter>\n    </DialogContent>\n</DialogRoot>"
+    }
+  ],
+  "DropdownMenu": [
+    {
+      "name": "basic",
+      "description": "Basic dropdown menu",
+      "razor": "<DropdownMenu>\n    <DropdownMenuTrigger>\n        <Button Variant=\"Variant.Outline\">Open Menu</Button>\n    </DropdownMenuTrigger>\n    <DropdownMenuContent>\n        <DropdownMenuLabel>My Account</DropdownMenuLabel>\n        <DropdownMenuSeparator />\n        <DropdownMenuItem>Profile</DropdownMenuItem>\n        <DropdownMenuItem>Settings</DropdownMenuItem>\n        <DropdownMenuItem>Logout</DropdownMenuItem>\n    </DropdownMenuContent>\n</DropdownMenu>"
+    }
+  ],
+  "Input": [
+    {
+      "name": "basic",
+      "description": "Text input",
+      "razor": "<Input @bind-Value=\"text\" Placeholder=\"Enter text...\" />\n\n@code {\n    string text = string.Empty;\n}"
+    }
+  ],
+  "Popover": [
+    {
+      "name": "basic",
+      "description": "Popover with trigger and content",
+      "razor": "<Popover>\n    <PopoverTrigger>\n        <Button Variant=\"Variant.Outline\">Open Popover</Button>\n    </PopoverTrigger>\n    <PopoverContent>\n        <p>Popover content here.</p>\n    </PopoverContent>\n</Popover>"
+    }
+  ],
+  "Radio": [
+    {
+      "name": "basic",
+      "description": "Radio group with options",
+      "razor": "<RadioGroup @bind-Value=\"selected\">\n    <Radio Value=\"option1\">Option 1</Radio>\n    <Radio Value=\"option2\">Option 2</Radio>\n    <Radio Value=\"option3\">Option 3</Radio>\n</RadioGroup>\n\n@code {\n    string selected = \"option1\";\n}"
+    }
+  ],
+  "Select": [
+    {
+      "name": "basic",
+      "description": "Select with items list",
+      "razor": "<Select @bind-Value=\"selected\" Items=\"items\" />\n\n@code {\n    string selected = string.Empty;\n    List<SelectOption<string>> items =\n    [\n        new SelectOption<string>(\"apple\", \"Apple\"),\n        new SelectOption<string>(\"banana\", \"Banana\"),\n        new SelectOption<string>(\"cherry\", \"Cherry\")\n    ];\n}"
+    },
+    {
+      "name": "declarative",
+      "description": "Declarative select with SelectItem children",
+      "razor": "<Select @bind-Value=\"selected\">\n    <SelectItem Value=\"apple\">Apple</SelectItem>\n    <SelectItem Value=\"banana\">Banana</SelectItem>\n    <SelectItem Value=\"cherry\">Cherry</SelectItem>\n</Select>\n\n@code {\n    string selected = string.Empty;\n}"
+    }
+  ],
+  "Skeleton": [
+    {
+      "name": "basic",
+      "description": "Loading skeleton",
+      "razor": "<Skeleton Class=\"h-4 w-48\" />"
+    }
+  ],
+  "Slider": [
+    {
+      "name": "basic",
+      "description": "Single-thumb slider",
+      "razor": "<Slider @bind-Value=\"value\" Min=\"0\" Max=\"100\" />\n\n@code {\n    double value = 50;\n}"
+    }
+  ],
+  "Switch": [
+    {
+      "name": "basic",
+      "description": "Toggle switch",
+      "razor": "<Switch @bind-Value=\"isOn\">\n    <SwitchLabel>Airplane Mode</SwitchLabel>\n</Switch>\n\n@code {\n    bool isOn = false;\n}"
+    }
+  ],
+  "Textarea": [
+    {
+      "name": "basic",
+      "description": "Multi-line text input",
+      "razor": "<Textarea @bind-Value=\"text\" Placeholder=\"Type your message...\" />\n\n@code {\n    string text = string.Empty;\n}"
+    }
+  ],
+  "Tooltip": [
+    {
+      "name": "basic",
+      "description": "Tooltip on hover",
+      "razor": "<Tooltip>\n    <TooltipTrigger>\n        <Button Variant=\"Variant.Outline\">Hover me</Button>\n    </TooltipTrigger>\n    <TooltipContent>This is a tooltip</TooltipContent>\n</Tooltip>"
+    }
+  ],
+  "Combobox": [
+    {
+      "name": "basic",
+      "description": "Searchable combobox",
+      "razor": "<Combobox @bind-Value=\"selected\" Items=\"items\" Placeholder=\"Select framework...\" />\n\n@code {\n    string selected = string.Empty;\n    List<SelectOption<string>> items =\n    [\n        new SelectOption<string>(\"blazor\", \"Blazor\"),\n        new SelectOption<string>(\"react\", \"React\"),\n        new SelectOption<string>(\"vue\", \"Vue\")\n    ];\n}"
+    }
+  ],
+  "MultiSelect": [
+    {
+      "name": "basic",
+      "description": "Multi-select dropdown",
+      "razor": "<MultiSelect @bind-Value=\"selected\" Items=\"items\" Placeholder=\"Select items...\" />\n\n@code {\n    List<string> selected = [];\n    List<SelectOption<string>> items =\n    [\n        new SelectOption<string>(\"a\", \"Option A\"),\n        new SelectOption<string>(\"b\", \"Option B\"),\n        new SelectOption<string>(\"c\", \"Option C\")\n    ];\n}"
+    }
+  ],
+  "ToggleButton": [
+    {
+      "name": "basic",
+      "description": "Toggle button with on/off state",
+      "razor": "<ToggleButton @bind-Value=\"isOn\">Bold</ToggleButton>\n\n@code {\n    bool isOn = false;\n}"
+    }
+  ]
+}
