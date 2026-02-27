@@ -1,0 +1,16 @@
+<Tabs DefaultValue="active" Class="w-[400px]">
+    <TabsList>
+        <TabsTrigger Value="active">Active</TabsTrigger>
+        <TabsTrigger Value="pending">Pending</TabsTrigger>
+        <TabsTrigger Value="archived" Disabled="true">Archived</TabsTrigger>
+    </TabsList>
+    <TabsContent Value="active">
+        <p class="text-sm text-muted-foreground">Your active items will appear here.</p>
+    </TabsContent>
+    <TabsContent Value="pending">
+        <p class="text-sm text-muted-foreground">Items awaiting processing are listed here.</p>
+    </TabsContent>
+    <TabsContent Value="archived">
+        <p class="text-sm text-muted-foreground">Archived items are not available.</p>
+    </TabsContent>
+</Tabs>

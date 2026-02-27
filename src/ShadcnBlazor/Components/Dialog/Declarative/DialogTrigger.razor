@@ -1,13 +1,11 @@
 @inherits ShadcnComponentBase
 
-<div @onclick="OnClick"
-     role="button"
-     tabindex="0"
-     @onkeydown="OnKeyDown"
-     class="@MergeCss("inline-block cursor-pointer")"
-     @attributes="AdditionalAttributes">
+<span @onclick="OnClick"
+      @onkeydown="OnKeyDown"
+      class="@MergeCss("contents")"
+      @attributes="AdditionalAttributes">
     @ChildContent
-</div>
+</span>
 
 @code {
     [Parameter]

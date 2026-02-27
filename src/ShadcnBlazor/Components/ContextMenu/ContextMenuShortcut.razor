@@ -1,0 +1,14 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+@inherits ShadcnBlazor.Components.Shared.ShadcnComponentBase
+
+<span class="@MergeCss("ml-auto text-xs tracking-widest opacity-60", Class)" @attributes="AdditionalAttributes">
+    @ChildContent
+</span>
+
+@code {
+    /// <summary>
+    /// The shortcut text (e.g., "⌘+T").
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

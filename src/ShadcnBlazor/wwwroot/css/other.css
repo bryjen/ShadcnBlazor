@@ -214,6 +214,16 @@
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     }
 
+    .context-menu-panel[data-state="open"] {
+        animation: popover-in-from-top 0.14s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .context-menu-panel[data-state="open"] {
+            animation: none;
+        }
+    }
+
     .dropdown-menu-group {
         display: flex;
         flex-direction: column;

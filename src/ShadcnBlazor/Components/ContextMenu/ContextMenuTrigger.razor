@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+@using Microsoft.AspNetCore.Components.Web
+
+<div style="display: contents"
+     @oncontextmenu="HandleContextMenu"
+     @oncontextmenu:preventDefault="true">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter]
+    private ContextMenuContext? Context { get; set; }
+
+    /// <summary>The content that acts as the right-click target.</summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private async Task HandleContextMenu(MouseEventArgs e)
+    {
+        if (Context?.SetOpen is not null)
+            await Context.SetOpen(e.ClientX, e.ClientY);
+    }
+}

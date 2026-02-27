@@ -1,0 +1,73 @@
+@page "/components/contextmenu"
+@using ShadcnBlazor.Docs.Pages.Components.ContextMenu.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The <code>ContextMenu</code> component displays a menu triggered by right-clicking on the <code>ContextMenuTrigger</code> area. Use <code>ContextMenuContent</code> for the panel, and <code>ContextMenuGroup</code>, <code>ContextMenuLabel</code>, <code>ContextMenuItem</code>, and <code>ContextMenuSeparator</code> to structure the menu.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuBasicExample })">
+            <ContextMenuBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Submenu" Id="submenu">
+            <p class="mb-3">Use <code>ContextMenuSub</code>, <code>ContextMenuSubTrigger</code>, <code>ContextMenuPortal</code>, and <code>ContextMenuSubContent</code> to nest a sub-menu inside an item.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuSubmenuExample })">
+                <ContextMenuSubmenuExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Shortcuts" Id="shortcuts">
+            <p class="mb-3">Use <code>ContextMenuShortcut</code> inside a <code>ContextMenuItem</code> to display a keyboard shortcut hint.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuShortcutsExample })">
+                <ContextMenuShortcutsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Groups" Id="groups">
+            <p class="mb-3">Use <code>ContextMenuGroup</code> and <code>ContextMenuLabel</code> to organize items into labeled sections.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuGroupsExample })">
+                <ContextMenuGroupsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Icons" Id="icons">
+            <p class="mb-3">Add icons inside <code>ContextMenuItem</code> using SVG or an icon library component.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuIconsExample })">
+                <ContextMenuIconsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Checkbox Items" Id="checkbox-items">
+            <p class="mb-3">Use <code>ContextMenuCheckboxItem</code> for toggleable menu items with a checkmark indicator.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuCheckboxExample })">
+                <ContextMenuCheckboxExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Radio Items" Id="radio-items">
+            <p class="mb-3">Use <code>ContextMenuRadioGroup</code> and <code>ContextMenuRadioItem</code> for single-selection groups within the menu.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuRadioExample })">
+                <ContextMenuRadioExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Destructive Item" Id="destructive">
+            <p class="mb-3">Use the <code>Destructive</code> parameter on <code>ContextMenuItem</code> to style a dangerous action in the destructive color.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_ContextMenu_Examples_ContextMenuDestructiveExample })">
+                <ContextMenuDestructiveExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("ContextMenu");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add contextmenu",
+    };
+}
