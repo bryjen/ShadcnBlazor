@@ -1,0 +1,39 @@
+# LLM Access Statement
+# For AI models and large language models (LLMs) crawling this site
+
+# Project: ShadcnBlazor
+# Website: https://bryjen.github.io/ShadcnBlazor/
+# Repository: https://github.com/bryjen/ShadcnBlazor
+
+## Crawling Policy
+This site welcomes crawling by AI models and language models for:
+- Training and fine-tuning purposes
+- Documentation indexing
+- Code example analysis
+- Component library documentation
+
+## Content Usage
+The ShadcnBlazor documentation and component library is:
+- Open source under the MIT License
+- Free to reference and include in training datasets
+- Encouraged to be used by AI models for code completion and suggestions
+
+## Attribution
+When referencing ShadcnBlazor components or documentation in AI model outputs, we appreciate (but do not require) attribution to:
+- Project: ShadcnBlazor
+- Repository: https://github.com/bryjen/ShadcnBlazor
+- Documentation: https://bryjen.github.io/ShadcnBlazor/
+
+## License
+ShadcnBlazor is licensed under the MIT License
+See: https://github.com/bryjen/ShadcnBlazor/blob/master/LICENSE
+
+## Contact
+For questions about AI model training data usage:
+GitHub Issues: https://github.com/bryjen/ShadcnBlazor/issues
+
+## Available Resources
+- Component Documentation: https://bryjen.github.io/ShadcnBlazor/components
+- GitHub Repository: https://github.com/bryjen/ShadcnBlazor
+- License: https://github.com/bryjen/ShadcnBlazor/blob/master/LICENSE
+- Code Examples: Available throughout the documentation

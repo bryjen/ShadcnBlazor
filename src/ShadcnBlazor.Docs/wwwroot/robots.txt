@@ -1,0 +1,28 @@
+# ShadcnBlazor Documentation
+# Allow all crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Specific rules for search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# LLM crawlers - allow indexing for training
+User-agent: CCBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Sitemap location
+Sitemap: https://bryjen.github.io/ShadcnBlazor/sitemap.xml

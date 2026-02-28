@@ -1,0 +1,28 @@
+/*
+  Font optimization:
+  - Uses font-display: swap to prevent CLS while fonts load
+  - Consider self-hosting these fonts for faster load times:
+    1. Download from https://fonts.google.com/download?family=Inter|JetBrains+Mono
+    2. Place .woff2 files in /fonts/
+    3. Update @font-face to reference local files
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Optional: Self-hosted font fallback (uncomment when fonts are downloaded) */
+/*
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrainsmono-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+*/

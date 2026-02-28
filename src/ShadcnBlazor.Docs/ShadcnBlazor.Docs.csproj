@@ -5,6 +5,11 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+        <!-- Performance optimizations -->
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>full</TrimMode>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -43,11 +48,20 @@
         <Delete Files="Models\Generated\Snippets.generated.cs" Condition="Exists('Models\Generated\Snippets.generated.cs')" />
         <Delete Files="Models\Snippets.generated.cs" Condition="Exists('Models\Snippets.generated.cs')" />
     </Target>
-    
+
+    <!-- Disable prerendering for Debug builds (faster dev cycle) -->
+    <Target Name="DisablePrerenderingForDebug" BeforeTargets="Build">
+        <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+            <BlazorWasmPreRendering>false</BlazorWasmPreRendering>
+        </PropertyGroup>
+        <Message Text="⚡ Prerendering disabled for Debug build" Importance="high" Condition="'$(Configuration)' == 'Debug'" />
+        <Message Text="📦 Prerendering enabled for Release build" Importance="high" Condition="'$(Configuration)' != 'Debug'" />
+    </Target>
+
     <ItemGroup>
         <PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
-        <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
+        <!-- CodeMirror moved to ShadcnBlazor.Docs.Heavy for lazy loading -->
         <PackageReference Include="Markdig" Version="0.45.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" PrivateAssets="all" />
@@ -56,6 +70,12 @@
     
     <ItemGroup>
         <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
+        <ProjectReference Include="..\ShadcnBlazor.Docs.Heavy\ShadcnBlazor.Docs.Heavy.csproj" />
+    </ItemGroup>
+
+    <!-- Lazy-load the Heavy assembly to improve initial bundle size -->
+    <ItemGroup>
+        <BlazorWebAssemblyLazyLoad Include="ShadcnBlazor.Docs.Heavy.wasm" />
     </ItemGroup>
     
     <ItemGroup>

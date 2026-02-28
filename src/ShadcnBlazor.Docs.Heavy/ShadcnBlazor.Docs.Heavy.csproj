@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../ShadcnBlazor/ShadcnBlazor.csproj" />
+    </ItemGroup>
+
+</Project>
