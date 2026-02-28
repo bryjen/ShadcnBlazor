@@ -22,10 +22,11 @@
         <Content Include="**/*.razor.js" Exclude="bin/**;obj/**" />
     </ItemGroup>
 
-    <!-- Run docs compiler before build (build ShadcnBlazor and compiler first, then run) -->
+    <!-- Run docs compiler before build (build ShadcnBlazor, Heavy, and compiler first, then run) -->
     <Target Name="GenerateDocs" BeforeTargets="BeforeBuild" DependsOnTargets="ResolveProjectReferences" Condition="'$(DesignTimeBuild)' != 'true'">
         <Message Text="Generating Docs (API + Snippets)" Importance="high" />
         <MSBuild Projects="$(MSBuildProjectDirectory)/../ShadcnBlazor/ShadcnBlazor.csproj" Targets="Build" Properties="Configuration=$(Configuration)" />
+        <MSBuild Projects="$(MSBuildProjectDirectory)/../ShadcnBlazor.Docs.Heavy/ShadcnBlazor.Docs.Heavy.csproj" Targets="Build" Properties="Configuration=$(Configuration)" />
         <MSBuild Projects="$(MSBuildProjectDirectory)/../ShadcnBlazor.Docs.Compiler/ShadcnBlazor.Docs.Compiler.csproj" Targets="Build" Properties="Configuration=$(Configuration)" />
         <Exec Command="dotnet run --configuration $(Configuration) --no-build --project &quot;$(MSBuildProjectDirectory)/../ShadcnBlazor.Docs.Compiler/ShadcnBlazor.Docs.Compiler.csproj&quot; -- --assembly-path &quot;$(MSBuildProjectDirectory)/../ShadcnBlazor/bin/$(Configuration)/net9.0/ShadcnBlazor.dll&quot;"
               WorkingDirectory="$(MSBuildProjectDirectory)" />
@@ -73,10 +74,6 @@
         <ProjectReference Include="..\ShadcnBlazor.Docs.Heavy\ShadcnBlazor.Docs.Heavy.csproj" />
     </ItemGroup>
 
-    <!-- Lazy-load the Heavy assembly to improve initial bundle size -->
-    <ItemGroup>
-        <BlazorWebAssemblyLazyLoad Include="ShadcnBlazor.Docs.Heavy.wasm" />
-    </ItemGroup>
     
     <ItemGroup>
       <None Include="wwwroot\themes\brownie.css" />
