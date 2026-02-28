@@ -21,8 +21,15 @@ const checkBlazorLoaded = setInterval(function () {
     const app = document.getElementById('app');
     const overlay = document.getElementById('blazor-loader');
 
-    // Blazor has loaded when #app has content (root component rendered)
-    if (app && app.children.length > 0 && !blazorLoaded) {
+    // Check if Blazor has replaced the static content:
+    // - When Blazor loads, it replaces #app's content
+    // - The static home page HTML is wrapped in a marker div, so check if Blazor changed it
+    // - Blazor's App.razor will render and eventually the app will have interactive elements
+    const staticMarker = document.getElementById('static-home-marker');
+    const blazorRendered = app && staticMarker === null;
+
+    // Blazor has loaded when the static marker is gone (replaced by Blazor)
+    if (blazorRendered && !blazorLoaded) {
         blazorLoaded = true;
         clearInterval(intervalId);
         clearInterval(checkBlazorLoaded);
@@ -32,7 +39,7 @@ const checkBlazorLoaded = setInterval(function () {
             progressBar.style.width = '100%';
         }
 
-        // Wait 1 second, then fade out the overlay
+        // Wait 250ms, then fade out the overlay
         setTimeout(function () {
             if (overlay) {
                 overlay.style.transition = 'opacity 0.6s ease-out';
