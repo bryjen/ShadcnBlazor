@@ -1,0 +1,74 @@
+@inherits ShadcnComponentBase
+
+<div role="menuitemcheckbox"
+     aria-checked="@Checked"
+     class="@GetItemClass()"
+     @onclick="HandleClick"
+     @attributes="AdditionalAttributes">
+    <span class="dropdown-menu-checkbox-indicator">
+        @if (Checked)
+        {
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        }
+    </span>
+    @ChildContent
+    @if (!string.IsNullOrEmpty(Shortcut))
+    {
+        <span class="dropdown-menu-shortcut">@Shortcut</span>
+    }
+</div>
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuContext? Context { get; set; }
+
+    /// <summary>
+    /// The checkbox item content/label.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Whether the checkbox is checked.
+    /// </summary>
+    [Parameter]
+    public bool Checked { get; set; }
+
+    /// <summary>
+    /// Callback when checked state changes.
+    /// </summary>
+    [Parameter]
+    public EventCallback<bool> CheckedChanged { get; set; }
+
+    /// <summary>
+    /// Keyboard shortcut to display (e.g., "⌘B").
+    /// </summary>
+    [Parameter]
+    public string? Shortcut { get; set; }
+
+    /// <summary>
+    /// When true, the item is disabled.
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    private string GetItemClass()
+    {
+        var baseClass = "dropdown-menu-item dropdown-menu-checkbox-item justify-start";
+        if (Disabled)
+            baseClass += " dropdown-menu-item-disabled";
+        return MergeCss(baseClass, Class);
+    }
+
+    private async Task HandleClick(MouseEventArgs args)
+    {
+        if (Disabled)
+            return;
+
+        var newValue = !Checked;
+        await CheckedChanged.InvokeAsync(newValue);
+        // Don't close menu on checkbox toggle
+    }
+}

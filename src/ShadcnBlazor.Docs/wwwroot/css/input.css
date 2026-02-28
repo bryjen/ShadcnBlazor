@@ -1,6 +1,7 @@
 /*noinspection CssUnknownTarget*/
 @import "tailwindcss";
 @import "../../../ShadcnBlazor/wwwroot/css/tw_in.css";
+@import "../../../ShadcnBlazor/wwwroot/css/other.css";
 
 @source "../../";
 @source "../../Layout/";

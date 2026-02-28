@@ -2,6 +2,7 @@
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.DropdownMenu.Examples
 @using ShadcnBlazor.Docs.Services
+@using ShadcnBlazor.Components.DropdownMenu
 
 <ComponentDocPage Metadata="@Metadata"
                  InstallOptions="@InstallOptions"
@@ -22,6 +23,18 @@
         <p class="mb-3">A richer example combining groups, icons, shortcuts, a checked state, and a destructive action.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuComplexExample })">
             <DropdownMenuComplexExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Checkbox Items" Id="checkbox">
+        <p class="mb-3">Use <code>DropdownMenuCheckboxItem</code> for togglable options. Checkbox items do not close the menu on selection, allowing multiple toggles.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuCheckboxExample })">
+            <DropdownMenuCheckboxExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Radio Items" Id="radio">
+        <p class="mb-3">Use <code>DropdownMenuRadioGroup</code> with <code>DropdownMenuRadioItem</code> for mutually exclusive selections. Radio items close the menu on selection.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuRadioExample })">
+            <DropdownMenuRadioExample />
         </ComponentPreview>
     </DocsSection>
 </ComponentDocPage>

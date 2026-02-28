@@ -1,0 +1,23 @@
+@using ShadcnBlazor.Components.DataTable
+
+<DataTable T="Person" Items="SamplePeople" Hover Label="People — sortable">
+    <Columns>
+        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email"  Sortable />
+        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
+        <DataTableColumn T="Person" Title="Score"  Field="x => x.Score"  Sortable />
+    </Columns>
+</DataTable>
+
+@code {
+    private record Person(string Name, string Email, string Status, int Score);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "alice@example.com",   "Active",   92),
+        new("Bob Smith",       "bob@example.com",     "Inactive", 45),
+        new("Carol Williams",  "carol@example.com",   "Active",   78),
+        new("David Brown",     "david@example.com",   "Pending",  61),
+        new("Eve Davis",       "eve@example.com",     "Active",   88),
+    ];
+}

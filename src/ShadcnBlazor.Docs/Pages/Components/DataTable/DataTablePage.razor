@@ -1,0 +1,95 @@
+@page "/components/datatable"
+@using ShadcnBlazor.Docs.Pages.Components.DataTable.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.DataTable">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">Basic data table with items and columns. Use <code>Items</code> to provide data, <code>Columns</code> to define columns with a <code>Field</code> expression or <code>CellTemplate</code> for custom rendering. Set <code>Hover</code> for row hover effect and <code>Label</code> for accessibility.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableBasicExample })">
+            <DataTableBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Sortable Columns" Id="sortable">
+            <p class="mb-3">Add the <code>Sortable</code> attribute to columns to enable sorting. Click column headers to toggle sort direction. The table handles sorting automatically if items are sortable collections.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableSortableExample })">
+                <DataTableSortableExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Custom Cell Templates" Id="custom-cells">
+            <p class="mb-3">Use <code>CellTemplate</code> to customize how column values are rendered. Access the row item via <code>context</code>. Useful for formatting, badges, relative dates, or complex layouts within cells.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableCustomCellExample })">
+                <DataTableCustomCellExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Dense & Striped" Id="dense-striped">
+            <p class="mb-3">Use <code>Dense</code> for compact row heights and <code>Striped</code> for alternating row backgrounds. Both improve readability with different visual styles. Combine with <code>Hover</code> for interactive feel.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableDenseStripedExample })">
+                <DataTableDenseStripedExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Toolbar & Filtering" Id="toolbar">
+            <p class="mb-3">Add custom content above the table using <code>ToolBarContent</code>. Perfect for filters, search inputs, or action buttons. Bind to component state to filter <code>Items</code> reactively.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableToolbarExample })">
+                <DataTableToolbarExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Loading State" Id="loading">
+            <p class="mb-3">Set <code>IsLoading="true"</code> to show skeleton rows instead of data. Useful while fetching data from an API. Disable this flag when data is ready.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableLoadingExample })">
+                <DataTableLoadingExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Empty State" Id="empty-state">
+            <p class="mb-3">When <code>Items</code> is empty, the table shows a default empty message. Customize it with <code>EmptyContent</code> to show a branded or contextual message.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableEmptyStateExample })">
+                <DataTableEmptyStateExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Row Click" Id="row-click">
+            <p class="mb-3">Wire up <code>OnRowClick</code> to handle clicks on table rows. The callback receives the clicked row's data item, enabling drill-down navigation or row selection.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableRowClickExample })">
+                <DataTableRowClickExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Async Data Loading" Id="async-data">
+            <p class="mb-3">Load data asynchronously in <code>OnInitializedAsync</code>. Set <code>IsLoading="true"</code> while fetching, then update <code>Items</code> when ready. The table automatically re-renders with the new data.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableAsyncExample })">
+                <DataTableAsyncExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Multi-Selection" Id="multi-selection">
+            <p class="mb-3">Set <code>MultiSelection="true"</code> to enable checkboxes. Use <code>@@bind-SelectedItems</code> for two-way binding to track selected rows. Click rows or checkboxes to select; the header checkbox selects all.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableMultiSelectionExample })">
+                <DataTableMultiSelectionExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Grid Mode" Id="grid-mode">
+            <p class="mb-3">Set <code>InteractionMode="DataTableInteractionMode.Grid"</code> for keyboard-driven row navigation. Use Arrow Up/Down to move between rows, Space to select, Enter to activate, and Home/End to jump. Useful for accessibility-first applications.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableGridModeExample })">
+                <DataTableGridModeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("DataTable");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add datatable",
+    };
+}

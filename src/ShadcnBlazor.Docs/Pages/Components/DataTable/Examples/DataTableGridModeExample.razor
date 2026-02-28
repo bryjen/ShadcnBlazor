@@ -1,0 +1,48 @@
+@using ShadcnBlazor.Components.DataTable
+
+<DataTable T="Person" Items="SamplePeople" MultiSelection
+           InteractionMode="DataTableInteractionMode.Grid"
+           @bind-SelectedItems="_gridSelectedPeople"
+           OnRowClick="OnGridPersonClick"
+           Hover Striped PageSize="5"
+           Label="People directory grid mode">
+    <Columns>
+        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email"  Sortable />
+        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
+        <DataTableColumn T="Person" Title="Score"  Field="x => x.Score"  Sortable />
+    </Columns>
+</DataTable>
+
+<div class="rounded-md border border-border p-3 text-sm space-y-1 mt-4">
+    <p class="font-medium">Grid selection: @_gridSelectedPeople.Count row(s)</p>
+    @if (_gridLastClicked is not null)
+    {
+        <p class="text-muted-foreground">Last Enter/click row: @_gridLastClicked.Name (@_gridLastClicked.Email)</p>
+    }
+</div>
+
+<p class="text-xs text-muted-foreground mt-4">
+    <strong>Tip:</strong> Use Arrow Up/Down to navigate, Home/End to jump, Enter to click, Space to select.
+</p>
+
+@code {
+    private record Person(string Name, string Email, string Status, int Score);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "alice@example.com",   "Active",   92),
+        new("Bob Smith",       "bob@example.com",     "Inactive", 45),
+        new("Carol Williams",  "carol@example.com",   "Active",   78),
+        new("David Brown",     "david@example.com",   "Pending",  61),
+        new("Eve Davis",       "eve@example.com",     "Active",   88),
+        new("Frank Miller",    "frank@example.com",   "Inactive", 33),
+        new("Grace Wilson",    "grace@example.com",   "Active",   95),
+        new("Hank Moore",      "hank@example.com",    "Pending",  52),
+    ];
+
+    private HashSet<Person> _gridSelectedPeople = [];
+    private Person? _gridLastClicked;
+
+    private void OnGridPersonClick(Person p) => _gridLastClicked = p;
+}

@@ -19,7 +19,7 @@ public class ComponentRegistryService
         new() { Name = "Typography", Description = "Text styling and typography utilities." },
     ];
 
-    private static readonly HashSet<string> ComponentsWithoutOwnPage = ["ComposableTextArea", "Shared"];
+    private static readonly HashSet<string> ComponentsWithoutOwnPage = ["ComposableTextArea", "DataTableColumn", "Shared"];
 
     private static IReadOnlyList<ComponentDefinition> ComponentsList { get; } =
         ComponentRegistry.AllComponents

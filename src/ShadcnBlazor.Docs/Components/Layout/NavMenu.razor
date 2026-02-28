@@ -2,7 +2,7 @@
 @inherits ShadcnComponentBase
 @implements IDisposable
 
-<div class="relative py-20 px-12 w-full h-screen-minus-header w-max-full flex flex-col gap-12 overflow-x-hidden overflow-y-scroll scrollbar-hide">
+<div class="relative pt-20 pb-64 px-12 w-full h-screen-minus-header w-max-full flex flex-col gap-12 overflow-x-hidden overflow-y-scroll scrollbar-hide">
 
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Sections", includeTopMargin: false)
@@ -10,19 +10,9 @@
         @RenderNavButton("Components", "components", [])
         @RenderNavButton("Samples", "samples", [])
         @RenderNavButton("CLI", "cli", [])
+        @RenderNavButton("MCP", "mcp", [ComponentDefinition.Tag.Alpha])  @* just reusing component tags *@
     </div>
-    
-    @*
-    <div class="w-full flex flex-col gap-1">
-        @RenderSectionHeader("Getting Started", includeTopMargin: false)
-        @RenderNavButton("Installation", string.Empty)
-        @RenderSubNavButton("From existing project", string.Empty)
-        @RenderSubNavButton("From new project", string.Empty)
-        @RenderNavButton("shadcn-blazor.yaml", string.Empty)
-        @RenderNavButton("CLI tool", string.Empty)
-    </div>
-    *@
-    
+
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Components", includeTopMargin: false)
         @foreach (var component in ComponentRegistry.Components)
@@ -31,27 +21,62 @@
         }
     </div>
 
+    @{
+        var accordionTriggerClass = "text-foreground/70 group-hover:bg-accent group-hover:text-white px-2 py-1 mb-1 " +
+                                    "rounded-md transition-colors hover:bg-accent text-sm font-semibold";
+    }
+
+    @*
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Samples", includeTopMargin: false)
-        @foreach (var sample in SampleRegistry.SamplesList)
-        {
-            @RenderNavButton(sample.Name, $"samples/{sample.Slug}", [])
-        }
+        <Accordion DefaultValue="components">
+            <AccordionItem Value="components" Class="border-none">
+                <AccordionTrigger Class="@accordionTriggerClass">
+                    AI Chat
+                </AccordionTrigger>
+                <AccordionContent>
+                    @foreach (var component in ComponentRegistry.Components)
+                    {
+                        @RenderNavButton(component.Name, $"components/{component.Slug}", component.Tags)
+                    }
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+    </div>
+*@
+
+    <div class="w-full flex flex-col gap-1">
+        @RenderSectionHeader("Samples", includeTopMargin: false)
+        <Accordion DefaultValue="samples">
+            <AccordionItem Value="samples" Class="border-none">
+                <AccordionTrigger Class="@accordionTriggerClass">
+                    AI Chat
+                </AccordionTrigger>
+                <AccordionContent>
+                    @RenderNavButton("Overview", "samples/ai-chat/overview", [])
+                    @RenderNavButton("Components", "samples/ai-chat/components", [])
+                    @RenderNavButton("Internals", "samples/ai-chat/internals", [])
+                    @RenderNavButton("Extending", "samples/ai-chat/extending", [])
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
     </div>
 </div>
 
 @code {
-    [Inject] 
+    [Inject]
     public required ComponentRegistryService ComponentRegistry { get; set; }
+
     [Inject]
     public required SampleRegistryService SampleRegistry { get; set; }
-    [Inject] 
+
+    [Inject]
     public required NavigationManager Nav { get; set; }
 
     private RenderFragment RenderSectionHeader(string text, bool includeTopMargin = true) => __builder =>
     {
         var extraClasses = includeTopMargin ? "mt-8" : "";
-        <span class="text-[0.67rem] font-bold uppercase text-foreground/35 px-2 @extraClasses">
+        <span class="text-[0.67rem] font-bold uppercase text-foreground/50 px-2 @extraClasses">
             @text
         </span>
     };
@@ -62,7 +87,7 @@
         var spanClass = active
             ? "bg-accent text-white rounded-md px-2 py-1"
             : "text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors";
-        <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 px-2 font-semibold text-sm antialiased group" 
+        <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 px-2 font-semibold text-sm antialiased group"
            href="@href"
            @onclick="@(_ => HandleNav(href))"
            @onclick:preventDefault="true">
@@ -80,7 +105,7 @@
             }
         </a>
     };
-    
+
     private string CurrentPath => Nav.ToBaseRelativePath(Nav.Uri).TrimStart('/');
 
     private bool IsActive(string href)

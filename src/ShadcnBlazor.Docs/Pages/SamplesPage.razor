@@ -1,4 +1,6 @@
 @page "/samples"
+@inherits ShadcnComponentBase
+@inject PageTocService TocService
 
 <PageTitle>Samples - ShadcnBlazor</PageTitle>
 
@@ -10,18 +12,81 @@
         </p>
     </div>
 
-    <div class="grid grid-cols-3 gap-x-12 gap-y-6">
-        @foreach (var sample in SampleRegistry.SamplesList)
-        {
-            <a href="samples/@sample.Slug"
-               class="block w-full text-left text-base font-medium text-foreground/70 hover:text-foreground hover:underline py-1 transition-colors">
-                @sample.Name
-            </a>
-        }
+    <div class="flex gap-8">
+        @RenderItem(
+            @<div class="relative w-full h-full bg-card rounded-lg flex flex-col gap-1 px-2 pt-2 pb-1 overflow-hidden">
+                <div class="ml-auto bg-primary h-3 w-[30%] rounded"></div>
+                <div class="bg-secondary h-5 w-[75%] rounded"></div>
+                <div class="ml-auto bg-primary h-3 w-[50%] rounded"></div>
+                <div class="bg-secondary h-3 w-[65%] rounded"></div>
+                <div class="ml-auto bg-primary h-3 w-[30%] rounded"></div>
+
+                <div class="h-5 flex items-center justify-center">
+                    <div class="relative rounded h-full w-[75%] bg-card border border-border text-xs">
+                        <div class="absolute bottom-1 right-1 size-1 rounded-full bg-primary"></div>
+                    </div>
+                </div>
+            </div>,
+            "Dashboard",
+            href: "samples/ai-chat",
+            disabled: false)
+
+        @RenderItem(
+            @<div class="relative w-full h-full bg-card rounded-lg grid grid-cols-[30%_70%] gap-1 overflow-hidden">
+                <div class="bg-accent py-2 px-1">
+                    <div class="h-2 w-full bg-primary rounded-sm"></div>
+                </div>
+                <div class="flex flex-col gap-2 py-4 pl-1 pr-2">
+                    <div class="grid grid-cols-3 gap-x-1">
+                        <div class="bg-secondary rounded size-4"></div>
+                        <div class="bg-secondary rounded size-4"></div>
+                        <div class="bg-secondary rounded size-4"></div>
+                    </div>
+                    <div class="w-full h-[40%] bg-accent">
+
+                    </div>
+                </div>
+            </div>,
+            "Dashboard",
+            href: "/",
+            disabled: true)
+
     </div>
 </div>
 
 @code {
+    private RenderFragment RenderItem(
+        RenderFragment item,
+        string text,
+        string href = "",
+        bool disabled = false) => __builder =>
+    {
+        <div class="@(disabled ? "cursor-not-allowed" : "cursor-pointer")" @onclick="@(_ => NavigateTo(disabled, href))">
+            <Card Size="@CardSize.Sm" Class="group p-2 gap-2">
+                <div class="size-[10rem] p-7 rounded bg-background rounded-lg flex items-center justify-center transition-all duration-300 @(disabled ? "cursor-not-allowed opacity-50" : "group-hover:bg-primary/15")">
+                    @* small ui component *@
+                    @item
+                </div>
+                <span class="block w-full text-left text-sm font-medium text-foreground/70 py-1 transition-colors @(disabled ? "opacity-50" : "group-hover:underline group-hover:text-foreground")">
+                    @text
+                </span>
+            </Card>
+        </div>
+    };
+
     [Inject]
     public required SampleRegistryService SampleRegistry { get; set; }
+
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
+
+    private void NavigateTo(bool disabled, string href)
+    {
+        if (!disabled)
+        {
+            NavigationManager.NavigateTo(href);
+        }
+    }
+
+    protected override void OnInitialized() => TocService.Clear();
 }

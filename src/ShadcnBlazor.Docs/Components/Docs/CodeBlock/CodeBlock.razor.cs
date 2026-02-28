@@ -12,6 +12,7 @@ public partial class CodeBlock : ShadcnComponentBase
     [Parameter] public CodeBlockStyle Style { get; set; } = CodeBlockStyle.Solo;
     [Parameter] public bool ShowLineNumbers { get; set; } = true;
     [Parameter] public bool ShowCopyButton { get; set; } = true;
+    [Parameter] public bool Focusable { get; set; } = true;
 
     private readonly string _idBase = Guid.NewGuid().ToString("N")[..8];
     private IReadOnlyList<CodeFile> _files = [];

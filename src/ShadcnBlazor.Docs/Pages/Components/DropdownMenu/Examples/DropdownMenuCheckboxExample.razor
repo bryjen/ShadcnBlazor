@@ -1,0 +1,41 @@
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <DropdownMenu>
+        <DropdownMenuTrigger AsChild="true">
+            <Button Variant="Variant.Outline">Settings</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuLabel>Preferences</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuCheckboxItem
+                Checked="showNotifications"
+                CheckedChanged="@((val) => showNotifications = val)">
+                Show notifications
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+                Checked="enableSound"
+                CheckedChanged="@((val) => enableSound = val)">
+                Enable sound
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+                Checked="darkMode"
+                CheckedChanged="@((val) => darkMode = val)">
+                Dark mode
+            </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <div class="text-sm">
+        <p>Notifications: @(showNotifications ? "On" : "Off")</p>
+        <p>Sound: @(enableSound ? "On" : "Off")</p>
+        <p>Dark mode: @(darkMode ? "On" : "Off")</p>
+    </div>
+</div>
+
+@code {
+    private bool showNotifications = true;
+    private bool enableSound = false;
+    private bool darkMode = false;
+}

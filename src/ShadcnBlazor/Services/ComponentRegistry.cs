@@ -5,6 +5,7 @@ using ShadcnBlazor.Components.Badge;
 using ShadcnBlazor.Components.Button;
 using ShadcnBlazor.Components.Card;
 using ShadcnBlazor.Components.Checkbox;
+using ShadcnBlazor.Components.DataTable;
 using ShadcnBlazor.Components.Dialog;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.DropdownMenu;
@@ -143,8 +144,25 @@ public static class ComponentRegistry
         },
         new()
         {
-            Name = nameof(DropdownMenu), 
-            Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.", 
+            Name = "ContextMenu",
+            Description = "Right-click context menu with support for items, checkboxes, radio groups, and submenus.",
+            Dependencies = CreateDeps(nameof(Popover)),
+            RequiredActions =
+            [
+                new CopyJsAction("context-menu.js"),
+                new MergeToImportsAction(["ShadcnBlazor.Components.ContextMenu"]),
+            ]
+        },
+        new()
+        {
+            Name = "DataTable",
+            Description = "Flexible, accessible data table with sorting, pagination, multi-selection, and keyboard navigation.",
+            Dependencies = CreateDeps(),
+        },
+        new()
+        {
+            Name = nameof(DropdownMenu),
+            Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.",
             Dependencies = CreateDeps(nameof(Popover))
         },
         new()
@@ -202,11 +220,17 @@ public static class ComponentRegistry
             Description = "Toggle switch for boolean on/off values.", 
             Dependencies = CreateDeps()
         },
-        new() 
+        new()
         {
-            Name = nameof(Textarea), 
-            Description = "Multi-line text input for longer form content.", 
+            Name = nameof(Textarea),
+            Description = "Multi-line text input for longer form content.",
             Dependencies = CreateDeps()
+        },
+        new()
+        {
+            Name = "Tabs",
+            Description = "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+            Dependencies = CreateDeps(),
         },
         new() 
         {

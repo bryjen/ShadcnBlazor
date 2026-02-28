@@ -1,5 +1,6 @@
 @* We already have a `Components` directory, so we have to name this file `ComponentsPage` *@
 @page "/components"
+@inject ShadcnBlazor.Docs.Services.PageTocService TocService
 
 <PageTitle>Components - ShadcnBlazor</PageTitle>
 
@@ -25,4 +26,6 @@
 @code {
     [Inject]
     public required ComponentRegistryService ComponentRegistry { get; set; }
+
+    protected override void OnInitialized() => TocService.Clear();
 }

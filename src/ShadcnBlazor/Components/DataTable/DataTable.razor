@@ -1,0 +1,226 @@
+@typeparam T
+@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Components.Select
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.Checkbox
+
+<CascadingValue Value="_context">
+    @* Hidden div to instantiate column child components *@
+    <div style="display:none">@Columns</div>
+</CascadingValue>
+
+<div class="w-full space-y-2">
+    @if (ToolBarContent is not null)
+    {
+        <div>@ToolBarContent</div>
+    }
+
+    <div class="rounded-md border border-border overflow-hidden">
+        <table class="w-full caption-bottom text-sm"
+               role="@GetTableRole()"
+               aria-label="@EffectiveLabel"
+               aria-rowcount="@DataRowCount"
+               aria-colcount="@(IsGridMode ? ColumnCount : null)"
+               aria-readonly="@(IsGridMode ? "true" : null)"
+               aria-multiselectable="@(MultiSelection ? "true" : null)"
+               aria-busy="@(IsLoading ? "true" : null)">
+            <thead>
+                <tr class="border-b border-border bg-muted/50" role="@GetRowRole()">
+                    @if (MultiSelection)
+                    {
+                        <th scope="col"
+                            role="@GetColumnHeaderRole()"
+                            aria-colindex="@GetColIndex(0)"
+                            class="w-10 px-4 h-10 align-middle"
+                            @onclick:stopPropagation="true"
+                            aria-label="Select all rows">
+                            <Checkbox Checked="@AllSelected"
+                                      CheckedChanged="@(_ => ToggleAll())"
+                                      Size="Size.Md"
+                                      aria-label="Select all rows" />
+                        </th>
+                    }
+                    @for (var colIdx = 0; colIdx < _context.Columns.Count; colIdx++)
+                    {
+                        var col = _context.Columns[colIdx];
+                        var isSortable = col.Sortable;
+                        var absoluteColIdx = MultiSelection ? colIdx + 1 : colIdx;
+
+                        <th scope="col"
+                            role="@GetColumnHeaderRole()"
+                            aria-colindex="@GetColIndex(absoluteColIdx)"
+                            aria-sort="@GetSortAriaValue(col)"
+                            tabindex="@(isSortable ? 0 : (int?)null)"
+                            class="h-10 px-4 text-left align-middle font-medium text-muted-foreground whitespace-nowrap @(isSortable ? "cursor-pointer select-none hover:bg-muted/80 transition-colors" : "")"
+                            @onclick="() => OnHeaderClick(col)"
+                            @onkeydown="(e => OnHeaderKeyDown(e, col))"
+                            @onkeydown:preventDefault="isSortable">
+                            <span class="inline-flex items-center gap-1">
+                                @col.Title
+                                @if (isSortable)
+                                {
+                                    if (_sortCol == col)
+                                    {
+                                        if (_sortDesc)
+                                        {
+                                            <LuChevronDown Size="14" aria-hidden="true" />
+                                        }
+                                        else
+                                        {
+                                            <LuChevronUp Size="14" aria-hidden="true" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <LuChevronsUpDown Size="14" aria-hidden="true" />
+                                    }
+                                }
+                            </span>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="[&_tr:last-child]:border-0">
+                @if (IsLoading)
+                {
+                    string[] skeletonWidths = ["w-2/3", "w-1/2", "w-3/4", "w-2/5", "w-3/5", "w-1/3"];
+                    for (int i = 0; i < _currentPageSize; i++)
+                    {
+                        <tr class="border-b border-border animate-pulse" role="@GetRowRole()" aria-hidden="true">
+                            @if (MultiSelection)
+                            {
+                                <td class="w-10 px-4 @(Dense ? "py-1.5" : "py-3") align-middle" role="@GetGridCellRole()" aria-colindex="@GetColIndex(0)">
+                                    <div class="h-4 w-4 rounded bg-muted"></div>
+                                </td>
+                            }
+                            @for (int c = 0; c < _context.Columns.Count; c++)
+                            {
+                                var w = skeletonWidths[c % skeletonWidths.Length];
+                                var absoluteColIdx = MultiSelection ? c + 1 : c;
+
+                                <td class="px-4 @(Dense ? "py-1.5" : "py-3") align-middle" role="@GetGridCellRole()" aria-colindex="@GetColIndex(absoluteColIdx)">
+                                    <div class="h-4 @w rounded-md bg-muted"></div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+                else if (!PagedItems.Any())
+                {
+                    <tr role="@GetRowRole()">
+                        <td colspan="@ColumnCount" class="px-4 py-8 text-center text-muted-foreground" role="@GetGridCellRole()" aria-colindex="@GetColIndex(0)">
+                            @if (EmptyContent is not null)
+                            {
+                                @EmptyContent
+                            }
+                            else
+                            {
+                                <span>No results.</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var (item, idx) in PagedItems.Select((x, i) => (x, i)))
+                    {
+                        var absRowIndex = GetRowAbsoluteIndex(idx);
+
+                        <tr id="@GetRowId(absRowIndex)"
+                            role="@GetRowRole()"
+                            tabindex="@GetRowTabIndex(idx)"
+                            class="border-b border-border transition-colors @(Hover ? "hover:bg-muted/50" : "") @(Striped && idx % 2 == 1 ? "bg-muted/20" : "") @(MultiSelection && IsSelected(item) ? "bg-primary/5" : "") @(IsGridMode ? "focus:outline-none" : "") @(IsGridMode && _focusedRowAbsoluteIndex == absRowIndex ? "ring-2 ring-inset ring-ring/50 bg-muted/30" : "")"
+                            aria-rowindex="@absRowIndex"
+                            aria-selected="@(MultiSelection ? IsSelected(item).ToString().ToLower() : null)"
+                            @onclick="@(() => HandleRowClick(item, idx))"
+                            @onfocus="@(() => OnRowFocus(idx))"
+                            @onkeydown="@((e) => OnRowKeyDown(e, item, idx))"
+                            @onkeydown:preventDefault="IsGridMode"
+                            style="@((OnRowClick.HasDelegate || MultiSelection) ? "cursor:pointer" : "")">
+                            @if (MultiSelection)
+                            {
+                                <td class="w-10 px-4 @(Dense ? "py-1.5" : "py-3") align-middle"
+                                    role="@GetGridCellRole()"
+                                    aria-colindex="@GetColIndex(0)"
+                                    @onclick:stopPropagation="true">
+                                    <Checkbox Checked="@IsSelected(item)"
+                                              CheckedChanged="@(_ => ToggleItem(item))"
+                                              Size="Size.Md"
+                                              aria-label="@($"Select row {absRowIndex}")" />
+                                </td>
+                            }
+                            @for (var colIdx = 0; colIdx < _context.Columns.Count; colIdx++)
+                            {
+                                var col = _context.Columns[colIdx];
+                                var absoluteColIdx = MultiSelection ? colIdx + 1 : colIdx;
+
+                                <td class="px-4 @(Dense ? "py-1.5" : "py-3") align-middle"
+                                    role="@GetGridCellRole()"
+                                    aria-colindex="@GetColIndex(absoluteColIdx)">
+                                    @if (col.CellTemplate is not null)
+                                    {
+                                        @col.CellTemplate(item)
+                                    }
+                                    else if (col.Field is not null)
+                                    {
+                                        @col.Field(item)?.ToString()
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* Pagination bar *@
+    <div class="flex items-center justify-between px-2 text-sm text-muted-foreground">
+        <div class="flex items-center gap-2">
+            @if (MultiSelection && SelectedItems.Count > 0)
+            {
+                <span class="text-foreground font-medium">@SelectedItems.Count selected</span>
+                <span class="text-muted-foreground/50">·</span>
+            }
+            <span>Rows per page</span>
+            <Select T="int" Value="_currentPageSize" ValueChanged="OnPageSizeChanged" Size="Size.Md" PopoverFitContent>
+                @foreach (var opt in PageSizeOptions)
+                {
+                    <SelectItem Value="@((object?)opt)" Text="@opt.ToString()" />
+                }
+            </Select>
+        </div>
+
+        <div class="flex items-center gap-1">
+            <span class="mr-2" aria-live="polite" aria-atomic="true">Page @(_currentPage + 1) of @(TotalPages == 0 ? 1 : TotalPages)</span>
+
+            <Button Variant="Variant.Outline" Size="Size.Lg"
+                    State="@(_currentPage == 0 ? (ButtonState?)ButtonState.Disabled : null)"
+                    aria-label="Go to first page"
+                    OnClick="@(() => FirstPage())">
+                <LuChevronsLeft Size="16" aria-hidden="true" />
+            </Button>
+            <Button Variant="Variant.Outline" Size="Size.Lg"
+                    State="@(_currentPage == 0 ? (ButtonState?)ButtonState.Disabled : null)"
+                    aria-label="Go to previous page"
+                    OnClick="@(() => PrevPage())">
+                <LuChevronLeft Size="16" aria-hidden="true" />
+            </Button>
+            <Button Variant="Variant.Outline" Size="Size.Lg"
+                    State="@(_currentPage >= TotalPages - 1 ? (ButtonState?)ButtonState.Disabled : null)"
+                    aria-label="Go to next page"
+                    OnClick="@(() => NextPage())">
+                <LuChevronRight Size="16" aria-hidden="true" />
+            </Button>
+            <Button Variant="Variant.Outline" Size="Size.Lg"
+                    State="@(_currentPage >= TotalPages - 1 ? (ButtonState?)ButtonState.Disabled : null)"
+                    aria-label="Go to last page"
+                    OnClick="@(() => LastPage())">
+                <LuChevronsRight Size="16" aria-hidden="true" />
+            </Button>
+        </div>
+    </div>
+</div>
+
+
+

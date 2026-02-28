@@ -12,7 +12,7 @@ public class SheetInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/ShadcnBlazor/_content/ShadcnBlazor/js/sheet.js",
+        "/_content/ShadcnBlazor/js/sheet.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;

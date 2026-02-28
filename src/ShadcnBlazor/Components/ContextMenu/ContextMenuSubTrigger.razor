@@ -1,0 +1,33 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+@inherits ShadcnBlazor.Components.Shared.ShadcnComponentBase
+
+<div role="menuitem"
+     tabindex="-1"
+     aria-haspopup="menu"
+     aria-expanded="@(Context?.Open ?? false)"
+     class="@MergeCss("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0", Class)"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+    <span aria-hidden="true" class="ml-auto">›</span>
+</div>
+
+@code {
+    [CascadingParameter]
+    private ContextMenuSubContext? Context { get; set; }
+
+    /// <summary>
+    /// The sub-trigger content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment TriggerFragment => @<div role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="@(Context?.Open ?? false)" class="@MergeCss("relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0", Class)" @attributes="AdditionalAttributes">
+        @ChildContent
+        <span aria-hidden="true" class="ml-auto">›</span>
+    </div>;
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisterTrigger(TriggerFragment);
+    }
+}

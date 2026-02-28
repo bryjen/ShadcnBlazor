@@ -1,0 +1,28 @@
+﻿@page "/mcp"
+
+<TocPageBase>
+    <div class="flex flex-col gap-8 min-w-0">
+        <div class="flex flex-col gap-1">
+            <h1 class="text-3xl font-bold">MCP</h1>
+            <p class="text-base text-muted-foreground">The CLI ships with a built-in MCP server, enabling AI tools to browse and query the component library directly, without having to examine the codebase dynamically each time.</p>
+        </div>
+
+        <DocsSection Title="Why?" Id="why" Class="w-full text-[0.9rem] leading-[1.75] text-foreground/85 mb-3">
+            <p class="mb-3">
+                Model Conponent Protocol (MCP) is a simple JSON-based protocol for exposing component metadata and source code to AI tools such as <code>Cursor</code>, <code>Claude Code</code>, and <code>OpenAI Codex</code>
+                Instead of only being able to examine components by reading source code, an MCP server allows structured querying of component library, resulting in proper usage of the components, as well as faster and cheaper queries.
+            </p>
+
+            <p class="mb-3">
+                ShadcnBlazor solves this by copying component source code directly into your project—you own the code.
+                There's no black box: components live in your codebase, so you can read, modify, and extend them however you need.
+                Components are built with Tailwind CSS v4 and semantic CSS variables for theming.
+                They're accessible, customizable, and designed to fit naturally into Blazor apps without fighting the framework.
+            </p>
+        </DocsSection>
+
+
+        <DocsSection Title="Installation" Id="installation">
+        </DocsSection>
+    </div>
+</TocPageBase>

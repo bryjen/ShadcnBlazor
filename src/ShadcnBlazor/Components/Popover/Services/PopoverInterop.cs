@@ -12,7 +12,7 @@ public class PopoverInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/ShadcnBlazor/_content/ShadcnBlazor/js/popovers.js",
+        "/_content/ShadcnBlazor/js/popovers.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;

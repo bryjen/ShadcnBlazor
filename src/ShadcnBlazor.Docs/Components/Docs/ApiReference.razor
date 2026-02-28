@@ -4,7 +4,6 @@
     @if (ShowHeader)
     {
         <div class="flex flex-col gap-4 mb-6">
-            <h2 class="text-3xl font-bold text-foreground">API Reference</h2>
             <h3 class="text-2xl font-bold text-foreground">@Doc.Name</h3>
             @if (!string.IsNullOrEmpty(Doc.Summary))
             {
@@ -19,7 +18,7 @@
     {
         <div class="mb-8">
             <h4 class="text-xl font-semibold text-foreground mb-3">Properties</h4>
-            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg">
+            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg" tabindex="0">
                 <table class="w-full table-auto">
                     <thead>
                         <tr>
@@ -51,7 +50,7 @@
     {
         <div class="mb-8">
             <h4 class="text-xl font-semibold text-foreground mb-3">Events</h4>
-            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg">
+            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg" tabindex="0">
                 <table class="w-full table-auto">
                     <thead>
                         <tr>
@@ -83,7 +82,7 @@
     {
         <div>
             <h4 class="text-xl font-semibold text-foreground mb-3">Methods</h4>
-            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg">
+            <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg" tabindex="0">
                 <table class="w-full table-auto">
                     <thead>
                         <tr>

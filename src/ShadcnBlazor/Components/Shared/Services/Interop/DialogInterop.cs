@@ -12,7 +12,7 @@ public class DialogInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/ShadcnBlazor/_content/ShadcnBlazor/js/dialog.js",
+        "/_content/ShadcnBlazor/js/dialog.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;

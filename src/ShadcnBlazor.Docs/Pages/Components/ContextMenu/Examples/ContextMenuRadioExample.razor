@@ -1,0 +1,24 @@
+@code {
+    private string _layout = "Default";
+}
+
+<ContextMenu>
+    <ContextMenuTrigger>
+        <div class="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none cursor-context-menu">
+            Right click here
+        </div>
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+        <ContextMenuLabel>Layout</ContextMenuLabel>
+        <ContextMenuSeparator />
+        <ContextMenuRadioGroup Value="@_layout" ValueChanged="v => _layout = v">
+            <ContextMenuRadioItem Value="Default">Default</ContextMenuRadioItem>
+            <ContextMenuRadioItem Value="Comfortable">Comfortable</ContextMenuRadioItem>
+            <ContextMenuRadioItem Value="Compact">Compact</ContextMenuRadioItem>
+        </ContextMenuRadioGroup>
+        <ContextMenuSeparator />
+        <ContextMenuItem>Reload</ContextMenuItem>
+    </ContextMenuContent>
+</ContextMenu>
+
+<p class="mt-2 text-sm text-muted-foreground">Selected layout: <strong>@_layout</strong></p>

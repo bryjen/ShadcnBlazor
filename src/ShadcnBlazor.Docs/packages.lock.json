@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     "net9.0": {
+      "BlazorWasmPreRendering.Build": {
+        "type": "Direct",
+        "requested": "[7.0.0, )",
+        "resolved": "7.0.0",
+        "contentHash": "75NlpnNzzLoOYtZx+Gw3nLI+PQNefEtz+SwrI29wO3jFiUWOPS3QamBDRkTtjeSUTXY/2k/1DyjWwnk9y3082Q=="
+      },
       "EasyAppDev.Blazor.Icons.Lucide": {
         "type": "Direct",
         "requested": "[2.0.4, )",
@@ -259,6 +265,7 @@
       "shadcnblazor": {
         "type": "Project",
         "dependencies": {
+          "EasyAppDev.Blazor.Icons.Lucide": "[2.0.4, )",
           "Microsoft.AspNetCore.Components.Web": "[9.0.6, )",
           "TailwindMerge.NET": "[1.2.0, )"
         }
