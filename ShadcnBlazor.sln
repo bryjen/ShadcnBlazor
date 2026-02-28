@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadcnBlazor.Cli.Tests", "t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadcnBlazor.Mcp.Tests", "tests\ShadcnBlazor.Mcp.Tests\ShadcnBlazor.Mcp.Tests.csproj", "{D1E2F3A4-B5C6-7890-DEF0-234567890BCD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scratch", "scratch", "{50CE4EB7-879A-4EB9-8AE6-B3E00AE7B09B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadcnBlazor.Docs", "src\ShadcnBlazor.Docs\ShadcnBlazor.Docs.csproj", "{7E31DA8D-9694-4289-88FF-A68D7A496106}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadcnBlazor.Docs.Compiler", "src\ShadcnBlazor.Docs.Compiler\ShadcnBlazor.Docs.Compiler.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"

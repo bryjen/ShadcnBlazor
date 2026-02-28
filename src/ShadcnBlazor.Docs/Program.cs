@@ -36,31 +36,39 @@ builder.Services.AddScoped<IDialogService, DialogService>();
 builder.Services.AddScoped<IDialogJsService, DialogJsService>();
 builder.Services.AddScoped<ScrollLockService>();
 
+builder.Services.AddScoped<IKeyInterceptorService, KeyInterceptorService>();
+builder.Services.AddScoped<IFocusScopeService, FocusScopeService>();
+
 builder.Services.AddScoped(sp => new PopoverInterop(
     sp.GetRequiredService<IJSRuntime>(),
-    PopoverInterop.DefaultModulePaths));
+    ["/ShadcnBlazor/_content/ShadcnBlazor/js/popovers.js"]
+));
 
 builder.Services.AddScoped(sp => new FocusScopeInterop(
     sp.GetRequiredService<IJSRuntime>(),
-    FocusScopeInterop.DefaultModulePaths));
-builder.Services.AddScoped<IFocusScopeService, FocusScopeService>();
+    ["/ShadcnBlazor/_content/ShadcnBlazor/js/focus-scope.js"]
+));
 
 builder.Services.AddScoped(sp => new KeyInterceptorInterop(
     sp.GetRequiredService<IJSRuntime>(),
-    KeyInterceptorInterop.DefaultModulePaths));
-builder.Services.AddScoped<IKeyInterceptorService, KeyInterceptorService>();
+    ["/ShadcnBlazor/_content/ShadcnBlazor/js/key-interceptor.js"]
+));
 
 builder.Services.AddScoped(sp => new ScrollLockInterop(
     sp.GetRequiredService<IJSRuntime>(),
-    ScrollLockInterop.DefaultModulePaths));
+    ["/ShadcnBlazor/_content/ShadcnBlazor/js/scroll-lock.js"]
+));
 
 builder.Services.AddScoped(sp => new DialogInterop(
     sp.GetRequiredService<IJSRuntime>(),
-    DialogInterop.DefaultModulePaths));
+    ["/ShadcnBlazor/_content/ShadcnBlazor/js/dialog.js"]
+));
 
 builder.Services.AddScoped(sp => new SheetInterop(
     sp.GetRequiredService<IJSRuntime>(),
-    SheetInterop.DefaultModulePaths));
+    ["/ShadcnBlazor/_content/ShadcnBlazor/js/sheet.js"]
+));
+
 builder.Services.AddScoped<ISheetJsService, SheetJsService>();
 builder.Services.AddScoped<ISheetService, SheetService>();
 

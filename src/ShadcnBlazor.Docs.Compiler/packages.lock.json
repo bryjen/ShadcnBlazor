@@ -12,6 +12,14 @@
           "Microsoft.AspNetCore.Components.Analyzers": "9.0.6"
         }
       },
+      "EasyAppDev.Blazor.Icons.Lucide": {
+        "type": "Transitive",
+        "resolved": "2.0.4",
+        "contentHash": "tjUl5VI+26OZZfUqUv4A/8F0tFxvmaO2PcgciH6YMfdpSyAq4MYtrAUnT0VVozwQ6nnfF3mnMzZnmKSPnSQnpg==",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "9.0.5"
+        }
+      },
       "Microsoft.AspNetCore.Authorization": {
         "type": "Transitive",
         "resolved": "9.0.6",
@@ -109,6 +117,7 @@
       "shadcnblazor": {
         "type": "Project",
         "dependencies": {
+          "EasyAppDev.Blazor.Icons.Lucide": "[2.0.4, )",
           "Microsoft.AspNetCore.Components.Web": "[9.0.6, )",
           "TailwindMerge.NET": "[1.2.0, )"
         }

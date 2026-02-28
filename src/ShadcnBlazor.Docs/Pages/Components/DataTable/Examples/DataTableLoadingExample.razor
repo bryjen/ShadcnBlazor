@@ -1,0 +1,31 @@
+@using ShadcnBlazor.Components.DataTable
+@using ShadcnBlazor.Components.Button
+
+<div class="mb-2">
+    <Button Variant="Variant.Outline" OnClick="@(() => _isLoading = !_isLoading)">
+        @(_isLoading ? "Stop Loading" : "Start Loading")
+    </Button>
+</div>
+
+<DataTable T="Person" Items="SamplePeople" IsLoading="_isLoading" Hover Label="People — loading demo">
+    <Columns>
+        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name" />
+        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" />
+    </Columns>
+</DataTable>
+
+@code {
+    private record Person(string Name, string Email, string Status);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "alice@example.com",   "Active"),
+        new("Bob Smith",       "bob@example.com",     "Inactive"),
+        new("Carol Williams",  "carol@example.com",   "Active"),
+        new("David Brown",     "david@example.com",   "Pending"),
+        new("Eve Davis",       "eve@example.com",     "Active"),
+    ];
+
+    private bool _isLoading;
+}

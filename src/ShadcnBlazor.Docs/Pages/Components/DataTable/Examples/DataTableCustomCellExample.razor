@@ -1,0 +1,51 @@
+@using ShadcnBlazor.Components.DataTable
+
+<DataTable T="Person" Items="SamplePeople" Hover Label="People — custom cells">
+    <Columns>
+        <DataTableColumn T="Person" Title="Name" Field="x => x.Name" Sortable />
+        <DataTableColumn T="Person" Title="Status">
+            <CellTemplate>
+                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium @StatusBadgeClass(context.Status)">
+                    @context.Status
+                </span>
+            </CellTemplate>
+        </DataTableColumn>
+        <DataTableColumn T="Person" Title="Joined">
+            <CellTemplate>
+                <span class="text-muted-foreground">@RelativeDate(context.Joined)</span>
+            </CellTemplate>
+        </DataTableColumn>
+        <DataTableColumn T="Person" Title="Score" Field="x => x.Score" Sortable />
+    </Columns>
+</DataTable>
+
+@code {
+    private record Person(string Name, string Status, DateTime Joined, int Score);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "Active",   new DateTime(2023, 3, 12),  92),
+        new("Bob Smith",       "Inactive", new DateTime(2022, 11, 5),  45),
+        new("Carol Williams",  "Active",   new DateTime(2024, 1, 20),  78),
+        new("David Brown",     "Pending",  new DateTime(2023, 7, 8),   61),
+        new("Eve Davis",       "Active",   new DateTime(2021, 9, 30),  88),
+    ];
+
+    private static string StatusBadgeClass(string status) => status switch
+    {
+        "Active"   => "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+        "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+        "Pending"  => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+        _          => "bg-muted text-muted-foreground",
+    };
+
+    private static string RelativeDate(DateTime date)
+    {
+        var days = (DateTime.UtcNow - date.ToUniversalTime()).TotalDays;
+        if (days < 1)   return "Today";
+        if (days < 2)   return "Yesterday";
+        if (days < 30)  return $"{(int)days}d ago";
+        if (days < 365) return $"{(int)(days / 30)}mo ago";
+        return $"{(int)(days / 365)}y ago";
+    }
+}

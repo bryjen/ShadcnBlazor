@@ -12,6 +12,7 @@ public class PageRegistryService
         new("Components", "components", "/components"),
         new("Samples", "samples", "/samples"),
         new("CLI", "cli", "/cli"),
+        new("MCP", "mcp", "/mcp"),
     ];
 
     public IReadOnlyList<PageRegistryEntry> PagesList => Pages;

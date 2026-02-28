@@ -50,6 +50,7 @@
     <ItemGroup>
         <Folder Include="Components\Customize\" />
         <Folder Include="Components\Samples\MarkdownEditor\Services\" />
+        <Folder Include="Pages\Components\DataTable\Examples\" />
         <Folder Include="Services\Interop\" />
     </ItemGroup>
     

@@ -259,6 +259,7 @@
       "shadcnblazor": {
         "type": "Project",
         "dependencies": {
+          "EasyAppDev.Blazor.Icons.Lucide": "[2.0.4, )",
           "Microsoft.AspNetCore.Components.Web": "[9.0.6, )",
           "TailwindMerge.NET": "[1.2.0, )"
         }

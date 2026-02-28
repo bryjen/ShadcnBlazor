@@ -84,6 +84,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         "ShadcnBlazor.Components.ToggleButton.ToggleButton",
         "ShadcnBlazor.Components.Card.Card",
         "ShadcnBlazor.Components.Checkbox.Checkbox",
+        "ShadcnBlazor.Components.DataTable.DataTable`1",
         "ShadcnBlazor.Components.Textarea.ComposableTextArea",
         "ShadcnBlazor.Components.Dialog.DialogProvider",
         "ShadcnBlazor.Components.DropdownMenu.DropdownMenu",
@@ -175,7 +176,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             output.AppendLine("        },");
         }
 
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
             .Where(m => !m.IsSpecialName)
             .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_"))
             .OrderBy(m => m.Name)
