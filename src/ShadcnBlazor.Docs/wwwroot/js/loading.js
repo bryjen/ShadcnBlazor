@@ -21,14 +21,12 @@ const checkBlazorLoaded = setInterval(function () {
     const app = document.getElementById('app');
     const overlay = document.getElementById('blazor-loader');
 
-    // Check if Blazor has replaced the static content:
-    // - When Blazor loads, it replaces #app's content
-    // - The static home page HTML is wrapped in a marker div, so check if Blazor changed it
-    // - Blazor's App.razor will render and eventually the app will have interactive elements
-    const staticMarker = document.getElementById('static-home-marker');
-    const blazorRendered = app && staticMarker === null;
+    // Check if Blazor has rendered:
+    // - When Blazor loads, it renders content to #app
+    // - Check if the app div has child elements (Blazor rendered components)
+    const blazorRendered = app && app.children.length > 0;
 
-    // Blazor has loaded when the static marker is gone (replaced by Blazor)
+    // Blazor has loaded when content appears in #app
     if (blazorRendered && !blazorLoaded) {
         blazorLoaded = true;
         clearInterval(intervalId);

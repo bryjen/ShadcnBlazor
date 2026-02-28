@@ -555,7 +555,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
 
         _module = await JsRuntime.InvokeAsync<IJSObjectReference>(
             "import",
-            "/_content/ShadcnBlazor/Components/Select/Base/SelectBase.razor.js");
+            "/ShadcnBlazor/_content/ShadcnBlazor/Components/Select/Base/SelectBase.razor.js");
     }
 
     public async ValueTask DisposeAsync()

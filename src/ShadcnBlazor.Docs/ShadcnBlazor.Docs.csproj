@@ -4,7 +4,13 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <BlazorWasmPrerenderingBaseHref>/ShadcnBlazor/</BlazorWasmPrerenderingBaseHref>
+        <!-- Explicitly list all routes to pre-render (relative to prerenderer server, NOT including base href) -->
+        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/input;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
     </PropertyGroup>
 
     <ItemGroup>
@@ -49,13 +55,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Folder Include="Components\Customize\" />
-        <Folder Include="Components\Samples\MarkdownEditor\Services\" />
-        <Folder Include="Pages\Components\DataTable\Examples\" />
-        <Folder Include="Services\Interop\" />
-    </ItemGroup>
-    
-    <ItemGroup>
         <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
     </ItemGroup>
     
@@ -69,10 +68,5 @@
       <None Include="wwwroot\themes\vtron.css" />
       <None Include="wwwroot\themes\zen-inspired-theme.css" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\components\datatable\index.html" />
-    </ItemGroup>
-    
     
 </Project>

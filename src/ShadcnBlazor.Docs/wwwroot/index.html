@@ -24,54 +24,7 @@
 </head>
 
 <body class="overflow-x-hidden">
-    <div id="app">
-        <!-- ============================================================ -->
-        <!-- STATIC HOME PAGE (visible while WASM loads, then replaced) -->
-        <!-- ============================================================ -->
-        <div id="static-home-marker" class="w-full flex flex-col items-center text-sm">
-            <div class="flex flex-col items-center max-lg:px-4 max-lg:pt-12 lg:pt-20 max-lg:pb-6 lg:pb-40 max-lg:gap-16 lg:gap-25">
-                <!-- Hero Section -->
-                <div class="w-full flex flex-col items-center gap-4">
-                    <h1 class="font-bold max-lg:text-3xl lg:text-5xl lg:w-5xl text-center">
-                        A
-                        <span class="bg-card px-1 rounded rounded-xl" style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>
-                        inspired Blazor component library
-                    </h1>
-
-                    <p class="lg:text-lg lg:w-2xl text-center">
-                        A Blazor component library that offers simple, customizable, and extensible components.
-                        Similar to <span style="font-family: 'JetBrains Mono', monospace;">shadcn/ui</span>, this library is open source and open code.
-                    </p>
-
-                    <p class="max-lg:hidden text-sm w-2xl text-center text-muted-foreground">
-                        * everything you see here was built solely using
-                        <span style="font-family: 'JetBrains Mono', monospace;">ShadcnBlazor</span>
-                    </p>
-
-                    <!-- CTA Buttons -->
-                    <div class="flex gap-4">
-                        <a href="/ShadcnBlazor/introduction" class="inline-flex items-center justify-center px-6 py-3 h-10 lg:h-12 lg:px-8 rounded-md bg-primary text-primary-foreground font-medium text-sm lg:text-base hover:opacity-90 transition-opacity">
-                            Getting Started
-                        </a>
-
-                        <a href="/ShadcnBlazor/components" class="inline-flex items-center justify-center px-6 py-3 h-10 lg:h-12 lg:px-8 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground font-medium text-sm lg:text-base transition-colors">
-                            View Components
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Examples Section Placeholder -->
-                <div id="examples" class="lg:px-24 w-full flex flex-col items-center gap-6">
-                    <div class="w-full text-center text-muted-foreground">
-                        <p>Loading examples...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ============================================================ -->
-        <!-- END STATIC HOME PAGE -->
-        <!-- ============================================================ -->
-    </div>
+    <div id="app"></div>
 
     <!-- Loading overlay - persists until Blazor loads + 1 second delay -->
     <div id="blazor-loader" class="blazor-loader">
