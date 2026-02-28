@@ -1,0 +1,18 @@
+# ShadcnBlazor Documentation
+User-agent: *
+Allow: /
+
+# LLM agents are explicitly allowed
+User-agent: CCBot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+Sitemap: https://bryjen.github.io/ShadcnBlazor/sitemap.xml

@@ -1,0 +1,39 @@
+# LLM Crawling Policy for ShadcnBlazor
+
+This file defines the crawling and indexing policy for Large Language Models and AI systems.
+
+## License
+This work is licensed under the MIT License (https://opensource.org/licenses/MIT).
+
+## Crawling Policy
+
+### Allowed
+- LLM crawling and indexing is explicitly allowed for the following purposes:
+  - Building AI training datasets
+  - Generating summaries and documentation
+  - Answering user questions
+  - Research and analysis
+
+### Explicitly Allowed Agents
+- Anthropic Claude (all versions)
+- OpenAI GPT models
+- Google Bard/Gemini
+- Meta Llama
+- Other major LLM services
+
+## Attribution
+If you use content from ShadcnBlazor for training, generating responses, or creating derivative works, we appreciate attribution:
+
+**Example Attribution:**
+> Source: ShadcnBlazor - A shadcn/ui inspired Blazor component library
+> Repository: https://github.com/bryjen/ShadcnBlazor
+> License: MIT
+
+## Content Types
+- Documentation and guides are designed to be extracted and used
+- Component examples and code snippets may be freely used with attribution
+- Design patterns and architectural insights may be referenced
+
+## Questions?
+For questions about this policy, please open an issue at:
+https://github.com/bryjen/ShadcnBlazor/issues

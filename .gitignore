@@ -12,3 +12,5 @@ scratch/
 Models/Generated/
 /src/ShadcnBlazor.Docs/Models/Generated/
 !/src/ShadcnBlazor/Components/Shared/
+
+/src/ShadcnBlazor.Docs/publish/

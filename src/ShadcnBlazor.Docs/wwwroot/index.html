@@ -7,20 +7,19 @@
 
     <title>A shadcn/ui inspired Blazor component library</title>
     <base href="/ShadcnBlazor/" />
-    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <link rel="icon" type="image/png" href="/ShadcnBlazor/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/ShadcnBlazor/favicon.svg" />
+    <link rel="shortcut icon" href="/ShadcnBlazor/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/ShadcnBlazor/apple-touch-icon.png" />
+    <link rel="manifest" href="/ShadcnBlazor/site.webmanifest" />
+
     <link rel="stylesheet" href="_content/ShadcnBlazor/css/tw_out.css" />
     <link rel="stylesheet" href="_content/ShadcnBlazor/css/other.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/markdown.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="ShadcnBlazor.Docs.styles.css" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 </head>
 
 <body class="overflow-x-hidden">
@@ -42,34 +41,12 @@
         <span class="dismiss">🗙</span>
     </div>
 
-    <!-- Disable autostart, manually start Blazor after initial paint -->
-    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
     <script src="js/loading.js"></script>
 
-    <script>
-        // Start Blazor after page is fully loaded and interactive
-        // This allows the static HTML to be visible immediately while WASM loads
-        document.addEventListener('DOMContentLoaded', () => {
-            // Use requestIdleCallback if available (modern browsers)
-            // Falls back to timeout for older browsers
-            if ('requestIdleCallback' in window) {
-                requestIdleCallback(() => {
-                    console.log('[ShadcnBlazor] Starting Blazor...');
-                    Blazor.start();
-                });
-            } else {
-                // Fallback: start after a short delay
-                setTimeout(() => {
-                    console.log('[ShadcnBlazor] Starting Blazor (timeout fallback)...');
-                    Blazor.start();
-                }, 100);
-            }
-        });
-    </script>
-    <script src="_framework/aspnetcore-browser-refresh.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlightjs-cshtml-razor@2.2.0/dist/cshtml-razor.min.js"></script>
+    <!-- Defer syntax highlighting scripts - only needed for code blocks -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlightjs-cshtml-razor@2.2.0/dist/cshtml-razor.min.js" defer></script>
 
     <script src="js/markdown-highlight.js"></script>
     <script src="js/docs-codeblock.js"></script>

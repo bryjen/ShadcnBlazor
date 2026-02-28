@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+        <PublishTrimmed>false</PublishTrimmed>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -14,7 +15,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="**/*.razor.js" Exclude="bin/**;obj/**" />
+        <Content Include="**/*.razor.js" Exclude="bin/**;obj/**;publish/**" />
+    </ItemGroup>
+
+    <!-- Exclude publish folder from compilation -->
+    <ItemGroup>
+        <Content Remove="publish/**" />
+        <Compile Remove="publish/**" />
+        <EmbeddedResource Remove="publish/**" />
+        <None Remove="publish/**" />
+        <RazorComponent Remove="publish/**" />
     </ItemGroup>
 
     <!-- Run docs compiler before build (build ShadcnBlazor and compiler first, then run) -->
