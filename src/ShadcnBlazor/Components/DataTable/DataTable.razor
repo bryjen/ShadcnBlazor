@@ -1,4 +1,5 @@
 @typeparam T
+@inherits ShadcnComponentBase
 @using EasyAppDev.Blazor.Icons.Lucide
 @using ShadcnBlazor.Components.Select
 @using ShadcnBlazor.Components.Button
@@ -16,6 +17,7 @@
     }
 
     <div class="rounded-md border border-border overflow-hidden">
+        <div class="overflow-x-auto">
         <table class="w-full caption-bottom text-sm"
                role="@GetTableRole()"
                aria-label="@EffectiveLabel"
@@ -23,7 +25,7 @@
                aria-colcount="@(IsGridMode ? ColumnCount : null)"
                aria-readonly="@(IsGridMode ? "true" : null)"
                aria-multiselectable="@(MultiSelection ? "true" : null)"
-               aria-busy="@(IsLoading ? "true" : null)">
+               aria-busy="@(ShowSkeleton ? "true" : null)">
             <thead>
                 <tr class="border-b border-border bg-muted/50" role="@GetRowRole()">
                     @if (MultiSelection)
@@ -45,15 +47,18 @@
                         var col = _context.Columns[colIdx];
                         var isSortable = col.Sortable;
                         var absoluteColIdx = MultiSelection ? colIdx + 1 : colIdx;
+                        
+                        var sortableClass = isSortable ? "cursor-pointer select-none hover:bg-muted/80 transition-colors" : "";
+                        var containerClass = MergeCss("h-10 px-4 text-left align-middle font-medium text-muted-foreground whitespace-nowrap", sortableClass, col.Class);
 
                         <th scope="col"
                             role="@GetColumnHeaderRole()"
                             aria-colindex="@GetColIndex(absoluteColIdx)"
                             aria-sort="@GetSortAriaValue(col)"
                             tabindex="@(isSortable ? 0 : (int?)null)"
-                            class="h-10 px-4 text-left align-middle font-medium text-muted-foreground whitespace-nowrap @(isSortable ? "cursor-pointer select-none hover:bg-muted/80 transition-colors" : "")"
-                            @onclick="() => OnHeaderClick(col)"
-                            @onkeydown="(e => OnHeaderKeyDown(e, col))"
+                            class="@(containerClass)"
+                            @onclick="@(async () => await OnHeaderClick(col))"
+                            @onkeydown="@(async (e) => await OnHeaderKeyDown(e, col))"
                             @onkeydown:preventDefault="isSortable">
                             <span class="inline-flex items-center gap-1">
                                 @col.Title
@@ -81,7 +86,7 @@
                 </tr>
             </thead>
             <tbody class="[&_tr:last-child]:border-0">
-                @if (IsLoading)
+                @if (ShowSkeleton)
                 {
                     string[] skeletonWidths = ["w-2/3", "w-1/2", "w-3/4", "w-2/5", "w-3/5", "w-1/3"];
                     for (int i = 0; i < _currentPageSize; i++)
@@ -134,7 +139,7 @@
                             aria-selected="@(MultiSelection ? IsSelected(item).ToString().ToLower() : null)"
                             @onclick="@(() => HandleRowClick(item, idx))"
                             @onfocus="@(() => OnRowFocus(idx))"
-                            @onkeydown="@((e) => OnRowKeyDown(e, item, idx))"
+                            @onkeydown="@((KeyboardEventArgs e) => OnRowKeyDown(e, item, idx))"
                             @onkeydown:preventDefault="IsGridMode"
                             style="@((OnRowClick.HasDelegate || MultiSelection) ? "cursor:pointer" : "")">
                             @if (MultiSelection)
@@ -172,6 +177,7 @@
                 }
             </tbody>
         </table>
+        </div>
     </div>
 
     @* Pagination bar *@
@@ -183,7 +189,7 @@
                 <span class="text-muted-foreground/50">·</span>
             }
             <span>Rows per page</span>
-            <Select T="int" Value="_currentPageSize" ValueChanged="OnPageSizeChanged" Size="Size.Md" PopoverFitContent>
+            <Select T="int" Value="_currentPageSize" ValueChanged="@(async (size) => await OnPageSizeChanged(size))" Size="Size.Md" PopoverFitContent>
                 @foreach (var opt in PageSizeOptions)
                 {
                     <SelectItem Value="@((object?)opt)" Text="@opt.ToString()" />
@@ -197,30 +203,27 @@
             <Button Variant="Variant.Outline" Size="Size.Lg"
                     State="@(_currentPage == 0 ? (ButtonState?)ButtonState.Disabled : null)"
                     aria-label="Go to first page"
-                    OnClick="@(() => FirstPage())">
+                    OnClick="@(async () => await FirstPage())">
                 <LuChevronsLeft Size="16" aria-hidden="true" />
             </Button>
             <Button Variant="Variant.Outline" Size="Size.Lg"
                     State="@(_currentPage == 0 ? (ButtonState?)ButtonState.Disabled : null)"
                     aria-label="Go to previous page"
-                    OnClick="@(() => PrevPage())">
+                    OnClick="@(async () => await PrevPage())">
                 <LuChevronLeft Size="16" aria-hidden="true" />
             </Button>
             <Button Variant="Variant.Outline" Size="Size.Lg"
                     State="@(_currentPage >= TotalPages - 1 ? (ButtonState?)ButtonState.Disabled : null)"
                     aria-label="Go to next page"
-                    OnClick="@(() => NextPage())">
+                    OnClick="@(async () => await NextPage())">
                 <LuChevronRight Size="16" aria-hidden="true" />
             </Button>
             <Button Variant="Variant.Outline" Size="Size.Lg"
                     State="@(_currentPage >= TotalPages - 1 ? (ButtonState?)ButtonState.Disabled : null)"
                     aria-label="Go to last page"
-                    OnClick="@(() => LastPage())">
+                    OnClick="@(async () => await LastPage())">
                 <LuChevronsRight Size="16" aria-hidden="true" />
             </Button>
         </div>
     </div>
 </div>
-
-
-

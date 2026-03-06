@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**</DefaultItemExcludes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\ShadcnBlazor.xml</DocumentationFile>
         <!-- Enable CS1591 to warn on missing XML documentation -->
@@ -32,6 +33,3 @@
         <Content Include="Components/**/*.razor.js" />
     </ItemGroup>
 </Project>
-
-
-

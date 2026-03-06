@@ -25,6 +25,8 @@ public class DialogService : IDialogService
         DialogOptions? options = null)
         where T : ComponentBase
     {
+        CleanupClosedInstances();
+
         var id = Guid.NewGuid();
         var dialogReference = new DialogReference(id, this);
 
@@ -43,6 +45,22 @@ public class DialogService : IDialogService
         OnDialogsChanged?.Invoke();
 
         return dialogReference;
+    }
+
+    /// <summary>
+    /// Immediately removes all closed dialog instances from the list.
+    /// Called internally to clean up stale instances.
+    /// </summary>
+    private void CleanupClosedInstances()
+    {
+        var completedInstances = DialogInstances
+            .Where(x => x.TaskCompletionSource.Task.IsCompleted)
+            .ToList();
+
+        foreach (var instance in completedInstances)
+        {
+            DialogInstances.Remove(instance);
+        }
     }
 
     /// <inheritdoc />
@@ -109,12 +127,19 @@ public class DialogService : IDialogService
 
     private void CompleteClose(DialogInstance instance, DialogResult result)
     {
+        System.Diagnostics.Debug.WriteLine($"[DialogService] CompleteClose called for instance {instance.Id}");
+        System.Diagnostics.Debug.WriteLine($"[DialogService] DialogInstances.Count before removal: {DialogInstances.Count}");
+
         if (!DialogInstances.Remove(instance))
         {
+            System.Diagnostics.Debug.WriteLine($"[DialogService] Failed to remove instance {instance.Id} from list");
             return;
         }
 
+        System.Diagnostics.Debug.WriteLine($"[DialogService] Instance removed. Count after: {DialogInstances.Count}");
         instance.TaskCompletionSource.TrySetResult(result);
+        CleanupClosedInstances();
         OnDialogsChanged?.Invoke();
+        System.Diagnostics.Debug.WriteLine($"[DialogService] OnDialogsChanged invoked");
     }
 }

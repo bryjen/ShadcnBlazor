@@ -109,9 +109,9 @@ public partial class Select<T>
     private string GetOptionClass(bool isSelected, bool isActive, bool isDisabled)
     {
         var selectedClasses = isSelected
-            ? "bg-primary text-primary-foreground"
+            ? "bg-primary/20 ring-1 ring-inset ring-primary"
             : string.Empty;
-        var activeClasses = isActive ? "duration-0 bg-primary/30" : string.Empty;
+        var activeClasses = isActive ? "duration-0 bg-primary/10" : string.Empty;
         var disabledClasses = isDisabled ? "cursor-not-allowed opacity-50" : string.Empty;
         var baseClasses = string.Join(" ", [
             "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm",

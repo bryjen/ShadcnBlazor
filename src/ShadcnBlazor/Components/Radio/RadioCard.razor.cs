@@ -18,7 +18,7 @@ public partial class RadioCard : RadioSelectableComponentBase
 
     private string GetClass()
     {
-        var baseClasses = "w-full border-input bg-background text-foreground hover:bg-accent/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary/15 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex items-start justify-between gap-4 rounded-xl border p-4 shadow-xs transition-all duration-200 outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50";
+        var baseClasses = "w-full border-input bg-background text-foreground hover:bg-accent/20 data-[state=checked]:border-primary data-[state=checked]:bg-primary/15 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/40 aria-invalid:border-destructive flex items-start justify-between gap-4 rounded-xl border p-4 shadow-xs transition-all duration-200 outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50";
         return MergeCss(baseClasses, Class ?? string.Empty);
     }
 

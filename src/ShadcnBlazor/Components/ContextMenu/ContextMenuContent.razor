@@ -77,7 +77,7 @@
         if (_module is not null) return;
         _module = await JsRuntime.InvokeAsync<IJSObjectReference>(
             "import",
-            "/ShadcnBlazor/_content/ShadcnBlazor/Components/ContextMenu/ContextMenuContent.razor.js");
+            "/_content/ShadcnBlazor/Components/ContextMenu/ContextMenuContent.razor.js");
     }
 
     public async ValueTask DisposeAsync()

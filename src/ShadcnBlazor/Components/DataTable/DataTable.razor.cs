@@ -1,8 +1,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.DataTable;
+
+/// <summary>Describes a page request sent to a server-side data provider.</summary>
+public sealed record DataTableRequest(int Page, int PageSize, string? SortColumn, bool SortDescending);
+
+/// <summary>The result returned by a server-side data provider.</summary>
+public sealed record DataTableResult<T>(IReadOnlyList<T> Items, int TotalCount);
 
 public enum DataTableInteractionMode
 {
@@ -30,7 +37,7 @@ file sealed class ObjectComparer : IComparer<object?>
     }
 }
 
-public partial class DataTable<T> : ComponentBase
+public partial class DataTable<T> : ShadcnComponentBase
 {
     private DataTableContext<T> _context = new();
     private int _currentPage = 0;
@@ -40,9 +47,22 @@ public partial class DataTable<T> : ComponentBase
     private int? _focusedRowAbsoluteIndex;
     private int? _pendingFocusAbsoluteIndex;
 
+    // Server-mode state
+    private IReadOnlyList<T> _serverItems = [];
+    private int _serverTotalCount;
+    private bool _isServerLoading;
+
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
 
+    /// <summary>Items for client-side mode. Ignored when <see cref="DataProvider"/> is set.</summary>
     [Parameter] public IReadOnlyList<T> Items { get; set; } = [];
+
+    /// <summary>
+    /// When set, the table operates in server-side mode. The delegate is called whenever the
+    /// page, page size, or sort changes. <see cref="Items"/> is ignored in this mode.
+    /// </summary>
+    [Parameter] public Func<DataTableRequest, Task<DataTableResult<T>>>? DataProvider { get; set; }
+
     [Parameter] public RenderFragment? Columns { get; set; }
     [Parameter] public RenderFragment? ToolBarContent { get; set; }
     [Parameter] public RenderFragment? EmptyContent { get; set; }
@@ -62,15 +82,27 @@ public partial class DataTable<T> : ComponentBase
     [Parameter] public HashSet<T> SelectedItems { get; set; } = [];
     [Parameter] public EventCallback<HashSet<T>> SelectedItemsChanged { get; set; }
 
+    private bool IsServerMode => DataProvider is not null;
+    private bool ShowSkeleton => IsLoading || _isServerLoading;
+
     protected override void OnInitialized()
     {
         _currentPageSize = PageSize;
         _context.Changed += () => InvokeAsync(StateHasChanged);
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (IsServerMode)
+            await FetchFromProviderAsync();
+    }
+
     protected override void OnParametersSet()
     {
-        _currentPage = 0;
+        // In server mode the parent controls resets via ResetAsync(); don't clobber the page.
+        if (!IsServerMode)
+            _currentPage = 0;
+
         EnsureFocusedRowForCurrentPage(requestFocus: false);
     }
 
@@ -83,10 +115,43 @@ public partial class DataTable<T> : ComponentBase
         await FocusRowAsync(absolute);
     }
 
+    /// <summary>
+    /// Resets to page 0 and, in server mode, re-fetches from the provider.
+    /// Call this from the parent when the underlying data changes (e.g. after a search or sync).
+    /// </summary>
+    public async Task ResetAsync()
+    {
+        _currentPage = 0;
+        if (IsServerMode)
+            await FetchFromProviderAsync();
+        else
+            await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task FetchFromProviderAsync()
+    {
+        _isServerLoading = true;
+        await InvokeAsync(StateHasChanged);
+        try
+        {
+            var req = new DataTableRequest(_currentPage, _currentPageSize, _sortCol?.SortKey, _sortDesc);
+            var result = await DataProvider!(req);
+            _serverItems = result.Items;
+            _serverTotalCount = result.TotalCount;
+        }
+        finally
+        {
+            _isServerLoading = false;
+        }
+        EnsureFocusedRowForCurrentPage(requestFocus: false);
+        await InvokeAsync(StateHasChanged);
+    }
+
     private IEnumerable<T> SortedItems
     {
         get
         {
+            if (IsServerMode) return _serverItems;
             if (_sortCol?.Field is null) return Items;
             return _sortDesc
                 ? Items.OrderByDescending(x => _sortCol.Field(x), ObjectComparer.Instance)
@@ -95,11 +160,13 @@ public partial class DataTable<T> : ComponentBase
     }
 
     private IEnumerable<T> PagedItems =>
-        SortedItems.Skip(_currentPage * _currentPageSize).Take(_currentPageSize);
+        IsServerMode
+            ? _serverItems
+            : SortedItems.Skip(_currentPage * _currentPageSize).Take(_currentPageSize);
 
     private bool IsGridMode => InteractionMode == DataTableInteractionMode.Grid;
 
-    private int DataRowCount => IsLoading ? _currentPageSize : Items.Count;
+    private int DataRowCount => ShowSkeleton ? _currentPageSize : (IsServerMode ? _serverItems.Count : Items.Count);
 
     private int ColumnCount => _context.Columns.Count + (MultiSelection ? 1 : 0);
 
@@ -107,9 +174,11 @@ public partial class DataTable<T> : ComponentBase
         string.IsNullOrWhiteSpace(Label) ? "Data table" : Label!;
 
     private int TotalPages =>
-        (int)Math.Ceiling((double)Items.Count / _currentPageSize);
+        IsServerMode
+            ? (int)Math.Ceiling((double)_serverTotalCount / _currentPageSize)
+            : (int)Math.Ceiling((double)Items.Count / _currentPageSize);
 
-    private int GetCurrentPageItemCount() => IsLoading ? 0 : PagedItems.Count();
+    private int GetCurrentPageItemCount() => ShowSkeleton ? 0 : PagedItems.Count();
 
     private int GetPageFirstRowAbsoluteIndex() => _currentPage * _currentPageSize + 1;
 
@@ -162,7 +231,7 @@ public partial class DataTable<T> : ComponentBase
 
     private void EnsureFocusedRowForCurrentPage(bool requestFocus)
     {
-        if (!IsGridMode || IsLoading)
+        if (!IsGridMode || ShowSkeleton)
         {
             _focusedRowAbsoluteIndex = null;
             _pendingFocusAbsoluteIndex = null;
@@ -205,22 +274,22 @@ public partial class DataTable<T> : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
-    private void OnHeaderClick(DataTableColumn<T> col)
+    private async Task OnHeaderClick(DataTableColumn<T> col)
     {
         if (col.Sortable)
-            ToggleSort(col);
+            await ToggleSort(col);
     }
 
-    private void OnHeaderKeyDown(KeyboardEventArgs args, DataTableColumn<T> col)
+    private async Task OnHeaderKeyDown(KeyboardEventArgs args, DataTableColumn<T> col)
     {
         if (!col.Sortable)
             return;
 
         if (args.Key is "Enter" or " " or "Spacebar")
-            ToggleSort(col);
+            await ToggleSort(col);
     }
 
-    private void ToggleSort(DataTableColumn<T> col)
+    private async Task ToggleSort(DataTableColumn<T> col)
     {
         if (_sortCol == col)
             _sortDesc = !_sortDesc;
@@ -233,6 +302,9 @@ public partial class DataTable<T> : ComponentBase
         _currentPage = 0;
         EnsureFocusedRowForCurrentPage(requestFocus: false);
         LogDebug($"Sort changed col='{col.Title}' dir={(_sortDesc ? "desc" : "asc")}");
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
     }
 
     private string? GetSortAriaValue(DataTableColumn<T> col)
@@ -242,39 +314,54 @@ public partial class DataTable<T> : ComponentBase
         return _sortDesc ? "descending" : "ascending";
     }
 
-    private void OnPageSizeChanged(int size)
+    private async Task OnPageSizeChanged(int size)
     {
         _currentPageSize = size;
         _currentPage = 0;
         EnsureFocusedRowForCurrentPage(requestFocus: true);
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
     }
 
-    private void FirstPage()
+    private async Task FirstPage()
     {
         _currentPage = 0;
         EnsureFocusedRowForCurrentPage(requestFocus: true);
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
     }
 
-    private void PrevPage()
+    private async Task PrevPage()
     {
         if (_currentPage > 0)
             _currentPage--;
 
         EnsureFocusedRowForCurrentPage(requestFocus: true);
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
     }
 
-    private void NextPage()
+    private async Task NextPage()
     {
         if (_currentPage < TotalPages - 1)
             _currentPage++;
 
         EnsureFocusedRowForCurrentPage(requestFocus: true);
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
     }
 
-    private void LastPage()
+    private async Task LastPage()
     {
         _currentPage = Math.Max(0, TotalPages - 1);
         EnsureFocusedRowForCurrentPage(requestFocus: true);
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
     }
 
     private void OnRowFocus(int localIdx)

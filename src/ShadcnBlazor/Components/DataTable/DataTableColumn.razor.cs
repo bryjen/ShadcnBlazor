@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Components;
+using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.DataTable;
 
-public partial class DataTableColumn<T> : ComponentBase, IDisposable
+public partial class DataTableColumn<T> : ShadcnComponentBase, IDisposable
 {
     [CascadingParameter] public DataTableContext<T> Context { get; set; } = default!;
 
@@ -10,6 +11,7 @@ public partial class DataTableColumn<T> : ComponentBase, IDisposable
     [Parameter] public Func<T, object?>? Field { get; set; }
     [Parameter] public RenderFragment<T>? CellTemplate { get; set; }
     [Parameter] public bool Sortable { get; set; }
+    [Parameter] public string? SortKey { get; set; }
 
     protected override void OnInitialized()
     {

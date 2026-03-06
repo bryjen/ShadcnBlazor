@@ -77,14 +77,12 @@ public sealed class SelectDeclarativeRegistry
 
         if (Equals(node.Value, value)
             && string.Equals(node.Text, text, StringComparison.Ordinal)
-            && node.Disabled == disabled
-            && ReferenceEquals(node.Render, render))
+            && node.Disabled == disabled)
             return;
 
         node.Value = value;
         node.Text = text;
         node.Disabled = disabled;
-        node.Render = render;
         Changed?.Invoke();
     }
 

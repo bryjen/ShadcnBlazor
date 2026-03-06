@@ -298,15 +298,20 @@ public partial class Popover : ComponentBase, IAsyncDisposable
             _registeredProvider?.Unregister(_popoverId);
         }
 
-        await DisableOutsideClickSubscriptionAsync();
-        _outsideClickReference?.Dispose();
-
-        await PopoverService.DisconnectAsync(_popoverId);
-        if (_scrollLocked)
+        try
         {
-            await ScrollLock.UnlockAsync();
-            _scrollLocked = false;
+            await DisableOutsideClickSubscriptionAsync();
+            _outsideClickReference?.Dispose();
+
+            await PopoverService.DisconnectAsync(_popoverId);
+            if (_scrollLocked)
+            {
+                await ScrollLock.UnlockAsync();
+                _scrollLocked = false;
+            }
         }
+        catch (JSDisconnectedException) { }
+        catch (TaskCanceledException) { }
     }
 
     private void StartCloseAnimation()
