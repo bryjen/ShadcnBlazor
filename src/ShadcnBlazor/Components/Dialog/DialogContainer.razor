@@ -3,14 +3,13 @@
 @inject IDialogJsService DialogJs
 @inject ScrollLockService ScrollLock
 
-<div class="dialog-overlay"
+<div class="dialog-overlay fixed inset-0 z-[1400]"
      data-dialog-overlay="@Instance.Id.ToString("N")"
      data-state="@_overlayState"
      style="@GetBackdropStyle()">
 </div>
 
-<div class="dialog-container @GetPositionClass()"
-     style="@GetPositionStyle()"
+<div class="fixed inset-0 z-[1401] flex p-4 overflow-y-auto @GetPositionClass()"
      @onclick="OnBackdropClick">
     <Dialog Instance="@Instance"
             Options="@Instance.Options"
@@ -117,25 +116,14 @@
         return "";
     }
 
-    private string GetPositionStyle()
-    {
-        return Instance.Options.Position switch
-        {
-            Models.DialogPosition.Center => "align-items: center; justify-content: center;",
-            Models.DialogPosition.TopCenter => "align-items: flex-start; justify-content: center;",
-            Models.DialogPosition.BottomCenter => "align-items: flex-end; justify-content: center;",
-            _ => "align-items: center; justify-content: center;"
-        };
-    }
-
     private string GetPositionClass()
     {
         return Instance.Options.Position switch
         {
-            Models.DialogPosition.Center => "dialog-position-center",
-            Models.DialogPosition.TopCenter => "dialog-position-top",
-            Models.DialogPosition.BottomCenter => "dialog-position-bottom",
-            _ => "dialog-position-center"
+            Models.DialogPosition.Center => "items-center justify-center",
+            Models.DialogPosition.TopCenter => "items-start justify-center",
+            Models.DialogPosition.BottomCenter => "items-end justify-center",
+            _ => "items-center justify-center"
         };
     }
 
@@ -166,3 +154,4 @@
         _dotNetRef?.Dispose();
     }
 }
+

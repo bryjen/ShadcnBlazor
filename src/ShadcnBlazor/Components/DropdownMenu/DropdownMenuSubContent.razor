@@ -23,15 +23,15 @@
             @if (Context!.RootMenuContext is not null)
             {
                 <CascadingValue TValue="DropdownMenuContext" Value="Context.RootMenuContext" IsFixed="true">
-                    <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>
+                    <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("flex flex-col gap-0.5 p-1 rounded-lg border border-border bg-popover text-popover-foreground shadow-md", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>
                 </CascadingValue>
             }
             else
             {
-                <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>
+                <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("flex flex-col gap-0.5 p-1 rounded-lg border border-border bg-popover text-popover-foreground shadow-md", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>
             }
         </CascadingValue>
-        : @<div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>;
+        : @<div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("flex flex-col gap-0.5 p-1 rounded-lg border border-border bg-popover text-popover-foreground shadow-md", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>;
 
     protected override void OnInitialized()
     {

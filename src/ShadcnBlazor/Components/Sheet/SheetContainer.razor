@@ -1,4 +1,5 @@
 @implements IAsyncDisposable
+@using ShadcnBlazor.Components.Sheet.Models
 @using ShadcnBlazor.Components.Shared.Services
 @inject ISheetJsService SheetJs
 @inject ScrollLockService ScrollLock
@@ -8,13 +9,16 @@
      data-state="@_overlayState">
 </div>
 
-<div class="sheet-container"
+<div class="fixed inset-0 z-[1401] flex items-stretch overflow-hidden sheet-container @_containerLayoutClass"
+     data-side="@_sheetSide"
      @onclick="OnBackdropClick">
     <div class="sheet-content"
          data-sheet-content="@Instance.Id.ToString("N")"
+         data-side="@_sheetSide"
          data-state="@_contentState"
          role="dialog"
          aria-modal="true"
+         style="@_sheetStyle"
          @onclick:stopPropagation>
         <CascadingValue TValue="ISheetInstance" Value="_sheetInstance">
             <DynamicComponent Type="@Instance.ComponentType"
@@ -32,9 +36,23 @@
     private string _contentState = "closed";
     private DotNetObjectReference<SheetContainer>? _dotNetRef;
     private SheetInstanceCascade _sheetInstance = null!;
+    private SheetOptions _sheetOptions = new();
+    private string _sheetSide = "right";
+    private string? _sheetStyle;
+    private string _containerLayoutClass => _sheetSide switch
+    {
+        "right" => "justify-end flex-row",
+        "left" => "justify-start flex-row",
+        "top" => "justify-start flex-col",
+        "bottom" => "justify-end flex-col",
+        _ => "justify-start flex-row"
+    };
 
     protected override void OnInitialized()
     {
+        _sheetOptions = ExtractSheetOptions();
+        _sheetSide = _sheetOptions.Side.ToString().ToLowerInvariant();
+        _sheetStyle = BuildSheetStyle(_sheetOptions);
         _sheetInstance = new SheetInstanceCascade(result => _ = CloseAsync(result));
         Instance.CloseHandler = CloseAsync;
     }
@@ -60,6 +78,37 @@
                 StateHasChanged();
             }
         }
+    }
+
+    private SheetOptions ExtractSheetOptions()
+    {
+        if (Instance.Parameters.TryGetValue(nameof(SheetOptions), out var value) && value is SheetOptions options)
+        {
+            return options;
+        }
+        return new SheetOptions();
+    }
+
+    private static string? BuildSheetStyle(SheetOptions options)
+    {
+        var size = options.Size?.Trim();
+        var parts = options.Side is SheetSide.Top or SheetSide.Bottom
+            ? new List<string> { "width:100%;" }
+            : new List<string> { "height:100%;" };
+
+        if (!string.IsNullOrWhiteSpace(size))
+        {
+            if (options.Side is SheetSide.Top or SheetSide.Bottom)
+            {
+                parts.Add($"height:{size};");
+            }
+            else
+            {
+                parts.Add($"width:{size};");
+            }
+        }
+
+        return string.Join(" ", parts);
     }
 
     private void OnBackdropClick()
@@ -104,8 +153,16 @@
 
     private Dictionary<string, object?> GetComponentParameters()
     {
-        var dict = new Dictionary<string, object?>(Instance.Parameters);
-        return dict;
+        var parameters = new Dictionary<string, object?>();
+        foreach (var kvp in Instance.Parameters)
+        {
+            if (string.Equals(kvp.Key, nameof(SheetOptions), StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+            parameters[kvp.Key] = kvp.Value;
+        }
+        return parameters;
     }
 
     public async ValueTask DisposeAsync()
@@ -123,3 +180,9 @@
         _dotNetRef?.Dispose();
     }
 }
+
+
+
+
+
+

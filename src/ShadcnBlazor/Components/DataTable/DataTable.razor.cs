@@ -215,7 +215,6 @@ public partial class DataTable<T> : ShadcnComponentBase
             return;
 
         var full = $"[DataTable] {message}";
-        Console.WriteLine(full);
         _ = JsRuntime.InvokeVoidAsync("console.debug", full);
     }
 

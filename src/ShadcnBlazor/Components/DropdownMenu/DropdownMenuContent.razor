@@ -21,11 +21,11 @@
 
     private RenderFragment ContentFragment => Context is not null
         ? @<CascadingValue TValue="DropdownMenuContext" Value="Context" IsFixed="true">
-            <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">
+            <div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("flex flex-col gap-0.5 p-1 rounded-lg border border-border bg-popover text-popover-foreground shadow-md", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">
                 @ChildContent
             </div>
         </CascadingValue>
-        : @<div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("dropdown-menu-panel", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>;
+        : @<div id="@_contentId" role="menu" tabindex="-1" class="@MergeCss("flex flex-col gap-0.5 p-1 rounded-lg border border-border bg-popover text-popover-foreground shadow-md", Class)" @attributes="AdditionalAttributes" @onkeydown="HandleKeyDown">@ChildContent</div>;
 
     protected override void OnInitialized()
     {
@@ -108,8 +108,17 @@
     {
         if (_module is not null)
         {
-            await _module.DisposeAsync();
+            try
+            {
+                await _module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore disposal errors during server-circuit teardown.
+            }
+
             _module = null;
         }
     }
 }
+

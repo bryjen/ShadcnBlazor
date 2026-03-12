@@ -13,18 +13,18 @@
      @attributes="AdditionalAttributes">
     @if (_hasHeader)
     {
-        <div class="dialog-header">
-            <div class="dialog-header-text">
-                <h2 class="dialog-title" id="@_titleId">@Instance.Title</h2>
+        <div class="flex flex-row items-start justify-between gap-2 px-6 pt-6">
+            <div class="flex-1">
+                <h2 class="text-lg font-semibold leading-normal text-foreground m-0" id="@_titleId">@Instance.Title</h2>
                 @if (_hasDescription)
                 {
-                    <p class="dialog-description" id="@_descriptionId">@Options.Description</p>
+                    <p class="text-sm text-muted-foreground mt-1" id="@_descriptionId">@Options.Description</p>
                 }
             </div>
             @if (Options.CloseButton)
             {
                 <button type="button"
-                        class="dialog-close"
+                        class="inline-flex items-center justify-center size-8 rounded-md border-none bg-transparent text-muted-foreground cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
                         aria-label="Close"
                         @onclick="OnCloseClick">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +43,7 @@
     }
     else
     {
-        <div class="dialog-body">
+        <div class="p-6 overflow-y-auto">
             <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
                 @ChildContent
             </CascadingValue>

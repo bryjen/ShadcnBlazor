@@ -165,10 +165,10 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         {
             if (string.IsNullOrWhiteSpace(AnchorClass))
             {
-                return "popover-anchor";
+                return "popover-anchor inline-flex w-fit max-w-max";
             }
 
-            return $"popover-anchor {AnchorClass}";
+            return $"popover-anchor inline-flex w-fit max-w-max {AnchorClass}";
         }
     }
 

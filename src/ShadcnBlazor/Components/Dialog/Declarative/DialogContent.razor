@@ -3,12 +3,12 @@
 
 @if (Context?.Open == true)
 {
-    <div class="dialog-overlay"
+    <div class="dialog-overlay fixed inset-0 z-[1400]"
          data-dialog-overlay="@Context.DialogId"
          data-state="@Context.AnimationState"
          style=""></div>
 
-    <div class="dialog-container dialog-position-center"
+    <div class="fixed inset-0 z-[1401] flex p-4 overflow-y-auto items-center justify-center"
          @onclick="OnBackdropClick">
         <div class="@GetContentClass()"
              data-dialog-content="@Context.DialogId"
@@ -18,7 +18,7 @@
              style="@GetMaxWidthStyle()"
              @onclick:stopPropagation
              @attributes="AdditionalAttributes">
-            <div class="dialog-body">
+            <div class="p-6 overflow-y-auto">
                 @ChildContent
             </div>
         </div>
@@ -79,3 +79,4 @@
         return string.IsNullOrWhiteSpace(Class) ? "dialog-content" : $"dialog-content {Class}";
     }
 }
+

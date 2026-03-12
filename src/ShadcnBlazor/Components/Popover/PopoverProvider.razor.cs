@@ -87,10 +87,10 @@ public partial class PopoverProvider : ComponentBase, IDisposable
         {
             if (string.IsNullOrWhiteSpace(Class))
             {
-                return "popover-provider";
+                return "popover-provider relative";
             }
 
-            return $"popover-provider {Class}";
+            return $"popover-provider relative {Class}";
         }
     }
 }
