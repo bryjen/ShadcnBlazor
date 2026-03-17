@@ -1,0 +1,16 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Card
+
+<div class="flex flex-col gap-4">
+    <Card Variant="CardVariant.Outline" Header="@outlineHeader">
+        <p>This card uses the outline variant.</p>
+    </Card>
+
+    <Card Size="CardSize.Sm" Header="@smallHeader">
+        <p>This card uses the small size.</p>
+    </Card>
+</div>
+
+@code {
+    private RenderFragment outlineHeader = @<h2 class="font-semibold">Outline Card</h2>;
+    private RenderFragment smallHeader = @<h2 class="font-semibold">Small Card</h2>;
+}

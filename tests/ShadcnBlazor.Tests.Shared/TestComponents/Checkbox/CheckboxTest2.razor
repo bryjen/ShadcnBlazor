@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Checkbox
+
+<div class="flex flex-col gap-4">
+    <div class="flex gap-4">
+        <label class="flex items-center gap-2">
+            <Checkbox @bind-Checked="_syncedValue" />
+            <span>Synced Checkbox 1</span>
+        </label>
+        <label class="flex items-center gap-2">
+            <Checkbox @bind-Checked="_syncedValue" />
+            <span>Synced Checkbox 2</span>
+        </label>
+    </div>
+
+    <div class="text-sm text-gray-600">
+        Both checkboxes are bound to the same value: @_syncedValue
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <Checkbox Alignment="VerticalAlignment.Top">Top alignment</Checkbox>
+        <Checkbox Alignment="VerticalAlignment.Center">Center alignment</Checkbox>
+    </div>
+</div>
+
+@code {
+    private bool _syncedValue;
+}

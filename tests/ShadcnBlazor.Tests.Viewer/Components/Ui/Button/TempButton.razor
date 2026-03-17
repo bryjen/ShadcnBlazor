@@ -1,0 +1,13 @@
+@inherits ShadcnBlazor.Components.Shared.ShadcnComponentBase
+
+<button
+    data-slot="button"
+    data-variant="@(Variant.ToString().ToLower())"
+    data-size="@(Size.ToString().ToLower())"
+    class="@(GetClass())"
+    disabled="@IsDisabled"
+    type="@(Type.ToString())"
+    @onclick="OnClick"
+    @attributes="@(GetAttributes())">
+    @ChildContent
+</button>

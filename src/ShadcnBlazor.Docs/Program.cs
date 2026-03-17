@@ -64,42 +64,42 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
 
     // JavaScript interop services (runtime only, skipped during pre-rendering)
     // These require IJSRuntime which is not available during pre-rendering
-    services.AddScoped(sp =>
+    services.AddScoped<PopoverInterop>(sp =>
     {
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new PopoverInterop(jsRuntime, ["/_content/ShadcnBlazor/js/popovers.js"]);
     });
 
-    services.AddScoped(sp =>
+    services.AddScoped<FocusScopeInterop>(sp =>
     {
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new FocusScopeInterop(jsRuntime, ["/_content/ShadcnBlazor/js/focus-scope.js"]);
     });
 
-    services.AddScoped(sp =>
+    services.AddScoped<KeyInterceptorInterop>(sp =>
     {
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new KeyInterceptorInterop(jsRuntime, ["/_content/ShadcnBlazor/js/key-interceptor.js"]);
     });
 
-    services.AddScoped(sp =>
+    services.AddScoped<ScrollLockInterop>(sp =>
     {
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new ScrollLockInterop(jsRuntime, ["/_content/ShadcnBlazor/js/scroll-lock.js"]);
     });
 
-    services.AddScoped(sp =>
+    services.AddScoped<DialogInterop>(sp =>
     {
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new DialogInterop(jsRuntime, ["/_content/ShadcnBlazor/js/dialog.js"]);
     });
 
-    services.AddScoped(sp =>
+    services.AddScoped<SheetInterop>(sp =>
     {
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;

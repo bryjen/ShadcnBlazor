@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Alert
+
+<div class="flex flex-col gap-4">
+    <Alert Variant="AlertVariant.Default">
+        <div class="flex gap-2">
+            <span>ℹ️</span>
+            <div>
+                <h4 class="font-semibold">Default Alert</h4>
+                <p class="text-sm">This is a default alert message.</p>
+            </div>
+        </div>
+    </Alert>
+
+    <Alert Variant="AlertVariant.Destructive">
+        <div class="flex gap-2">
+            <span>⚠️</span>
+            <div>
+                <h4 class="font-semibold">Destructive Alert</h4>
+                <p class="text-sm">This is a destructive alert message.</p>
+            </div>
+        </div>
+    </Alert>
+</div>

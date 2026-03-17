@@ -1,0 +1,207 @@
+@page "/"
+@using System.Reflection
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Rendering
+@using ShadcnBlazor.Tests.Shared.TestComponents.Button
+@inject IJSRuntime JSRuntime
+
+<div class="flex h-screen bg-background overflow-hidden">
+    <!-- Sidebar -->
+    <div class="w-72 border-r border-border bg-sidebar flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="p-4 border-b border-border">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-base font-semibold text-sidebar-foreground">ShadcnBlazor Test Viewer</h1>
+                <div class="flex gap-1">
+                    <TempButton Variant="@Variant.Ghost" Size="@Size.Md" @onclick="ToggleDarkMode" Title="Toggle Dark Mode">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </TempButton>
+                    <TempButton Variant="@Variant.Ghost" Size="@Size.Md" Title="Settings">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.72-2.7.72-1.955 2.09.32.655.44 1.409.216 2.07a1.532 1.532 0 01-1.948 1.241c-1.526-.408-2.236 1.986-.113 2.39a1.532 1.532 0 011.738 2.15c-.461.617-.36 1.598.306 2.040 1.44.856 2.236-.981 1.949-1.956a1.532 1.532 0 011.946-1.957c1.374.395 2.763-.42 2.763-1.98a1.533 1.533 0 01-.571-1.203c-.041-.558-.212-1.051-.606-1.492.294-.135.584-.235.884-.235.884 0 1.592.792 1.592 1.773 0 .364-.147.705-.38 1.012a1.533 1.533 0 001.946 1.957c1.374-.395 2.763.42 2.763 1.98a1.532 1.532 0 01-.571 1.203c-.394.44-.565.934-.606 1.492a1.532 1.532 0 001.946 1.957c1.374.395 2.763-.42 2.763-1.98a1.533 1.533 0 01-.571-1.203c.294-.135.584-.235.884-.235.884 0 1.592.792 1.592 1.773 0 .364-.147.705-.38 1.012a1.533 1.533 0 001.946 1.957c1.374.395 2.763-.42 2.763 1.98V10.5a1.532 1.532 0 00-1.946-1.957c-1.374.395-2.763-.42-2.763-1.98a1.533 1.533 0 01.571-1.203c.394-.44.565-.934.606-1.492a1.532 1.532 0 00-1.946-1.957c-1.374-.395-2.763.42-2.763 1.98a1.533 1.533 0 01-.571 1.203c-.294.135-.584.235-.884.235-.884 0-1.592-.792-1.592-1.773 0-.364.147-.705.38-1.012a1.533 1.533 0 00-1.946-1.957c-1.374-.395-2.763.42-2.763 1.98a1.532 1.532 0 01.571 1.203c-.294.135-.584.235-.884.235-.884 0-1.592-.792-1.592-1.773 0-.364.147-.705.38-1.012a1.533 1.533 0 00-1.946-1.957c-1.374-.395-2.763.42-2.763 1.98a1.532 1.532 0 01-.571 1.203c.394.44.565.934.606 1.492a1.532 1.532 0 001.946 1.957c1.374.395 2.763-.42 2.763-1.98a1.533 1.533 0 01.571-1.203c-.294-.135-.584-.235-.884-.235-.884 0-1.592.792-1.592 1.773 0 .364.147.705.38 1.012" clip-rule="evenodd"></path>
+                        </svg>
+                    </TempButton>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="px-4 py-3 border-b border-border">
+            <TempInput Type="text" Placeholder="Search tests..." @oninput="OnSearchInput" />
+        </div>
+
+        <!-- Test Count -->
+        <div class="px-4 py-2 text-xs font-medium text-muted-foreground">
+            @_flatTests.Count tests
+        </div>
+
+        <!-- Test List -->
+        <div class="flex-1 overflow-y-auto">
+            <div class="px-3 py-2">
+                @foreach (var group in _filteredGroupedTests)
+                {
+                    <div class="mb-4">
+                        <h3 class="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-2 py-1.5 mb-1.5">@group.Key</h3>
+                        <div class="space-y-0.5">
+                            @foreach (var test in group)
+                            {
+                                <TempButton Variant="@(_selectedTest == test.Type ? Variant.Default : Variant.Ghost)"
+                                        Size="Size.Md"
+                                        @onclick="() => SelectTest(test.Type)"
+                                        Class="w-full justify-start">
+                                    @test.Label
+                                </TempButton>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col bg-background overflow-hidden">
+        @if (_selectedTest != null)
+        {
+            <!-- Header -->
+            <div class="border-b border-border px-6 py-4">
+                <h1 class="text-xl font-semibold text-foreground">@_selectedTest.Name</h1>
+                <p class="text-sm text-muted-foreground mt-1">TestComponents/@GetGroup(_selectedTest.Name)/Test.razor</p>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="bg-card rounded-lg border border-border p-6 min-h-96">
+                    @RenderTest()
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="flex-1 flex items-center justify-center text-muted-foreground">
+                <div class="text-center">
+                    <svg class="w-16 h-16 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p class="text-sm">Select a test from the sidebar to begin</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@implements IAsyncDisposable
+
+@code {
+    private List<(Type Type, string Label, string Group)> _flatTests = new();
+    private IEnumerable<IGrouping<string, (Type Type, string Label)>> _groupedTests = new List<IGrouping<string, (Type Type, string Label)>>();
+    private IEnumerable<IGrouping<string, (Type Type, string Label)>> _filteredGroupedTests = new List<IGrouping<string, (Type Type, string Label)>>();
+    private Type? _selectedTest;
+    private string _searchQuery = string.Empty;
+    private bool _isDarkMode = false;
+    private IJSObjectReference? module;
+
+    protected override void OnInitialized()
+    {
+        // Discover test components from the Shared project assembly
+        var assembly = typeof(ButtonTest1).Assembly;
+        var tests = assembly.GetTypes()
+            .Where(t => t.Name.Contains("Test") && typeof(IComponent).IsAssignableFrom(t))
+            .ToList();
+
+        // Parse test names and group them
+        _flatTests = tests
+            .Select(t => (Type: t, Label: GetLabel(t.Name), Group: GetGroup(t.Name)))
+            .OrderBy(x => x.Group)
+            .ThenBy(x => x.Label)
+            .ToList();
+
+        _groupedTests = _flatTests
+            .GroupBy(x => x.Group)
+            .Select(g => g.Select(x => (x.Type, x.Label)).AsEnumerable().GroupBy(_ => g.Key).First())
+            .ToList();
+
+        _filteredGroupedTests = _groupedTests;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/theme.js");
+            _isDarkMode = await module.InvokeAsync<bool>("initTheme");
+        }
+    }
+
+    private async Task ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+        if (module != null)
+        {
+            await module.InvokeVoidAsync("toggleDarkMode", _isDarkMode);
+            await JSRuntime.InvokeVoidAsync("window.localStorage.setItem", "theme", _isDarkMode ? "dark" : "light");
+        }
+    }
+
+    private string GetGroup(string typeName)
+    {
+        var match = Regex.Match(typeName, @"^(.+?)Test\d*$");
+        return match.Success ? match.Groups[1].Value : typeName;
+    }
+
+    private string GetLabel(string typeName)
+    {
+        var match = Regex.Match(typeName, @"^(.+?)Test(\d*)$");
+        if (!match.Success) return typeName;
+
+        var component = match.Groups[1].Value;
+        var number = match.Groups[2].Value;
+        return number.Length > 0 ? $"{component} {number}" : component;
+    }
+
+    private void SelectTest(Type test)
+    {
+        _selectedTest = test;
+    }
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        _searchQuery = e.Value?.ToString() ?? string.Empty;
+        UpdateFilteredTests();
+    }
+
+    private void UpdateFilteredTests()
+    {
+        if (string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            _filteredGroupedTests = _groupedTests;
+        }
+        else
+        {
+            var filtered = _flatTests
+                .Where(t => t.Label.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                           t.Group.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase))
+                .GroupBy(x => x.Group)
+                .Select(g => g.Select(x => (x.Type, x.Label)).AsEnumerable().GroupBy(_ => g.Key).First())
+                .ToList();
+
+            _filteredGroupedTests = filtered;
+        }
+    }
+
+    private RenderFragment RenderTest() => builder =>
+    {
+        if (_selectedTest == null) return;
+
+        builder.OpenComponent(0, _selectedTest);
+        builder.CloseComponent();
+    };
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+            await module.DisposeAsync();
+    }
+}

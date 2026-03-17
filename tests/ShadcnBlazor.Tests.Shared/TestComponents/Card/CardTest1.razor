@@ -1,0 +1,12 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Card
+
+<div class="w-full max-w-sm">
+    <Card Header="@headerTemplate" Footer="@footerTemplate">
+        <p>This is the card content area with some example text.</p>
+    </Card>
+</div>
+
+@code {
+    private RenderFragment headerTemplate = @<h2 class="font-semibold text-lg">Card Title</h2>;
+    private RenderFragment footerTemplate = @<button class="px-4 py-2 bg-blue-500 text-white rounded">Action</button>;
+}
