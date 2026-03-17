@@ -1,30 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark overflow-x-hidden">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>ShadcnBlazor.Docs</title>
+    <title>A shadcn/ui inspired Blazor component library</title>
     <base href="/" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="stylesheet" href="_content/ShadcnBlazor/css/shadcn_blazor_out.css" />
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="stylesheet" href="_content/ShadcnBlazor/css/tw_out.css" />
+    <link rel="stylesheet" href="_content/ShadcnBlazor/css/other.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/markdown.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="ShadcnBlazor.Docs.styles.css" />
 </head>
 
-<body class="">
-    <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+<body class="overflow-x-hidden">
+    <div id="app"></div>
+
+    <!-- Loading overlay - persists until Blazor loads + 1 second delay -->
+    <div id="blazor-loader" class="blazor-loader">
+        <div class="blazor-loader-content">
+            <div class="blazor-loader-progress">
+                <div class="blazor-loader-progress-fill"></div>
+            </div>
+            <p class="blazor-loader-text">Loading<span class="blazor-loader-dots"><span>.</span><span>.</span><span>.</span></span></p>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
@@ -34,25 +42,22 @@
     </div>
 
     <script src="_framework/blazor.webassembly.js"></script>
+    <script src="js/loading.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlightjs-cshtml-razor@2.2.0/dist/cshtml-razor.min.js"></script>
+    <!-- Defer syntax highlighting scripts - only needed for code blocks -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlightjs-cshtml-razor@2.2.0/dist/cshtml-razor.min.js" defer></script>
+
     <script src="js/markdown-highlight.js"></script>
     <script src="js/docs-codeblock.js"></script>
     <script src="js/docs-onthispage.js"></script>
     <script src="js/markdown-editor.js"></script>
-
-    <script src="_content/ShadcnBlazor/js/popovers.js"></script>
-    <script src="_content/ShadcnBlazor/js/dialog.js"></script>
-    <script src="_content/ShadcnBlazor/js/dropdown.js"></script>
-    <script src="_content/ShadcnBlazor/js/loading.js"></script>
-    <script src="_content/ShadcnBlazor/js/scroll-toggle.js"></script>
-    <script src="_content/ShadcnBlazor/js/select.js"></script>
-    <script src="_content/ShadcnBlazor/js/symptom-graph.js"></script>
-    <script src="_content/ShadcnBlazor/js/tooltip.js"></script>
+    <script src="js/customize-codemirror.js"></script>
+    <script src="js/theme.js"></script>
 </body>
-
 </html>
+
+
 
 
 

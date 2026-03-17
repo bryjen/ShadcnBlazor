@@ -1,0 +1,15 @@
+<Button Variant="@Variant.Default" OnClick="OpenDialog">Open Dialog</Button>
+
+@code {
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+
+    private void OpenDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(Dialog.Name), "Jane" }
+        };
+        DialogService.Show<Dialog>("Edit", parameters);
+    }
+}

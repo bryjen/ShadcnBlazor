@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <!-- Dotnet tool publishing -->
         <PackAsTool>true</PackAsTool>
-        <ToolCommandName>shadcn-blazor</ToolCommandName>
+        <ToolCommandName>shadcnblazor</ToolCommandName>
         <PackageOutputPath>./nupkgs</PackageOutputPath>
     </PropertyGroup>
 
@@ -17,11 +17,25 @@
 
     <ItemGroup>
       <PackageReference Include="Spectre.Console.Cli" Version="0.53.1" />
-      <PackageReference Include="YamlDotNet" Version="16.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Exception\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\ShadcnBlazor\_Imports.razor" CopyToOutputDirectory="PreserveNewest" />
+      <None Include="..\ShadcnBlazor\wwwroot\**\*"
+            CopyToOutputDirectory="PreserveNewest"
+            LinkBase="wwwroot" />
+      <None Include="..\..\templates\net9\WasmStandalone\**\*"
+            Exclude="**\obj\**;**\bin\**"
+            CopyToOutputDirectory="PreserveNewest"
+            LinkBase="templates\net9\WasmStandalone" />
+      <None Include="..\..\templates\net9\ServerGlobalInteractivity\**\*"
+            Exclude="**\obj\**;**\bin\**"
+            CopyToOutputDirectory="PreserveNewest"
+            LinkBase="templates\net9\ServerGlobalInteractivity" />
     </ItemGroup>
 
 </Project>

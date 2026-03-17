@@ -1,0 +1,44 @@
+@page "/components/tooltip"
+
+<PageTitle>Tooltip - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Tooltip - Small popup displaying helpful information on hover." />
+</HeadContent>
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Tooltip.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.Tooltip">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The Tooltip component displays a floating label on hover. Use <code>Anchor</code> for the trigger element (e.g., icon or button) and <code>Content</code> or <code>ChildContent</code> for the tooltip text. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tooltip_Examples_TooltipBasicExample })">
+            <TooltipBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Add to library" Id="add-to-library">
+            <p class="mb-3">Simple tooltip with <code>Content</code> on an icon button.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tooltip_Examples_TooltipAddToLibraryExample })">
+                <TooltipAddToLibraryExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Multiline" Id="multiline">
+            <p class="mb-3">Use <code>ChildContent</code> for custom tooltip content (e.g., multiline text with line breaks).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tooltip_Examples_TooltipMultilineExample })">
+                <TooltipMultilineExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Tooltip");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add tooltip",
+    };
+}

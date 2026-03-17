@@ -1,0 +1,39 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+@inherits ShadcnBlazor.Components.Shared.ShadcnComponentBase
+
+<CascadingValue Value="_radioGroupContext" IsFixed="true">
+    <div role="group" class="@MergeCss(Class)" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    private ContextMenuRadioGroupContext _radioGroupContext = new();
+
+    /// <summary>
+    /// The radio group content (radio items).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// The currently selected value.
+    /// </summary>
+    [Parameter]
+    public string? Value { get; set; }
+
+    /// <summary>
+    /// Callback when a radio item is selected.
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _radioGroupContext.Value = Value;
+        _radioGroupContext.OnValueChanged = async (val) =>
+        {
+            await ValueChanged.InvokeAsync(val);
+        };
+    }
+}

@@ -1,0 +1,28 @@
+<ContextMenu>
+    <ContextMenuTrigger>
+        <div class="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground select-none cursor-context-menu">
+            Right click here
+        </div>
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+        <ContextMenuItem>Back</ContextMenuItem>
+        <ContextMenuItem>Forward</ContextMenuItem>
+        <ContextMenuItem>Reload</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuSub>
+            <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
+            <ContextMenuPortal>
+                <ContextMenuSubContent>
+                    <ContextMenuItem>Save Page As...</ContextMenuItem>
+                    <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+                    <ContextMenuItem>Name Window...</ContextMenuItem>
+                    <ContextMenuSeparator />
+                    <ContextMenuItem>Developer Tools</ContextMenuItem>
+                </ContextMenuSubContent>
+            </ContextMenuPortal>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
+        <ContextMenuItem>View Page Source</ContextMenuItem>
+        <ContextMenuItem>Inspect</ContextMenuItem>
+    </ContextMenuContent>
+</ContextMenu>

@@ -1,17 +1,23 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Button;
 
+/// <summary>
+/// Groups multiple buttons together with shared styling and no gaps between them.
+/// </summary>
 public partial class ButtonGroup : ShadcnComponentBase
 {
+    /// <summary>The buttons to display in the group.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>The ARIA role for the group (default: "group").</summary>
     [Parameter]
     public string Role { get; set; } = "group";
 
+    /// <summary>The visual style variant applied to the group and its buttons.</summary>
     [Parameter]
     public Variant Variant { get; set; } = Variant.Outline;
 

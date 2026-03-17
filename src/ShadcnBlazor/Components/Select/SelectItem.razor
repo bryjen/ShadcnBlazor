@@ -1,0 +1,39 @@
+@namespace ShadcnBlazor.Components.Select
+@implements IDisposable
+
+@code {
+    [CascadingParameter]
+    internal SelectDeclarativeRegistry? Registry { get; set; }
+
+    [Parameter]
+    public object? Value { get; set; }
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private int _registrationId;
+
+    protected override void OnInitialized()
+    {
+        if (Registry is null)
+            throw new InvalidOperationException("SelectItem must be used inside a Select component.");
+
+        _registrationId = Registry.RegisterItem(Value, Text, Disabled, ChildContent);
+    }
+
+    protected override void OnParametersSet()
+    {
+        Registry?.UpdateItem(_registrationId, Value, Text, Disabled, ChildContent);
+    }
+
+    public void Dispose()
+    {
+        Registry?.Remove(_registrationId);
+    }
+}

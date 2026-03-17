@@ -3,6 +3,14 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-context/
 .secrets
 .idea/
+
+context/
+scratch/
+
+Models/Generated/
+/src/ShadcnBlazor.Docs/Models/Generated/
+!/src/ShadcnBlazor/Components/Shared/
+
+/src/ShadcnBlazor.Docs/publish/

@@ -1,7 +1,11 @@
 @* We already have a `Components` directory, so we have to name this file `ComponentsPage` *@
 @page "/components"
+@inject ShadcnBlazor.Docs.Services.PageTocService TocService
 
 <PageTitle>Components - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="Browse all ShadcnBlazor components. Customizable and reusable UI components including buttons, cards, dialogs, dropdowns, forms, and more." />
+</HeadContent>
 
 <div class="flex flex-col gap-8 min-w-0">
     <div class="flex flex-col gap-1">
@@ -25,4 +29,6 @@
 @code {
     [Inject]
     public required ComponentRegistryService ComponentRegistry { get; set; }
+
+    protected override void OnInitialized() => TocService.Clear();
 }

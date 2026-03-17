@@ -1,0 +1,30 @@
+@namespace ShadcnBlazor.Components.Select
+@implements IDisposable
+
+@code {
+    [CascadingParameter]
+    internal SelectDeclarativeRegistry? Registry { get; set; }
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    private int _registrationId;
+
+    protected override void OnInitialized()
+    {
+        if (Registry is null)
+            throw new InvalidOperationException("SelectLabel must be used inside a Select component.");
+
+        _registrationId = Registry.RegisterLabel(Text);
+    }
+
+    protected override void OnParametersSet()
+    {
+        Registry?.UpdateLabel(_registrationId, Text);
+    }
+
+    public void Dispose()
+    {
+        Registry?.Remove(_registrationId);
+    }
+}

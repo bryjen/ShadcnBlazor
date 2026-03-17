@@ -1,0 +1,14 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+@inherits ShadcnBlazor.Components.Shared.ShadcnComponentBase
+
+<div role="group" class="@MergeCss(Class)" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>
+    /// The group content (labels, items, separators).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

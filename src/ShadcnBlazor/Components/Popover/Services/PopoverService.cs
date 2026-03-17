@@ -9,7 +9,7 @@ namespace ShadcnBlazor.Components.Popover.Services;
 /// </summary>
 public class PopoverService : IPopoverService, IAsyncDisposable
 {
-    private readonly PopoverJsInterop _jsInterop;
+    private readonly PopoverInterop _popoverInterop;
     private readonly PopoverOptions _options;
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private bool _isInitialized;
@@ -18,11 +18,11 @@ public class PopoverService : IPopoverService, IAsyncDisposable
     /// <summary>
     /// Creates a new PopoverService.
     /// </summary>
-    /// <param name="jsRuntime">The JavaScript runtime.</param>
+    /// <param name="popoverInterop">The popover JavaScript interop.</param>
     /// <param name="options">Popover configuration options.</param>
-    public PopoverService(IJSRuntime jsRuntime, IOptions<PopoverOptions> options)
+    public PopoverService(PopoverInterop popoverInterop, IOptions<PopoverOptions> options)
     {
-        _jsInterop = new PopoverJsInterop(jsRuntime);
+        _popoverInterop = popoverInterop;
         _options = options.Value;
     }
 
@@ -34,13 +34,13 @@ public class PopoverService : IPopoverService, IAsyncDisposable
         {
             if (!_isInitialized)
             {
-                await _jsInterop.InitializeAsync(containerClass, flipMargin, overflowPadding, baseZIndex);
+                await _popoverInterop.InitializeAsync(containerClass, flipMargin, overflowPadding, baseZIndex);
                 _isInitialized = true;
             }
 
             if (_repositionDebounceOverride.HasValue)
             {
-                await _jsInterop.SetRepositionDebounceAsync(_repositionDebounceOverride.Value);
+                await _popoverInterop.SetRepositionDebounceAsync(_repositionDebounceOverride.Value);
             }
         }
         finally
@@ -57,7 +57,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
 
         if (_isInitialized)
         {
-            await _jsInterop.SetRepositionDebounceAsync(normalized);
+            await _popoverInterop.SetRepositionDebounceAsync(normalized);
         }
     }
 
@@ -70,7 +70,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
             _options.OverflowPadding,
             _options.BaseZIndex);
 
-        await _jsInterop.EnableOutsideClickCloseAsync(anchorId, popoverId, callbackReference);
+        await _popoverInterop.EnableOutsideClickCloseAsync(anchorId, popoverId, callbackReference);
     }
 
     /// <inheritdoc />
@@ -81,7 +81,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
             return;
         }
 
-        await _jsInterop.DisableOutsideClickCloseAsync(popoverId);
+        await _popoverInterop.DisableOutsideClickCloseAsync(popoverId);
     }
 
     /// <inheritdoc />
@@ -93,7 +93,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
             _options.OverflowPadding,
             _options.BaseZIndex);
 
-        await _jsInterop.ConnectAsync(anchorId, popoverId);
+        await _popoverInterop.ConnectAsync(anchorId, popoverId);
     }
 
     /// <inheritdoc />
@@ -104,7 +104,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
             return;
         }
 
-        await _jsInterop.DisconnectAsync(popoverId);
+        await _popoverInterop.DisconnectAsync(popoverId);
     }
 
     /// <inheritdoc />
@@ -117,7 +117,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
 
         try
         {
-            await _jsInterop.DisposeAsync();
+            await _popoverInterop.DisposeAsync();
         }
         catch (JSDisconnectedException)
         {

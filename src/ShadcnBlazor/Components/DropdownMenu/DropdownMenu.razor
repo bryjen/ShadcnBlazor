@@ -1,0 +1,21 @@
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Popover.Models
+
+<CascadingValue Value="_context">
+    <div style="display: none">@ChildContent</div>
+        <Popover Open="_open"
+                OpenChanged="v => { _open = v; _context.Open = v; StateHasChanged(); }"
+            CloseOnOutsideClick="true"
+            AnchorOrigin="PopoverPlacement.BottomLeft"
+            TransformOrigin="PopoverPlacement.TopLeft"
+            PopoverClass="min-w-32"
+            AriaHasPopup="menu"
+            LockScroll="true">
+        <Anchor>
+            @_context.GetTriggerFragment()
+        </Anchor>
+        <ChildContent>
+            @_context.GetContentFragment()
+        </ChildContent>
+    </Popover>
+</CascadingValue>

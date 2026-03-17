@@ -1,0 +1,22 @@
+@using ShadcnBlazor.Docs.Services
+@inject PageTocService TocService
+
+@implements IHandleAfterRender
+
+@ChildContent
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        TocService.Clear();
+    }
+
+    Task IHandleAfterRender.OnAfterRenderAsync()
+    {
+        TocService.Flush();
+        return Task.CompletedTask;
+    }
+}

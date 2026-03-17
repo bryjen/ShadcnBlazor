@@ -1,0 +1,41 @@
+@implements IDisposable
+@using ShadcnBlazor.Docs.Components.Layout
+@using ShadcnBlazor.Components.Sheet
+
+<div class="flex flex-col h-full">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
+        <span class="font-semibold text-sm">Menu</span>
+        <button type="button"
+                class="inline-flex items-center justify-center size-8 rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                aria-label="Close menu"
+                @onclick="@(() => SheetInstance.Cancel())">
+            <LuX class="size-4" />
+        </button>
+    </div>
+    <div class="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <NavMenu />
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public required ISheetInstance SheetInstance { get; set; }
+
+    [Inject]
+    public required NavigationManager Nav { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs _)
+    {
+        SheetInstance.Cancel();
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+}

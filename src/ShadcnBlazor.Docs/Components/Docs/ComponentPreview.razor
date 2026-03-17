@@ -1,9 +1,10 @@
 @using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 
 @inherits ShadcnComponentBase
 
 <div class="w-full min-w-0 rounded-lg border border-border overflow-hidden">
-    <div class="@(MergeCss("relative p-12 flex justify-center items-center min-w-0", Class))">
+<div class="@(MergeCss("relative max-lg:py-12 max-lg:px-6 lg:p-[7.5%] flex justify-center items-center min-w-0", Class))">
         <div class="flex justify-center items-center w-full max-w-full min-w-0 overflow-x-hidden">
             @ChildContent
         </div>
@@ -30,9 +31,9 @@
 
     @if (HasCode)
     {
-        <div class="docs-codeblock-accordion @(_showCode ? "docs-codeblock-accordion-expanded" : "") overflow-hidden @(_showCode ? "border-t border-border" : "") relative">
+        <div class="docs-codeblock-accordion @(_showCode ? "docs-codeblock-accordion-expanded" : "") overflow-hidden @(_showCode ? "border-t border-border" : "") relative" inert="@(_showCode ? null : "true")">
             <div class="docs-codeblock-accordion-inner min-w-0">
-                <CodeBlock Code="@Code" Language="@Language" Style="@CodeBlockStyle.Embedded" />
+                <CodeBlock CodeFiles="@CodeFiles" Style="@CodeBlockStyle.Embedded" Focusable="@_showCode" />
             </div>
         </div>
     }
@@ -40,7 +41,7 @@
 
 @code {
     private bool _showCode;
-    private bool HasCode => !string.IsNullOrWhiteSpace(Code);
+    private bool HasCode => CodeFiles is { Count: > 0 } files && files.Any(f => !string.IsNullOrWhiteSpace(f.Contents));
 
     private void ToggleShowCode()
     {

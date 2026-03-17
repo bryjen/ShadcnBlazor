@@ -1,0 +1,12 @@
+<RadioGroup @bind-Value="_selected">
+    <Radio Value="terms" Alignment="VerticalAlignment.Top">
+        <div>
+            <span class="font-semibold">Accept terms and conditions</span>
+            <p class="text-sm text-muted-foreground mt-1">By selecting this option, you agree to the terms and conditions.</p>
+        </div>
+    </Radio>
+</RadioGroup>
+
+@code {
+    private string? _selected = "terms";
+}

@@ -1,0 +1,38 @@
+@inherits ShadcnComponentBase
+
+@Render
+
+@code {
+    private RenderFragment Render => __builder =>
+    {
+        var headerContainerClasses = MergeCss("px-3 pt-3", HeaderContainerClass);
+        var footerContainerClasses = MergeCss("px-3 pb-3", FooterContainerClass);
+        
+        <div data-slot="test-textarea" class="@GetContainerClass()" @attributes="AdditionalAttributes">
+            @if (Header is not null)
+            {
+                <div data-slot="test-textarea-header" class="@headerContainerClasses">
+                    @Header
+                </div>
+            }
+            
+            <textarea
+                data-slot="test-textarea-input"
+                class="@GetTextAreaClass()"
+                value="@Value"
+                @oninput="HandleInput"
+                @onchange="HandleChange"
+                rows="@Rows"
+                disabled="@Disabled"
+                placeholder="@Placeholder"></textarea>
+
+            @if (Footer is not null)
+            {
+                <div data-slot="test-textarea-footer" class="@footerContainerClasses">
+                    @Footer
+                </div>
+            }
+
+        </div>
+    };
+}

@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using ShadcnBlazor.Cli.Services;
+using ShadcnBlazor.Cli.Services.Components;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -15,8 +16,8 @@ public class ListCommand(
 
     public override int Execute(CommandContext context, ListSettings settings, CancellationToken cancellation)
     {
-        var componentsWithMetadata = componentService.LoadComponents();
-        var asStrings = componentsWithMetadata.Select((c, i) => $"[green]{i}.[/] {c.ComponentMetadata.Name}");
+        var components = componentService.LoadComponents();
+        var asStrings = components.Select((c, i) => $"[green]{i}.[/] {c.Name}");
         var asString = string.Join("\n", asStrings);
         console.MarkupLine($"Available Components: {asString}");
         return 0;

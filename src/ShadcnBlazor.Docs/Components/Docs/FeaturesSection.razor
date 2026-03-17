@@ -1,0 +1,61 @@
+@inherits ShadcnComponentBase
+@inject PageTocService TocService
+
+<DocsSection Title="@Title" Id="@Id" AddToToc="@AddToToc">
+    <style>
+        code {
+            font-size: 0.725rem;
+        }
+    </style>
+    <div class="w-full grid grid-cols-[1fr_auto] gap-4">
+        <div class="space-y-2">
+            @foreach(var feature in Features)
+            {
+                @RenderFeatureItem(feature)
+            }
+        </div>
+        <div>
+            <a href="https://github.com/bryjen/ShadcnBlazor/tree/master/src/ShadcnBlazor/Components/@(SourceLink)" target="_blank"
+               class="underline">
+                <div class="flex items-center gap-1">
+                    <span>View Source</span>
+                    <LuLink2 class="size-4"/>
+                </div>
+            </a>
+        </div>
+    </div>
+</DocsSection>
+
+
+@code {
+    [Parameter] 
+    public string? Title { get; set; }
+    
+    [Parameter] 
+    public string? Id { get; set; }
+    
+    [Parameter] 
+    public string? SourceLink { get; set; }
+    
+    /// <summary>
+    /// When false, this section is not added to the On This Page TOC. Use when the parent will add it later
+    /// (e.g. API Reference).
+    /// </summary>
+    [Parameter] 
+    public bool AddToToc { get; set; } = true;
+    
+    [Parameter] 
+    public List<RenderFragment> Features { get; set; } = new();
+    
+    private RenderFragment RenderFeatureItem(RenderFragment contents) => __builder =>
+    {
+        <div class="flex gap-2">
+            <svg class="h-[1lh] w-4.5 shrink-0" viewBox="0 0 22 22" fill="none" stroke-linecap="square">
+                <circle cx="11" cy="11" r="11" class="fill-(--primary)/25" />
+                <circle cx="11" cy="11" r="10.5" class="stroke-(--primary)/25" />
+                <path d="M8 11.5L10.5 14L14 8" class="stroke-(--primary)" />
+            </svg>
+            @contents
+        </div>
+    };
+}

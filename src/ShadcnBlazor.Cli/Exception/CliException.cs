@@ -6,9 +6,6 @@ public class CliException : System.Exception
     public CliException(string message, System.Exception innerException) : base(message, innerException) { }
 }
 
-public class ConfigFileNotFoundException(string fileName)
-    : CliException($"Couldn't find a `{fileName}` file in the current directory.");
-
 public class ProjectFileNotFoundException() 
     : CliException("Couldn't find a .csproj file in the current directory.");
 
@@ -22,4 +19,10 @@ public class ComponentAlreadyExistsException(string componentName)
     : CliException($"Component `{componentName}` already exists at the destination.");
 
 public class ComponentSourceNotFoundException(string componentName)
-    : CliException($"Source files for component `{componentName}` not found.");
+    : CliException($"Source files for component `{componentName}` not found.")
+{
+    public string ComponentName { get; } = componentName;
+}
+
+public class OutputDirectoryExistsException(string path)
+    : CliException($"Output directory `{path}` already exists.");

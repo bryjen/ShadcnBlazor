@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
-using TailwindMerge;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Models.Enums;
+
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
 
 namespace ShadcnBlazor.Components.Badge;
 
-[ComponentMetadata(Name = nameof(Badge), Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", Dependencies = [])]
+/// <summary>
+/// A small label or count indicator for highlighting status or metadata.
+/// </summary>
 public partial class Badge : ShadcnComponentBase
 {
+    /// <summary>The content of the badge.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    /// <summary>The visual style variant of the badge.</summary>
     [Parameter]
     public Variant Variant { get; set; } = Variant.Default;
 
+    /// <summary>The size of the badge.</summary>
     [Parameter]
     public Size Size { get; set; } = Size.Md;
 
@@ -25,9 +29,9 @@ public partial class Badge : ShadcnComponentBase
 
         var sizeClasses = Size switch
         {
-            Size.Sm => "px-1.5 py-0 text-[0.55rem] [&>svg]:size-1.5",
-            Size.Md => "px-1.5 py-0.25 text-[0.6rem] [&>svg]:size-2",
-            Size.Lg => "px-1.75 py-0.5 text-[0.65rem] [&>svg]:size-2.5",
+            Size.Sm => "px-1.5 py-0.25 text-[0.55rem] [&>svg]:size-2",
+            Size.Md => "px-2.5 py-0.5 text-xs [&>svg]:size-2.5",
+            Size.Lg => "px-2.5 py-1 text-sm [&>svg]:size-3",
         };
 
         var variantClasses = Variant switch

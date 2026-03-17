@@ -4,8 +4,28 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
+        <PublishTrimmed>false</PublishTrimmed>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <BlazorWasmPrerenderingBaseHref>/</BlazorWasmPrerenderingBaseHref>
+        <!-- Explicitly list all routes to pre-render (relative to prerenderer server, NOT including base href) -->
+        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/input;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="**/*.razor.js" Exclude="bin/**;obj/**;publish/**" />
+    </ItemGroup>
+
+    <!-- Exclude publish folder from compilation -->
+    <ItemGroup>
+        <Content Remove="publish/**" />
+        <Compile Remove="publish/**" />
+        <EmbeddedResource Remove="publish/**" />
+        <None Remove="publish/**" />
+        <RazorComponent Remove="publish/**" />
+    </ItemGroup>
 
     <!-- Run docs compiler before build (build ShadcnBlazor and compiler first, then run) -->
     <Target Name="GenerateDocs" BeforeTargets="BeforeBuild" DependsOnTargets="ResolveProjectReferences" Condition="'$(DesignTimeBuild)' != 'true'">
@@ -35,7 +55,9 @@
     </Target>
     
     <ItemGroup>
+        <PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
+        <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
         <PackageReference Include="Markdig" Version="0.45.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" PrivateAssets="all" />
@@ -43,11 +65,18 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Folder Include="Components\Samples\MarkdownEditor\Services\" />
+        <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
+      <None Include="wwwroot\themes\brownie.css" />
+      <None Include="wwwroot\themes\claude+.css" />
+      <None Include="wwwroot\themes\claude.css" />
+      <None Include="wwwroot\themes\modern-minimal.css" />
+      <None Include="wwwroot\themes\portfolio-theme.css" />
+      <None Include="wwwroot\themes\sage-green.css" />
+      <None Include="wwwroot\themes\vtron.css" />
+      <None Include="wwwroot\themes\zen-inspired-theme.css" />
     </ItemGroup>
     
 </Project>

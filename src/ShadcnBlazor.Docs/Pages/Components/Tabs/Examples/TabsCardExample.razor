@@ -1,0 +1,26 @@
+<Card Class="w-[400px]">
+    <ChildContent>
+        <Tabs DefaultValue="overview">
+            <TabsList Class="w-full">
+                <TabsTrigger Value="overview" Class="flex-1">Overview</TabsTrigger>
+                <TabsTrigger Value="analytics" Class="flex-1">Analytics</TabsTrigger>
+                <TabsTrigger Value="reports" Class="flex-1">Reports</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="overview">
+                <div class="py-4">
+                    <p class="text-sm text-muted-foreground">A summary of your account activity and recent events.</p>
+                </div>
+            </TabsContent>
+            <TabsContent Value="analytics">
+                <div class="py-4">
+                    <p class="text-sm text-muted-foreground">Detailed analytics and performance metrics for your projects.</p>
+                </div>
+            </TabsContent>
+            <TabsContent Value="reports">
+                <div class="py-4">
+                    <p class="text-sm text-muted-foreground">Generated reports and exportable data for your records.</p>
+                </div>
+            </TabsContent>
+        </Tabs>
+    </ChildContent>
+</Card>

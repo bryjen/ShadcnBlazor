@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console;
 
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
@@ -21,6 +21,11 @@ public static class PromptUtils
             .HighlightStyle(new Style(Color.SkyBlue1))
             .AddChoices(ConfirmationResponse.Yes, ConfirmationResponse.No);
         return AnsiConsole.Prompt(promptObject);
+    }
+
+    public static ConfirmationResponse PromptOverwriteComponent(string componentName)
+    {
+        return PromptUser($"Component `[yellow]{componentName}[/]` already exists. Overwrite? [Y/n]");
     }
     
     [Obsolete]

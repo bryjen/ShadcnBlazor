@@ -1,10 +1,11 @@
 @inherits RadioSelectableComponentBase
 
-<label class="@GetContainerClass()">
+<label class="@GetContainerClass()" data-invalid="@(Invalid ? "true" : null)" data-disabled="@(IsDisabled ? "true" : null)">
     <button
         type="button"
         role="radio"
         aria-checked="@GetAriaChecked()"
+        aria-invalid="@(Invalid ? "true" : "false")"
         data-slot="radio"
         data-state="@(IsChecked ? "checked" : "unchecked")"
         data-size="@EffectiveSize"

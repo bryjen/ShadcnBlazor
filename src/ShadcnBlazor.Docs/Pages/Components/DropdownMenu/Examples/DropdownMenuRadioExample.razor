@@ -1,0 +1,30 @@
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <DropdownMenu>
+        <DropdownMenuTrigger AsChild="true">
+            <Button Variant="Variant.Outline">Font Size</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuLabel>Choose Size</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup
+                SelectedValue="fontSize"
+                SelectedValueChanged="@((val) => fontSize = val)">
+                <DropdownMenuRadioItem Value="small">Small</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="medium">Medium</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="large">Large</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="xlarge">Extra Large</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <div class="text-sm">
+        <p>Selected: @fontSize</p>
+    </div>
+</div>
+
+@code {
+    private string fontSize = "medium";
+}

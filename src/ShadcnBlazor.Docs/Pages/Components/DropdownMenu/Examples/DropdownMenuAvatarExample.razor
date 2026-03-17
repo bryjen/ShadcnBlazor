@@ -1,0 +1,29 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild="true">
+        <Avatar Src="https://github.com/shadcn.png" Alt="shadcn" Class="cursor-pointer" />
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuUser class="h-4 w-4 shrink-0" />
+                Account
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuCreditCard class="h-4 w-4 shrink-0" />
+                Billing
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuBell class="h-4 w-4 shrink-0" />
+                Notifications
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+            <LuLogOut class="h-4 w-4 shrink-0" />
+            Sign Out
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>

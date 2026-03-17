@@ -1,0 +1,34 @@
+@using ShadcnBlazor.Components.DataTable
+
+<div class="space-y-6">
+    <div>
+        <p class="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Default</p>
+        <DataTable T="Person" Items="[]" Hover Label="People — empty">
+            <Columns>
+                <DataTableColumn T="Person" Title="Name"   Field="x => x.Name" />
+                <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+            </Columns>
+        </DataTable>
+    </div>
+
+    <div>
+        <p class="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Custom</p>
+        <DataTable T="Person" Items="[]" Hover Label="People — custom empty">
+            <EmptyContent>
+                <div class="flex flex-col items-center gap-2 py-4">
+                    <span class="text-2xl">🫙</span>
+                    <p class="font-medium">Nothing here yet</p>
+                    <p class="text-xs text-muted-foreground">Add some people to get started.</p>
+                </div>
+            </EmptyContent>
+            <Columns>
+                <DataTableColumn T="Person" Title="Name"   Field="x => x.Name" />
+                <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+            </Columns>
+        </DataTable>
+    </div>
+</div>
+
+@code {
+    private record Person(string Name, string Email);
+}

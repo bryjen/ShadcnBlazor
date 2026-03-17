@@ -1,0 +1,123 @@
+@namespace ShadcnBlazor.Components.Tabs
+@inherits ShadcnComponentBase
+@implements IDisposable
+@using Microsoft.AspNetCore.Components
+
+<button
+    @ref="_buttonRef"
+    type="button"
+    role="tab"
+    data-slot="tabs-trigger"
+    data-state="@(IsActive ? "active" : "inactive")"
+    data-orientation="@Context?.Orientation"
+    data-disabled="@(Disabled ? "true" : null)"
+    disabled="@Disabled"
+    aria-selected="@IsActive.ToString().ToLower()"
+    aria-controls="tabpanel-@Value"
+    aria-disabled="@Disabled.ToString().ToLower()"
+    id="tabtrigger-@Value"
+    tabindex="@(IsActive ? 0 : -1)"
+    class="@GetClass()"
+    @onclick="OnClick"
+    @onkeydown="OnKeyDown"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</button>
+
+@code {
+    [CascadingParameter]
+    private TabsContext? Context { get; set; }
+
+    [Parameter]
+    public required string Value { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private ElementReference _buttonRef;
+    private bool IsActive => Context?.ActiveValue == Value;
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisteredTriggers.Add(Value);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (Context is not null)
+            Context.TriggerRefs[Value] = _buttonRef;
+    }
+
+    public void Dispose()
+    {
+        Context?.RegisteredTriggers.Remove(Value);
+        Context?.TriggerRefs.Remove(Value);
+    }
+
+    private async Task OnClick()
+    {
+        if (Disabled || Context?.OnTabSelected is null)
+            return;
+        await Context.OnTabSelected(Value);
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (Context is null)
+            return;
+
+        var triggers = Context.RegisteredTriggers;
+        var currentIndex = triggers.IndexOf(Value);
+
+        string? targetValue = null;
+
+        if (e.Key == "ArrowRight" || e.Key == "ArrowDown")
+        {
+            targetValue = FindNext(triggers, currentIndex, 1);
+        }
+        else if (e.Key == "ArrowLeft" || e.Key == "ArrowUp")
+        {
+            targetValue = FindNext(triggers, currentIndex, -1);
+        }
+        else if (e.Key == "Home")
+        {
+            targetValue = triggers.FirstOrDefault();
+        }
+        else if (e.Key == "End")
+        {
+            targetValue = triggers.LastOrDefault();
+        }
+
+        if (targetValue is not null && Context.OnTabSelected is not null)
+        {
+            await Context.OnTabSelected(targetValue);
+            if (Context.TriggerRefs.TryGetValue(targetValue, out var targetRef))
+                await targetRef.FocusAsync();
+        }
+    }
+
+    private static string? FindNext(List<string> triggers, int currentIndex, int direction)
+    {
+        if (triggers.Count == 0)
+            return null;
+
+        var count = triggers.Count;
+        for (var i = 1; i <= count; i++)
+        {
+            var index = ((currentIndex + direction * i) % count + count) % count;
+            return triggers[index];
+        }
+
+        return null;
+    }
+
+    private string GetClass()
+    {
+        var baseClasses = "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 duration-150 transition-all hover:text-foreground";
+        var activeClasses = IsActive ? "bg-background text-foreground shadow-sm" : "";
+        return MergeCss(baseClasses, activeClasses, Class);
+    }
+}

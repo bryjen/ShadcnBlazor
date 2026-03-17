@@ -1,0 +1,10 @@
+@inherits ShadcnComponentBase
+
+<p class="@MergeCss("text-sm text-muted-foreground mt-1", Class ?? "")" @attributes="AdditionalAttributes">
+    @ChildContent
+</p>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

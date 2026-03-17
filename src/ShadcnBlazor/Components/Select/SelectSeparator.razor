@@ -1,0 +1,22 @@
+@namespace ShadcnBlazor.Components.Select
+@implements IDisposable
+
+@code {
+    [CascadingParameter]
+    internal SelectDeclarativeRegistry? Registry { get; set; }
+
+    private int _registrationId;
+
+    protected override void OnInitialized()
+    {
+        if (Registry is null)
+            throw new InvalidOperationException("SelectSeparator must be used inside a Select component.");
+
+        _registrationId = Registry.RegisterSeparator();
+    }
+
+    public void Dispose()
+    {
+        Registry?.Remove(_registrationId);
+    }
+}

@@ -1,0 +1,14 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+
+<CascadingValue Value="_context" IsFixed="true">
+    @ChildContent
+    @if (_context.Open)
+    {
+        @* Backdrop — captures click and right-click to close *@
+        <div class="fixed inset-0 z-[9998]"
+             @onclick="@(() => Close())"
+             @oncontextmenu="@(() => Close())"
+             @oncontextmenu:preventDefault="true">
+        </div>
+    }
+</CascadingValue>

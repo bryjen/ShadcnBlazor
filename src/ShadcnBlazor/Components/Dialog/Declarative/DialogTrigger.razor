@@ -1,0 +1,26 @@
+@inherits ShadcnComponentBase
+
+<span @onclick="OnClick"
+      @onkeydown="OnKeyDown"
+      class="@MergeCss("contents")"
+      @attributes="AdditionalAttributes">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private DeclarativeDialogContext? Context { get; set; }
+
+    private void OnClick() => Context?.OpenDialog();
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " ")
+        {
+            Context?.OpenDialog();
+        }
+    }
+}

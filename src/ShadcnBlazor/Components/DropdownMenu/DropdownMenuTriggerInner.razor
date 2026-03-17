@@ -1,0 +1,37 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<button id="@TriggerId"
+        type="button"
+        class="max-w-[inherit] inline-flex cursor-pointer"
+        aria-haspopup="menu"
+        aria-expanded="@Open"
+        @onclick="OnClick"
+        @onclick:preventDefault="true"
+        @onkeydown="HandleKeyDown">
+    @ChildContent
+</button>
+
+@code {
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public bool AsChild { get; set; }
+
+    [Parameter]
+    public bool Open { get; set; }
+
+    [Parameter]
+    public string TriggerId { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " " or "ArrowDown")
+        {
+            await OnClick.InvokeAsync();
+        }
+    }
+}

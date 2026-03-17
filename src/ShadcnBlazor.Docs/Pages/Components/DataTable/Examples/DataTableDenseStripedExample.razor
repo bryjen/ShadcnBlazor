@@ -1,0 +1,26 @@
+@using ShadcnBlazor.Components.DataTable
+
+<DataTable T="Person" Items="SamplePeople" Dense Striped Hover PageSize="20" Label="People — dense striped">
+    <Columns>
+        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
+        <DataTableColumn T="Person" Title="Score"  Field="x => x.Score"  Sortable />
+        <DataTableColumn T="Person" Title="Joined">
+            <CellTemplate>@context.Joined.ToString("yyyy-MM-dd")</CellTemplate>
+        </DataTableColumn>
+    </Columns>
+</DataTable>
+
+@code {
+    private record Person(string Name, string Email, string Status, int Score, DateTime Joined);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "alice@example.com",   "Active",   92, new DateTime(2023, 3, 12)),
+        new("Bob Smith",       "bob@example.com",     "Inactive", 45, new DateTime(2022, 11, 5)),
+        new("Carol Williams",  "carol@example.com",   "Active",   78, new DateTime(2024, 1, 20)),
+        new("David Brown",     "david@example.com",   "Pending",  61, new DateTime(2023, 7, 8)),
+        new("Eve Davis",       "eve@example.com",     "Active",   88, new DateTime(2021, 9, 30)),
+    ];
+}

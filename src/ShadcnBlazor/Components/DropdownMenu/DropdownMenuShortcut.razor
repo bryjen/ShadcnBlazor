@@ -1,0 +1,13 @@
+@inherits ShadcnComponentBase
+
+<span class="@MergeCss("dropdown-menu-shortcut", Class)" @attributes="AdditionalAttributes">
+    @ChildContent
+</span>
+
+@code {
+    /// <summary>
+    /// The shortcut text (e.g., "⌘+T").
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

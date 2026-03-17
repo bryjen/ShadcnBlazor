@@ -1,6 +1,27 @@
-<Card>
-    <div class="space-y-2">
-        <h3 class="text-lg font-semibold">Card Title</h3>
-        <p class="text-sm text-muted-foreground">Card content goes here. Use the Card component as a container for related content with optional header, body, and footer sections.</p>
-    </div>
+<Card Class="w-[350px]">
+    <Header>
+        <h3 class="text-lg font-semibold">Login to your account</h3>
+        <p class="text-sm text-muted-foreground">Enter your email below to login to your account</p>
+    </Header>
+    <ChildContent>
+        <div class="space-y-4">
+            <div class="space-y-2">
+                <label for="email" class="text-sm font-medium">Email</label>
+                <Input id="email" Type="email" Placeholder="m@example.com" />
+            </div>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <label for="password" class="text-sm font-medium">Password</label>
+                    <Button Variant="@Variant.Link" Size="@Size.Sm" Class="px-0 text-xs">Forgot your password?</Button>
+                </div>
+                <Input id="password" Type="password" />
+            </div>
+        </div>
+    </ChildContent>
+    <Footer>
+        <div class="flex flex-col gap-2 w-full">
+            <Button Variant="@Variant.Default" Class="w-full">Login</Button>
+            <Button Variant="@Variant.Outline" Class="w-full">Login with Google</Button>
+        </div>
+    </Footer>
 </Card>

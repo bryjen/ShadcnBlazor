@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared;
+using ShadcnBlazor.Components.Shared.Models.Accessibility;
+using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Components.Input;
 
 /// <summary>
 /// Single-line text input with variant styling.
 /// </summary>
-[ComponentMetadata(Name = nameof(Input), Description = "Single-line text input with variant styling.", Dependencies = [])]
 public partial class Input : ShadcnComponentBase
 {
     /// <summary>
@@ -52,6 +51,28 @@ public partial class Input : ShadcnComponentBase
     /// </summary>
     [Parameter]
     public EventCallback<ChangeEventArgs> OnChange { get; set; }
+
+    [CascadingParameter]
+    private FormValidationContext? FormValidationContext { get; set; }
+
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        if (FormValidationContext is null)
+            return AdditionalAttributes;
+
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["aria-invalid"] = FormValidationContext.Invalid
+        };
+        if (!string.IsNullOrEmpty(FormValidationContext.ErrorMessageId))
+            merged["aria-errormessage"] = FormValidationContext.ErrorMessageId;
+
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+
+        return merged;
+    }
 
     private string GetClass()
     {

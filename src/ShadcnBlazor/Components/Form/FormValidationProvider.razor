@@ -1,0 +1,36 @@
+@namespace ShadcnBlazor.Components.Form
+@using ShadcnBlazor.Components.Shared.Models.Accessibility
+@inherits ComponentBase
+
+<CascadingValue Value="_context">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private readonly FormValidationContext _context = new();
+
+    /// <summary>
+    /// Content to wrap with the validation context.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Whether the form or control is in an invalid state.
+    /// </summary>
+    [Parameter]
+    public bool Invalid { get; set; }
+
+    /// <summary>
+    /// ID of the element that displays the error message. Used for aria-errormessage.
+    /// </summary>
+    [Parameter]
+    public string? ErrorMessageId { get; set; }
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        _context.Invalid = Invalid;
+        _context.ErrorMessageId = ErrorMessageId;
+    }
+}

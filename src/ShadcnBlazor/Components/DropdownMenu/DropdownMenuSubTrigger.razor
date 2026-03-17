@@ -1,0 +1,32 @@
+@inherits ShadcnComponentBase
+
+<div role="menuitem"
+     tabindex="-1"
+     aria-haspopup="menu"
+     aria-expanded="@(Context?.Open ?? false)"
+     class="@MergeCss("dropdown-menu-item", Class)"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+    <span aria-hidden="true">›</span>
+</div>
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuSubContext? Context { get; set; }
+
+    /// <summary>
+    /// The sub-trigger content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private RenderFragment TriggerFragment => @<div role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="@(Context?.Open ?? false)" class="@MergeCss("dropdown-menu-item", Class)" @attributes="AdditionalAttributes">
+        @ChildContent
+        <span aria-hidden="true">›</span>
+    </div>;
+
+    protected override void OnInitialized()
+    {
+        Context?.RegisterTrigger(TriggerFragment);
+    }
+}

@@ -1,0 +1,39 @@
+@using ShadcnBlazor.Components.DataTable
+
+<DataTable T="Person" Items="FilteredPeople" Hover Label="People — filtered">
+    <ToolBarContent>
+        <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold">People</h3>
+            <input class="h-8 rounded-md border border-border bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring w-56"
+                   placeholder="Filter by name..."
+                   @bind="_filterText"
+                   @bind:event="oninput" />
+        </div>
+    </ToolBarContent>
+    <Columns>
+        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
+    </Columns>
+</DataTable>
+
+@code {
+    private record Person(string Name, string Email, string Status);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "alice@example.com",   "Active"),
+        new("Bob Smith",       "bob@example.com",     "Inactive"),
+        new("Carol Williams",  "carol@example.com",   "Active"),
+        new("David Brown",     "david@example.com",   "Pending"),
+        new("Eve Davis",       "eve@example.com",     "Active"),
+        new("Frank Miller",    "frank@example.com",   "Inactive"),
+        new("Grace Wilson",    "grace@example.com",   "Active"),
+    ];
+
+    private string _filterText = "";
+    private IReadOnlyList<Person> FilteredPeople =>
+        string.IsNullOrWhiteSpace(_filterText)
+            ? SamplePeople
+            : SamplePeople.Where(p => p.Name.Contains(_filterText, StringComparison.OrdinalIgnoreCase)).ToArray();
+}

@@ -1,21 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace ShadcnBlazor.Docs.Pages;
 
 public partial class Introduction : ComponentBase
 {
-    private const string ExampleShadcnBlazorYaml = 
-"""
-componentsOutputDir: ./Components/Core
-servicesOutputDir: ./Services/Components
-rootNamespace: SampleBlazorProject
-""";
-    
     private const string ExampleSharedDirectoryAscii = 
 """
-Shared/
-├── Attributes/
-│   └── ComponentMetadataAttribute.cs
+Components/Core/Shared/
 ├── Enums/
 │   ├── Size.cs
 │   └── Variant.cs
@@ -27,8 +18,7 @@ Shared/
 Button/
 ├── Button.razor
 ├── ButtonGroup.razor
-├── ButtonShared.cs
-└── ToggleButton.razor
+└── ButtonShared.cs
 """;
     
     private const string ExamplePopoverComponentDirectoryAscii = 
@@ -42,7 +32,7 @@ Popover/
 ├── Services/
 │   ├── IPopoverRegistry.cs
 │   ├── IPopoverService.cs
-│   ├── PopoverJsInterop.cs
+│   ├── PopoverInterop.cs
 │   ├── PopoverRegistry.cs
 │   └── PopoverService.cs
 ├── Popover.razor

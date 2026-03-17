@@ -1,0 +1,45 @@
+<div class="w-full flex flex-col gap-4">
+    
+    @*
+    <div class="w-full" @onclick="@(_ => JsRuntime.InvokeVoidAsync("open", "https://tweakcn.com/community", "_blank"))">
+        <Alert Variant="@AlertVariant.Default" Class="flex w-full group transition-colors duration-300 bg-card border-border hover:bg-card/75 hover:border-border/75 cursor-pointer">
+            <LuInfo class="w-4 overflow-hidden transition-all duration-300 group-hover:w-0 group-hover:mr-0"/>
+            <div class="space-y-1">
+                <p class="font-medium">Note</p>
+                <p class="text-muted-foreground transition-all duration-300 group-hover:text-foreground/75">
+                    Unfocus the editor to apply changes. See <span class="underline transition-all duration-300 group-hover:text-primary group-hover:brightness-150">tweakcn.com</span>.
+                </p>
+            </div>
+        </Alert>
+    </div>
+    *@
+
+    <div @ref="_editorHost" class="docs-codeblock-codemirror docs-codeblock-codemirror-with-rail rounded-lg overflow-hidden w-full shrink-0">
+        <div class="docs-codeblock-codemirror-rail" aria-hidden="true">
+            @foreach (var marker in VisibleMarkers)
+            {
+                <button type="button"
+                        class="docs-codeblock-codemirror-swatch"
+                        style="top:@GetMarkerTopPx(marker.LineNumber)px;background-color:@marker.Token;"
+                        title="@($"Line {marker.LineNumber}: {marker.Token}")"
+                        tabindex="-1"></button>
+            }
+        </div>
+
+        <div class="docs-codeblock-codemirror-editor">
+            <CodeMirror6Wrapper
+                @ref="_editorRef"
+                Doc="@_editorText"
+                DocChanged="OnEditorChanged"
+                Language="CodeMirrorLanguage.Css"
+                Height="100vh"
+                Theme="@ThemeMirrorTheme.OneDark"
+                LineWrapping="false"
+                AllowVerticalResize="false"
+                AllowHorizontalResize="false"
+                Setup="@_editorSetup"
+                Selection="@_topSelection"/>
+        </div>
+    </div>
+</div>
+

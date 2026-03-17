@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Top</p>
+        <RadioGroup @bind-Value="_top">
+            <Radio Value="a" Alignment="VerticalAlignment.Top">
+                This is a longer label that wraps to multiple lines so you can see how the radio aligns to the top of the text block.
+            </Radio>
+        </RadioGroup>
+    </div>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Center (default)</p>
+        <RadioGroup @bind-Value="_center">
+            <Radio Value="b" Alignment="VerticalAlignment.Center">
+                This is a longer label that wraps to multiple lines so you can see how the radio aligns to the center of the text block.
+            </Radio>
+        </RadioGroup>
+    </div>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Bottom</p>
+        <RadioGroup @bind-Value="_bottom">
+            <Radio Value="c" Alignment="VerticalAlignment.Bottom">
+                This is a longer label that wraps to multiple lines so you can see how the radio aligns to the bottom of the text block.
+            </Radio>
+        </RadioGroup>
+    </div>
+</div>
+
+@code {
+    private string? _top = "a";
+    private string? _center = "b";
+    private string? _bottom = "c";
+}

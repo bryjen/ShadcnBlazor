@@ -1,0 +1,36 @@
+@namespace ShadcnBlazor.Components.Tabs
+@inherits ShadcnComponentBase
+
+@if (IsActive)
+{
+    <div
+        role="tabpanel"
+        data-slot="tabs-content"
+        data-state="@(IsActive ? "active" : "inactive")"
+        id="tabpanel-@Value"
+        aria-labelledby="tabtrigger-@Value"
+        tabindex="0"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    private TabsContext? Context { get; set; }
+
+    [Parameter]
+    public required string Value { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private bool IsActive => Context?.ActiveValue == Value;
+
+    private string GetClass()
+    {
+        var baseClasses = "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+        return MergeCss(baseClasses, Class);
+    }
+}

@@ -1,0 +1,196 @@
+[
+  {
+    "componentName": "Button",
+    "ariaRole": "button",
+    "requiredAttributes": [],
+    "optionalAttributes": ["aria-busy", "aria-disabled", "aria-expanded", "aria-haspopup", "aria-label"],
+    "keyboardMap": [
+      { "key": "Enter", "action": "Activate the button" },
+      { "key": "Space", "action": "Activate the button" }
+    ]
+  },
+  {
+    "componentName": "Checkbox",
+    "ariaRole": "checkbox",
+    "requiredAttributes": ["aria-checked"],
+    "optionalAttributes": ["aria-invalid", "aria-errormessage", "aria-describedby", "aria-label", "aria-labelledby"],
+    "keyboardMap": [
+      { "key": "Space", "action": "Toggle checkbox state" }
+    ]
+  },
+  {
+    "componentName": "Dialog",
+    "ariaRole": "dialog",
+    "requiredAttributes": ["aria-modal", "aria-labelledby"],
+    "optionalAttributes": ["aria-describedby"],
+    "keyboardMap": [
+      { "key": "Escape", "action": "Close the dialog" },
+      { "key": "Tab", "action": "Move focus to next focusable element (trapped within dialog)" },
+      { "key": "Shift+Tab", "action": "Move focus to previous focusable element (trapped within dialog)" }
+    ]
+  },
+  {
+    "componentName": "Select",
+    "ariaRole": "combobox",
+    "requiredAttributes": ["aria-expanded", "aria-haspopup"],
+    "optionalAttributes": ["aria-activedescendant", "aria-label", "aria-labelledby", "aria-required", "aria-invalid"],
+    "keyboardMap": [
+      { "key": "Enter", "action": "Open dropdown or select focused option" },
+      { "key": "Space", "action": "Open dropdown" },
+      { "key": "ArrowDown", "action": "Move focus to next option" },
+      { "key": "ArrowUp", "action": "Move focus to previous option" },
+      { "key": "Escape", "action": "Close dropdown without selecting" },
+      { "key": "Home", "action": "Move focus to first option" },
+      { "key": "End", "action": "Move focus to last option" }
+    ]
+  },
+  {
+    "componentName": "Combobox",
+    "ariaRole": "combobox",
+    "requiredAttributes": ["aria-expanded", "aria-haspopup", "aria-autocomplete"],
+    "optionalAttributes": ["aria-activedescendant", "aria-label", "aria-labelledby", "aria-required", "aria-invalid"],
+    "keyboardMap": [
+      { "key": "ArrowDown", "action": "Open list or move focus to next option" },
+      { "key": "ArrowUp", "action": "Move focus to previous option" },
+      { "key": "Enter", "action": "Select focused option" },
+      { "key": "Escape", "action": "Close dropdown and clear input" },
+      { "key": "Home", "action": "Move cursor to beginning of input" },
+      { "key": "End", "action": "Move cursor to end of input" }
+    ]
+  },
+  {
+    "componentName": "Accordion",
+    "ariaRole": "region",
+    "requiredAttributes": ["aria-expanded", "aria-controls"],
+    "optionalAttributes": ["aria-labelledby"],
+    "keyboardMap": [
+      { "key": "Enter", "action": "Expand or collapse the focused section" },
+      { "key": "Space", "action": "Expand or collapse the focused section" },
+      { "key": "Tab", "action": "Move focus to next interactive element" },
+      { "key": "Shift+Tab", "action": "Move focus to previous interactive element" },
+      { "key": "ArrowDown", "action": "Move focus to next accordion header" },
+      { "key": "ArrowUp", "action": "Move focus to previous accordion header" },
+      { "key": "Home", "action": "Move focus to first accordion header" },
+      { "key": "End", "action": "Move focus to last accordion header" }
+    ]
+  },
+  {
+    "componentName": "Radio",
+    "ariaRole": "radio",
+    "requiredAttributes": ["aria-checked"],
+    "optionalAttributes": ["aria-label", "aria-labelledby", "aria-describedby", "aria-invalid"],
+    "keyboardMap": [
+      { "key": "ArrowDown", "action": "Move focus and selection to next radio in group" },
+      { "key": "ArrowRight", "action": "Move focus and selection to next radio in group" },
+      { "key": "ArrowUp", "action": "Move focus and selection to previous radio in group" },
+      { "key": "ArrowLeft", "action": "Move focus and selection to previous radio in group" }
+    ]
+  },
+  {
+    "componentName": "Switch",
+    "ariaRole": "switch",
+    "requiredAttributes": ["aria-checked"],
+    "optionalAttributes": ["aria-label", "aria-labelledby", "aria-describedby"],
+    "keyboardMap": [
+      { "key": "Space", "action": "Toggle switch state" },
+      { "key": "Enter", "action": "Toggle switch state" }
+    ]
+  },
+  {
+    "componentName": "Slider",
+    "ariaRole": "slider",
+    "requiredAttributes": ["aria-valuenow", "aria-valuemin", "aria-valuemax"],
+    "optionalAttributes": ["aria-label", "aria-labelledby", "aria-valuetext", "aria-orientation"],
+    "keyboardMap": [
+      { "key": "ArrowRight", "action": "Increase value by one step" },
+      { "key": "ArrowUp", "action": "Increase value by one step" },
+      { "key": "ArrowLeft", "action": "Decrease value by one step" },
+      { "key": "ArrowDown", "action": "Decrease value by one step" },
+      { "key": "Home", "action": "Set value to minimum" },
+      { "key": "End", "action": "Set value to maximum" },
+      { "key": "PageUp", "action": "Increase value by large step" },
+      { "key": "PageDown", "action": "Decrease value by large step" }
+    ]
+  },
+  {
+    "componentName": "Tooltip",
+    "ariaRole": "tooltip",
+    "requiredAttributes": ["aria-describedby"],
+    "optionalAttributes": [],
+    "keyboardMap": [
+      { "key": "Escape", "action": "Dismiss tooltip" },
+      { "key": "Tab", "action": "Show tooltip when trigger receives focus" }
+    ]
+  },
+  {
+    "componentName": "DropdownMenu",
+    "ariaRole": "menu",
+    "requiredAttributes": ["aria-haspopup", "aria-expanded"],
+    "optionalAttributes": ["aria-label", "aria-labelledby"],
+    "keyboardMap": [
+      { "key": "Enter", "action": "Open menu or activate focused item" },
+      { "key": "Space", "action": "Open menu or activate focused item" },
+      { "key": "ArrowDown", "action": "Move focus to next menu item" },
+      { "key": "ArrowUp", "action": "Move focus to previous menu item" },
+      { "key": "ArrowRight", "action": "Open submenu" },
+      { "key": "ArrowLeft", "action": "Close submenu and return to parent" },
+      { "key": "Escape", "action": "Close menu" },
+      { "key": "Home", "action": "Move focus to first menu item" },
+      { "key": "End", "action": "Move focus to last menu item" }
+    ]
+  },
+  {
+    "componentName": "Popover",
+    "ariaRole": "dialog",
+    "requiredAttributes": ["aria-expanded"],
+    "optionalAttributes": ["aria-haspopup", "aria-label", "aria-labelledby"],
+    "keyboardMap": [
+      { "key": "Escape", "action": "Close the popover" },
+      { "key": "Tab", "action": "Move focus within popover content" }
+    ]
+  },
+  {
+    "componentName": "Alert",
+    "ariaRole": "alert",
+    "requiredAttributes": [],
+    "optionalAttributes": ["aria-live", "aria-atomic", "aria-label"],
+    "keyboardMap": []
+  },
+  {
+    "componentName": "Input",
+    "ariaRole": "textbox",
+    "requiredAttributes": [],
+    "optionalAttributes": ["aria-label", "aria-labelledby", "aria-describedby", "aria-required", "aria-invalid", "aria-errormessage", "aria-placeholder", "aria-autocomplete"],
+    "keyboardMap": []
+  },
+  {
+    "componentName": "Textarea",
+    "ariaRole": "textbox",
+    "requiredAttributes": ["aria-multiline"],
+    "optionalAttributes": ["aria-label", "aria-labelledby", "aria-describedby", "aria-required", "aria-invalid"],
+    "keyboardMap": []
+  },
+  {
+    "componentName": "MultiSelect",
+    "ariaRole": "listbox",
+    "requiredAttributes": ["aria-multiselectable", "aria-expanded"],
+    "optionalAttributes": ["aria-label", "aria-labelledby", "aria-activedescendant"],
+    "keyboardMap": [
+      { "key": "ArrowDown", "action": "Move focus to next option" },
+      { "key": "ArrowUp", "action": "Move focus to previous option" },
+      { "key": "Space", "action": "Toggle selection of focused option" },
+      { "key": "Enter", "action": "Toggle selection of focused option" },
+      { "key": "Escape", "action": "Close dropdown" }
+    ]
+  },
+  {
+    "componentName": "ToggleButton",
+    "ariaRole": "button",
+    "requiredAttributes": ["aria-pressed"],
+    "optionalAttributes": ["aria-label"],
+    "keyboardMap": [
+      { "key": "Enter", "action": "Toggle pressed state" },
+      { "key": "Space", "action": "Toggle pressed state" }
+    ]
+  }
+]

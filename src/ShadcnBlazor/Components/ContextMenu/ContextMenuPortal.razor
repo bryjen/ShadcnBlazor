@@ -1,0 +1,12 @@
+@namespace ShadcnBlazor.Components.ContextMenu
+
+@* Renders ChildContent - sub-content is already positioned by ContextMenuSub/Popover. *@
+@ChildContent
+
+@code {
+    /// <summary>
+    /// The content to render (typically ContextMenuSubContent).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,40 @@
+@inherits ShadcnComponentBase
+
+<div role="group" class="@MergeCss("dropdown-menu-radio-group", Class)" @attributes="AdditionalAttributes">
+    <CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [CascadingParameter]
+    private DropdownMenuContext? Context { get; set; }
+
+    /// <summary>
+    /// The radio group content (radio items).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// The selected radio value.
+    /// </summary>
+    [Parameter]
+    public string? SelectedValue { get; set; }
+
+    /// <summary>
+    /// Callback when selected value changes.
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> SelectedValueChanged { get; set; }
+
+    /// <summary>
+    /// Called by radio items to select a value.
+    /// </summary>
+    internal async Task SelectAsync(string value)
+    {
+        SelectedValue = value;
+        await SelectedValueChanged.InvokeAsync(value);
+        Context?.SetOpen?.Invoke(false);
+    }
+}

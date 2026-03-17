@@ -1,0 +1,10 @@
+@inherits ShadcnComponentBase
+
+<h2 class="@MergeCss("text-lg font-semibold leading-normal text-foreground m-0", Class ?? "")" @attributes="AdditionalAttributes">
+    @ChildContent
+</h2>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

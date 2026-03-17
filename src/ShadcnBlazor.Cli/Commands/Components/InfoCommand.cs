@@ -1,9 +1,11 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using ShadcnBlazor.Cli.Exception;
 using ShadcnBlazor.Cli.Models;
+using ShadcnBlazor.Cli.Models.Components;
+using ShadcnBlazor.Services.Models;
 using ShadcnBlazor.Cli.Services;
+using ShadcnBlazor.Cli.Services.Components;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -26,28 +28,24 @@ public class InfoCommand(
     {
         try
         {
-            var componentsWithMetadata = componentService.LoadComponents();
-            var component = componentService.FindComponent(componentsWithMetadata, settings.Name);
+            var components = componentService.LoadComponents();
+            var component = componentService.FindComponent(components, settings.Name);
 
-            // create temp directory object so we can use the build component tree function
             var tempDir = Path.GetTempPath();
             var tempOutputProjectConfig = new OutputProjectConfig
             {
                 ComponentsOutputDir = Path.Join(tempDir, "components"),
-                ServicesOutputDir = Path.Join(tempDir, "services"),
                 RootNamespace = "temp"
             };
-            
-            // print component info
+
             console.MarkupLine("[yellow]Component Info:[/]");
-            console.MarkupLine($"[yellow]Name:[/]\t{component.ComponentMetadata.Name}");
-            console.MarkupLine($"[yellow]FullName:[/]\t{component.FullName}");
-            
+            console.MarkupLine($"[yellow]Name:[/]\t{component.Name}");
+            console.MarkupLine($"[yellow]Description:[/]\t{component.Description}");
+
             console.WriteLine();
-            
-            // print dependency tree
+
             var dependencyTree = ComponentDependencyTree.BuildComponentDependencyTree(
-                tempOutputProjectConfig, componentsWithMetadata, component.ComponentMetadata.Name.Trim().ToLower());
+                tempOutputProjectConfig, components, component.Name.Trim().ToLower());
             var directDependencies = dependencyTree.RootNode.ResolvedDependencies.Count;
             var dependenciesText = directDependencies == 0 
                 ? "\t(No dependencies)" 
@@ -61,7 +59,7 @@ public class InfoCommand(
         }
         catch (CliException ex)
         {
-            console.MarkupLine($"[red]{ex.Message}[/]");
+            console.MarkupLine($"[red]{Markup.Escape(ex.Message)}[/]");
             console.MarkupLine("Component addition cancelled.");
             return 1;
         }

@@ -1,0 +1,29 @@
+@using ShadcnBlazor.Components.DataTable
+@using ShadcnBlazor.Docs.Pages.Components.DataTable
+
+<DataTable T="DataTableSampleService.PersonDto" Items="_people" IsLoading="_isLoading" Hover Striped Label="People">
+    <ToolBarContent>
+        <h3 class="text-base font-semibold">People</h3>
+    </ToolBarContent>
+    <Columns>
+        <DataTableColumn T="DataTableSampleService.PersonDto" Title="Name"       Field="x => x.Name"       Sortable />
+        <DataTableColumn T="DataTableSampleService.PersonDto" Title="Email"      Field="x => x.Email" />
+        <DataTableColumn T="DataTableSampleService.PersonDto" Title="Role"       Field="x => x.Role"       Sortable />
+        <DataTableColumn T="DataTableSampleService.PersonDto" Title="Experience">
+            <CellTemplate>
+                @context.Experience years
+            </CellTemplate>
+        </DataTableColumn>
+    </Columns>
+</DataTable>
+
+@code {
+    private IReadOnlyList<DataTableSampleService.PersonDto> _people = [];
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _people = await DataTableSampleService.GetPeopleAsync();
+        _isLoading = false;
+    }
+}

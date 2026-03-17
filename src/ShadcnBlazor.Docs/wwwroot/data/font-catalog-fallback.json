@@ -1,0 +1,28 @@
+{
+  "sans-serif": [
+    { "id": "inter", "family": "Inter", "category": "sans-serif" },
+    { "id": "open-sans", "family": "Open Sans", "category": "sans-serif" },
+    { "id": "lato", "family": "Lato", "category": "sans-serif" },
+    { "id": "montserrat", "family": "Montserrat", "category": "sans-serif" },
+    { "id": "poppins", "family": "Poppins", "category": "sans-serif" },
+    { "id": "roboto", "family": "Roboto", "category": "sans-serif" },
+    { "id": "nunito", "family": "Nunito", "category": "sans-serif" },
+    { "id": "work-sans", "family": "Work Sans", "category": "sans-serif" }
+  ],
+  "serif": [
+    { "id": "source-serif-4", "family": "Source Serif 4", "category": "serif" },
+    { "id": "lora", "family": "Lora", "category": "serif" },
+    { "id": "merriweather", "family": "Merriweather", "category": "serif" },
+    { "id": "playfair-display", "family": "Playfair Display", "category": "serif" },
+    { "id": "pt-serif", "family": "PT Serif", "category": "serif" },
+    { "id": "noto-serif", "family": "Noto Serif", "category": "serif" }
+  ],
+  "monospace": [
+    { "id": "jetbrains-mono", "family": "JetBrains Mono", "category": "monospace" },
+    { "id": "fira-code", "family": "Fira Code", "category": "monospace" },
+    { "id": "source-code-pro", "family": "Source Code Pro", "category": "monospace" },
+    { "id": "inconsolata", "family": "Inconsolata", "category": "monospace" },
+    { "id": "ibm-plex-mono", "family": "IBM Plex Mono", "category": "monospace" },
+    { "id": "space-mono", "family": "Space Mono", "category": "monospace" }
+  ]
+}

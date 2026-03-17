@@ -2,8 +2,10 @@
  * Simplified popover positioning system
  * Features: basic positioning, auto-flip, width modes, list clamping, debouncing
  * Future: animations, nested popovers
+ * Exported as ES module for Blazor JS interop.
  */
-window.popoverHelper = {
+
+const popoverHelper = {
     containerClass: 'popover-provider',
     overflowPadding: 10,
     flipMargin: 0,
@@ -184,9 +186,14 @@ window.popoverHelper = {
 
         popover.style.maxWidth = 'none';
         popover.style.minWidth = 'none';
+        popover.style.width = 'auto';
+
+        popover.style.setProperty('--popover-width', anchorRect.width + 'px');
 
         if (isRelativeWidth) {
+            popover.style.width = anchorRect.width + 'px';
             popover.style.maxWidth = anchorRect.width + 'px';
+            popover.style.minWidth = anchorRect.width + 'px';
         } else if (isAdaptiveWidth) {
             popover.style.minWidth = anchorRect.width + 'px';
         }
@@ -196,11 +203,13 @@ window.popoverHelper = {
         const shouldFlip = this.shouldFlip(classList, position.anchorX, position.anchorY,
             popoverRect.width, popoverRect.height);
 
+        let finalPlacementClasses = classList;
         if (shouldFlip.flipVertical || shouldFlip.flipHorizontal) {
             const flippedClasses = this.applyFlip(classList, shouldFlip.flipVertical, shouldFlip.flipHorizontal);
             const tempDiv = document.createElement('div');
             flippedClasses.forEach(c => tempDiv.classList.add(c));
             position = this.calculatePosition(tempDiv.classList, anchorRect, popoverRect);
+            finalPlacementClasses = tempDiv.classList;
         }
 
         const firstChild = popover.firstElementChild;
@@ -219,6 +228,27 @@ window.popoverHelper = {
         let left = position.left + position.offsetX;
         let top = position.top + position.offsetY;
 
+        const offset = parseInt(popover.getAttribute('data-offset') || '0', 10);
+        if (offset > 0) {
+            if (finalPlacementClasses.contains('popover-bottom-left') ||
+                finalPlacementClasses.contains('popover-bottom-center') ||
+                finalPlacementClasses.contains('popover-bottom-right')) {
+                top -= offset;
+            } else if (finalPlacementClasses.contains('popover-top-left') ||
+                finalPlacementClasses.contains('popover-top-center') ||
+                finalPlacementClasses.contains('popover-top-right')) {
+                top += offset;
+            } else if (finalPlacementClasses.contains('popover-center-left') ||
+                finalPlacementClasses.contains('popover-top-left') ||
+                finalPlacementClasses.contains('popover-bottom-left')) {
+                left -= offset;
+            } else if (finalPlacementClasses.contains('popover-center-right') ||
+                finalPlacementClasses.contains('popover-top-right') ||
+                finalPlacementClasses.contains('popover-bottom-right')) {
+                left += offset;
+            }
+        }
+
         if (!this.isFiniteNumber(left) || !this.isFiniteNumber(top)) {
             this.retryPlacement(popover, anchorId, popoverId);
             return;
@@ -235,7 +265,23 @@ window.popoverHelper = {
         popover.style.top = top + 'px';
         popover.removeAttribute('data-popover-retry');
 
+        const resolvedSide = this.getResolvedSide(finalPlacementClasses);
+        popover.setAttribute('data-resolved-side', resolvedSide);
+
         this.updateZIndex(popover);
+    },
+
+    getResolvedSide: function (classList) {
+        if (classList.contains('popover-bottom-left') || classList.contains('popover-bottom-center') || classList.contains('popover-bottom-right')) {
+            return 'top';
+        }
+        if (classList.contains('popover-top-left') || classList.contains('popover-top-center') || classList.contains('popover-top-right')) {
+            return 'bottom';
+        }
+        if (classList.contains('popover-center-left') || classList.contains('popover-top-left') || classList.contains('popover-bottom-left')) {
+            return 'left';
+        }
+        return 'right';
     },
 
     updateZIndex: function (popover) {
@@ -258,7 +304,8 @@ window.popoverHelper = {
 };
 
 class PopoverManager {
-    constructor() {
+    constructor(helper) {
+        this.helper = helper;
         this.popovers = new Map();
         this.observer = null;
         this.repositionDebounceMilliseconds = 25;
@@ -268,12 +315,12 @@ class PopoverManager {
     }
 
     bindWindowListeners() {
-        this.onResize = window.popoverHelper.debounce(() => {
-            window.popoverHelper.repositionAll();
+        this.onResize = this.helper.debounce(() => {
+            this.helper.repositionAll();
         }, this.repositionDebounceMilliseconds);
 
-        this.onScroll = window.popoverHelper.debounce(() => {
-            window.popoverHelper.repositionAll();
+        this.onScroll = this.helper.debounce(() => {
+            this.helper.repositionAll();
         }, this.repositionDebounceMilliseconds);
 
         window.addEventListener('resize', this.onResize, { passive: true });
@@ -311,10 +358,10 @@ class PopoverManager {
     }
 
     initialize(containerClass, flipMargin, overflowPadding, baseZIndex) {
-        window.popoverHelper.containerClass = containerClass;
-        window.popoverHelper.flipMargin = flipMargin;
-        window.popoverHelper.overflowPadding = overflowPadding;
-        window.popoverHelper.baseZIndex = baseZIndex;
+        this.helper.containerClass = containerClass;
+        this.helper.flipMargin = flipMargin;
+        this.helper.overflowPadding = overflowPadding;
+        this.helper.baseZIndex = baseZIndex;
 
         this.unbindWindowListeners();
         this.bindWindowListeners();
@@ -323,7 +370,7 @@ class PopoverManager {
     }
 
     observeProvider() {
-        const provider = document.querySelector('.' + window.popoverHelper.containerClass);
+        const provider = document.querySelector('.' + this.helper.containerClass);
         if (!provider) {
             console.error('Popover provider not found');
             return;
@@ -336,7 +383,7 @@ class PopoverManager {
                     if (target.classList.contains('popover-open')) {
                         const anchorId = target.getAttribute('data-anchor-id');
                         if (anchorId) {
-                            window.popoverHelper.placePopover(anchorId, target.id);
+                            this.helper.placePopover(anchorId, target.id);
                         }
                     }
                 }
@@ -357,7 +404,7 @@ class PopoverManager {
         if (popover) {
             popover.setAttribute('data-anchor-id', anchorId);
             if (popover.classList.contains('popover-open')) {
-                window.popoverHelper.placePopover(anchorId, popoverId);
+                this.helper.placePopover(anchorId, popoverId);
             }
         }
     }
@@ -384,7 +431,7 @@ class PopoverManager {
             callbackReference.invokeMethodAsync('HandleOutsidePointerDown');
         };
 
-        document.addEventListener('pointerdown', handler, true);
+        document.addEventListener('click', handler, false);
         this.outsideClickSubscriptions.set(popoverId, {
             handler,
             callbackReference
@@ -397,7 +444,7 @@ class PopoverManager {
             return;
         }
 
-        document.removeEventListener('pointerdown', subscription.handler, true);
+        document.removeEventListener('click', subscription.handler, false);
         this.outsideClickSubscriptions.delete(popoverId);
     }
 
@@ -420,4 +467,37 @@ class PopoverManager {
     }
 }
 
-window.popoverManager = new PopoverManager();
+const popoverManager = new PopoverManager(popoverHelper);
+
+export function initialize(containerClass, flipMargin, overflowPadding, baseZIndex) {
+    popoverManager.initialize(containerClass, flipMargin, overflowPadding, baseZIndex);
+}
+
+export function setRepositionDebounce(debounceMilliseconds) {
+    popoverManager.setRepositionDebounce(debounceMilliseconds);
+}
+
+export function connect(anchorId, popoverId) {
+    popoverManager.connect(anchorId, popoverId);
+}
+
+export function disconnect(popoverId) {
+    popoverManager.disconnect(popoverId);
+}
+
+export function enableOutsideClickClose(anchorId, popoverId, callbackReference) {
+    popoverManager.enableOutsideClickClose(anchorId, popoverId, callbackReference);
+}
+
+export function disableOutsideClickClose(popoverId) {
+    popoverManager.disableOutsideClickClose(popoverId);
+}
+
+export function repositionAll() {
+    popoverManager.helper.repositionAll();
+}
+export function dispose() {
+    popoverManager.dispose();
+}
+
+

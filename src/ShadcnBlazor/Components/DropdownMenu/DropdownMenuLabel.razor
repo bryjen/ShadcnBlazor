@@ -1,0 +1,13 @@
+@inherits ShadcnComponentBase
+
+<div role="presentation" class="@MergeCss("px-2 py-1.5 text-xs font-medium text-muted-foreground", Class)" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>
+    /// The label content.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

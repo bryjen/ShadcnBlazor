@@ -1,0 +1,86 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<HeadContent>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</HeadContent>
+
+@Render
+
+@code {
+    @* ReSharper disable once MemberCanBePrivate.Global *@
+    internal RenderFragment Render => __builder =>
+    {
+        <div class="relative grid min-h-screen grid-cols-[1fr_2.5rem_auto_2.5rem_1fr] grid-rows-[1fr_1px_auto_1px_1fr] bg-background [--pattern-fg:var(--color-gray-950)]/5 dark:[--pattern-fg:var(--color-white)]/10">
+            <div class="col-start-3 row-start-3 flex max-w-lg flex-col bg-background p-2">
+                <div class="rounded-xl p-10 text-sm/7 text-gray-700 bg-background text-foreground">
+                    <span class="font-bold text-white text-2xl">ShadcnBlazor</span>
+                    @MainContent
+                </div>
+            </div>
+            <div class="relative -right-px col-start-2 row-span-full row-start-1 border-x border-x-(--pattern-fg) bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed"></div>
+            <div class="relative -left-px col-start-4 row-span-full row-start-1 border-x border-x-(--pattern-fg) bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed"></div>
+            <div class="relative -bottom-px col-span-full col-start-1 row-start-2 h-px bg-(--pattern-fg)"></div>
+            <div class="relative -top-px col-span-full col-start-1 row-start-4 h-px bg-(--pattern-fg)"></div>
+        </div>
+    };
+    
+    private RenderFragment MainContent => __builder =>
+    {
+        <div class="space-y-4 text-muted-foreground">
+            <p>This is an empty standalone WASM template. Note that:</p>
+            <ul class="space-y-3">
+                @RenderCheckItem(
+                    @<p class="ml-3">
+                        <code class="font-mono font-medium text-foreground">bootstrap</code>
+                        and scoped css files have been removed.
+                    </p>)
+                @RenderCheckItem(
+                    @<p class="ml-3">
+                        <code class="font-mono font-medium text-foreground">Tailwind.NET</code>
+                        is included as the default tailwind compiler and configured with the default settings.
+                    </p>)
+                @RenderCheckItem(
+                    @<p class="ml-3">
+                        Common utilities and functionality is placed in the <code class="font-mono font-medium text-foreground">Shared</code> directory.
+                    </p>)
+            </ul>
+        </div>
+        
+        <hr class="my-4 w-full border-muted-foreground/25" />
+        
+        <div class="space-y-2 text-muted-foreground">
+            <p>You can begin by removing this page and adding your first component:</p>
+            <div class="flex items-center gap-2 px-2 py-1 bg-primary/15 border border-primary/50 rounded-xl text-foreground font-['JetBrains_Mono']">
+                shadcnblazor add component button
+            </div>
+        </div>
+        
+        <hr class="my-4 w-full border-muted-foreground/25" />
+        
+        <div class="flex flex-col gap-2 my-2 text-muted-foreground">
+            <p class="mb-1">Need help?</p>
+            <p class="font-semibold">
+                <a href="https://bryjen.github.io/ShadcnBlazor/introduction" class="text-foreground underline decoration-primary decoration-2 underline-offset-3 hover:decoration-3">ShadcnBlazor Docs &rarr;</a>
+            </p>
+            <p class="font-semibold">
+                <a href="https://tailwindcss.com/docs" class="text-foreground underline decoration-primary decoration-2 underline-offset-3 hover:decoration-3">Tailwind Docs &rarr;</a>
+            </p>
+        </div>
+    };
+
+    private RenderFragment RenderCheckItem(RenderFragment content) => __builder =>
+    {
+        <li class="flex">
+            <svg class="h-[1lh] w-5.5 shrink-0" viewBox="0 0 22 22" fill="none" stroke-linecap="square">
+                <circle cx="11" cy="11" r="11" class="fill-(--primary)/25" />
+                <circle cx="11" cy="11" r="10.5" class="stroke-(--primary)/25" />
+                <path d="M8 11.5L10.5 14L14 8" class="stroke-(--primary)" />
+            </svg>
+            @content
+        </li>
+    };
+}

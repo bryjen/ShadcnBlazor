@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
-using ShadcnBlazor.Shared.Enums;
+using ShadcnBlazor.Components.Shared.Models.Enums;
 
 #pragma warning disable CS8524
 
@@ -9,7 +8,6 @@ namespace ShadcnBlazor.Components.Radio;
 /// <summary>
 /// Radio option for single selection within a RadioGroup.
 /// </summary>
-[ComponentMetadata(Name = nameof(Radio), Description = "Radio and RadioCard options for single selection within a RadioGroup.", Dependencies = [])]
 public partial class Radio : RadioSelectableComponentBase
 {
     /// <summary>
@@ -30,9 +28,30 @@ public partial class Radio : RadioSelectableComponentBase
     [Parameter]
     public string ButtonClass { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Vertical alignment of the radio relative to its label.
+    /// </summary>
+    [Parameter]
+    public VerticalAlignment Alignment { get; set; } = VerticalAlignment.Center;
+
+    /// <summary>
+    /// Whether the radio is in an invalid state. When true, sets <c>aria-invalid="true"</c> and applies invalid styling.
+    /// </summary>
+    [Parameter]
+    public bool Invalid { get; set; }
+
     private string GetContainerClass()
     {
-        return MergeCss("flex items-start gap-2 cursor-pointer", Class);
+        var alignmentClass = Alignment switch
+        {
+            VerticalAlignment.Top => "items-start",
+            VerticalAlignment.Center => "items-center",
+            VerticalAlignment.Bottom => "items-end",
+            _ => "items-center",
+        };
+        var invalidClass = Invalid ? "data-[invalid]:text-destructive" : "";
+        var disabledClass = IsDisabled ? "data-[disabled]:text-muted-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70" : "";
+        return MergeCss("flex gap-2 cursor-pointer", alignmentClass, invalidClass, disabledClass, Class);
     }
 
     private string GetClass()
@@ -44,8 +63,14 @@ public partial class Radio : RadioSelectableComponentBase
             Size.Md => "size-4",
             Size.Lg => "size-5",
         };
+        
+        var alignmentClasses = Alignment switch
+        {
+            VerticalAlignment.Top => "mt-1",
+            _ => string.Empty
+        };
 
-        return MergeCss(baseClasses, sizeClasses, ButtonClass);
+        return MergeCss(baseClasses, sizeClasses, alignmentClasses, ButtonClass);
     }
 
     private string GetIndicatorClass()

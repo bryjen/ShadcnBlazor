@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Shared.Attributes;
 
 const string SnippetsFileName = "Snippets.generated.cs";
 const string ApiDocFileName = "ApiDocumentation.generated.cs";
@@ -75,10 +74,37 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             .ToDictionary(m => m.Attribute("name")!.Value, m => m);
     }
 
+    var documentedComponentFullNames = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "ShadcnBlazor.Components.Accordion.Accordion",
+        "ShadcnBlazor.Components.Alert.Alert",
+        "ShadcnBlazor.Components.Avatar.Avatar",
+        "ShadcnBlazor.Components.Badge.Badge",
+        "ShadcnBlazor.Components.Button.Button",
+        "ShadcnBlazor.Components.ToggleButton.ToggleButton",
+        "ShadcnBlazor.Components.Card.Card",
+        "ShadcnBlazor.Components.Checkbox.Checkbox",
+        "ShadcnBlazor.Components.DataTable.DataTable`1",
+        "ShadcnBlazor.Components.Textarea.ComposableTextArea",
+        "ShadcnBlazor.Components.Dialog.DialogProvider",
+        "ShadcnBlazor.Components.DropdownMenu.DropdownMenu",
+        "ShadcnBlazor.Components.Input.Input",
+        "ShadcnBlazor.Components.Popover.Popover",
+        "ShadcnBlazor.Components.Radio.Radio",
+        "ShadcnBlazor.Components.Combobox.Combobox`1",
+        "ShadcnBlazor.Components.MultiSelect.MultiSelect`1",
+        "ShadcnBlazor.Components.Select.Select`1",
+        "ShadcnBlazor.Components.Skeleton.Skeleton",
+        "ShadcnBlazor.Components.Slider.Slider",
+        "ShadcnBlazor.Components.Switch.Switch",
+        "ShadcnBlazor.Components.Textarea.Textarea",
+        "ShadcnBlazor.Components.Tooltip.Tooltip",
+    };
+
     var componentTypes = assembly.GetTypes()
         .Where(t => t.IsPublic && !t.IsAbstract)
         .Where(t => typeof(ComponentBase).IsAssignableFrom(t))
-        .Where(t => t.GetCustomAttribute<ComponentMetadataAttribute>() != null)
+        .Where(t => documentedComponentFullNames.Contains(t.FullName ?? ""))
         .OrderBy(t => t.Name)
         .ToList();
 
@@ -105,11 +131,9 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
 
         var typeXmlKey = $"T:{type.FullName}";
         var typeSummary = GetXmlElement(xmlDocs, typeXmlKey, "summary");
-        var metadata = type.GetCustomAttribute<ComponentMetadataAttribute>();
-        if (string.IsNullOrWhiteSpace(typeSummary) && metadata != null)
-            typeSummary = metadata.Description;
 
-        output.AppendLine($"    public static readonly DocumentedType {type.Name} = new()");
+        var safeName = GetSafeTypeIdentifier(type.Name);
+        output.AppendLine($"    public static readonly DocumentedType {safeName} = new()");
         output.AppendLine("    {");
         output.AppendLine($"        Name = \"{type.Name}\",");
         output.AppendLine($"        FullName = \"{EscapeQuotes(type.FullName ?? "")}\",");
@@ -120,8 +144,14 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             .OrderBy(p => p.Name)
             .ToList();
 
-        output.AppendLine("        Properties = new[]");
-        output.AppendLine("        {");
+        if (properties.Count == 0)
+        {
+            output.AppendLine("        Properties = Array.Empty<DocumentedProperty>(),");
+        }
+        else
+        {
+            output.AppendLine("        Properties = new[]");
+            output.AppendLine("        {");
 
         foreach (var prop in properties)
         {
@@ -143,9 +173,10 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             output.AppendLine("            },");
         }
 
-        output.AppendLine("        },");
+            output.AppendLine("        },");
+        }
 
-        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+        var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
             .Where(m => !m.IsSpecialName)
             .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_"))
             .OrderBy(m => m.Name)
@@ -216,7 +247,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         output.AppendLine("    };");
         output.AppendLine();
 
-        allEntries.Add($"        {{ \"{type.Name}\", {type.Name} }}");
+        allEntries.Add($"        {{ \"{type.Name}\", {safeName} }}");
     }
 
     output.AppendLine("    public static IReadOnlyDictionary<string, DocumentedType> All => new Dictionary<string, DocumentedType>");
@@ -246,17 +277,66 @@ string FindAssemblyPath(string docsDirPath)
 // CODE SNIPPETS GENERATION
 // ========================================
 
+static (string PropertyName, string FileName, string EscapedContents, string Language) CreateSnippetFromFile(string filePath, string basePath)
+{
+    var relativePath = Path.GetRelativePath(basePath, filePath);
+    var propertyName = Path.ChangeExtension(relativePath, null)
+        .Replace("\\", "_").Replace("/", "_").Replace("-", "_");
+    var ext = Path.GetExtension(filePath).ToLowerInvariant();
+    var language = ext switch
+    {
+        ".razor" or ".cshtml" => "razor",
+        ".cs" => "csharp",
+        ".html" => "html",
+        ".css" => "css",
+        ".js" => "javascript",
+        ".ts" => "typescript",
+        ".json" => "json",
+        ".xml" => "xml",
+        ".yaml" or ".yml" => "yaml",
+        _ => "text"
+    };
+    var source = File.ReadAllText(filePath, Encoding.UTF8);
+    source = Regex.Replace(source, @"@(namespace|page|layout)\s+.+?\n", string.Empty);
+    var escaped = source.Replace("\"", "\"\"").Trim();
+    return (propertyName, Path.GetFileName(filePath), escaped, language);
+}
+
+static IEnumerable<string> CollectExampleFiles(string docsDirPath)
+{
+    var roots = new[]
+    {
+        Path.Combine(docsDirPath, "Pages", "Components"),
+        Path.Combine(docsDirPath, "Pages", "Samples"),
+        Path.Combine(docsDirPath, "Pages", "PseudoComponents")
+    };
+
+    var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+    foreach (var root in roots)
+    {
+        if (!Directory.Exists(root)) continue;
+
+        foreach (var file in Directory.EnumerateFiles(root, "*.razor", SearchOption.AllDirectories))
+        {
+            var fileName = Path.GetFileName(file);
+            var relativePath = Path.GetRelativePath(root, file);
+            var pathParts = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+            var isExampleNamed = fileName.EndsWith("Example.razor", StringComparison.OrdinalIgnoreCase);
+            var isUnderExamples = pathParts.Contains("Examples", StringComparer.OrdinalIgnoreCase);
+
+            if ((isExampleNamed || isUnderExamples) && seen.Add(file))
+                yield return file;
+        }
+    }
+}
+
 void GenerateSnippets(string docsDirPath, string outputPath)
 {
-    var componentsPath = Path.Combine(docsDirPath, "Pages", "Components");
-    var samplesPath = Path.Combine(docsDirPath, "Pages", "Samples");
-
-    var exampleFiles = new List<string>();
-    if (Directory.Exists(componentsPath))
-        exampleFiles.AddRange(Directory.EnumerateFiles(componentsPath, "*Example.razor", SearchOption.AllDirectories));
-    if (Directory.Exists(samplesPath))
-        exampleFiles.AddRange(Directory.EnumerateFiles(samplesPath, "*Example.razor", SearchOption.AllDirectories));
-    exampleFiles = exampleFiles.OrderBy(f => f.Replace("\\", "/"), StringComparer.Ordinal).ToList();
+    var exampleFiles = CollectExampleFiles(docsDirPath)
+        .OrderBy(f => f.Replace("\\", "/"), StringComparer.Ordinal)
+        .ToList();
 
     if (exampleFiles.Count == 0)
     {
@@ -276,19 +356,24 @@ void GenerateSnippets(string docsDirPath, string outputPath)
     sb.AppendLine("// <auto-generated />");
     sb.AppendLine("//-----------------------------------------------------------------------");
     sb.AppendLine();
+    sb.AppendLine("using ShadcnBlazor.Docs.Components.Docs.CodeBlock;");
+    sb.AppendLine();
     sb.AppendLine("namespace ShadcnBlazor.Docs.Models");
     sb.AppendLine("{");
     sb.AppendLine("    [System.CodeDom.Compiler.GeneratedCodeAttribute(\"ShadcnBlazor.Docs.Compiler\", \"0.0.0.0\")]");
     sb.AppendLine("    public static partial class Snippets");
     sb.AppendLine("    {");
 
+    var basePath = Path.Combine(docsDirPath, "Pages");
     foreach (var filePath in exampleFiles)
     {
-        var fileName = Path.GetFileNameWithoutExtension(filePath);
-        var source = File.ReadAllText(filePath, Encoding.UTF8);
-        source = Regex.Replace(source, @"@(namespace|page|layout)\s+.+?\n", string.Empty);
-        var escaped = source.Replace("\"", "\"\"").Trim();
-        sb.AppendLine($"        public const string {fileName} = @\"{escaped}\";");
+        var snippet = CreateSnippetFromFile(filePath, basePath);
+        sb.AppendLine($"        public static readonly CodeFile {snippet.PropertyName} = new()");
+        sb.AppendLine("        {");
+        sb.AppendLine($"            FileName = \"{snippet.FileName}\",");
+        sb.AppendLine($"            Contents = @\"{snippet.EscapedContents}\",");
+        sb.AppendLine($"            Language = \"{snippet.Language}\"");
+        sb.AppendLine("        };");
         sb.AppendLine();
     }
 
@@ -319,6 +404,8 @@ void WriteEmptySnippets(string outputPath)
         // <auto-generated />
         //-----------------------------------------------------------------------
 
+        using ShadcnBlazor.Docs.Components.Docs.CodeBlock;
+
         namespace ShadcnBlazor.Docs.Models
         {
             [System.CodeDom.Compiler.GeneratedCodeAttribute("ShadcnBlazor.Docs.Compiler", "0.0.0.0")]
@@ -333,6 +420,15 @@ void WriteEmptySnippets(string outputPath)
 // ========================================
 // HELPER FUNCTIONS
 // ========================================
+
+/// <summary>
+/// Converts a type name to a valid C# identifier (e.g. "Select`1" -> "Select").
+/// </summary>
+string GetSafeTypeIdentifier(string typeName)
+{
+    var idx = typeName.IndexOf('`');
+    return idx >= 0 ? typeName[..idx] : typeName;
+}
 
 string GetXmlElement(Dictionary<string, XElement> xmlDocs, string memberKey, string elementName)
 {

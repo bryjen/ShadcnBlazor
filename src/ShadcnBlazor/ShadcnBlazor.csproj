@@ -4,30 +4,32 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**</DefaultItemExcludes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\ShadcnBlazor.xml</DocumentationFile>
+        <!-- Enable CS1591 to warn on missing XML documentation -->
+        <NoWarn>$(NoWarn.Replace('1591', '').Replace(';1591', '').Replace('1591;', '').Replace(';;',
+            ';'))</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser"/>
+        <SupportedPlatform Include="browser" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6"/>
+        <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
         <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Components\Radio\" />
     </ItemGroup>
 
     <ItemGroup>
         <!-- For CLI tool to extract components -->
         <None Include="Components/**/*" CopyToOutputDirectory="Always" />
-        <None Include="Shared/**/*" CopyToOutputDirectory="Always" />
         <None Include="_Imports.razor" CopyToOutputDirectory="Always" />
     </ItemGroup>
 
     <!-- wwwroot content is automatically included as static web assets by the Razor SDK -->
+    <ItemGroup>
+        <Content Include="Components/**/*.razor.js" />
+    </ItemGroup>
 </Project>

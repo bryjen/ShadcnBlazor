@@ -1,0 +1,48 @@
+@using ShadcnBlazor.Components.DataTable
+@using ShadcnBlazor.Components.Button
+
+<DataTable T="Person" Items="SamplePeople" MultiSelection
+           @bind-SelectedItems="_selectedPeople"
+           Hover Striped Label="People — multi-select">
+    <ToolBarContent>
+        <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold">People</h3>
+            @if (_selectedPeople.Count > 0)
+            {
+                <Button Variant="Variant.Outline" Size="Size.Md"
+                        OnClick="@(() => _selectedPeople = [])">
+                    Clear selection
+                </Button>
+            }
+        </div>
+    </ToolBarContent>
+    <Columns>
+        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
+        <DataTableColumn T="Person" Title="Score"  Field="x => x.Score"  Sortable />
+    </Columns>
+</DataTable>
+
+@if (_selectedPeople.Count > 0)
+{
+    <div class="rounded-md border border-border p-3 text-sm space-y-1 mt-4">
+        <p class="font-medium">@_selectedPeople.Count selected:</p>
+        <p class="text-muted-foreground">@string.Join(", ", _selectedPeople.Select(p => p.Name))</p>
+    </div>
+}
+
+@code {
+    private record Person(string Name, string Email, string Status, int Score);
+
+    private static readonly Person[] SamplePeople =
+    [
+        new("Alice Johnson",   "alice@example.com",   "Active",   92),
+        new("Bob Smith",       "bob@example.com",     "Inactive", 45),
+        new("Carol Williams",  "carol@example.com",   "Active",   78),
+        new("David Brown",     "david@example.com",   "Pending",  61),
+        new("Eve Davis",       "eve@example.com",     "Active",   88),
+    ];
+
+    private HashSet<Person> _selectedPeople = [];
+}

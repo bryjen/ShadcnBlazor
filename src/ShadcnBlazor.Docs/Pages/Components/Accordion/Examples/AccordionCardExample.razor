@@ -1,0 +1,25 @@
+<Card>
+    <div class="space-y-2">
+        <h3 class="text-lg font-semibold">Frequently Asked Questions</h3>
+        <Accordion Type="AccordionType.Multiple">
+            <AccordionItem Value="item-1">
+                <AccordionTrigger>How do I get started with the library?</AccordionTrigger>
+                <AccordionContent>
+                    Install the package via your preferred method—NuGet, dotnet CLI, or the component installer. Add the necessary service registrations in Program.cs and include the CSS in your layout. The getting started guide walks through a minimal setup in under five minutes. If you're migrating from another UI library, we provide migration notes for common scenarios. Our templates also include pre-configured projects you can use as a starting point.
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value="item-2">
+                <AccordionTrigger>Can I customize the styling to match my brand?</AccordionTrigger>
+                <AccordionContent>
+                    Yes. All components use Tailwind CSS and expose a Class parameter for additional styling. You can override CSS variables for colors, spacing, and typography to create a consistent theme. The design tokens are documented so you can adjust the look without fighting the framework. For deeper customization, components are built with composition in mind—you can wrap them, extend them, or replace specific parts. Dark mode is supported out of the box via CSS variables.
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value="item-3">
+                <AccordionTrigger>Is the component library accessible?</AccordionTrigger>
+                <AccordionContent>
+                    Yes. Components adhere to the WAI-ARIA design patterns and use semantic HTML where appropriate. Keyboard navigation is supported for interactive elements, and focus management is handled for modals, dropdowns, and other overlay components. We recommend testing with screen readers and following the accessibility notes in our documentation. If you encounter an accessibility issue, please report it—we treat a11y as a core requirement, not an afterthought.
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+    </div>
+</Card>

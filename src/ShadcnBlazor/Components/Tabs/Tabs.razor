@@ -1,0 +1,12 @@
+@namespace ShadcnBlazor.Components.Tabs
+@inherits ShadcnComponentBase
+
+<CascadingValue Value="_context">
+    <div
+        data-slot="tabs"
+        data-orientation="@Orientation"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>

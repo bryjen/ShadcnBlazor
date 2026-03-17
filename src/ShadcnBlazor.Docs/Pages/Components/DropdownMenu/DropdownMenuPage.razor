@@ -1,0 +1,54 @@
+@page "/components/dropdownmenu"
+
+<PageTitle>DropdownMenu - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor DropdownMenu - Menu activated by clicking a trigger button." />
+</HeadContent>
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.DropdownMenu.Examples
+@using ShadcnBlazor.Docs.Services
+@using ShadcnBlazor.Components.DropdownMenu
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions"
+                 ApiDoc="@ApiDocumentation.DropdownMenu">
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">The DropdownMenu component displays a menu triggered by a button or custom trigger. Use <code>DropdownMenuTrigger</code> with <code>AsChild</code> to render a custom trigger (e.g., <code>Button</code>), <code>DropdownMenuContent</code> for the panel, and <code>DropdownMenuGroup</code>, <code>DropdownMenuLabel</code>, <code>DropdownMenuItem</code>, and <code>DropdownMenuSeparator</code> to structure the menu. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuBasicExample })">
+            <DropdownMenuBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Avatar" Id="avatar">
+        <p class="mb-3">An account switcher dropdown triggered by an avatar. Use <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and pass an <code>Avatar</code> as the trigger.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuAvatarExample })">
+            <DropdownMenuAvatarExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Complex" Id="complex">
+        <p class="mb-3">A richer example combining groups, icons, shortcuts, a checked state, and a destructive action.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuComplexExample })">
+            <DropdownMenuComplexExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Checkbox Items" Id="checkbox">
+        <p class="mb-3">Use <code>DropdownMenuCheckboxItem</code> for togglable options. Checkbox items do not close the menu on selection, allowing multiple toggles.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuCheckboxExample })">
+            <DropdownMenuCheckboxExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Radio Items" Id="radio">
+        <p class="mb-3">Use <code>DropdownMenuRadioGroup</code> with <code>DropdownMenuRadioItem</code> for mutually exclusive selections. Radio items close the menu on selection.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuRadioExample })">
+            <DropdownMenuRadioExample />
+        </ComponentPreview>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("DropdownMenu");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add dropdownmenu",
+    };
+}

@@ -1,0 +1,129 @@
+@typeparam T
+@using Microsoft.AspNetCore.Components.Web
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Components.Select
+@using ShadcnBlazor.Components.Select.Base
+@inherits SelectBase<T>
+
+@* Declarative child items register themselves via the cascaded registry *@
+@if (ChildContent is not null)
+{
+    <CascadingValue Value="_declarativeRegistry">
+        @ChildContent
+    </CascadingValue>
+}
+
+<Popover Open="@_open"
+         OpenChanged="HandleOpenChanged"
+         CloseOnOutsideClick="true"
+         LockScroll="@LockScroll"
+         AnchorOrigin="PopoverPlacement.BottomLeft"
+         TransformOrigin="PopoverPlacement.TopLeft"
+         WidthMode="@(PopoverFitContent ? PopoverWidthMode.Adaptive : PopoverWidthMode.Relative)"
+         AnchorClass="min-w-full max-w-full w-full">
+    <Anchor>
+        <div class="relative w-full">
+            <input id="@_triggerId"
+                   type="text"
+                   role="combobox"
+                   autocomplete="off"
+                   autocorrect="off"
+                   autocapitalize="off"
+                   spellcheck="false"
+                   aria-expanded="@(_open ? "true" : "false")"
+                   aria-haspopup="listbox"
+                   aria-controls="@_listboxId"
+                   aria-activedescendant="@GetActiveDescendant()"
+                   aria-autocomplete="list"
+                   aria-disabled="@Disabled"
+                   aria-label="@GetAriaLabel()"
+                   data-size="@Size.ToString().ToLower()"
+                   placeholder="@(Value is null ? Placeholder : string.Empty)"
+                   value="@GetDisplayValue()"
+                   class="@GetTriggerClass() pr-7 w-full"
+                   disabled="@Disabled"
+                   @oninput="HandleSearchInput"
+                   @onkeydown="HandleComboboxKeyDown"
+                   @onclick="ToggleOpen"
+                   @attributes="AdditionalAttributes" />
+            <span class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-muted-foreground">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 @(_open ? "rotate-180" : "") transition-transform duration-200">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </span>
+        </div>
+    </Anchor>
+    <ChildContent>
+        <div class="@GetContentClass() rounded-lg border border-input bg-popover text-popover-foreground shadow-lg p-1 min-w-[8rem]">
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">@Label</div>
+            }
+            <div id="@_listboxId"
+                 role="listbox"
+                 aria-label="@GetAriaLabel()"
+                 class="max-h-60 overflow-y-auto overflow-x-hidden">
+                @{
+                    var nodes = GetRenderNodes();
+                }
+                @if (nodes.Count == 0)
+                {
+                    <div role="status" aria-live="polite" class="px-2 py-4 text-center text-sm text-muted-foreground">No results found.</div>
+                }
+                @for (var i = 0; i < nodes.Count; i++)
+                {
+                    var index = i;
+                    var node = nodes[index];
+
+                    if (node.Kind == SelectNodeKind.Label)
+                    {
+                        <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground" role="presentation">@node.Text</div>
+                        continue;
+                    }
+
+                    if (node.Kind == SelectNodeKind.Separator)
+                    {
+                        <div class="my-1 h-px bg-border" role="separator"></div>
+                        continue;
+                    }
+
+                    var isSelected = IsSelected(node);
+                    var isDisabled = node.Disabled;
+                    var isActive = !isDisabled && _activeIndex == index;
+
+                    <button type="button"
+                            id="@GetOptionId(index)"
+                            role="option"
+                            tabindex="-1"
+                            aria-selected="@isSelected.ToString().ToLower()"
+                            aria-disabled="@isDisabled.ToString().ToLower()"
+                            disabled="@isDisabled"
+                            class="@GetOptionClass(isSelected, isActive, isDisabled)"
+                            @onmouseenter="@(_ => HandleOptionMouseEnter(index))"
+                            @onclick="() => SelectOptionAtIndexAsync(index)"
+                            @onclick:stopPropagation="true">
+                        @if (node.Render is not null)
+                        {
+                            @node.Render
+                        }
+                        else
+                        {
+                            @if (isSelected)
+                            {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            }
+                            else
+                            {
+                                <span class="size-4 shrink-0"></span>
+                            }
+                            <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@node.Text</span>
+                        }
+                    </button>
+                }
+            </div>
+        </div>
+    </ChildContent>
+</Popover>

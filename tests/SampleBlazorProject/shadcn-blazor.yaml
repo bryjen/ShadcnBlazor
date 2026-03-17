@@ -1,3 +1,0 @@
-componentsOutputDir: ./Components\Core
-servicesOutputDir: ./Services/Components
-rootNamespace: SampleBlazorProject

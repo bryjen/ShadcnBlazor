@@ -15,4 +15,8 @@ internal sealed class PopoverRegistration
     public bool ClampList { get; init; }
     public string? PopoverClass { get; init; }
     public Dictionary<string, object>? PopoverAttributes { get; init; }
+    /// <summary>
+    /// Gap in pixels between the popover and its anchor. Applied in the direction away from the anchor.
+    /// </summary>
+    public int Offset { get; init; }
 }
