@@ -1,125 +1,143 @@
 @page "/playground"
-@layout NoLayout
-@using System.Text.RegularExpressions
-@using ShadcnBlazor.Docs.Components.Samples.KeyInterceptor
+@using ShadcnBlazor.Services
+@inject SonnerService Sonner
 
-<PageTitle>Playground - ShadcnBlazor</PageTitle>
-<HeadContent>
-    <meta name="description" content="ShadcnBlazor Playground - Experiment with components, test examples, and explore the interactive component library." />
-</HeadContent>
+<PageTitle>Playground - Sonner + Blazor</PageTitle>
 
-<div class="min-h-screen bg-background p-8">
-    <div class="max-w-4xl mx-auto flex flex-col gap-8">
+<div class="w-full max-w-2xl mx-auto p-8">
+    <div class="space-y-6">
         <div>
-            <h1 class="text-2xl font-bold">Playground</h1>
-            <p class="text-muted-foreground mt-1">Experimental samples and demos.</p>
+            <h1 class="text-3xl font-bold tracking-tight">Sonner Toast Notifications</h1>
+            <p class="text-muted-foreground mt-2">Beautiful, accessible toast notifications with Blazor.</p>
         </div>
 
+        <!-- Basic Toasts -->
         <section class="space-y-4">
-            <h2 class="text-lg font-semibold">CodeMirror 6</h2>
-            <p class="text-sm text-muted-foreground">BlazorCodeMirror6 component (GaelJ.BlazorCodeMirror6), CSS language. Styled to match the docs code block.</p>
+            <h2 class="text-xl font-semibold">Basic Toasts</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="() => Sonner.Show('This is a basic notification')">
+                    Show Toast
+                </button>
 
-            <div class="docs-codeblock-codemirror rounded-lg overflow-hidden">
-                <CodeMirror6Wrapper
-                    @ref="_editorRef"
-                    Doc="@_editorText"
-                    DocChanged="OnEditorChanged"
-                    Language="CodeMirrorLanguage.Css"
-                    Height="320px"
-                    Theme="@ThemeMirrorTheme.TokyoNight"
-                    LineWrapping="false"
-                    AllowVerticalResize="false"
-                    AllowHorizontalResize="false"
-                    Setup="@_editorSetup"
-                    Selection="@_topSelection" />
-            </div>
-            
-            <div>
-                <input type="color"/>
-            </div>
+                <button
+                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="() => Sonner.Success('Operation completed successfully!')">
+                    Success
+                </button>
 
-            <div class="flex flex-wrap items-center gap-2 pt-1">
-                @foreach (var color in ExtractedColors)
-                {
-                    <div class="inline-flex items-center gap-2 rounded-md border border-border bg-card px-2 py-1 text-xs">
-                        <span class="inline-block size-3 rounded-sm border border-border" style="background-color:@color"></span>
-                        <code class="font-mono text-[11px]">@color</code>
-                    </div>
-                }
+                <button
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="() => Sonner.Error('An error occurred. Please try again.')">
+                    Error
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="() => Sonner.Warning('Be careful with this action.')">
+                    Warning
+                </button>
             </div>
         </section>
 
-        <section>
-            <h2 class="text-lg font-semibold mb-4">Keyboard Interceptor</h2>
-            <KeyInterceptorSample/>
+        <!-- Interactive Toasts -->
+        <section class="space-y-4">
+            <h2 class="text-xl font-semibold">Interactive Toasts</h2>
+            <p class="text-sm text-muted-foreground">
+                Toasts with action buttons that trigger C# callbacks
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                    class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowUndoToast">
+                    Undo Action
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowRetryToast">
+                    Retry Failed Action
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowMultipleToasts">
+                    Show Multiple (5)
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="() => Sonner.Dismiss()">
+                    Dismiss All
+                </button>
+            </div>
         </section>
+
+        <!-- Info Box -->
+        <div class="bg-slate-100 dark:bg-slate-900 rounded-lg p-4">
+            <h3 class="font-semibold text-sm mb-2">Features</h3>
+            <ul class="text-sm text-muted-foreground space-y-1">
+                <li>✓ Beautiful, themed toast notifications</li>
+                <li>✓ Dark mode support (uses app's dark class)</li>
+                <li>✓ Custom design tokens for consistent styling</li>
+                <li>✓ Action buttons with C# callbacks</li>
+                <li>✓ Dismiss individual or all toasts</li>
+                <li>✓ Icon-based notifications (success, error, warning, info)</li>
+            </ul>
+        </div>
     </div>
 </div>
 
 @code {
-    [Inject]
-    public required NavigationManager NavigationManager { get; set; }
-
-    private CodeMirror6Wrapper? _editorRef;
-
-    private readonly CodeMirrorSetup _editorSetup = new()
+    protected override async Task OnInitializedAsync()
     {
-        ScrollToStart = true,
-        FocusOnCreation = true
-    };
-
-    private readonly List<SelectionRange> _topSelection =
-    [
-        new SelectionRange { From = 0, To = 0 }
-    ];
-
-    private string _editorText = @"/* CSS example */
-:root {
-  --primary: oklch(0.6 0.2 293);
-  --muted: hsl(250 21% 28%);
-  --accent: #a995c9;
-}
-
-.dark {
-  --background: #232030;
-  --foreground: oklch(0.93 0.03 273);
-  --ring: rgba(169, 149, 201, 0.5);
-}";
-
-    private static readonly Regex ColorTokenRegex = new(
-        """#(?:[0-9a-fA-F]{3,8})\b|(?:oklch|oklab|lch|lab|hsl|hsla|rgb|rgba|hwb|color)\([^\n\r;{}]+\)""",
-        RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-    private IReadOnlyList<string> ExtractedColors =>
-        ColorTokenRegex.Matches(_editorText)
-            .Select(match => match.Value.Trim())
-            .Where(value => !string.IsNullOrWhiteSpace(value))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .Take(24)
-            .ToArray();
-
-    protected override void OnParametersSet()
-    {
-#if !DEBUG
-        NavigationManager.NavigateTo("/");
-#endif
-        base.OnParametersSet();
+        await Sonner.InitializeAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task ShowUndoToast()
     {
-        if (!firstRender || _editorRef?.CommandDispatcher is null)
+        await Sonner.SuccessWithAction(
+            "Event created successfully",
+            "Undo",
+            async () =>
+            {
+                await Sonner.Show("Event creation undone");
+            }
+        );
+    }
+
+    private async Task ShowRetryToast()
+    {
+        await Sonner.ErrorWithAction(
+            "Failed to upload file",
+            "Retry",
+            async () =>
+            {
+                await Sonner.Success("File uploaded successfully!");
+            }
+        );
+    }
+
+    private async Task ShowMultipleToasts()
+    {
+        var messages = new[]
         {
-            return;
+            ("Database sync started", "show"),
+            ("Validating data...", "show"),
+            ("Processing...", "show"),
+            ("Synced successfully!", "success"),
+            ("Ready to go!", "success")
+        };
+
+        foreach (var (msg, type) in messages)
+        {
+            await Task.Delay(300);
+            if (type == "success")
+                await Sonner.Success(msg);
+            else
+                await Sonner.Show(msg);
         }
-
-        await _editorRef.CommandDispatcher.Dispatch(CodeMirrorSimpleCommand.Focus);
-        await _editorRef.CommandDispatcher.Dispatch(CodeMirrorSimpleCommand.ScrollIntoView);
-    }
-
-    private Task OnEditorChanged(string value)
-    {
-        _editorText = value;
-        return Task.CompletedTask;
     }
 }

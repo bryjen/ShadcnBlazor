@@ -264,6 +264,7 @@ public class SonnerService
             // Operation was cancelled.
         }
     }
+
 }
 
 /// <summary>
