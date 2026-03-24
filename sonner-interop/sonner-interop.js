@@ -180,7 +180,8 @@ if (typeof window !== 'undefined') {
      * @param {object} options - Optional configuration (includes action: { label, callbackId })
      * @returns {string|number} Toast ID
      */
-    show: function(message, options = {}) {
+    show: function(message, options) {
+      options = options || {};
       const toastOptions = { icon: React.createElement(Info, { size: 20 }), ...options };
       if (options.action) {
         toastOptions.action = {
@@ -198,7 +199,8 @@ if (typeof window !== 'undefined') {
      * @param {object} options - Optional configuration (includes action: { label, callbackId })
      * @returns {string|number} Toast ID
      */
-    success: function(message, options = {}) {
+    success: function(message, options) {
+      options = options || {};
       const toastOptions = { icon: React.createElement(CheckCircle, { size: 20 }), ...options };
       if (options.action) {
         toastOptions.action = {
@@ -216,7 +218,8 @@ if (typeof window !== 'undefined') {
      * @param {object} options - Optional configuration (includes action: { label, callbackId })
      * @returns {string|number} Toast ID
      */
-    error: function(message, options = {}) {
+    error: function(message, options) {
+      options = options || {};
       const toastOptions = { icon: React.createElement(XCircle, { size: 20 }), ...options };
       if (options.action) {
         toastOptions.action = {
@@ -234,7 +237,8 @@ if (typeof window !== 'undefined') {
      * @param {object} options - Optional configuration (includes action: { label, callbackId })
      * @returns {string|number} Toast ID
      */
-    warning: function(message, options = {}) {
+    warning: function(message, options) {
+      options = options || {};
       const toastOptions = { icon: React.createElement(AlertTriangle, { size: 20 }), ...options };
       if (options.action) {
         toastOptions.action = {
