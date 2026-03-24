@@ -165,7 +165,7 @@ if (typeof window !== 'undefined') {
     invokeCallback: async function(callbackId) {
       if (sonnerServiceRef) {
         try {
-          await sonnerServiceRef.invokeAsyncMethod('InvokeCallback', callbackId);
+          await sonnerServiceRef.invokeMethodAsync('InvokeCallback', callbackId);
         } catch (error) {
           console.error('Sonner: Error invoking callback:', error);
         }
