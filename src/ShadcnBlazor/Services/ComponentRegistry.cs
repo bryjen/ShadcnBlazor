@@ -23,6 +23,7 @@ using ShadcnBlazor.Components.Textarea;
 using ShadcnBlazor.Components.ToggleButton;
 using ShadcnBlazor.Components.Tooltip;
 using ShadcnBlazor.Services.Models;
+using ShadcnBlazor.Services;
 
 namespace ShadcnBlazor.Services;
 
@@ -232,10 +233,20 @@ public static class ComponentRegistry
             Description = "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
             Dependencies = CreateDeps(),
         },
-        new() 
+        new()
         {
-            Name = nameof(Tooltip), 
+            Name = nameof(Tooltip),
             Description = "Hover-triggered tooltip with pointer; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover))
+        },
+        new()
+        {
+            Name = "Sonner",
+            Description = "An opinionated toast notification service powered by Sonner.",
+            RequiredActions =
+            [
+                new AddToServicesAction(nameof(SonnerService)),
+                new CopyJsAction("sonner-interop.iife.js"),
+            ]
         },
     ];
 }

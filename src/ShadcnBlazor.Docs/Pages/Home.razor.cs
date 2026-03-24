@@ -4,25 +4,25 @@ namespace ShadcnBlazor.Docs.Pages;
 
 public partial class Home : ComponentBase
 {
-    private Tab _selectedTab = Tab.Examples;
+    private Tab _selectedTab = Tab.V01;
     
     private enum Tab
     {
-        Examples,
+        V01,
         AiChat,
     }
     
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
     private static string TabToString(Tab tab) => tab switch
     {
-        Tab.Examples => "Examples",
+        Tab.V01 => "v0.1",
         Tab.AiChat => "AI Chat",
     };
     
 #pragma warning disable CS8509 // The switch expression does not handle all possible values of its input type (it is not exhaustive).
     private static Tab StringToTab(string tab) => tab switch
     {
-        "Examples" => Tab.Examples,
+        "v0.1" => Tab.V01,
         "AI Chat" => Tab.AiChat,
     };
 }

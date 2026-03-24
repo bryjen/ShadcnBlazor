@@ -1,0 +1,39 @@
+@using ShadcnBlazor.Services
+@using ShadcnBlazor.Components.Button
+@inject SonnerService Sonner
+@implements IAsyncDisposable
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="@Variant.Secondary" OnClick="ShowSuccessAction">Success with Undo</Button>
+    <Button Variant="@Variant.Destructive" OnClick="ShowErrorAction">Error with Retry</Button>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Sonner.InitializeAsync();
+    }
+
+    private async Task ShowSuccessAction()
+    {
+        await Sonner.SuccessWithAction(
+            "Post published successfully.",
+            "Undo",
+            async () => await Sonner.Show("Action undone!")
+        );
+    }
+
+    private async Task ShowErrorAction()
+    {
+        await Sonner.ErrorWithAction(
+            "Failed to save changes.",
+            "Retry",
+            async () => await Sonner.Show("Retrying...")
+        );
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await ValueTask.CompletedTask;
+    }
+}

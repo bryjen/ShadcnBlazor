@@ -1,0 +1,60 @@
+@using ShadcnBlazor.Services
+@using ShadcnBlazor.Components.Button
+@inject SonnerService Sonner
+@implements IAsyncDisposable
+
+<div class="flex flex-wrap gap-2">
+    <Button OnClick="ShowSuccessPromise">Show Promise (Success)</Button>
+    <Button Variant="@Variant.Destructive" OnClick="ShowErrorPromise">Show Promise (Error)</Button>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Sonner.InitializeAsync();
+    }
+
+    private async Task ShowSuccessPromise()
+    {
+        var task = DelayAsync();
+        await Sonner.Promise(
+            task,
+            "Changes saved successfully!",
+            "Failed to save changes."
+        );
+    }
+
+    private async Task ShowErrorPromise()
+    {
+        var task = FailAsync();
+        try
+        {
+            await Sonner.Promise(
+                task,
+                "Data loaded successfully!",
+                "Failed to load data."
+            );
+        }
+        catch
+        {
+            // Exception expected, promise toast handles it
+        }
+    }
+
+    private async Task<object> DelayAsync()
+    {
+        await Task.Delay(2000);
+        return new object();
+    }
+
+    private async Task<object> FailAsync()
+    {
+        await Task.Delay(500);
+        throw new Exception("Network error");
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await ValueTask.CompletedTask;
+    }
+}

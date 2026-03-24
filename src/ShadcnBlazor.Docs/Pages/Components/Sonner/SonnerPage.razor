@@ -1,0 +1,63 @@
+@page "/components/sonner"
+
+<PageTitle>Sonner - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Sonner - Toast notifications powered by the Sonner library." />
+</HeadContent>
+
+@using ShadcnBlazor.Docs.Pages.Components.Sonner.Examples
+@using ShadcnBlazor.Docs.Services
+@using ShadcnBlazor.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallOptions="@InstallOptions">
+    <DocsSection Title="Setup" Id="setup">
+        <p class="mb-3">Sonner is a toast notification service. Register <code>SonnerService</code> in your service collection and call <code>InitializeAsync()</code> once from a Blazor component to enable action button callbacks.</p>
+        <DocsSubSection Title="Service Registration" Id="registration">
+            <p class="mb-3">Add <code>SonnerService</code> to your service collection in <code>Program.cs</code>:</p>
+            <p class="ml-4 p-3 bg-muted rounded text-sm"><code>services.AddScoped&lt;SonnerService&gt;();</code></p>
+        </DocsSubSection>
+        <DocsSubSection Title="Initialize in Layout" Id="initialize">
+            <p class="mb-3">Call <code>await Sonner.InitializeAsync()</code> once in your root layout component (e.g., <code>MainLayout.razor</code>) during <code>OnInitializedAsync</code> to enable action button callbacks.</p>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Usage" Id="usage">
+        <p class="mb-3">Inject <code>SonnerService</code> into your component and call one of the toast methods. All methods are async and return a <code>ValueTask</code>.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerBasicExample })">
+            <SonnerBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Toast Types" Id="toast-types">
+            <p class="mb-3">Use <code>Show()</code>, <code>Success()</code>, <code>Error()</code>, and <code>Warning()</code> for different toast variants. Each method accepts an optional <code>options</code> object for customization.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerTypesExample })">
+                <SonnerTypesExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="With Action Button" Id="with-action">
+            <p class="mb-3">Use <code>SuccessWithAction()</code> or <code>ErrorWithAction()</code> to add a clickable action button. The callback is invoked when the button is clicked.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerActionExample })">
+                <SonnerActionExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Promise Toast" Id="promise">
+            <p class="mb-3">Use <code>Promise()</code> to show a toast that updates based on a <code>Task</code>. Shows one message on success and another on error, and handles loading state automatically.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerPromiseExample })">
+                <SonnerPromiseExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Sonner");
+
+    private static readonly Dictionary<string, string> InstallOptions = new()
+    {
+        ["shell"] = "shadcnblazor component add sonner",
+    };
+}
