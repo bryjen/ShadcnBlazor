@@ -6,7 +6,7 @@ import { CheckCircle, XCircle, AlertTriangle, Info } from 'lucide-react';
 let toasterRoot = null;
 let toasterContainer = null;
 let themeObserver = null;
-let callbackRegistry = {};
+let sonnerServiceRef = null;
 
 /**
  * Detect current theme based on 'dark' class on html element
@@ -150,12 +150,12 @@ if (typeof window !== 'undefined') {
 
   window.Sonner = {
     /**
-     * Register a callback for a toast action button
-     * @param {string} callbackId - Unique ID for this callback
-     * @param {Function} callback - The function to invoke
+     * Initialize Sonner callbacks with a DotNetObjectReference
+     * Called from C# during service initialization
+     * @param {DotNetObjectReference} serviceRef - Reference to the SonnerService instance
      */
-    registerCallback: function(callbackId, callback) {
-      callbackRegistry[callbackId] = callback;
+    initializeCallbacks: function(serviceRef) {
+      sonnerServiceRef = serviceRef;
     },
 
     /**
@@ -163,14 +163,14 @@ if (typeof window !== 'undefined') {
      * @param {string} callbackId - ID of the callback to invoke
      */
     invokeCallback: async function(callbackId) {
-      if (window.DotNet) {
+      if (sonnerServiceRef) {
         try {
-          await window.DotNet.invokeAsyncMethod('ShadcnBlazor', 'ShadcnBlazor.Services.SonnerService', 'InvokeCallback', callbackId);
+          await sonnerServiceRef.invokeAsyncMethod('InvokeCallback', callbackId);
         } catch (error) {
           console.error('Sonner: Error invoking callback:', error);
         }
       } else {
-        console.warn('Sonner: DotNet runtime not available for callback invocation');
+        console.warn('Sonner: Service reference not initialized. Call InitializeSonnerCallbacks first.');
       }
     },
 
@@ -278,5 +278,15 @@ if (typeof window !== 'undefined') {
      * @private
      */
     _cleanup: cleanupSonner
+  };
+
+  /**
+   * Initialize Sonner callbacks (called from C# SonnerService.InitializeAsync)
+   * @param {DotNetObjectReference} serviceRef - Reference to the SonnerService instance
+   */
+  window.InitializeSonnerCallbacks = function(serviceRef) {
+    if (window.Sonner) {
+      window.Sonner.initializeCallbacks(serviceRef);
+    }
   };
 }

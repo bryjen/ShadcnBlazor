@@ -13,7 +13,7 @@ public class SonnerService
 {
     private readonly IJSRuntime _jsRuntime;
     private int _callbackCounter = 0;
-    private static Dictionary<string, Func<ValueTask>> _callbacks = new();
+    private Dictionary<string, Func<ValueTask>> _callbacks = new();
 
     /// <summary>
     /// Creates a new SonnerService.
@@ -25,11 +25,32 @@ public class SonnerService
     }
 
     /// <summary>
+    /// Initializes the Sonner service for callback support.
+    /// Must be called once from a Blazor component during initialization.
+    /// </summary>
+    public async ValueTask InitializeAsync()
+    {
+        try
+        {
+            var reference = DotNetObjectReference.Create(this);
+            await _jsRuntime.InvokeAsync<object>("InitializeSonnerCallbacks", reference);
+        }
+        catch (JSDisconnectedException)
+        {
+            // Expected during circuit shutdown.
+        }
+        catch (OperationCanceledException)
+        {
+            // Operation was cancelled.
+        }
+    }
+
+    /// <summary>
     /// Invoked from JavaScript when a toast action button is clicked.
     /// </summary>
     /// <param name="callbackId">The ID of the callback to invoke.</param>
     [JSInvokable]
-    public static async Task InvokeCallback(string callbackId)
+    public async Task InvokeCallback(string callbackId)
     {
         if (_callbacks.TryGetValue(callbackId, out var callback))
         {

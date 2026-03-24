@@ -1,6 +1,7 @@
 @page "/sonner-test"
 @using ShadcnBlazor.Services
 @inject SonnerService Sonner
+@implements IAsyncDisposable
 
 <div class="w-full max-w-2xl mx-auto p-8">
     <div class="space-y-6">
@@ -56,6 +57,16 @@
 </div>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        await Sonner.InitializeAsync();
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        // Cleanup if needed
+    }
+
     private async Task ShowToast()
     {
         await Sonner.Show("Hello from Sonner");
