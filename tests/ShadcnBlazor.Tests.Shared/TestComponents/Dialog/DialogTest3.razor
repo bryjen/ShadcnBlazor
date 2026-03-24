@@ -1,0 +1,66 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Dialog
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground mb-2">Dialog with complex content (form-like)</p>
+
+    <TempButton @onclick="OpenDialog">Open Form Dialog</TempButton>
+
+    @if (_showDialog)
+    {
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @onclick="CloseDialog">
+            <div class="bg-background rounded-lg shadow-lg p-6 max-w-md w-full mx-4 max-h-96 overflow-y-auto" @onclick:stopPropagation>
+                <div class="mb-4">
+                    <h2 class="text-lg font-semibold mb-1">Create Account</h2>
+                    <p class="text-sm text-muted-foreground">Fill in the form to create a new account.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium">Name</label>
+                        <TempInput Type="text" Placeholder="Enter name" Class="mt-1" />
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">Email</label>
+                        <TempInput Type="email" Placeholder="Enter email" Class="mt-1" />
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">Password</label>
+                        <TempInput Type="password" Placeholder="Enter password" Class="mt-1" />
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium">Confirm Password</label>
+                        <TempInput Type="password" Placeholder="Confirm password" Class="mt-1" />
+                    </div>
+
+                    <Checkbox>I agree to the terms and conditions</Checkbox>
+
+                    <p class="text-xs text-muted-foreground">
+                        This dialog contains form inputs and demonstrates scrollable content.
+                    </p>
+                </div>
+
+                <div class="flex gap-3 justify-end mt-6 pt-6 border-t border-border">
+                    <TempButton Variant="Variant.Outline" @onclick="CloseDialog">Cancel</TempButton>
+                    <TempButton @onclick="CloseDialog">Create Account</TempButton>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool _showDialog;
+
+    private void OpenDialog()
+    {
+        _showDialog = true;
+    }
+
+    private void CloseDialog()
+    {
+        _showDialog = false;
+    }
+}

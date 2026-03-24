@@ -1,0 +1,53 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Checkbox and radio menu items with live state output.</p>
+
+    <DropdownMenu>
+        <DropdownMenuTrigger>
+            <Button Variant="Variant.Secondary">View options</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuLabel>Columns</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem Checked="@_showRevenue" CheckedChanged="OnShowRevenueChanged">Revenue</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem Checked="@_showGrowth" CheckedChanged="OnShowGrowthChanged">Growth</DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Density</DropdownMenuLabel>
+            <DropdownMenuRadioGroup SelectedValue="@_density" SelectedValueChanged="OnDensityChanged">
+                <DropdownMenuRadioItem Value="compact">Compact</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="comfortable">Comfortable</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="spacious">Spacious</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <div class="rounded-md border border-border bg-muted/30 p-3 text-sm">
+        <p>Revenue column: <span class="font-medium">@(_showRevenue ? "Shown" : "Hidden")</span></p>
+        <p>Growth column: <span class="font-medium">@(_showGrowth ? "Shown" : "Hidden")</span></p>
+        <p>Density: <span class="font-medium">@_density</span></p>
+    </div>
+</div>
+
+@code {
+    private bool _showRevenue = true;
+    private bool _showGrowth = true;
+    private string _density = "comfortable";
+
+    private Task OnShowRevenueChanged(bool value)
+    {
+        _showRevenue = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnShowGrowthChanged(bool value)
+    {
+        _showGrowth = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnDensityChanged(string value)
+    {
+        _density = value;
+        return Task.CompletedTask;
+    }
+}

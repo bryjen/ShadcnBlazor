@@ -1,0 +1,53 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Tabs
+
+<div class="w-full max-w-2xl">
+    <p class="text-xs text-muted-foreground mb-3">Vertical tabs (side-by-side)</p>
+    <Tabs Orientation="Orientation.Vertical" Value="@_selectedTab" ValueChanged="OnTabChanged">
+        <div class="flex gap-4">
+            <TabsList>
+                <TabsTrigger Value="docs">Documentation</TabsTrigger>
+                <TabsTrigger Value="api">API Reference</TabsTrigger>
+                <TabsTrigger Value="examples">Examples</TabsTrigger>
+            </TabsList>
+
+            <div class="flex-1">
+                <TabsContent Value="docs">
+                    <div class="p-4">
+                        <p class="font-semibold mb-2">Documentation</p>
+                        <p class="text-sm text-muted-foreground">
+                            Read our comprehensive documentation to get started with the framework.
+                        </p>
+                    </div>
+                </TabsContent>
+
+                <TabsContent Value="api">
+                    <div class="p-4">
+                        <p class="font-semibold mb-2">API Reference</p>
+                        <p class="text-sm text-muted-foreground">
+                            Browse the complete API reference for all available components and methods.
+                        </p>
+                    </div>
+                </TabsContent>
+
+                <TabsContent Value="examples">
+                    <div class="p-4">
+                        <p class="font-semibold mb-2">Examples</p>
+                        <p class="text-sm text-muted-foreground">
+                            Check out code examples for common use cases and patterns.
+                        </p>
+                    </div>
+                </TabsContent>
+            </div>
+        </div>
+    </Tabs>
+</div>
+
+@code {
+    private string _selectedTab = "docs";
+
+    private Task OnTabChanged(string value)
+    {
+        _selectedTab = value;
+        return Task.CompletedTask;
+    }
+}

@@ -1,0 +1,35 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Slider
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Slider with ValueChanged callback</p>
+        <Slider Min="0" Max="100" Step="1" Value="@_callbackValue" ValueChanged="OnValueChanged" />
+        <p class="text-sm text-muted-foreground mt-2">Last event: @_eventLog</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Two sliders synced via binding</p>
+        <Slider Min="0" Max="100" Step="1" Value="@_syncedValue" />
+        <Slider Min="0" Max="100" Step="1" Value="@_syncedValue" />
+        <p class="text-sm text-muted-foreground mt-2">Both sliders at: @_syncedValue</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled slider</p>
+        <Slider Min="0" Max="100" Step="1" Value="50" Disabled="true" />
+        <p class="text-sm text-muted-foreground mt-1">Cannot be moved</p>
+    </div>
+</div>
+
+@code {
+    private double _callbackValue = 50;
+    private string _eventLog = "none";
+    private double _syncedValue = 50;
+
+    private Task OnValueChanged(double value)
+    {
+        _callbackValue = value;
+        _eventLog = $"{DateTime.Now:HH:mm:ss.fff} → {value}";
+        return Task.CompletedTask;
+    }
+}

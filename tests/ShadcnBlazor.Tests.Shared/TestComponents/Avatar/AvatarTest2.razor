@@ -1,0 +1,39 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Avatar
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">All sizes - with initials</p>
+        <div class="flex items-center gap-4">
+            <Avatar Size="Size.Sm">SM</Avatar>
+            <Avatar Size="Size.Md">MD</Avatar>
+            <Avatar Size="Size.Lg">LG</Avatar>
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">All sizes - with images</p>
+        <div class="flex items-center gap-4">
+            <Avatar Size="Size.Sm" Src="https://api.dicebear.com/7.x/avataaars/svg?seed=Smith" Alt="Smith" />
+            <Avatar Size="Size.Md" Src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jones" Alt="Jones" />
+            <Avatar Size="Size.Lg" Src="https://api.dicebear.com/7.x/avataaars/svg?seed=Brown" Alt="Brown" />
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">With online status indicator</p>
+        <div class="flex items-center gap-4">
+            <div class="relative w-fit">
+                <Avatar Size="Size.Sm">JD</Avatar>
+                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background"></div>
+            </div>
+            <div class="relative w-fit">
+                <Avatar Size="Size.Md">AB</Avatar>
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-yellow-500 rounded-full border-2 border-background"></div>
+            </div>
+            <div class="relative w-fit">
+                <Avatar Size="Size.Lg">CD</Avatar>
+                <div class="absolute bottom-0 right-0 w-5 h-5 bg-red-500 rounded-full border-2 border-background"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Select
+
+<div class="flex flex-col gap-6 max-w-md">
+    <p class="text-xs text-muted-foreground mb-2">Basic select dropdown</p>
+
+    <div class="relative">
+        <button @onclick="@(() => _open = !_open)" class="w-full px-3 py-2 rounded border border-input bg-background text-foreground flex justify-between items-center">
+            <span>@(_selectedValue ?? "Select an option...")</span>
+            <svg class="w-4 h-4 @(_open ? "rotate-180" : "")" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 14-7-7-7 7"></path>
+            </svg>
+        </button>
+
+        @if (_open)
+        {
+            <div class="absolute top-full left-0 right-0 mt-1 border border-input rounded bg-popover shadow-lg z-10">
+                @foreach (var option in new[] { "Apple", "Banana", "Orange", "Grape", "Mango" })
+                {
+                    <button @onclick="@(() => SelectOption(option))"
+                           class="w-full text-left px-3 py-2 hover:bg-accent @(_selectedValue == option ? "bg-accent font-semibold" : "")">
+                        @option
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(_selectedValue))
+    {
+        <p class="text-sm text-muted-foreground">Selected: <strong>@_selectedValue</strong></p>
+    }
+
+    @if (_open && false)
+    {
+        <div class="fixed inset-0" @onclick="@(() => _open = false)"></div>
+    }
+</div>
+
+@code {
+    private bool _open;
+    private string? _selectedValue;
+
+    private void SelectOption(string value)
+    {
+        _selectedValue = value;
+        _open = false;
+    }
+}

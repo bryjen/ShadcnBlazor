@@ -1,0 +1,92 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Popover
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground">Popovers with varied content</p>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Popover with text content</p>
+        <Popover Open="@_open1" OpenChanged="@(v => _open1 = v)">
+            <Anchor>
+                <TempButton Size="Size.Sm">Text Content</TempButton>
+            </Anchor>
+            <ChildContent>
+                <div class="w-56 p-4">
+                    <p>This is a simple text-only popover with a message.</p>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Popover with button inside</p>
+        <Popover Open="@_open2" OpenChanged="@(v => _open2 = v)">
+            <Anchor>
+                <TempButton Size="Size.Sm">With Button</TempButton>
+            </Anchor>
+            <ChildContent>
+                <div class="w-56 p-4">
+                    <p class="mb-3">Are you sure?</p>
+                    <div class="flex gap-2">
+                        <TempButton Size="Size.Sm" @onclick="@(() => _open2 = false)">
+                            Cancel
+                        </TempButton>
+                        <TempButton Size="Size.Sm" Variant="Variant.Destructive" @onclick="@(() => _open2 = false)">
+                            Confirm
+                        </TempButton>
+                    </div>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Popover with form input</p>
+        <Popover Open="@_open3" OpenChanged="@(v => _open3 = v)">
+            <Anchor>
+                <TempButton Size="Size.Sm">Search</TempButton>
+            </Anchor>
+            <ChildContent>
+                <div class="w-56 p-4">
+                    <p class="text-sm font-semibold mb-2">Search items:</p>
+                    <TempInput Type="text" Placeholder="Type to search..." />
+                    <p class="text-xs text-muted-foreground mt-2">Enter text and press Enter</p>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Popover with complex layout</p>
+        <Popover Open="@_open4" OpenChanged="@(v => _open4 = v)">
+            <Anchor>
+                <TempButton Size="Size.Sm">Settings</TempButton>
+            </Anchor>
+            <ChildContent>
+                <div class="w-64 p-4">
+                    <div class="pb-3 border-b border-border">
+                        <h3 class="font-semibold">Preferences</h3>
+                    </div>
+                    <div class="py-3 border-b border-border">
+                        <p class="text-sm mb-2">Theme:</p>
+                        <div class="flex gap-2">
+                            <TempButton Size="Size.Sm" Variant="Variant.Outline">Light</TempButton>
+                            <TempButton Size="Size.Sm" Variant="Variant.Default">Dark</TempButton>
+                        </div>
+                    </div>
+                    <div class="pt-3">
+                        <TempButton Size="Size.Sm" Class="w-full" @onclick="@(() => _open4 = false)">
+                            Save
+                        </TempButton>
+                    </div>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
+
+@code {
+    private bool _open1;
+    private bool _open2;
+    private bool _open3;
+    private bool _open4;
+}

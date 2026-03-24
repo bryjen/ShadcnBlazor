@@ -8,15 +8,15 @@ namespace ShadcnBlazor.UnitTests;
 [TestFixture]
 public abstract class BaseTest
 {
-    private Bunit.TestContext? _testContext;
+    private Bunit.BunitContext? _testContext;
 
-    protected Bunit.TestContext TestContext
+    protected Bunit.BunitContext TestContext
     {
         get
         {
             if (_testContext == null)
             {
-                _testContext = new Bunit.TestContext();
+                _testContext = new Bunit.BunitContext();
                 // Configure JSInterop to be loose by default for headless tests
                 _testContext.JSInterop.Mode = JSRuntimeMode.Loose;
 
@@ -28,9 +28,12 @@ public abstract class BaseTest
     }
 
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        _testContext?.Dispose();
-        _testContext = null;
+        if (_testContext is not null)
+        {
+            await _testContext.DisposeAsync();
+            _testContext = null;
+        }
     }
 }

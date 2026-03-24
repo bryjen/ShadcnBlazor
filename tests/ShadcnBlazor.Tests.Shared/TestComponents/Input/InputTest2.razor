@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Input
+
+<div class="flex flex-col gap-4 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Sm</p>
+        <TempInput Type="text" Size="Size.Sm" Placeholder="Small input..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Md (default)</p>
+        <TempInput Type="text" Size="Size.Md" Placeholder="Medium input..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Lg</p>
+        <TempInput Type="text" Size="Size.Lg" Placeholder="Large input..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled state</p>
+        <TempInput Type="text" Disabled="true" Placeholder="Cannot edit..." />
+    </div>
+</div>

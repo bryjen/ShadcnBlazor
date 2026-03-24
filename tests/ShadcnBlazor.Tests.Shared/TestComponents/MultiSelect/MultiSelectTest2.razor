@@ -1,0 +1,63 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.MultiSelect
+
+<div class="flex max-w-xl flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Size and display-limit comparison for chip-style summaries.</p>
+
+    <MultiSelect T="string"
+                 Values="@_smallSelection"
+                 ValuesChanged="OnSmallChanged"
+                 Label="Compact"
+                 Size="Size.Sm"
+                 MaxDisplayedValues="2"
+                 Placeholder="Small picker">
+        @foreach (var option in Options)
+        {
+            <SelectItem Value="@option" Text="@option" />
+        }
+    </MultiSelect>
+
+    <MultiSelect T="string"
+                 Values="@_largeSelection"
+                 ValuesChanged="OnLargeChanged"
+                 Label="Expanded"
+                 Size="Size.Lg"
+                 Search
+                 ClearButton
+                 MaxDisplayedValues="4"
+                 Placeholder="Large picker">
+        @foreach (var option in Options)
+        {
+            <SelectItem Value="@option" Text="@option" />
+        }
+    </MultiSelect>
+
+    <div class="grid gap-2 text-sm md:grid-cols-2">
+        <div class="rounded-md border border-border p-3">
+            <p class="font-medium">Small picker</p>
+            <p class="text-muted-foreground">@string.Join(", ", _smallSelection)</p>
+        </div>
+        <div class="rounded-md border border-border p-3">
+            <p class="font-medium">Large picker</p>
+            <p class="text-muted-foreground">@string.Join(", ", _largeSelection)</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private static readonly string[] Options = ["Design", "Docs", "Infra", "QA", "Release", "Support"];
+
+    private IReadOnlyList<string> _smallSelection = ["Design", "Docs", "Infra"];
+    private IReadOnlyList<string> _largeSelection = ["Design", "Docs", "Infra", "QA", "Release"];
+
+    private Task OnSmallChanged(IReadOnlyList<string> values)
+    {
+        _smallSelection = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnLargeChanged(IReadOnlyList<string> values)
+    {
+        _largeSelection = values;
+        return Task.CompletedTask;
+    }
+}

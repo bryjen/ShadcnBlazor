@@ -2,12 +2,13 @@
 @using System.Reflection
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Rendering
+@using ShadcnBlazor.Tests.Shared
 @using ShadcnBlazor.Tests.Shared.TestComponents.Button
 @inject IJSRuntime JSRuntime
 
 <div class="flex h-screen bg-background overflow-hidden">
     <!-- Sidebar -->
-    <div class="w-72 border-r border-border bg-sidebar flex flex-col overflow-hidden">
+    <div class="w-64 border-r border-border bg-sidebar flex flex-col overflow-hidden">
         <!-- Header -->
         <div class="p-4 border-b border-border">
             <div class="flex items-center justify-between mb-4">
@@ -50,8 +51,8 @@
                                 <TempButton Variant="@(_selectedTest == test.Type ? Variant.Default : Variant.Ghost)"
                                         Size="Size.Md"
                                         @onclick="() => SelectTest(test.Type)"
-                                        Class="w-full justify-start">
-                                    @test.Label
+                                        Class="w-full justify-start text-xs">
+                                    @ToCamelCase(test.Label)
                                 </TempButton>
                             }
                         </div>
@@ -67,8 +68,12 @@
         {
             <!-- Header -->
             <div class="border-b border-border px-6 py-4">
-                <h1 class="text-xl font-semibold text-foreground">@_selectedTest.Name</h1>
-                <p class="text-sm text-muted-foreground mt-1">TestComponents/@GetGroup(_selectedTest.Name)/Test.razor</p>
+                <h1 class="text-xl font-semibold text-foreground">@_selectedTestLabel</h1>
+                @if (_selectedTestDescription != null)
+                {
+                    <p class="text-sm text-foreground mt-2">@_selectedTestDescription</p>
+                }
+                <p class="text-xs text-muted-foreground mt-2">TestComponents/@GetGroup(_selectedTest.Name)/Test.razor</p>
             </div>
 
             <!-- Content Area -->
@@ -99,6 +104,8 @@
     private IEnumerable<IGrouping<string, (Type Type, string Label)>> _groupedTests = new List<IGrouping<string, (Type Type, string Label)>>();
     private IEnumerable<IGrouping<string, (Type Type, string Label)>> _filteredGroupedTests = new List<IGrouping<string, (Type Type, string Label)>>();
     private Type? _selectedTest;
+    private string? _selectedTestLabel;
+    private string? _selectedTestDescription;
     private string _searchQuery = string.Empty;
     private bool _isDarkMode = false;
     private IJSObjectReference? module;
@@ -153,6 +160,11 @@
 
     private string GetLabel(string typeName)
     {
+        // Try to get descriptive label from metadata first
+        var metadataLabel = TestMetadata.GetLabel(typeName);
+        if (metadataLabel != null) return metadataLabel;
+
+        // Fallback to parsing the type name if no metadata
         var match = Regex.Match(typeName, @"^(.+?)Test(\d*)$");
         if (!match.Success) return typeName;
 
@@ -164,6 +176,23 @@
     private void SelectTest(Type test)
     {
         _selectedTest = test;
+        var label = GetLabel(test.Name);
+        _selectedTestLabel = ToCamelCase(label);
+        _selectedTestDescription = TestMetadata.GetDescription(test.Name);
+    }
+
+    private string ToCamelCase(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+        var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (words.Length == 0) return text;
+
+        var result = words[0].ToLower();
+        for (int i = 1; i < words.Length; i++)
+        {
+            result += char.ToUpper(words[i][0]) + words[i].Substring(1);
+        }
+        return result;
     }
 
     private void OnSearchInput(ChangeEventArgs e)

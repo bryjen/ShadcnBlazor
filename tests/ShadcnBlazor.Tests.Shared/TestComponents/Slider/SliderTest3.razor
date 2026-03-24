@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Slider
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Large range (10-1000, like price)</p>
+        <Slider Min="10" Max="1000" Step="10" Value="@_priceValue" />
+        <p class="text-sm text-muted-foreground mt-1">Price: $@_priceValue</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Negative range (-100 to 100, like temperature)</p>
+        <Slider Min="-100" Max="100" Step="1" Value="@_tempValue" />
+        <p class="text-sm text-muted-foreground mt-1">Temperature: @_tempValue°C</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Decimal range (0-1, like opacity)</p>
+        <Slider Min="0" Max="1" Step="0.1" Value="@_opacityValue" />
+        <p class="text-sm text-muted-foreground mt-1">Opacity: @_opacityValue.ToString("F1")</p>
+    </div>
+</div>
+
+@code {
+    private int _priceValue = 500;
+    private int _tempValue = 20;
+    private double _opacityValue = 0.5d;
+}

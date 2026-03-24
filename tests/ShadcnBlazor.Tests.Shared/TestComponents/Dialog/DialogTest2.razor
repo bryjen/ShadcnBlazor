@@ -1,0 +1,64 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Dialog
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground mb-2">Dialog size variations</p>
+
+    <div class="flex gap-2 flex-wrap">
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "xs")">Extra Small</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "sm")">Small</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "md")">Medium</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "lg")">Large</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "xl")">Extra Large</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "fullwidth")">Full Width</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => _openDialog = "fullscreen")">Full Screen</TempButton>
+    </div>
+
+    @if (!string.IsNullOrEmpty(_openDialog))
+    {
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @onclick="CloseDialog">
+            <div class="@GetDialogClass()" @onclick:stopPropagation>
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-semibold">Dialog: @_openDialog.ToUpper()</h2>
+                    <button @onclick="CloseDialog" class="text-muted-foreground hover:text-foreground">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="mb-4 text-sm text-muted-foreground">
+                    <p>This dialog is sized as: <code class="bg-muted px-1 rounded">@_openDialog</code></p>
+                </div>
+
+                <div class="flex gap-3 justify-end">
+                    <TempButton Variant="Variant.Outline" @onclick="CloseDialog">Close</TempButton>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private string _openDialog = "";
+
+    private string GetDialogClass()
+    {
+        var baseClass = "bg-background rounded-lg shadow-lg p-6 mx-4";
+        return _openDialog switch
+        {
+            "xs" => $"{baseClass} max-w-xs",
+            "sm" => $"{baseClass} max-w-sm",
+            "md" => $"{baseClass} max-w-md",
+            "lg" => $"{baseClass} max-w-lg",
+            "xl" => $"{baseClass} max-w-xl",
+            "fullwidth" => $"{baseClass} w-full max-w-4xl",
+            "fullscreen" => "fixed inset-0 bg-background rounded-none p-6",
+            _ => baseClass
+        };
+    }
+
+    private void CloseDialog()
+    {
+        _openDialog = "";
+    }
+}

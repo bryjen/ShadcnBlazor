@@ -1,0 +1,22 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Avatar
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Avatar with valid image</p>
+        <Avatar Src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alice" Alt="Alice Avatar" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Avatar with broken image (fallback to initials)</p>
+        <Avatar Src="https://broken-image-url-that-does-not-exist.jpg" Alt="Broken Image">
+            JD
+        </Avatar>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Avatar with text fallback (initials)</p>
+        <Avatar>
+            SK
+        </Avatar>
+    </div>
+</div>

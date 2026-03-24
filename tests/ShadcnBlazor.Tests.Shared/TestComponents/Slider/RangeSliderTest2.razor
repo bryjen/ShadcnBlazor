@@ -1,0 +1,35 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Slider
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Sm</p>
+        <RangeSlider Size="Size.Sm" Min="0" Max="100" Step="1" LowerValue="30" UpperValue="70" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Md (default)</p>
+        <RangeSlider Size="Size.Md" Min="0" Max="100" Step="1" LowerValue="30" UpperValue="70" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Lg</p>
+        <RangeSlider Size="Size.Lg" Min="0" Max="100" Step="1" LowerValue="30" UpperValue="70" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Custom range (price selector: $0-$1000)</p>
+        <RangeSlider Min="0" Max="1000" Step="10" LowerValue="@_priceLower" UpperValue="@_priceUpper" />
+        <p class="text-sm text-muted-foreground mt-2">Price range: $@_priceLower - $@_priceUpper</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled range slider</p>
+        <RangeSlider Min="0" Max="100" Step="1" LowerValue="25" UpperValue="75" Disabled="true" />
+        <p class="text-sm text-muted-foreground mt-1">Both thumbs locked</p>
+    </div>
+</div>
+
+@code {
+    private int _priceLower = 250;
+    private int _priceUpper = 750;
+}

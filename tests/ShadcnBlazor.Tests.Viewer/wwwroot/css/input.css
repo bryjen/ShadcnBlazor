@@ -6,6 +6,10 @@
 @source "../../Components/";
 @source "../../Shared/";
 
+@source "../../../../src/ShadcnBlazor/";
+@source "../../../../src/ShadcnBlazor/Components/";
+@source "../../../../src/ShadcnBlazor/Shared/";
+
 :root {
     --radius: 0.65rem;
     --background: oklch(1 0 0);

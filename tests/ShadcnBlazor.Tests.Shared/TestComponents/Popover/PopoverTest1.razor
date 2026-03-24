@@ -1,0 +1,69 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Popover
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground">Click button to open popover. Click outside or button again to close.</p>
+
+    <Popover Open="@_isOpen" OpenChanged="OnOpenChanged">
+        <Anchor>
+            <TempButton Size="Size.Sm" @onclick="@(() => _isOpen = !_isOpen)">
+                @(_isOpen ? "Close Popover" : "Open Popover")
+            </TempButton>
+        </Anchor>
+        <ChildContent>
+            <div class="w-64 p-4">
+                <h3 class="font-semibold mb-2">Popover Title</h3>
+                <p class="text-sm text-muted-foreground">
+                    This is a popover that appears near the trigger button. Click outside to dismiss.
+                </p>
+            </div>
+        </ChildContent>
+    </Popover>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Popover with multiple buttons</p>
+        <Popover Open="@_isOpen2" OpenChanged="OnOpenChanged2">
+            <Anchor>
+                <TempButton Size="Size.Sm" @onclick="@(() => _isOpen2 = !_isOpen2)">
+                    Options
+                </TempButton>
+            </Anchor>
+            <ChildContent>
+                <div class="w-48 p-4">
+                    <p class="text-sm font-semibold mb-3">Choose an action:</p>
+                    <div class="flex flex-col gap-2">
+                        <TempButton Size="Size.Sm" Variant="Variant.Ghost" Class="justify-start">
+                            Edit
+                        </TempButton>
+                        <TempButton Size="Size.Sm" Variant="Variant.Ghost" Class="justify-start">
+                            Duplicate
+                        </TempButton>
+                        <TempButton Size="Size.Sm" Variant="Variant.Destructive" Class="justify-start">
+                            Delete
+                        </TempButton>
+                    </div>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+
+    <p class="text-sm text-muted-foreground">
+        Popover 1 is @(_isOpen ? "open" : "closed") | Popover 2 is @(_isOpen2 ? "open" : "closed")
+    </p>
+</div>
+
+@code {
+    private bool _isOpen;
+    private bool _isOpen2;
+
+    private Task OnOpenChanged(bool value)
+    {
+        _isOpen = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnOpenChanged2(bool value)
+    {
+        _isOpen2 = value;
+        return Task.CompletedTask;
+    }
+}

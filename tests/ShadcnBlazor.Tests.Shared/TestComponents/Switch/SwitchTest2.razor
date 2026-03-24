@@ -1,0 +1,28 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Switch
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">All sizes</p>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2">
+                <Switch Size="Size.Sm">Small</Switch>
+            </div>
+            <div class="flex items-center gap-2">
+                <Switch Size="Size.Md">Medium</Switch>
+            </div>
+            <div class="flex items-center gap-2">
+                <Switch Size="Size.Lg">Large</Switch>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled state (unchecked)</p>
+        <Switch Disabled="true">Disabled Off</Switch>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled + Checked</p>
+        <Switch Disabled="true" Checked="true">Disabled On</Switch>
+    </div>
+</div>

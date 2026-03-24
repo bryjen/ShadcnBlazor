@@ -1,0 +1,38 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Checkbox
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Sizes</p>
+        <div class="flex items-center gap-4">
+            <Checkbox Size="Size.Sm">Small</Checkbox>
+            <Checkbox Size="Size.Md">Medium</Checkbox>
+            <Checkbox Size="Size.Lg">Large</Checkbox>
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Alignments (multi-line label)</p>
+        <div class="flex flex-col gap-2">
+            <Checkbox Alignment="VerticalAlignment.Top">Top<br/>line 2<br/>line 3</Checkbox>
+            <Checkbox Alignment="VerticalAlignment.Center">Center<br/>line 2<br/>line 3</Checkbox>
+            <Checkbox Alignment="VerticalAlignment.Bottom">Bottom<br/>line 2<br/>line 3</Checkbox>
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">CheckedChanged callback</p>
+        <Checkbox Checked="@_checked" CheckedChanged="OnCheckedChanged">Watch me fire</Checkbox>
+        <p class="text-sm mt-2">Last event: @_eventLog</p>
+    </div>
+</div>
+
+@code {
+    private bool _checked;
+    private string _eventLog = "none";
+    private Task OnCheckedChanged(bool val)
+    {
+        _checked = val;
+        _eventLog = $"{DateTime.Now:HH:mm:ss.fff} → {val}";
+        return Task.CompletedTask;
+    }
+}

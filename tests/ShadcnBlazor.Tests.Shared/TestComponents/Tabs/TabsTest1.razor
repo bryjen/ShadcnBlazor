@@ -1,0 +1,52 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Tabs
+
+<div class="w-full max-w-md">
+    <p class="text-xs text-muted-foreground mb-3">Horizontal tabs (default)</p>
+    <Tabs Value="@_selectedTab" ValueChanged="OnTabChanged">
+        <TabsList>
+            <TabsTrigger Value="account">Account</TabsTrigger>
+            <TabsTrigger Value="profile">Profile</TabsTrigger>
+            <TabsTrigger Value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger Value="settings">Settings</TabsTrigger>
+        </TabsList>
+
+        <TabsContent Value="account">
+            <div class="p-4">
+                <p class="font-semibold mb-2">Account Settings</p>
+                <p class="text-sm text-muted-foreground">Manage your account information and preferences.</p>
+            </div>
+        </TabsContent>
+
+        <TabsContent Value="profile">
+            <div class="p-4">
+                <p class="font-semibold mb-2">Profile</p>
+                <p class="text-sm text-muted-foreground">Update your profile information and avatar.</p>
+            </div>
+        </TabsContent>
+
+        <TabsContent Value="notifications">
+            <div class="p-4">
+                <p class="font-semibold mb-2">Notifications</p>
+                <p class="text-sm text-muted-foreground">Manage your notification preferences.</p>
+            </div>
+        </TabsContent>
+
+        <TabsContent Value="settings">
+            <div class="p-4">
+                <p class="font-semibold mb-2">Settings</p>
+                <p class="text-sm text-muted-foreground">Adjust your application settings.</p>
+            </div>
+        </TabsContent>
+    </Tabs>
+    <p class="text-sm text-muted-foreground mt-3">Active tab: @_selectedTab</p>
+</div>
+
+@code {
+    private string _selectedTab = "account";
+
+    private Task OnTabChanged(string value)
+    {
+        _selectedTab = value;
+        return Task.CompletedTask;
+    }
+}

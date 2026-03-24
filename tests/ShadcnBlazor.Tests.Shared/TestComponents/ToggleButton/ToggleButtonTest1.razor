@@ -1,0 +1,17 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.ToggleButton
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground">All variants in unpressed (top) and pressed (bottom) states</p>
+    <div class="grid grid-cols-5 gap-4">
+        @foreach (var variant in Enum.GetValues<Variant>())
+        {
+            <div>
+                <p class="text-xs text-muted-foreground mb-2 text-center">@variant</p>
+                <div class="flex flex-col gap-2">
+                    <ToggleButton Variant="@variant">Unpressed</ToggleButton>
+                    <ToggleButton Variant="@variant" Pressed="true">Pressed</ToggleButton>
+                </div>
+            </div>
+        }
+    </div>
+</div>

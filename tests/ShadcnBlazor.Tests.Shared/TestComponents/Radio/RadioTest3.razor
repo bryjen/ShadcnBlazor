@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Radio
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Radio group with one disabled option</p>
+        <RadioGroup Value="@_selected1">
+            <Radio Value="opt1">Option 1 (enabled)</Radio>
+            <Radio Value="opt2" Disabled="true">Option 2 (disabled - cannot select)</Radio>
+            <Radio Value="opt3">Option 3 (enabled)</Radio>
+        </RadioGroup>
+        <p class="text-sm text-muted-foreground mt-2">Selected: @_selected1 (try clicking disabled option)</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Radio with Invalid state</p>
+        <RadioGroup Value="@_selected2">
+            <Radio Value="valid1">Valid option</Radio>
+            <Radio Value="valid2" Invalid="true">Invalid option (error state)</Radio>
+        </RadioGroup>
+        <p class="text-xs text-destructive mt-2">Error: This selection is invalid</p>
+    </div>
+</div>
+
+@code {
+    private string _selected1 = "opt1";
+    private string _selected2 = "valid1";
+}

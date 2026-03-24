@@ -1,0 +1,35 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.ContextMenu
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Right-click to inspect submenu composition for nested actions.</p>
+
+    <ContextMenu>
+        <ContextMenuTrigger>
+            <div class="rounded-lg border border-border bg-muted/20 p-6 text-sm">
+                Asset library
+            </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+            <ContextMenuItem OnClick="@(_ => SetSelection("Preview"))">Preview</ContextMenuItem>
+            <ContextMenuSub>
+                <ContextMenuSubTrigger>Move to</ContextMenuSubTrigger>
+                <ContextMenuSubContent>
+                    <ContextMenuItem OnClick="@(_ => SetSelection("Move to Archive"))">Archive</ContextMenuItem>
+                    <ContextMenuItem OnClick="@(_ => SetSelection("Move to Favorites"))">Favorites</ContextMenuItem>
+                    <ContextMenuItem OnClick="@(_ => SetSelection("Move to Shared"))">Shared</ContextMenuItem>
+                </ContextMenuSubContent>
+            </ContextMenuSub>
+        </ContextMenuContent>
+    </ContextMenu>
+
+    <p class="text-sm text-muted-foreground">Selection: <span class="font-medium text-foreground">@_selection</span></p>
+</div>
+
+@code {
+    private string _selection = "None";
+
+    private void SetSelection(string selection)
+    {
+        _selection = selection;
+    }
+}

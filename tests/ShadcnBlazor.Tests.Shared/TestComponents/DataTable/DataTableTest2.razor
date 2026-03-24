@@ -1,0 +1,52 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.DataTable
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Multi-selection with a toolbar and selected-row summary.</p>
+
+    <DataTable T="WorkItem"
+               Items="Items"
+               MultiSelection
+               Hover
+               Striped
+               @bind-SelectedItems="_selectedItems"
+               Label="Work items table">
+        <ToolBarContent>
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <p class="text-sm font-medium">Sprint backlog</p>
+                    <p class="text-xs text-muted-foreground">Use row clicks or checkboxes to update selection.</p>
+                </div>
+                <Button Variant="Variant.Outline" OnClick="ClearSelection">Clear</Button>
+            </div>
+        </ToolBarContent>
+        <Columns>
+            <DataTableColumn T="WorkItem" Title="Title" Field="x => x.Title" Sortable />
+            <DataTableColumn T="WorkItem" Title="Owner" Field="x => x.Owner" />
+            <DataTableColumn T="WorkItem" Title="Status" Field="x => x.Status" Sortable />
+        </Columns>
+    </DataTable>
+
+    <div class="rounded-md border border-border bg-muted/30 p-3 text-sm">
+        <p class="font-medium">@_selectedItems.Count selected</p>
+        <p class="text-muted-foreground">@(_selectedItems.Count == 0 ? "Nothing selected" : string.Join(", ", _selectedItems.Select(x => x.Title)))</p>
+    </div>
+</div>
+
+@code {
+    private static readonly WorkItem[] Items =
+    [
+        new("Ship dropdown menu", "Ava", "Ready"),
+        new("Fix context menu focus", "Milo", "In Progress"),
+        new("Add DataTable docs", "Rin", "Review"),
+        new("Harden keyboard tests", "Jules", "Ready")
+    ];
+
+    private HashSet<WorkItem> _selectedItems = [];
+
+    private void ClearSelection()
+    {
+        _selectedItems = [];
+    }
+
+    private sealed record WorkItem(string Title, string Owner, string Status);
+}

@@ -1,0 +1,33 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Nested submenu composition for multi-level command surfaces.</p>
+
+    <DropdownMenu>
+        <DropdownMenuTrigger>
+            <Button>Open command menu</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuItem OnClick="@(_ => SetSelection("Quick Save"))">Quick Save</DropdownMenuItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>Export</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuItem OnClick="@(_ => SetSelection("Export CSV"))">CSV</DropdownMenuItem>
+                    <DropdownMenuItem OnClick="@(_ => SetSelection("Export JSON"))">JSON</DropdownMenuItem>
+                    <DropdownMenuItem OnClick="@(_ => SetSelection("Export XML"))">XML</DropdownMenuItem>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <p class="text-sm text-muted-foreground">Selection: <span class="font-medium text-foreground">@_selection</span></p>
+</div>
+
+@code {
+    private string _selection = "None";
+
+    private void SetSelection(string value)
+    {
+        _selection = value;
+    }
+}

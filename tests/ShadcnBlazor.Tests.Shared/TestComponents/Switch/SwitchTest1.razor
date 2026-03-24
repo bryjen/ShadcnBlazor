@@ -1,0 +1,33 @@
+@using ShadcnBlazor.Components.Switch
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Switch
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Default state (unchecked)</p>
+        <Switch>Off</Switch>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Checked state</p>
+        <Switch Checked="true">On</Switch>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Two-way synced (same state)</p>
+        <div class="flex gap-4 items-center">
+            <Switch Checked="@_syncedValue" CheckedChanged="OnSyncChanged" />
+            <Switch Checked="@_syncedValue" CheckedChanged="OnSyncChanged" />
+        </div>
+        <p class="text-sm text-muted-foreground mt-2">Both switches synced: @(_syncedValue ? "On" : "Off")</p>
+    </div>
+</div>
+
+@code {
+    private bool _syncedValue;
+
+    private Task OnSyncChanged(bool val)
+    {
+        _syncedValue = val;
+        return Task.CompletedTask;
+    }
+}

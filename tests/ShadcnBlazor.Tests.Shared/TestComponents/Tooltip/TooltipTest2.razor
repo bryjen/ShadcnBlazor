@@ -1,0 +1,43 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Tooltip
+
+<div class="flex flex-col gap-8">
+    <p class="text-xs text-muted-foreground">Tooltips at different positions (hover for demo)</p>
+
+    <div class="flex justify-center gap-4">
+        <Tooltip Content="Top tooltip">
+            <Anchor>
+                <TempButton Size="Size.Sm">Top</TempButton>
+            </Anchor>
+        </Tooltip>
+
+        <Tooltip Content="Center tooltip">
+            <Anchor>
+                <TempButton Size="Size.Sm">Center</TempButton>
+            </Anchor>
+        </Tooltip>
+
+        <Tooltip Content="Bottom tooltip">
+            <Anchor>
+                <TempButton Size="Size.Sm">Bottom</TempButton>
+            </Anchor>
+        </Tooltip>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Tooltip with custom offset (spacing from button)</p>
+        <Tooltip Content="Tooltip with offset" Offset="20">
+            <Anchor>
+                <TempButton Size="Size.Sm">Hover for offset tooltip</TempButton>
+            </Anchor>
+        </Tooltip>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Tooltip on link text</p>
+        <Tooltip Content="Visit our website">
+            <Anchor>
+                <a href="#" class="text-primary hover:underline">Visit us</a>
+            </Anchor>
+        </Tooltip>
+    </div>
+</div>

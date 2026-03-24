@@ -1,0 +1,28 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Basic dropdown menu with item callbacks and shortcut labels.</p>
+
+    <DropdownMenu>
+        <DropdownMenuTrigger>
+            <Button Variant="Variant.Outline">Open actions</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuItem OnClick="@(_ => SelectAction("Open"))" Shortcut="Enter">Open</DropdownMenuItem>
+            <DropdownMenuItem OnClick="@(_ => SelectAction("Duplicate"))" Shortcut="Ctrl+D">Duplicate</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem OnClick="@(_ => SelectAction("Archive"))" Disabled="true">Archive (disabled)</DropdownMenuItem>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <p class="text-sm text-muted-foreground">Last action: <span class="font-medium text-foreground">@_lastAction</span></p>
+</div>
+
+@code {
+    private string _lastAction = "None";
+
+    private void SelectAction(string action)
+    {
+        _lastAction = action;
+    }
+}

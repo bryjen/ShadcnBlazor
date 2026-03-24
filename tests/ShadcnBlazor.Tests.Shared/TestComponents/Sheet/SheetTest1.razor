@@ -1,0 +1,56 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Sheet
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground mb-2">Click to open side panel sheet</p>
+
+    <TempButton @onclick="OpenSheet">Open Sheet</TempButton>
+
+    @if (_showSheet)
+    {
+        <div class="fixed inset-0 bg-black/50 z-50" @onclick="CloseSheet"></div>
+
+        <div class="fixed right-0 top-0 bottom-0 w-80 bg-background shadow-lg z-50 flex flex-col" @onclick:stopPropagation>
+            <div class="flex justify-between items-start p-6 border-b border-border">
+                <div>
+                    <h2 class="text-lg font-semibold">Sheet Title</h2>
+                    <p class="text-sm text-muted-foreground mt-1">This sheet slides in from the right.</p>
+                </div>
+                <button @onclick="CloseSheet" class="text-muted-foreground hover:text-foreground">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6">
+                <div class="space-y-4">
+                    <p class="text-sm">Sheet content goes here. This side panel is perfect for navigation, filters, or detailed information.</p>
+                    <div class="space-y-2">
+                        <p class="text-sm font-medium">Options:</p>
+                        <button class="block w-full text-left px-3 py-2 rounded hover:bg-accent">Option 1</button>
+                        <button class="block w-full text-left px-3 py-2 rounded hover:bg-accent">Option 2</button>
+                        <button class="block w-full text-left px-3 py-2 rounded hover:bg-accent">Option 3</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-border p-6">
+                <TempButton Class="w-full" @onclick="CloseSheet">Close</TempButton>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool _showSheet;
+
+    private void OpenSheet()
+    {
+        _showSheet = true;
+    }
+
+    private void CloseSheet()
+    {
+        _showSheet = false;
+    }
+}

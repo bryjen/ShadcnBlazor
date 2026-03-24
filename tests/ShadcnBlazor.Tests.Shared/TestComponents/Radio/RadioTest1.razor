@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Radio
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Basic radio group (Option 1 selected by default)</p>
+        <RadioGroup Value="@_selectedValue" ValueChanged="OnSelectionChanged">
+            <Radio Value="option1">Option 1</Radio>
+            <Radio Value="option2">Option 2</Radio>
+            <Radio Value="option3">Option 3</Radio>
+        </RadioGroup>
+        <p class="text-sm text-muted-foreground mt-3">Selected: @_selectedValue</p>
+    </div>
+</div>
+
+@code {
+    private string _selectedValue = "option1";
+
+    private Task OnSelectionChanged(string value)
+    {
+        _selectedValue = value;
+        return Task.CompletedTask;
+    }
+}

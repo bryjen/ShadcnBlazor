@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Badge
+
+<div class="flex flex-col gap-4">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Badge Variant.Link</p>
+        <Badge Variant="Variant.Link">Link Variant</Badge>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">BadgeLink — all variants</p>
+        <div class="flex flex-wrap gap-2">
+            @foreach (var variant in Enum.GetValues<Variant>())
+            {
+                <BadgeLink Href="#" Variant="@variant">@variant</BadgeLink>
+            }
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">BadgeLink — all sizes</p>
+        <div class="flex items-center gap-2">
+            <BadgeLink Href="#" Size="Size.Sm">Small</BadgeLink>
+            <BadgeLink Href="#" Size="Size.Md">Medium</BadgeLink>
+            <BadgeLink Href="#" Size="Size.Lg">Large</BadgeLink>
+        </div>
+    </div>
+</div>

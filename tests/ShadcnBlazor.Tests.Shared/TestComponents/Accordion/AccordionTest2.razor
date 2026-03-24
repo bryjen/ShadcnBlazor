@@ -1,0 +1,38 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Accordion
+
+<div class="w-full max-w-md">
+    <p class="text-xs text-muted-foreground mb-3">Accordion with pre-opened items (Item 1 and 3 open)</p>
+    <Accordion Value="@_openedItems" ValueChanged="OnValueChanged">
+        <AccordionItem Value="item1">
+            <AccordionTrigger>Item 1 (Open)</AccordionTrigger>
+            <AccordionContent>
+                Item 1 is open by default. Multiple items can be open at once.
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="item2">
+            <AccordionTrigger>Item 2 (Closed)</AccordionTrigger>
+            <AccordionContent>
+                Item 2 is closed by default. Click to expand.
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="item3">
+            <AccordionTrigger>Item 3 (Open)</AccordionTrigger>
+            <AccordionContent>
+                Item 3 is also open by default. This demonstrates multiple items can be expanded simultaneously.
+            </AccordionContent>
+        </AccordionItem>
+    </Accordion>
+    <p class="text-sm text-muted-foreground mt-3">Currently open: @_openedItems</p>
+</div>
+
+@code {
+    private string _openedItems = "item1,item3";
+
+    private Task OnValueChanged(string value)
+    {
+        _openedItems = value;
+        return Task.CompletedTask;
+    }
+}

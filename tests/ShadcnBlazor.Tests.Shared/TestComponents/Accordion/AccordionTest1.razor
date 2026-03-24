@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Accordion
+
+<div class="w-full max-w-md">
+    <p class="text-xs text-muted-foreground mb-3">Basic accordion - click items to expand/collapse</p>
+    <Accordion>
+        <AccordionItem Value="item1">
+            <AccordionTrigger>Item 1</AccordionTrigger>
+            <AccordionContent>
+                This is the content for item 1. Click the trigger above to collapse.
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="item2">
+            <AccordionTrigger>Item 2</AccordionTrigger>
+            <AccordionContent>
+                This is the content for item 2. Each item can be opened independently.
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="item3">
+            <AccordionTrigger>Item 3</AccordionTrigger>
+            <AccordionContent>
+                This is the content for item 3. The trigger shows a chevron that rotates on expand/collapse.
+            </AccordionContent>
+        </AccordionItem>
+    </Accordion>
+</div>

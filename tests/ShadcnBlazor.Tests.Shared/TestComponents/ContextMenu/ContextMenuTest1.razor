@@ -1,0 +1,30 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.ContextMenu
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Right-click the card to open the context menu and choose an action.</p>
+
+    <ContextMenu>
+        <ContextMenuTrigger>
+            <div class="rounded-lg border border-dashed border-border bg-muted/30 p-6 text-sm">
+                Release checklist.md
+            </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+            <ContextMenuItem OnClick="@(_ => SetAction("Rename"))">Rename</ContextMenuItem>
+            <ContextMenuItem OnClick="@(_ => SetAction("Duplicate"))">Duplicate</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem OnClick="@(_ => SetAction("Delete"))" Destructive="true">Delete</ContextMenuItem>
+        </ContextMenuContent>
+    </ContextMenu>
+
+    <p class="text-sm text-muted-foreground">Last action: <span class="font-medium text-foreground">@_lastAction</span></p>
+</div>
+
+@code {
+    private string _lastAction = "None";
+
+    private void SetAction(string action)
+    {
+        _lastAction = action;
+    }
+}

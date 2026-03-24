@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Slider
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Sm - Step=1</p>
+        <Slider Size="Size.Sm" Min="0" Max="100" Step="1" Value="@_smValue" />
+        <p class="text-sm text-muted-foreground mt-1">Value: @_smValue</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Md - Step=5</p>
+        <Slider Size="Size.Md" Min="0" Max="100" Step="5" Value="@_mdValue" />
+        <p class="text-sm text-muted-foreground mt-1">Value: @_mdValue</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Lg - Step=10</p>
+        <Slider Size="Size.Lg" Min="0" Max="100" Step="10" Value="@_lgValue" />
+        <p class="text-sm text-muted-foreground mt-1">Value: @_lgValue</p>
+    </div>
+</div>
+
+@code {
+    private int _smValue = 30;
+    private int _mdValue = 50;
+    private int _lgValue = 70;
+}

@@ -1,0 +1,20 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Form
+
+<div class="grid gap-4 md:grid-cols-2">
+    <div class="space-y-3 rounded-lg border border-border p-4">
+        <p class="text-sm font-medium">Valid context</p>
+        <FormValidationProvider Invalid="false">
+            <Input Placeholder="Valid input" Value="release@team.dev" />
+            <Button Variant="Variant.Secondary">Submit</Button>
+        </FormValidationProvider>
+    </div>
+
+    <div class="space-y-3 rounded-lg border border-border p-4">
+        <p class="text-sm font-medium">Invalid context</p>
+        <FormValidationProvider Invalid="true" ErrorMessageId="secondary-form-error">
+            <Input Placeholder="Invalid input" Value="missing-at-symbol" />
+            <span id="secondary-form-error" class="text-sm text-destructive">This field is required.</span>
+            <Button Variant="Variant.Destructive">Submit</Button>
+        </FormValidationProvider>
+    </div>
+</div>

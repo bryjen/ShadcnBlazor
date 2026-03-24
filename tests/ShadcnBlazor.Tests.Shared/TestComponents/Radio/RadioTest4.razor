@@ -1,0 +1,54 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Radio
+
+<div class="flex flex-col gap-8">
+    <div class="grid grid-cols-2 gap-8">
+        <div>
+            <p class="text-xs text-muted-foreground mb-3">Group 1: Colors</p>
+            <RadioGroup Value="@_colorValue" ValueChanged="OnColorChanged">
+                <Radio Value="red">Red</Radio>
+                <Radio Value="green">Green</Radio>
+                <Radio Value="blue">Blue</Radio>
+            </RadioGroup>
+            <p class="text-sm text-foreground mt-3">Selected: @_colorValue</p>
+        </div>
+
+        <div>
+            <p class="text-xs text-muted-foreground mb-3">Group 2: Sizes</p>
+            <RadioGroup Value="@_sizeValue" ValueChanged="OnSizeChanged">
+                <Radio Value="small">Small</Radio>
+                <Radio Value="medium">Medium</Radio>
+                <Radio Value="large">Large</Radio>
+            </RadioGroup>
+            <p class="text-sm text-foreground mt-3">Selected: @_sizeValue</p>
+        </div>
+    </div>
+
+    <div class="border-t border-border pt-4">
+        <p class="text-xs text-muted-foreground mb-2">Live event log:</p>
+        <div class="text-sm text-muted-foreground space-y-1">
+            <p>Group 1 changed: @_colorLog</p>
+            <p>Group 2 changed: @_sizeLog</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _colorValue = "red";
+    private string _sizeValue = "medium";
+    private string _colorLog = "none";
+    private string _sizeLog = "none";
+
+    private Task OnColorChanged(string value)
+    {
+        _colorValue = value;
+        _colorLog = $"{DateTime.Now:HH:mm:ss.fff} → {value}";
+        return Task.CompletedTask;
+    }
+
+    private Task OnSizeChanged(string value)
+    {
+        _sizeValue = value;
+        _sizeLog = $"{DateTime.Now:HH:mm:ss.fff} → {value}";
+        return Task.CompletedTask;
+    }
+}

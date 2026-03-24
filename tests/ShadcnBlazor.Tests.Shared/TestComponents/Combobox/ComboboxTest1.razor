@@ -1,0 +1,65 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Combobox
+
+<div class="flex flex-col gap-6 max-w-md">
+    <p class="text-xs text-muted-foreground mb-2">Searchable combobox - type to filter</p>
+
+    <div class="relative">
+        <input type="text"
+               @onchange="@((ChangeEventArgs e) => OnSearch(e.Value?.ToString() ?? ""))"
+               @onfocus="@(() => _open = true)"
+               @onblur="@(() => _open = false)"
+               placeholder="Search fruits..."
+               class="w-full px-3 py-2 rounded border border-input bg-background text-foreground" />
+
+        @if (_open && _filteredOptions.Count > 0)
+        {
+            <div class="absolute top-full left-0 right-0 mt-1 border border-input rounded bg-popover shadow-lg z-10">
+                @foreach (var option in _filteredOptions)
+                {
+                    <button @onclick="@(() => SelectOption(option))" class="w-full text-left px-3 py-2 hover:bg-accent">
+                        @option
+                    </button>
+                }
+            </div>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(_selectedValue))
+    {
+        <p class="text-sm text-muted-foreground">Selected: <strong>@_selectedValue</strong></p>
+    }
+</div>
+
+@code {
+    private bool _open;
+    private string? _selectedValue;
+    private List<string> _filteredOptions = new();
+    private readonly string[] _allOptions = { "Apple", "Apricot", "Avocado", "Banana", "Blackberry", "Blueberry", "Cantaloupe" };
+
+    private void OnSearch(string search)
+    {
+        if (string.IsNullOrEmpty(search))
+        {
+            _filteredOptions = _allOptions.ToList();
+        }
+        else
+        {
+            _filteredOptions = _allOptions
+                .Where(o => o.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+        _open = true;
+    }
+
+    private void SelectOption(string value)
+    {
+        _selectedValue = value;
+        _open = false;
+        _filteredOptions.Clear();
+    }
+
+    protected override void OnInitialized()
+    {
+        _filteredOptions = _allOptions.ToList();
+    }
+}

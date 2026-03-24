@@ -1,0 +1,21 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Checkbox
+
+<div class="flex flex-col gap-4">
+    <p class="text-sm text-muted-foreground">Click both checkboxes. Only the enabled counter should increment.</p>
+
+    <div class="flex gap-8">
+        <div>
+            <Checkbox CheckedChanged="@(_ => _enabledCount++)">Enabled</Checkbox>
+            <p class="text-sm mt-2">Fires: @_enabledCount</p>
+        </div>
+        <div>
+            <Checkbox Disabled="true" CheckedChanged="@(_ => _disabledCount++)">Disabled</Checkbox>
+            <p class="text-sm mt-2">Fires: @_disabledCount (should stay 0)</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int _enabledCount;
+    private int _disabledCount;
+}

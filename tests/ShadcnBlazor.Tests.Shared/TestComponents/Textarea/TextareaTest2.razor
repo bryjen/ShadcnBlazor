@@ -1,0 +1,30 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Textarea
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Default state (editable)</p>
+        <Textarea Rows="4" Placeholder="Click here to edit..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled state</p>
+        <Textarea Rows="4" Disabled="true" Value="This textarea is disabled and cannot be edited." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Two synced textareas</p>
+        <Textarea Rows="4" Value="@_syncedValue" @onchange="OnTextChanged" Placeholder="Type in one..." />
+        <Textarea Rows="4" Value="@_syncedValue" @onchange="OnTextChanged" Placeholder="...it appears in the other" />
+        <p class="text-sm text-muted-foreground mt-2">Characters: @_syncedValue.Length</p>
+    </div>
+</div>
+
+@code {
+    private string _syncedValue = "";
+
+    private Task OnTextChanged(ChangeEventArgs e)
+    {
+        _syncedValue = e.Value?.ToString() ?? "";
+        return Task.CompletedTask;
+    }
+}

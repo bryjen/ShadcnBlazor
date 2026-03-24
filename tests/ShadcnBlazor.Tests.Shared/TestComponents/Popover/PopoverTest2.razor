@@ -1,0 +1,53 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Popover
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground">Controlled popover state</p>
+
+    <div class="flex gap-4">
+        <div>
+            <Popover Open="@_controlledOpen" OpenChanged="OnControlledChange">
+                <Anchor>
+                    <TempButton Size="Size.Sm">Popover</TempButton>
+                </Anchor>
+                <ChildContent>
+                    <div class="w-56 p-4">
+                        <p class="text-sm">Current state: <strong>@(_controlledOpen ? "OPEN" : "CLOSED")</strong></p>
+                        <p class="text-sm text-muted-foreground mt-2">
+                            Click outside or use the toggle buttons to change state.
+                        </p>
+                    </div>
+                </ChildContent>
+            </Popover>
+        </div>
+
+        <div class="flex gap-2">
+            <TempButton Size="Size.Sm" Variant="Variant.Outline" @onclick="@(() => _controlledOpen = true)">
+                Open
+            </TempButton>
+            <TempButton Size="Size.Sm" Variant="Variant.Outline" @onclick="@(() => _controlledOpen = false)">
+                Close
+            </TempButton>
+            <TempButton Size="Size.Sm" Variant="Variant.Outline" @onclick="@(() => _controlledOpen = !_controlledOpen)">
+                Toggle
+            </TempButton>
+        </div>
+    </div>
+
+    <div class="border-t border-border pt-4">
+        <p class="text-xs text-muted-foreground mb-3">Event log:</p>
+        <p class="text-sm">Popover state: <code class="bg-muted px-2 py-1 rounded">@(_controlledOpen ? "Open" : "Closed")</code></p>
+        <p class="text-sm">Last changed: @_lastChange</p>
+    </div>
+</div>
+
+@code {
+    private bool _controlledOpen;
+    private string _lastChange = "never";
+
+    private Task OnControlledChange(bool value)
+    {
+        _controlledOpen = value;
+        _lastChange = $"{DateTime.Now:HH:mm:ss}";
+        return Task.CompletedTask;
+    }
+}

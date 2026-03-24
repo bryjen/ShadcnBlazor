@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Card
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Content only (flat path)</p>
+        <Card>Just content, no header or footer.</Card>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Header + Content, no Footer</p>
+        <Card Header="@headerOnly">Content with header only.</Card>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Content + Footer, no Header</p>
+        <Card Footer="@footerOnly">Content with footer only.</Card>
+    </div>
+</div>
+
+@code {
+    private RenderFragment headerOnly = @<h2 class="font-semibold">Header Only</h2>;
+    private RenderFragment footerOnly = @<span class="text-sm text-muted-foreground">Footer Only</span>;
+}

@@ -1,0 +1,35 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Combobox
+
+<div class="flex max-w-xl flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Grouped combobox with live value tracking and a no-results path.</p>
+
+    <Combobox T="string" Value="@_selectedFramework" ValueChanged="OnFrameworkChanged" Label="Choose framework" Placeholder="Search frameworks...">
+        <SelectGroup>
+            <SelectLabel Text="Blazor" />
+            <SelectItem Value="Server" Text="Blazor Server" />
+            <SelectItem Value="Wasm" Text="Blazor WebAssembly" />
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+            <SelectLabel Text="JavaScript" />
+            <SelectItem Value="React" Text="React" />
+            <SelectItem Value="Svelte" Text="Svelte" />
+            <SelectItem Value="Vue" Text="Vue" Disabled="true" />
+        </SelectGroup>
+    </Combobox>
+
+    <div class="rounded-md border border-border bg-muted/30 p-3 text-sm">
+        <p><span class="font-medium">Current selection:</span> @(_selectedFramework ?? "None")</p>
+        <p class="text-muted-foreground">Try searching for a term with no matches to verify the empty state.</p>
+    </div>
+</div>
+
+@code {
+    private string? _selectedFramework = "Server";
+
+    private Task OnFrameworkChanged(string? value)
+    {
+        _selectedFramework = value;
+        return Task.CompletedTask;
+    }
+}

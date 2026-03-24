@@ -1,0 +1,30 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Textarea
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">OnChange callback with text metrics</p>
+        <Textarea Rows="6" Value="@_textValue" @onchange="OnTextChanged" Placeholder="Type to see metrics..." />
+        <div class="text-sm text-muted-foreground mt-2">
+            <p>Characters: @_textValue.Length</p>
+            <p>Words: @_wordCount</p>
+            <p>Lines: @_lineCount</p>
+            <p>Last change: @_eventLog</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _textValue = "";
+    private int _wordCount;
+    private int _lineCount;
+    private string _eventLog = "none";
+
+    private Task OnTextChanged(ChangeEventArgs e)
+    {
+        _textValue = e.Value?.ToString() ?? "";
+        _wordCount = string.IsNullOrWhiteSpace(_textValue) ? 0 : _textValue.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).Length;
+        _lineCount = string.IsNullOrWhiteSpace(_textValue) ? 0 : _textValue.Split('\n').Length;
+        _eventLog = $"{DateTime.Now:HH:mm:ss.fff}";
+        return Task.CompletedTask;
+    }
+}

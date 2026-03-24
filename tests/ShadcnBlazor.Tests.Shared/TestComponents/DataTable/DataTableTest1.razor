@@ -1,0 +1,25 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.DataTable
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Basic sortable customer table using field-based columns.</p>
+
+    <DataTable T="Customer" Items="Customers" Hover Label="Customer health table">
+        <Columns>
+            <DataTableColumn T="Customer" Title="Customer" Field="x => x.Name" Sortable />
+            <DataTableColumn T="Customer" Title="Plan" Field="x => x.Plan" />
+            <DataTableColumn T="Customer" Title="Health" Field="x => x.Health" Sortable />
+        </Columns>
+    </DataTable>
+</div>
+
+@code {
+    private static readonly Customer[] Customers =
+    [
+        new("Northwind", "Enterprise", "Healthy"),
+        new("Fabrikam", "Growth", "Watch"),
+        new("Contoso", "Starter", "Healthy"),
+        new("Adventure Works", "Enterprise", "Risk")
+    ];
+
+    private sealed record Customer(string Name, string Plan, string Health);
+}

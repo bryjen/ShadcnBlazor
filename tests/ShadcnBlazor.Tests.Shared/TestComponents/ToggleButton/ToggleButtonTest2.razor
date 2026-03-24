@@ -1,0 +1,57 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.ToggleButton
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">All sizes - Icon only</p>
+        <div class="flex items-center gap-4">
+            <ToggleButton Size="Size.Sm">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1 4.5 4.5 0 11-4.814 6.98z"></path>
+                </svg>
+            </ToggleButton>
+            <ToggleButton Size="Size.Md">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1 4.5 4.5 0 11-4.814 6.98z"></path>
+                </svg>
+            </ToggleButton>
+            <ToggleButton Size="Size.Lg">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1 4.5 4.5 0 11-4.814 6.98z"></path>
+                </svg>
+            </ToggleButton>
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">All sizes - Icon + Text</p>
+        <div class="flex items-center gap-4">
+            <ToggleButton Size="Size.Sm">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.5 1.5H3a1.5 1.5 0 00-1.5 1.5v12a1.5 1.5 0 001.5 1.5h10a1.5 1.5 0 001.5-1.5V4"></path>
+                </svg>
+                Small
+            </ToggleButton>
+            <ToggleButton Size="Size.Md">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.5 1.5H3a1.5 1.5 0 00-1.5 1.5v12a1.5 1.5 0 001.5 1.5h10a1.5 1.5 0 001.5-1.5V4"></path>
+                </svg>
+                Medium
+            </ToggleButton>
+            <ToggleButton Size="Size.Lg">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.5 1.5H3a1.5 1.5 0 00-1.5 1.5v12a1.5 1.5 0 001.5 1.5h10a1.5 1.5 0 001.5-1.5V4"></path>
+                </svg>
+                Large
+            </ToggleButton>
+        </div>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">All sizes - Text only</p>
+        <div class="flex items-center gap-4">
+            <ToggleButton Size="Size.Sm">Sm</ToggleButton>
+            <ToggleButton Size="Size.Md">Md</ToggleButton>
+            <ToggleButton Size="Size.Lg">Lg</ToggleButton>
+        </div>
+    </div>
+</div>

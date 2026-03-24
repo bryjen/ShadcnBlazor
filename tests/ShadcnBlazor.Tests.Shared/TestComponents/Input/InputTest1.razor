@@ -1,0 +1,28 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Input
+
+<div class="flex flex-col gap-4 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Text</p>
+        <TempInput Type="text" Placeholder="Enter text..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Password</p>
+        <TempInput Type="password" Placeholder="Enter password..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Email</p>
+        <TempInput Type="email" Placeholder="user@example.com" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Number</p>
+        <TempInput Type="number" Placeholder="0" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Url</p>
+        <TempInput Type="url" Placeholder="https://..." />
+    </div>
+</div>

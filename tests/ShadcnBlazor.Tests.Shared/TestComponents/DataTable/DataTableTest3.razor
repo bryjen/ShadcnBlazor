@@ -1,0 +1,47 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.DataTable
+
+<div class="flex flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Grid interaction mode with custom cells and click feedback.</p>
+
+    <DataTable T="Incident"
+               Items="Incidents"
+               Hover
+               InteractionMode="DataTableInteractionMode.Grid"
+               OnRowClick="HandleRowClick"
+               Label="Incident response table">
+        <Columns>
+            <DataTableColumn T="Incident" Title="Service" Field="x => x.Service" Sortable />
+            <DataTableColumn T="Incident" Title="Severity">
+                <CellTemplate Context="incident">
+                    <Badge Variant="@(incident.Severity == "High" ? Variant.Destructive : Variant.Secondary)">@incident.Severity</Badge>
+                </CellTemplate>
+            </DataTableColumn>
+            <DataTableColumn T="Incident" Title="Owner" Field="x => x.Owner" />
+        </Columns>
+    </DataTable>
+
+    <div class="rounded-md border border-border bg-muted/30 p-3 text-sm">
+        <p class="font-medium">Last opened incident</p>
+        <p class="text-muted-foreground">@(_lastOpened ?? "Use Enter or click a row to invoke the callback.")</p>
+    </div>
+</div>
+
+@code {
+    private static readonly Incident[] Incidents =
+    [
+        new("Billing API", "High", "Ava"),
+        new("Docs search", "Low", "Milo"),
+        new("Identity sync", "High", "Rin"),
+        new("Viewer hosting", "Medium", "Jules")
+    ];
+
+    private string? _lastOpened;
+
+    private Task HandleRowClick(Incident incident)
+    {
+        _lastOpened = $"{incident.Service} ({incident.Severity})";
+        return Task.CompletedTask;
+    }
+
+    private sealed record Incident(string Service, string Severity, string Owner);
+}

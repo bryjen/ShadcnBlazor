@@ -1,0 +1,51 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Accordion
+
+<div class="w-full max-w-md">
+    <p class="text-xs text-muted-foreground mb-3">Accordion with varied content types</p>
+    <Accordion>
+        <AccordionItem Value="plain">
+            <AccordionTrigger>Plain Text Content</AccordionTrigger>
+            <AccordionContent>
+                This is simple plain text content without any special formatting or nested components.
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="rich">
+            <AccordionTrigger>Rich HTML Content</AccordionTrigger>
+            <AccordionContent>
+                <div class="space-y-2">
+                    <p>This content includes <strong>bold text</strong> and <em>italic text</em>.</p>
+                    <p>It can also have <code class="bg-muted px-2 py-1 rounded">code snippets</code>.</p>
+                    <a href="#" class="text-primary hover:underline">And even links</a>
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="components">
+            <AccordionTrigger>Nested Components</AccordionTrigger>
+            <AccordionContent>
+                <div class="space-y-3">
+                    <p class="text-sm">This accordion item contains interactive components:</p>
+                    <div class="flex gap-2">
+                        <TempButton Size="Size.Sm">Action 1</TempButton>
+                        <TempButton Size="Size.Sm">Action 2</TempButton>
+                    </div>
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem Value="tall">
+            <AccordionTrigger>Tall Content</AccordionTrigger>
+            <AccordionContent>
+                <div class="space-y-2 text-sm">
+                    <p>Line 1: Lorem ipsum dolor sit amet.</p>
+                    <p>Line 2: Consectetur adipiscing elit.</p>
+                    <p>Line 3: Sed do eiusmod tempor incididunt ut labore.</p>
+                    <p>Line 4: Et dolore magna aliqua.</p>
+                    <p>Line 5: Ut enim ad minim veniam.</p>
+                    <p>Line 6: Quis nostrud exercitation ullamco.</p>
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+    </Accordion>
+</div>

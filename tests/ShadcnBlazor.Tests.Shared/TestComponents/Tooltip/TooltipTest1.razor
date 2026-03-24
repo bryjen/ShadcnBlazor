@@ -1,0 +1,44 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Tooltip
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground">Hover over buttons to see tooltips</p>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Basic tooltip on button</p>
+        <Tooltip Content="Save your work">
+            <Anchor>
+                <TempButton Size="Size.Sm">Save</TempButton>
+            </Anchor>
+        </Tooltip>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Tooltip with longer text</p>
+        <Tooltip Content="Delete this item permanently. This action cannot be undone.">
+            <Anchor>
+                <TempButton Size="Size.Sm" Variant="Variant.Destructive">Delete</TempButton>
+            </Anchor>
+        </Tooltip>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Multiple elements with tooltips</p>
+        <div class="flex gap-2">
+            <Tooltip Content="Create new">
+                <Anchor>
+                    <TempButton Size="Size.Sm" Variant="Variant.Ghost">+</TempButton>
+                </Anchor>
+            </Tooltip>
+            <Tooltip Content="Edit">
+                <Anchor>
+                    <TempButton Size="Size.Sm" Variant="Variant.Ghost">✏️</TempButton>
+                </Anchor>
+            </Tooltip>
+            <Tooltip Content="Copy">
+                <Anchor>
+                    <TempButton Size="Size.Sm" Variant="Variant.Ghost">📋</TempButton>
+                </Anchor>
+            </Tooltip>
+        </div>
+    </div>
+</div>

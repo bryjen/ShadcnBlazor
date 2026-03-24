@@ -1,0 +1,32 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Button
+
+<div class="flex flex-col gap-4">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">OnClick callback</p>
+        <Button OnClick="@HandleClick">Click Me</Button>
+        <p class="text-sm mt-2">Click count: @_count</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Size.Md (default)</p>
+        <Button Size="Size.Md">Medium (Default)</Button>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Variant.Secondary</p>
+        <Button Variant="Variant.Secondary">Secondary</Button>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">ButtonType variants</p>
+        <div class="flex gap-2">
+            <Button Type="ButtonType.Button">Type=Button</Button>
+            <Button Type="ButtonType.Reset">Type=Reset</Button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int _count;
+    private void HandleClick() => _count++;
+}

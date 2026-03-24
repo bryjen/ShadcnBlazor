@@ -1,0 +1,63 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Sheet
+
+<div class="flex flex-col gap-6">
+    <p class="text-xs text-muted-foreground mb-2">Sheet positions and sizes</p>
+
+    <div class="flex gap-2 flex-wrap">
+        <TempButton Size="Size.Sm" @onclick="@(() => OpenSheetAt("right"))">Right (default)</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => OpenSheetAt("left"))">Left</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => OpenSheetAt("top"))">Top</TempButton>
+        <TempButton Size="Size.Sm" @onclick="@(() => OpenSheetAt("bottom"))">Bottom</TempButton>
+    </div>
+
+    @if (!string.IsNullOrEmpty(_position))
+    {
+        <div class="fixed inset-0 bg-black/50 z-50" @onclick="CloseSheet"></div>
+
+        <div class="@GetSheetClass()" @onclick:stopPropagation>
+            <div class="p-6 border-b border-border">
+                <h2 class="text-lg font-semibold">Sheet from @_position.ToUpper()</h2>
+                <button @onclick="CloseSheet" class="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-auto p-6">
+                <p class="text-sm">This sheet slides in from the <strong>@_position</strong>.</p>
+            </div>
+
+            <div class="border-t border-border p-6">
+                <TempButton @onclick="CloseSheet" Class="w-full">Close</TempButton>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private string _position = "";
+
+    private string GetSheetClass()
+    {
+        var baseClass = "fixed bg-background shadow-lg z-50 flex flex-col";
+        return _position switch
+        {
+            "right" => $"{baseClass} right-0 top-0 bottom-0 w-80",
+            "left" => $"{baseClass} left-0 top-0 bottom-0 w-80",
+            "top" => $"{baseClass} top-0 left-0 right-0 h-80",
+            "bottom" => $"{baseClass} bottom-0 left-0 right-0 h-80",
+            _ => baseClass
+        };
+    }
+
+    private void OpenSheetAt(string position)
+    {
+        _position = position;
+    }
+
+    private void CloseSheet()
+    {
+        _position = "";
+    }
+}

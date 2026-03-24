@@ -1,0 +1,44 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.MultiSelect
+
+<div class="flex max-w-xl flex-col gap-4">
+    <p class="text-xs text-muted-foreground">Basic multi-select with grouped items, search, and compact selected-value summary.</p>
+
+    <MultiSelect T="string"
+                 Values="@_selectedTags"
+                 ValuesChanged="OnTagsChanged"
+                 Label="Project tags"
+                 Placeholder="Pick tags..."
+                 Search
+                 ClearButton>
+        <SelectGroup>
+            <SelectLabel Text="Frontend" />
+            <SelectItem Value="Blazor" Text="Blazor" />
+            <SelectItem Value="React" Text="React" />
+            <SelectItem Value="Vue" Text="Vue" />
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+            <SelectLabel Text="Backend" />
+            <SelectItem Value="ASP.NET" Text="ASP.NET Core" />
+            <SelectItem Value="Postgres" Text="PostgreSQL" />
+            <SelectItem Value="Redis" Text="Redis" />
+        </SelectGroup>
+    </MultiSelect>
+
+    <div class="rounded-md border border-border bg-muted/30 p-3 text-sm">
+        <p class="font-medium">Selected tags</p>
+        <p class="text-muted-foreground">@GetSummary()</p>
+    </div>
+</div>
+
+@code {
+    private IReadOnlyList<string> _selectedTags = ["Blazor", "ASP.NET"];
+
+    private Task OnTagsChanged(IReadOnlyList<string> values)
+    {
+        _selectedTags = values;
+        return Task.CompletedTask;
+    }
+
+    private string GetSummary() => _selectedTags.Count == 0 ? "Nothing selected" : string.Join(", ", _selectedTags);
+}

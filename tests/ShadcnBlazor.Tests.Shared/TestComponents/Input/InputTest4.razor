@@ -1,0 +1,24 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Input
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Text with long placeholder</p>
+        <TempInput Type="text" Placeholder="This is a very long placeholder text that shows how the input handles overflow..." />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Type.Number with constraints</p>
+        <TempInput Type="number" Placeholder="0" />
+        <p class="text-xs text-muted-foreground mt-1">Try entering numbers</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Empty value (default)</p>
+        <TempInput Type="text" Placeholder="Starting empty..." Value="" />
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Pre-filled value</p>
+        <TempInput Type="text" Value="Pre-filled text" />
+    </div>
+</div>

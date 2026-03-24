@@ -1,0 +1,34 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Input
+
+<div class="flex flex-col gap-6 max-w-sm">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Two-way binding (synced)</p>
+        <TempInput Type="text" Value="@_boundValue" ValueChanged="OnBoundValueChanged" Placeholder="Type something..." />
+        <p class="text-sm text-foreground mt-2">You typed: @_boundValue</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">ValueChanged callback</p>
+        <TempInput Type="text" Value="@_callbackValue" ValueChanged="OnValueChanged" Placeholder="Type to log..." />
+        <p class="text-sm text-muted-foreground mt-2">Last change: @_eventLog</p>
+    </div>
+</div>
+
+@code {
+    private string _boundValue = "";
+    private string _callbackValue = "";
+    private string _eventLog = "none";
+
+    private Task OnBoundValueChanged(string value)
+    {
+        _boundValue = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnValueChanged(string value)
+    {
+        _callbackValue = value;
+        _eventLog = $"{DateTime.Now:HH:mm:ss.fff} → '{value}'";
+        return Task.CompletedTask;
+    }
+}

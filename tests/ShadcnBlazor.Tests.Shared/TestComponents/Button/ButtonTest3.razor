@@ -1,0 +1,24 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Button
+
+<div class="flex flex-col gap-6">
+    @foreach (var variant in Enum.GetValues<Variant>())
+    {
+        <div>
+            <p class="text-xs text-muted-foreground mb-2">ButtonGroup Variant=@variant</p>
+            <ButtonGroup Variant="@variant">
+                <Button>First</Button>
+                <Button>Middle</Button>
+                <Button>Last</Button>
+            </ButtonGroup>
+        </div>
+    }
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">ButtonGroup Role="toolbar"</p>
+        <ButtonGroup Role="toolbar">
+            <Button>A</Button>
+            <Button>B</Button>
+            <Button>C</Button>
+        </ButtonGroup>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Radio
+
+<div class="flex flex-col gap-8">
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Size.Sm</p>
+        <RadioGroup Size="Size.Sm">
+            <Radio Value="sm1">Small option 1</Radio>
+            <Radio Value="sm2">Small option 2</Radio>
+        </RadioGroup>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Size.Md with multi-line labels</p>
+        <RadioGroup Size="Size.Md">
+            <Radio Value="md1">Medium option<br/>with two lines</Radio>
+            <Radio Value="md2">Another medium<br/>option here</Radio>
+        </RadioGroup>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-3">Size.Lg with multi-line labels and alignments</p>
+        <div class="flex flex-col gap-6">
+            <div>
+                <p class="text-xs text-muted-foreground mb-2">Top alignment</p>
+                <RadioGroup Size="Size.Lg">
+                    <Radio Value="lg1" Alignment="VerticalAlignment.Top">Large option<br/>line 2<br/>line 3</Radio>
+                    <Radio Value="lg2" Alignment="VerticalAlignment.Top">Another option<br/>line 2<br/>line 3</Radio>
+                </RadioGroup>
+            </div>
+            <div>
+                <p class="text-xs text-muted-foreground mb-2">Center alignment</p>
+                <RadioGroup Size="Size.Lg">
+                    <Radio Value="lg3" Alignment="VerticalAlignment.Center">Large option<br/>line 2<br/>line 3</Radio>
+                    <Radio Value="lg4" Alignment="VerticalAlignment.Center">Another option<br/>line 2<br/>line 3</Radio>
+                </RadioGroup>
+            </div>
+            <div>
+                <p class="text-xs text-muted-foreground mb-2">Bottom alignment</p>
+                <RadioGroup Size="Size.Lg">
+                    <Radio Value="lg5" Alignment="VerticalAlignment.Bottom">Large option<br/>line 2<br/>line 3</Radio>
+                    <Radio Value="lg6" Alignment="VerticalAlignment.Bottom">Another option<br/>line 2<br/>line 3</Radio>
+                </RadioGroup>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+@namespace ShadcnBlazor.Tests.Shared.TestComponents.Switch
+
+<div class="flex flex-col gap-6">
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">CheckedChanged callback</p>
+        <Switch Checked="@_checked" CheckedChanged="OnCheckedChanged">Toggle me</Switch>
+        <p class="text-sm text-muted-foreground mt-2">Last event: @_eventLog</p>
+    </div>
+
+    <div>
+        <p class="text-xs text-muted-foreground mb-2">Disabled switch guard (callback should NOT fire)</p>
+        <div class="flex gap-8">
+            <div>
+                <Switch Checked="@_enabledChecked" CheckedChanged="OnEnabledChanged">Enabled</Switch>
+                <p class="text-sm mt-2">Fired: @_enabledCount</p>
+            </div>
+            <div>
+                <Switch Disabled="true" Checked="@_disabledChecked" CheckedChanged="OnDisabledChanged">Disabled</Switch>
+                <p class="text-sm mt-2">Fired: @_disabledCount (should stay 0)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _checked;
+    private string _eventLog = "none";
+    private Task OnCheckedChanged(bool val)
+    {
+        _checked = val;
+        _eventLog = $"{DateTime.Now:HH:mm:ss.fff} → {(val ? "on" : "off")}";
+        return Task.CompletedTask;
+    }
+
+    private bool _enabledChecked;
+    private bool _disabledChecked;
+    private int _enabledCount;
+    private int _disabledCount;
+
+    private Task OnEnabledChanged(bool val)
+    {
+        _enabledChecked = val;
+        _enabledCount++;
+        return Task.CompletedTask;
+    }
+
+    private Task OnDisabledChanged(bool val)
+    {
+        _disabledChecked = val;
+        _disabledCount++;
+        return Task.CompletedTask;
+    }
+}
