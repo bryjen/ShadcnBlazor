@@ -12,6 +12,7 @@ using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using ShadcnBlazor.Docs.Services;
 using ShadcnBlazor.Docs.Services.Interop;
 using ShadcnBlazor.Docs.Services.Theme;
+using ShadcnBlazor.Services;
 using TailwindMerge.Extensions;
 
 // ReSharper disable InvalidXmlDocComment
@@ -61,6 +62,8 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
     services.AddScoped<ThemeService>();
 
     services.AddScoped<ThemeInterop>();
+
+    services.AddScoped<SonnerService>();
 
     // JavaScript interop services (runtime only, skipped during pre-rendering)
     // These require IJSRuntime which is not available during pre-rendering

@@ -6,15 +6,15 @@
     <Combobox T="string" Value="@_selectedFramework" ValueChanged="OnFrameworkChanged" Label="Choose framework" Placeholder="Search frameworks...">
         <SelectGroup>
             <SelectLabel Text="Blazor" />
-            <SelectItem Value="Server" Text="Blazor Server" />
-            <SelectItem Value="Wasm" Text="Blazor WebAssembly" />
+            <SelectItem Value="@("Server")" Text="Blazor Server" />
+            <SelectItem Value="@("Wasm")" Text="Blazor WebAssembly" />
         </SelectGroup>
         <SelectSeparator />
         <SelectGroup>
             <SelectLabel Text="JavaScript" />
-            <SelectItem Value="React" Text="React" />
-            <SelectItem Value="Svelte" Text="Svelte" />
-            <SelectItem Value="Vue" Text="Vue" Disabled="true" />
+            <SelectItem Value="@("React")" Text="React" />
+            <SelectItem Value="@("Svelte")" Text="Svelte" />
+            <SelectItem Value="@("Vue")" Text="Vue" Disabled="true" />
         </SelectGroup>
     </Combobox>
 

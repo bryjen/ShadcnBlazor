@@ -52,7 +52,16 @@
         <Delete Files="Models\Generated\Snippets.generated.cs" Condition="Exists('Models\Generated\Snippets.generated.cs')" />
         <Delete Files="Models\Snippets.generated.cs" Condition="Exists('Models\Snippets.generated.cs')" />
     </Target>
-    
+
+    <!-- Build Sonner interop bundle before building the Docs app -->
+    <Target Name="BuildSonner" BeforeTargets="Build">
+        <Message Text="Building Sonner interop bundle..." Importance="high" />
+        <Exec Command="npm run build" WorkingDirectory="../../sonner-interop" />
+        <Copy SourceFiles="../../sonner-interop/dist/sonner-interop.iife.js"
+              DestinationFolder="wwwroot/js" />
+        <Message Text="Sonner bundle built and copied successfully." Importance="high" />
+    </Target>
+
     <ItemGroup>
         <PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />

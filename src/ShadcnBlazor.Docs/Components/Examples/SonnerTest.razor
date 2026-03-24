@@ -1,0 +1,102 @@
+@page "/sonner-test"
+@using ShadcnBlazor.Services
+@inject SonnerService Sonner
+
+<div class="w-full max-w-2xl mx-auto p-8">
+    <div class="space-y-6">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight">Sonner Toast Test</h1>
+            <p class="text-muted-foreground mt-2">Test the Sonner toast notification integration with Blazor.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+                @onclick="ShowToast">
+                Show Toast
+            </button>
+
+            <button
+                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors"
+                @onclick="ShowSuccess">
+                Success
+            </button>
+
+            <button
+                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
+                @onclick="ShowError">
+                Error
+            </button>
+
+            <button
+                class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-colors"
+                @onclick="ShowWarning">
+                Warning
+            </button>
+
+            <button
+                class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors"
+                @onclick="ShowSuccessWithAction">
+                Success with Action
+            </button>
+
+            <button
+                class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-md transition-colors"
+                @onclick="ShowErrorWithAction">
+                Error with Action
+            </button>
+        </div>
+
+        <div class="bg-slate-100 dark:bg-slate-900 rounded-lg p-4">
+            <p class="text-sm text-muted-foreground">
+                Click any button above to trigger a toast notification. The notifications should appear in the bottom-right corner of the screen.
+            </p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task ShowToast()
+    {
+        await Sonner.Show("Hello from Sonner");
+    }
+
+    private async Task ShowSuccess()
+    {
+        await Sonner.Success("Operation successful!");
+    }
+
+    private async Task ShowError()
+    {
+        await Sonner.Error("Something went wrong");
+    }
+
+    private async Task ShowWarning()
+    {
+        await Sonner.Warning("Be careful!");
+    }
+
+    private async Task ShowSuccessWithAction()
+    {
+        await Sonner.SuccessWithAction(
+            "Event has been created",
+            "Undo",
+            async () =>
+            {
+                await Sonner.Success("Event creation undone!");
+            }
+        );
+    }
+
+    private async Task ShowErrorWithAction()
+    {
+        await Sonner.ErrorWithAction(
+            "Failed to save data",
+            "Retry",
+            async () =>
+            {
+                await Sonner.Success("Data saved successfully!");
+            }
+        );
+    }
+}
