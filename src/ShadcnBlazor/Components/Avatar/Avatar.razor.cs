@@ -19,6 +19,8 @@ public partial class Avatar : ShadcnComponentBase
     [Parameter] public RenderFragment? Badge { get; set; }
     /// <summary>The size of the avatar.</summary>
     [Parameter] public Size Size { get; set; } = Size.Md;
+    /// <summary>ARIA label for screen readers. Used when showing fallback content or for interactive avatars (e.g. "Profile picture of John Doe").</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     private string? _lastSrc;
     private bool _imageFailed;

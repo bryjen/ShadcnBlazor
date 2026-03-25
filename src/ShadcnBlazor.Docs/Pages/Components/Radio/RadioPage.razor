@@ -9,7 +9,7 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Radio">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Radio component provides single selection within a <code>RadioGroup</code>. Place <code>Radio</code> options inside a <code>RadioGroup</code> and bind <code>Value</code> for the selected option. Each <code>Radio</code> needs a unique <code>Value</code> and <code>ChildContent</code> for the label.</p>
@@ -61,8 +61,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Radio");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add radio",
-    };
+    private const string InstallCommand = "shadcnblazor component add radio";
 }
+

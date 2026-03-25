@@ -9,7 +9,9 @@ using ShadcnBlazor.Components.DataTable;
 using ShadcnBlazor.Components.Dialog;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.DropdownMenu;
+using ShadcnBlazor.Components.Field;
 using ShadcnBlazor.Components.Input;
+using ShadcnBlazor.Components.Label;
 using ShadcnBlazor.Components.Popover;
 using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Radio;
@@ -100,7 +102,7 @@ public static class ComponentRegistry
             Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", 
             Dependencies = CreateDeps()
         },
-        new() 
+        new()
         {
             Name = nameof(Button), 
             Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", 
@@ -117,11 +119,24 @@ public static class ComponentRegistry
             Description = "Container for content with header, body, and footer sections.", 
             Dependencies = CreateDeps(),
         },
+        new()
+        {
+            Name = nameof(Field),
+            Description = "Compose labels, controls, helper text, and validation into accessible form fields.",
+            Dependencies = CreateDeps(nameof(Label))
+        },
+        new()
+        {
+            Name = nameof(Label),
+            Description = "Accessible label associated with a form control.",
+            Dependencies = CreateDeps()
+        },
         new() 
         {
             Name = nameof(Checkbox), 
             Description = "Checkbox input for boolean or multi-select form values.", 
-            Dependencies = CreateDeps()
+            Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -142,6 +157,7 @@ public static class ComponentRegistry
                     "ShadcnBlazor.Components.Dialog.Declarative",
                     "ShadcnBlazor.Components.Dialog.Models"]),
             ],
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -152,7 +168,8 @@ public static class ComponentRegistry
             [
                 new CopyJsAction("context-menu.js"),
                 new MergeToImportsAction(["ShadcnBlazor.Components.ContextMenu"]),
-            ]
+            ],
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -164,13 +181,15 @@ public static class ComponentRegistry
         {
             Name = nameof(DropdownMenu),
             Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.",
-            Dependencies = CreateDeps(nameof(Popover))
+            Dependencies = CreateDeps(nameof(Popover)),
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
             Name = nameof(Input), 
             Description = "Single-line text input with variant styling.", 
             Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -212,8 +231,9 @@ public static class ComponentRegistry
         new() 
         {
             Name = nameof(Slider), 
-            Description = "Single-thumb slider for selecting a value within a min/max range.", 
+            Description = "Single-thumb slider for selecting a value within a min/max range.",
             Dependencies = CreateDeps(),
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new() 
         {
@@ -245,6 +265,7 @@ public static class ComponentRegistry
             RequiredActions =
             [
                 new AddToServicesAction(nameof(SonnerService)),
+                new AddToServicesAction(nameof(SonnerComponentRegistry)),
                 new CopyJsAction("sonner-interop.iife.js"),
             ]
         },

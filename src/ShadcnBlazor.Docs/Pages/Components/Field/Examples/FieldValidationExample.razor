@@ -1,0 +1,29 @@
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="_model" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="flex flex-col gap-4">
+        <Field For="() => _model.Email" FieldId="email">
+            <FieldLabel>Email</FieldLabel>
+            <Input id="email" @bind-Value="_model.Email" Placeholder="you@example.com" />
+            <FieldDescription>We will never share your email.</FieldDescription>
+            <FieldError />
+        </Field>
+        <Button Type="ButtonType.Submit">Save</Button>
+    </div>
+</EditForm>
+
+@code {
+    private readonly FormModel _model = new();
+
+    private void HandleValidSubmit()
+    {
+    }
+
+    private sealed class FormModel
+    {
+        [Required]
+        [EmailAddress]
+        public string? Email { get; set; }
+    }
+}

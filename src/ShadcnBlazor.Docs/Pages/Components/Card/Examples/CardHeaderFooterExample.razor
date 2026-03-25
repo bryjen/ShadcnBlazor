@@ -1,48 +1,46 @@
 <div class="flex flex-col gap-6 w-fit">
     <div>
-        <p class="text-sm font-medium text-muted-foreground mb-2">HeaderClass="bg-muted/50"</p>
-        <Card Class="w-[350px]" HeaderClass="bg-muted/50">
-            <Header>
-                <h3 class="text-lg font-semibold">Custom header background</h3>
-                <p class="text-sm text-muted-foreground">The header uses a muted background.</p>
-            </Header>
-            <ChildContent>
-                <p class="text-sm text-muted-foreground">Default content padding.</p>
-            </ChildContent>
-            <Footer>
-                <Button Variant="@Variant.Outline">Action</Button>
-            </Footer>
+        <p class="text-sm font-medium text-muted-foreground mb-2">CardTitle + CardDescription</p>
+        <Card Class="w-[350px]">
+            <CardHeader>
+                <CardTitle>Card Title</CardTitle>
+                <CardDescription>Card description goes here</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Main card content.</p>
+            </CardContent>
         </Card>
     </div>
     <div>
-        <p class="text-sm font-medium text-muted-foreground mb-2">ContentClass="p-0"</p>
-        <Card Class="w-[350px]" ContentClass="p-0">
-            <Header>
-                <h3 class="text-lg font-semibold">Edge-to-edge content</h3>
-                <p class="text-sm text-muted-foreground">Content has no padding.</p>
-            </Header>
-            <ChildContent>
-                <div class="h-24 bg-muted/30 flex items-center justify-center text-sm text-muted-foreground">Full-width area</div>
-            </ChildContent>
-            <Footer>
-                <Button Variant="@Variant.Default">Action</Button>
-            </Footer>
+        <p class="text-sm font-medium text-muted-foreground mb-2">With CardAction</p>
+        <Card Class="w-[350px]">
+            <CardHeader>
+                <div>
+                    <CardTitle>Card Title</CardTitle>
+                    <CardDescription>With an action in the header</CardDescription>
+                </div>
+                <CardAction>
+                    <Button Variant="@Variant.Ghost" Size="@Size.Sm">×</Button>
+                </CardAction>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Content below.</p>
+            </CardContent>
         </Card>
     </div>
     <div>
-        <p class="text-sm font-medium text-muted-foreground mb-2">FooterClass="justify-between"</p>
-        <Card Class="w-[350px]" FooterClass="justify-between">
-            <Header>
-                <h3 class="text-lg font-semibold">Footer alignment</h3>
-                <p class="text-sm text-muted-foreground">Footer content is spread apart.</p>
-            </Header>
-            <ChildContent>
-                <p class="text-sm text-muted-foreground">Card content.</p>
-            </ChildContent>
-            <Footer>
-                <Button Variant="@Variant.Link">Cancel</Button>
+        <p class="text-sm font-medium text-muted-foreground mb-2">With CardFooter</p>
+        <Card Class="w-[350px]">
+            <CardHeader>
+                <CardTitle>Card Title</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Content area.</p>
+            </CardContent>
+            <CardFooter Class="justify-between">
+                <Button Variant="@Variant.Outline">Cancel</Button>
                 <Button Variant="@Variant.Default">Save</Button>
-            </Footer>
+            </CardFooter>
         </Card>
     </div>
 </div>

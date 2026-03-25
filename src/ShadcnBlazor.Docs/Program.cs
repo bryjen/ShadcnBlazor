@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Sonner;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
@@ -20,6 +21,8 @@ using TailwindMerge.Extensions;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+builder.RootComponents.RegisterForJavaScript<SonnerComponentHost>(
+    "ShadcnBlazor.Components.Sonner.SonnerComponentHost");
 
 // Pre-render-safe services (called by both pre-render and runtime)
 ConfigureServices(builder.Services, builder.HostEnvironment);
@@ -64,6 +67,7 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
     services.AddScoped<ThemeInterop>();
 
     services.AddScoped<SonnerService>();
+    services.AddScoped<SonnerComponentRegistry>();
 
     // JavaScript interop services (runtime only, skipped during pre-rendering)
     // These require IJSRuntime which is not available during pre-rendering

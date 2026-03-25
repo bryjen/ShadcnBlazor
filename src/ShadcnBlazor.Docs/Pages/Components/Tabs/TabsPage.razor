@@ -8,7 +8,7 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions">
+                 InstallCommand="@InstallCommand">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">
             The Tabs component displays one panel of content at a time.
@@ -55,8 +55,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Tabs");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add tabs",
-    };
+    private const string InstallCommand = "shadcnblazor component add tabs";
 }
+

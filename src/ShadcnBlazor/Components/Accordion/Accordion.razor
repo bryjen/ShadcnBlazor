@@ -4,7 +4,8 @@
 <CascadingValue Value="_context">
     <div
         data-slot="accordion"
-        class="@GetClass()"
+        class="accordion @(GetClass())"
+        @ref="_rootRef"
         @attributes="AdditionalAttributes">
         @ChildContent
     </div>

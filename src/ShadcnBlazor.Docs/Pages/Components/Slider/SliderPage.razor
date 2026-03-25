@@ -9,7 +9,7 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Slider">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for two-way binding.</p>
@@ -31,8 +31,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Slider");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add slider",
-    };
+    private const string InstallCommand = "shadcnblazor component add slider";
 }
+

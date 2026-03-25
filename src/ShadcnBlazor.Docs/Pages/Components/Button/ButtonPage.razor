@@ -9,10 +9,21 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Button">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessible</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Button" />
+
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components.</p>
+        <p class="mb-3">Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components. For icon-only buttons, provide <code>AriaLabel</code> for screen reader users.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonBasicExample })">
             <ButtonBasicExample />
         </ComponentPreview>
@@ -47,8 +58,8 @@
             </ComponentPreview>
         </DocsSubSection>
 
-        <DocsSubSection Title="Icon-only and accessibility" Id="icon-only-accessibility">
-            <p class="mb-3">For icon-only buttons, screen readers need an accessible name. Pass <code>aria-label</code> via <code>AdditionalAttributes</code>—we keep it attribute-only to avoid parameter bloat and stay consistent with HTML.</p>
+        <DocsSubSection Title="Icon-only buttons" Id="icon-only">
+            <p class="mb-3">For icon-only buttons, provide <code>AriaLabel</code> so screen readers announce the button's purpose (e.g., "Delete", "Save", "Toggle menu").</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonIconOnlyExample })">
                 <ButtonIconOnlyExample />
             </ComponentPreview>
@@ -76,19 +87,33 @@
         </DocsSubSection>
 
         <DocsSubSection Title="Button Group" Id="button-group">
-            <p class="mb-3">Use <code>ButtonGroup</code> to group related buttons with shared borders and styling. Set <code>Variant</code> for Default, Outline, Ghost, or other styles. Use <code>Role="toolbar"</code> for toolbar groups. Buttons inside the group share the group's visual style.</p>
+            <p class="mb-3">Use <code>ButtonGroup</code> to group related buttons with shared borders and styling. Set <code>Variant</code> for Default, Outline, Ghost, or other styles. Provide <code>AriaLabel</code> to describe the group's purpose (e.g., "Text formatting", "Pagination"). Use <code>Role="toolbar"</code> for toolbar groups.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonGroupExample })">
                 <ButtonGroupExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p class="mb-3">Icon-only buttons require <code>AriaLabel</code> to describe their action for screen readers. Buttons with visible text don't need AriaLabel unless you want to provide additional context (e.g., "Delete permanently").</p>
+        <p class="mb-3">Loading state sets <code>aria-busy="true"</code> automatically. Disabled state sets <code>aria-disabled="true"</code>. When used as popover or form triggers, proper ARIA attributes are set automatically.</p>
+        <p><code>ButtonGroup</code> should have an <code>AriaLabel</code> describing what the grouped buttons control.</p>
+    </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Button");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add button";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add button",
+        __builder => { <div>ARIA labels for icon-only buttons</div> },
+        __builder => { <div>Loading state with aria-busy automatic announcement</div> },
+        __builder => { <div>Disabled state with proper aria-disabled attribute</div> },
+        __builder => { <div>Popover and form validation ARIA support</div> },
+        __builder => { <div>ButtonGroup with semantic grouping and aria-label</div> },
     };
 }
+

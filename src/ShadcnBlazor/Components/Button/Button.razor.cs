@@ -54,6 +54,13 @@ public partial class Button : ShadcnComponentBase
     [Category("Behavior")]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
+    /// <summary>
+    /// ARIA label for screen readers. Required for icon-only buttons or to provide additional context (e.g., "Delete item", "Submit form").
+    /// </summary>
+    [Parameter]
+    [Category("Accessibility")]
+    public string? AriaLabel { get; set; }
+
     [CascadingParameter]
     private PopoverTriggerContext? PopoverTriggerContext { get; set; }
 

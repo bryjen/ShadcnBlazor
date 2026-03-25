@@ -9,7 +9,7 @@
 @using ShadcnBlazor.Docs.Pages.Components.Dialog.Examples.TwoFile
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.DialogProvider">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">ShadcnBlazor supports two dialog APIs: <strong>imperative</strong> (via <code>IDialogService.Show&lt;T&gt;()</code>) and <strong>declarative</strong> (via <code>DialogRoot</code>, <code>DialogTrigger</code>, <code>DialogContent</code>, etc.). For imperative dialogs, add <code>DialogProvider</code> to your layout, inject <code>IDialogService</code>, and call <code>Show&lt;YourDialogComponent&gt;(title, parameters, options)</code>. The declarative API mirrors shadcn/ui React: nest <code>DialogTrigger</code> and <code>DialogContent</code> inside <code>DialogRoot</code>.</p>
@@ -40,8 +40,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Dialog");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add dialog",
-    };
+    private const string InstallCommand = "shadcnblazor component add dialog";
 }
+

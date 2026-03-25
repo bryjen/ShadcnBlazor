@@ -16,31 +16,31 @@
         <DocsSection Title="Commands" Id="commands">
             <DocsSubSection Title="Root" Id="cli-root">
                 <p class="mb-3">Use the CLI from the project directory.</p>
-                <CommandBlock Options="@_cliRootCommands" Class="mb-4" />
+                <CommandBlock Command="@_cliRootCommand" Class="mb-4" />
                 <CodeBlock CodeFiles="@(new[] { _cliRoot })"/>
             </DocsSubSection>
 
             <DocsSubSection Title="new" Id="cli-new">
                 <p class="mb-3">Creates a new Blazor project from a template.</p>
-                <CommandBlock Options="@_cliNewCommands" Class="mb-4" />
+                <CommandBlock Command="@_cliNewCommand" Class="mb-4" />
                 <CodeBlock CodeFiles="@(new[] { _cliNew })"/>
             </DocsSubSection>
 
             <DocsSubSection Title="repair" Id="cli-repair">
                 <p class="mb-3">Re-add Shared component with overwrite. Use if setup was broken or incomplete.</p>
-                <CommandBlock Options="@_cliRepairCommands" Class="mb-4" />
+                <CommandBlock Command="@_cliRepairCommand" Class="mb-4" />
                 <CodeBlock CodeFiles="@(new[] { _cliRepair })"/>
             </DocsSubSection>
 
             <DocsSubSection Title="component" Id="cli-component">
                 <p class="mb-3">Component management. Shared and its dependencies are added automatically.</p>
-                <CommandBlock Options="@_cliComponentCommands" Class="mb-4" />
+                <CommandBlock Command="@_cliComponentCommand" Class="mb-4" />
                 <CodeBlock CodeFiles="@(new[] { _cliComponent })"/>
             </DocsSubSection>
 
             <DocsSubSection Title="add" Id="add">
                 <p class="mb-3">Adds a component to a project. Runs first-time setup automatically if needed.</p>
-                <CommandBlock Options="@_cliAddCommands" Class="mb-4" />
+                <CommandBlock Command="@_cliAddCommand" Class="mb-4" />
                 <CodeBlock CodeFiles="@(new[] { _cliAdd })"/>
             </DocsSubSection>
         </DocsSection>

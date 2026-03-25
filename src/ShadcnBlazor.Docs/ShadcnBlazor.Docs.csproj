@@ -11,7 +11,7 @@
     <PropertyGroup>
         <BlazorWasmPrerenderingBaseHref>/</BlazorWasmPrerenderingBaseHref>
         <!-- Explicitly list all routes to pre-render (relative to prerenderer server, NOT including base href) -->
-        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/input;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/forms;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/field;/components/input;/components/label;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
     </PropertyGroup>
 
     <ItemGroup>

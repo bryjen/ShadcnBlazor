@@ -7,22 +7,13 @@
 @using ShadcnBlazor.Docs.Pages.Components.Select.Examples
 
 <ComponentDocPage Metadata="@Metadata"
-                  InstallOptions="@InstallOptions"
+                  InstallCommand="@InstallCommand"
                   ApiDoc="@ApiDocumentation.Select">
     <UnderHeader>
         <div class="w-fit">
-            <Tooltip>
-                <Anchor>
-                    <div @onclick="@(_ => NavigateToWaiAriaPage())">
-                        <Badge Size="@Size.Md" Class="cursor-pointer w-full h-full">
-                            <span class="font-semibold">WAI-ARIA Compliant*</span>
-                        </Badge>
-                    </div>
-                </Anchor>
-                <ChildContent>
-                    <span class="text-[0.7rem] text-center text-muted-foreground">Excludes browser and OS-intercepted behaviors*</span>
-                </ChildContent>
-            </Tooltip>
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessibility-friendly</span>
+            </Badge>
         </div>
     </UnderHeader>
     
@@ -49,19 +40,10 @@
 </ComponentDocPage>
 
 @code {
-    [Inject] 
-    public IJSRuntime JsRuntime { get; set; } = null!;
-    
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Select");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add select",
-    };
-    
-    private async Task NavigateToWaiAriaPage() => 
-        await JsRuntime.InvokeVoidAsync("open", "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/", "_blank");
-    
+    private const string InstallCommand = "shadcnblazor component add select";
+
     private List<RenderFragment> Features => new()
     {
         __builder => { <div>Custom rendering (<code>RenderItem</code>) and sizing/layout options (<code>Size</code>, <code>PopoverFitContent</code>, <code>MaxVisibleItems</code>)</div> },
@@ -74,3 +56,4 @@
         __builder => { <div>Placeholder + selected value display</div> },
     };
 }
+

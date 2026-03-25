@@ -1,0 +1,10 @@
+@using ShadcnBlazor.Components.Label
+@inherits ShadcnComponentBase
+
+<Label
+    data-slot="field-label"
+    Class="@GetClass()"
+    For="@ResolvedFor"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</Label>

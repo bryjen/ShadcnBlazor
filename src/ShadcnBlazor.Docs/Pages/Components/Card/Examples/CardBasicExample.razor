@@ -1,9 +1,9 @@
 <Card Class="w-[350px]">
-    <Header>
-        <h3 class="text-lg font-semibold">Login to your account</h3>
-        <p class="text-sm text-muted-foreground">Enter your email below to login to your account</p>
-    </Header>
-    <ChildContent>
+    <CardHeader>
+        <CardTitle>Login to your account</CardTitle>
+        <CardDescription>Enter your email below to login to your account</CardDescription>
+    </CardHeader>
+    <CardContent>
         <div class="space-y-4">
             <div class="space-y-2">
                 <label for="email" class="text-sm font-medium">Email</label>
@@ -17,11 +17,11 @@
                 <Input id="password" Type="password" />
             </div>
         </div>
-    </ChildContent>
-    <Footer>
+    </CardContent>
+    <CardFooter>
         <div class="flex flex-col gap-2 w-full">
             <Button Variant="@Variant.Default" Class="w-full">Login</Button>
             <Button Variant="@Variant.Outline" Class="w-full">Login with Google</Button>
         </div>
-    </Footer>
+    </CardFooter>
 </Card>

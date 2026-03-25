@@ -69,9 +69,9 @@
 
         var merged = new Dictionary<string, object>(StringComparer.Ordinal)
         {
+            ["role"] = "region",
             ["id"] = ItemContext.ContentId,
-            ["aria-labelledby"] = ItemContext.TriggerId,
-            ["aria-hidden"] = IsOpen ? "false" : "true"
+            ["aria-labelledby"] = ItemContext.TriggerId
         };
         if (AdditionalAttributes is not null)
             foreach (var kv in AdditionalAttributes)

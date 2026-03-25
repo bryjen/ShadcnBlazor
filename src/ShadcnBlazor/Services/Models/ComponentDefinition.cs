@@ -18,6 +18,7 @@ public class ComponentDefinition
 
     public enum Tag
     {
+        WorkRequired,
         Alpha,
         Beta
     }

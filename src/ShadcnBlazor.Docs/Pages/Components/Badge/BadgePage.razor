@@ -9,10 +9,21 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Badge">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessible</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Badge" />
+
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> to <code>default</code>, <code>secondary</code>, <code>destructive</code>, <code>outline</code>, or <code>ghost</code>. Set <code>Size</code> for Sm, Md, or Lg.</p>
+        <p class="mb-3">The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> to <code>default</code>, <code>secondary</code>, <code>destructive</code>, <code>outline</code>, or <code>ghost</code>. Set <code>Size</code> for Sm, Md, or Lg. For semantic badges (status, counts), provide <code>AriaLabel</code> for screen readers.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeBasicExample })">
             <BadgeBasicExample />
         </ComponentPreview>
@@ -54,13 +65,26 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p class="mb-3">For semantic badges (status indicators, counts, or labels), provide <code>AriaLabel</code> to ensure screen readers understand the badge's purpose (e.g., "5 unread messages", "In progress").</p>
+        <p class="mb-3">Icon-only badges must have <code>AriaLabel</code>. <code>BadgeLink</code> automatically appends "Opens in new window" to its aria-label when <code>Target="_blank"</code>.</p>
+        <p>For purely decorative badges with visible text, <code>AriaLabel</code> is optional.</p>
+    </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Badge");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add badge";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add badge",
+        __builder => { <div>ARIA labels for semantic and icon-only badges</div> },
+        __builder => { <div>Automatic "opens in new window" warnings on BadgeLink</div> },
+        __builder => { <div>Works with icons and spinners</div> },
+        __builder => { <div>BadgeLink provides keyboard and focus support</div> },
     };
 }
+

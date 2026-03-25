@@ -10,7 +10,7 @@
 @using ShadcnBlazor.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions">
+                 InstallCommand="@InstallCommand">
     <DocsSection Title="Setup" Id="setup">
         <p class="mb-3">Sonner is a toast notification service. Register <code>SonnerService</code> in your service collection and call <code>InitializeAsync()</code> once from a Blazor component to enable action button callbacks.</p>
         <DocsSubSection Title="Service Registration" Id="registration">
@@ -56,8 +56,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Sonner");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add sonner",
-    };
+    private const string InstallCommand = "shadcnblazor component add sonner";
 }
+

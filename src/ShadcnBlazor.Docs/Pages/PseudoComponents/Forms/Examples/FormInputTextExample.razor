@@ -1,0 +1,9 @@
+<Field FieldId="title">
+    <FieldLabel>Title</FieldLabel>
+    <Input id="title" @bind-Value="_title" Placeholder="Short title" />
+    <FieldError />
+</Field>
+
+@code {
+    private string? _title;
+}

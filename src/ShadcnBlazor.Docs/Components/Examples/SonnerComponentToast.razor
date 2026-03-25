@@ -1,0 +1,37 @@
+@namespace ShadcnBlazor.Docs.Components.Examples
+
+<div class="flex flex-col gap-2">
+    <div class="text-sm font-semibold">@Title</div>
+    @if (!string.IsNullOrWhiteSpace(Message))
+    {
+        <div class="text-sm text-muted-foreground">@Message</div>
+    }
+    <div class="flex items-center gap-2 pt-1">
+        <button class="px-2 py-1 text-xs rounded bg-slate-200 text-slate-900 dark:bg-slate-800 dark:text-slate-100"
+                @onclick="Increment">
+            Clicked @_count
+        </button>
+        <button class="px-2 py-1 text-xs rounded bg-blue-600 text-white"
+                @onclick="Confirm">
+            Confirm
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Inline Component";
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+
+    private int _count;
+
+    private void Increment() => _count++;
+
+    private async Task Confirm()
+    {
+        if (OnConfirm.HasDelegate)
+        {
+            await OnConfirm.InvokeAsync();
+        }
+    }
+}

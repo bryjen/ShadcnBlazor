@@ -9,7 +9,7 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Switch">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Switch component is a toggle for boolean on/off values. Use <code>ChildContent</code> for the label. Bind <code>Checked</code> for two-way state, or use <code>CheckedChanged</code> for one-way updates.</p>
@@ -31,8 +31,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Switch");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add switch",
-    };
+    private const string InstallCommand = "shadcnblazor component add switch";
 }
+

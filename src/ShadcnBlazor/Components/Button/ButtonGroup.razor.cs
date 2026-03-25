@@ -21,6 +21,10 @@ public partial class ButtonGroup : ShadcnComponentBase
     [Parameter]
     public Variant Variant { get; set; } = Variant.Outline;
 
+    /// <summary>ARIA label describing the button group's purpose for screen readers (e.g., "Text formatting", "Pagination").</summary>
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
     private string GetClass()
     {
         var baseClasses = "inline-flex items-center overflow-hidden rounded-xl border shadow-xs " +

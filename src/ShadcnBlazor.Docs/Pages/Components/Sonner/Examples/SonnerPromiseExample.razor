@@ -16,9 +16,9 @@
 
     private async Task ShowSuccessPromise()
     {
-        var task = DelayAsync();
-        await Sonner.Promise(
-            task,
+        await Sonner.PromiseAsync(
+            DelayAsync(),
+            "Saving changes...",
             "Changes saved successfully!",
             "Failed to save changes."
         );
@@ -26,19 +26,12 @@
 
     private async Task ShowErrorPromise()
     {
-        var task = FailAsync();
-        try
-        {
-            await Sonner.Promise(
-                task,
-                "Data loaded successfully!",
-                "Failed to load data."
-            );
-        }
-        catch
-        {
-            // Exception expected, promise toast handles it
-        }
+        await Sonner.PromiseAsync(
+            FailAsync(),
+            "Loading data...",
+            "Data loaded successfully!",
+            "Failed to load data."
+        );
     }
 
     private async Task<object> DelayAsync()

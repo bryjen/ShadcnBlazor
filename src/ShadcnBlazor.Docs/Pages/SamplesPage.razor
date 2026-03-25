@@ -65,7 +65,7 @@
         bool disabled = false) => __builder =>
     {
         <div class="@(disabled ? "cursor-not-allowed" : "cursor-pointer")" @onclick="@(_ => NavigateTo(disabled, href))">
-            <Card Size="@CardSize.Sm" Class="group p-2 gap-2">
+            <Card Class="group p-2 gap-2">
                 <div class="size-[10rem] p-7 rounded bg-background rounded-lg flex items-center justify-center transition-all duration-300 @(disabled ? "cursor-not-allowed opacity-50" : "group-hover:bg-primary/15")">
                     @* small ui component *@
                     @item

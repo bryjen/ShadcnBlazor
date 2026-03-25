@@ -8,9 +8,20 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.DataTable">
-    <DocsSection Title="Usage" Id="usage">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessible</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="DataTable" />
+
+        <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">Basic data table with items and columns. Use <code>Items</code> to provide data, <code>Columns</code> to define columns with a <code>Field</code> expression or <code>CellTemplate</code> for custom rendering. Set <code>Hover</code> for row hover effect and <code>Label</code> for accessibility.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableBasicExample })">
             <DataTableBasicExample />
@@ -88,13 +99,29 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+
+        <DocsSection Title="Accessibility" Id="accessibility">
+            <p class="mb-3">DataTable supports keyboard navigation via Grid Mode for fully accessible data exploration. Rows are properly marked with ARIA attributes, and multi-selection uses standard checkbox patterns. Column headers are semantic and sortable indicators announce direction to screen readers.</p>
+            <p class="mb-3">Empty states and loading states are announced, and row click handlers work with keyboard Enter key when in Grid Mode. Use <code>Label</code> to provide an accessible name for the table.</p>
+        </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("DataTable");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add datatable";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add datatable",
+        __builder => { <div>Sortable columns with click-to-sort headers</div> },
+        __builder => { <div>Custom cell templates for flexible rendering</div> },
+        __builder => { <div>Multi-selection with checkboxes and bulk actions</div> },
+        __builder => { <div>Grid mode with keyboard navigation (Arrow, Space, Enter, Home/End)</div> },
+        __builder => { <div>Toolbar for filtering, search, and custom actions</div> },
+        __builder => { <div>Loading states with skeleton rows and empty states</div> },
+        __builder => { <div>Dense, striped, and hover visual variants</div> },
+        __builder => { <div>Async data loading with automatic re-render</div> },
     };
 }
+

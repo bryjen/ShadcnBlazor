@@ -17,6 +17,24 @@ public partial class Alert : ShadcnComponentBase
     /// <summary>The visual style variant of the alert.</summary>
     [Parameter] public AlertVariant Variant { get; set; } = AlertVariant.Default;
 
+    /// <summary>Controls how the alert is announced to assistive technologies.</summary>
+    [Parameter] public AlertAnnouncement Announcement { get; set; } = AlertAnnouncement.Alert;
+
+    private string? AriaRole => Announcement switch
+    {
+        AlertAnnouncement.Alert => "alert",
+        AlertAnnouncement.Status => "status",
+        _ => null,
+    };
+
+    private string? AriaLive => Announcement switch
+    {
+        AlertAnnouncement.Status => "polite",
+        _ => null,
+    };
+
+    private string? AriaAtomic => Announcement == AlertAnnouncement.None ? null : "true";
+
     private string GetClass()
     {
         var baseClasses =
@@ -43,5 +61,20 @@ public enum AlertVariant
 
     /// <summary>Destructive/error styling for alerts or warnings.</summary>
     Destructive,
+}
+
+/// <summary>
+/// Announcement modes for the Alert component.
+/// </summary>
+public enum AlertAnnouncement
+{
+    /// <summary>Announce immediately with an assertive live region.</summary>
+    Alert,
+
+    /// <summary>Announce politely (non-interruptive).</summary>
+    Status,
+
+    /// <summary>No automatic announcement.</summary>
+    None,
 }
 

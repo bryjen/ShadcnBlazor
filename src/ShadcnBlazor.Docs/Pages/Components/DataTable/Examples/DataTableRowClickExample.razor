@@ -1,17 +1,19 @@
 @using ShadcnBlazor.Components.DataTable
 
-<DataTable T="Person" Items="SamplePeople" Hover OnRowClick="OnPersonClick" Label="People — clickable rows">
-    <Columns>
-        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
-        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
-        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" />
-    </Columns>
-</DataTable>
+<div class="flex flex-col gap-4">
+    <DataTable T="Person" Items="SamplePeople" Hover OnRowClick="OnPersonClick" Label="People — clickable rows">
+        <Columns>
+            <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+            <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+            <DataTableColumn T="Person" Title="Status" Field="x => x.Status" />
+        </Columns>
+    </DataTable>
 
-@if (_clickedPerson is not null)
-{
-    <p class="text-sm mt-4">Clicked: <strong>@_clickedPerson.Name</strong> (@_clickedPerson.Email)</p>
-}
+    @if (_clickedPerson is not null)
+    {
+        <p class="text-sm">Clicked: <strong>@_clickedPerson.Name</strong> (@_clickedPerson.Email)</p>
+    }
+</div>
 
 @code {
     private record Person(string Name, string Email, string Status);

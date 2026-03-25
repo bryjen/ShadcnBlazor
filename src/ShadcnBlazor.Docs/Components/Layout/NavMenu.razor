@@ -1,6 +1,11 @@
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using ShadcnBlazor.Services.Models
+
 @inherits ShadcnComponentBase
+
 @implements IDisposable
+
+@inject IWebAssemblyHostEnvironment Environment
 
 <div class="relative pt-20 pb-64 px-12 w-full h-screen-minus-header w-max-full flex flex-col gap-12 overflow-x-hidden overflow-y-scroll scrollbar-hide">
 
@@ -87,17 +92,22 @@
         var spanClass = active
             ? "bg-accent text-white rounded-md px-2 py-1"
             : "text-foreground/70 group-hover:bg-accent group-hover:text-white rounded-md px-2 py-1 transition-colors";
+
+        var tagsToIter = Environment.IsProduction()
+            ? tags.Where(tag => tag is not ComponentDefinition.Tag.WorkRequired)
+            : tags;
         <a class="w-full inline-flex items-center justify-start h-7 gap-1.5 px-2 font-semibold text-sm antialiased group"
            href="@href"
            @onclick="@(_ => HandleNav(href))"
            @onclick:preventDefault="true">
             <span class="@spanClass">@text</span>
-            @foreach(var tag in tags)
+            @foreach(var tag in tagsToIter)
             {
 #pragma warning disable CS8524 // The switch expression does not handle some values of its input type (it is not exhaustive) involving an unnamed enum value.
                 var classes = tag switch {
                     ComponentDefinition.Tag.Alpha => "bg-secondary/25",
                     ComponentDefinition.Tag.Beta => "bg-primary/25",
+                    ComponentDefinition.Tag.WorkRequired => "bg-destructive/25 text-destructive",
                 };
                 <Badge Size="@Size.Sm" Class="@(MergeCss(classes))">
                     @(tag.ToString().ToLower())

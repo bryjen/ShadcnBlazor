@@ -9,8 +9,19 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Accordion">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessibility-friendly</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Accordion" />
+
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionBasicExample })">
@@ -54,13 +65,23 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Accordion");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add accordion";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add accordion",
+        __builder => { <div>Single or multiple open items (<code>AccordionType.Single</code>/<code>AccordionType.Multiple</code>)</div> },
+        __builder => { <div>Controlled/uncontrolled state (<code>Value</code>, <code>Values</code>, <code>ValueChanged</code>, <code>ValuesChanged</code>)</div> },
+        __builder => { <div>Optional non-collapsible single mode (<code>Collapsible="false"</code>)</div> },
+        __builder => { <div>Full keyboard support (Arrow keys, Home/End)</div> },
+        __builder => { <div>WAI-ARIA compliant structure (heading + button + region)</div> },
+        __builder => { <div>Disabled items support</div> },
+        __builder => { <div>Works seamlessly in cards and layout containers</div> },
     };
 }
+

@@ -21,7 +21,7 @@
 
     <DocsSection Title="Installation" Id="installation">
         <p class="mb-3">Add the @Metadata.Name component using the CLI:</p>
-        <CommandBlock Options="@InstallOptions" DefaultOption="@DefaultInstallOption" />
+        <CommandBlock Command="@InstallCommand" />
     </DocsSection>
 
     @ChildContent
@@ -44,10 +44,7 @@
     public ComponentMetadata Metadata { get; set; } = null!;
 
     [Parameter, EditorRequired]
-    public IReadOnlyDictionary<string, string> InstallOptions { get; set; } = null!;
-
-    [Parameter]
-    public string DefaultInstallOption { get; set; } = "shell";
+    public string InstallCommand { get; set; } = string.Empty;
 
     [Parameter]
     public DocumentedType? ApiDoc { get; set; }

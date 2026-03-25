@@ -36,7 +36,7 @@
                     First, make sure you have the <code>shadcnblazor</code> CLI tool installed. If you don't have it yet, you can install it globally using the command provided below:
                 </p>
 
-                <CommandBlock Options="@InstallOptions" DefaultOption="@("shell")"/>
+                <CommandBlock Command="@InstallCommand" />
             </div>
 
             <DocsSubSection Title="From New Project" Id="installation-new">
@@ -48,11 +48,11 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Use the <code>new</code> command to scaffold a Blazor project from a template. Specify <code>--wasm</code> for WebAssembly standalone or <code>--server</code> for Blazor Server with global interactivity.
                                 </span>
-                                <CommandBlock Options="@NewProject1" DefaultOption="@("shell")"/>
+                                <CommandBlock Command="@NewProjectCommand1" />
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Use <code>-o</code> or <code>--out</code> to specify an output directory. By default, the project is created in <code>./{proj}</code>.
                                 </span>
-                                <CommandBlock Options="@NewProject1WithOut" DefaultOption="@("shell")"/>
+                                <CommandBlock Command="@NewProjectCommand1WithOut" />
                             </div>)
 
                         @RenderStep(2,
@@ -61,12 +61,12 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Navigate into the project directory and add components.
                                 </span>
-                                <CommandBlock Options="@NewProject2" DefaultOption="@("shell")"/>
+                                <CommandBlock Command="@NewProjectCommand2" />
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
                                     If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
                                 </span>
-                                <CommandBlock Options="@NewProject3" DefaultOption="@("shell")"/>
+                                <CommandBlock Command="@NewProjectCommand3" />
                             </div>)
                     </div>
                 </div>
@@ -108,12 +108,12 @@
                                 <span class="text-[0.9rem] leading-relaxed text-foreground/85">
                                     Navigate into your existing Blazor project directory and run <code>component add</code>. Setup (Shared folder, CSS/JS assets, TailwindMerge) runs automatically on first add.
                                 </span>
-                                <CommandBlock Options="@InitExisting1" DefaultOption="@("shell")"/>
+                                <CommandBlock Command="@InitExistingCommand1" />
 
                                 <span class="mt-4 text-[0.9rem] leading-relaxed text-foreground/85">
                                     If you wish to add <span class="font-bold uppercase">all</span> components at once (doesn't include samples), you can do that like so:
                                 </span>
-                                <CommandBlock Options="@InitExisting3" DefaultOption="@("shell")"/>
+                                <CommandBlock Command="@InitExistingCommand3" />
                             </div>)
                     </div>
                 </div>
@@ -136,38 +136,11 @@
         </div>
     };
     
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "dotnet tool install --global ShadcnBlazor.Cli",
-    };
-    
-    private static readonly Dictionary<string, string> NewProject1 = new()
-    {
-        ["shell"] = "shadcnblazor new --wasm --proj MyApp",
-    };
-
-    private static readonly Dictionary<string, string> NewProject1WithOut = new()
-    {
-        ["shell"] = "shadcnblazor new --server --proj MyApp -o ./projects",
-    };
-
-    private static readonly Dictionary<string, string> InitExisting1 = new()
-    {
-        ["shell"] = "shadcnblazor component add button",
-    };
-
-    private static readonly Dictionary<string, string> NewProject2 = new()
-    {
-        ["shell"] = "shadcnblazor component add button",
-    };
-
-    private static readonly Dictionary<string, string> NewProject3 = new()
-    {
-        ["shell"] = "shadcnblazor component add --all",
-    };
-
-    private static readonly Dictionary<string, string> InitExisting3 = new()
-    {
-        ["shell"] = "shadcnblazor component add --all",
-    };
+    private const string InstallCommand = "dotnet tool install --global ShadcnBlazor.Cli";
+    private const string NewProjectCommand1 = "shadcnblazor new --wasm --proj MyApp";
+    private const string NewProjectCommand1WithOut = "shadcnblazor new --server --proj MyApp -o ./projects";
+    private const string InitExistingCommand1 = "shadcnblazor component add button";
+    private const string NewProjectCommand2 = "shadcnblazor component add button";
+    private const string NewProjectCommand3 = "shadcnblazor component add --all";
+    private const string InitExistingCommand3 = "shadcnblazor component add --all";
 }

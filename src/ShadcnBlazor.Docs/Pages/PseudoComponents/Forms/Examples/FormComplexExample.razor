@@ -1,0 +1,70 @@
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@_model" OnValidSubmit="@HandleSubmit" novalidate>
+    <DataAnnotationsValidator />
+
+    <FieldSet>
+        <FieldLegend>Bug report</FieldLegend>
+        <FieldDescription>Tell us what went wrong so we can fix it.</FieldDescription>
+
+        <FieldGroup>
+            <Field For="() => _model.Title" FieldId="bug-title">
+                <FieldLabel>Title</FieldLabel>
+                <Input id="bug-title" @bind-Value="_model.Title" Placeholder="Short summary" />
+                <FieldError />
+            </Field>
+
+            <Field For="() => _model.Description" FieldId="bug-description">
+                <FieldLabel>Description</FieldLabel>
+                <Textarea id="bug-description" Rows="4" @bind-Value="_model.Description" Placeholder="Steps to reproduce" />
+                <FieldError />
+            </Field>
+
+            <Field For="() => _model.Priority" FieldId="priority">
+                <FieldLabel>Priority</FieldLabel>
+                <InputSelect id="priority" class="w-full border border-input rounded-md px-3 py-2 text-sm"
+                             @bind-Value="_model.Priority">
+                    <option value="">Select a priority</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </InputSelect>
+                <FieldError />
+            </Field>
+
+            <Field FieldId="notifications">
+                <FieldLabel>Notifications</FieldLabel>
+                <Switch id="notifications" @bind-Checked="_model.Notifications" />
+                <FieldDescription>Send updates when the issue changes.</FieldDescription>
+            </Field>
+        </FieldGroup>
+    </FieldSet>
+
+    <div class="mt-4">
+        <Button Type="ButtonType.Submit">Submit</Button>
+    </div>
+</EditForm>
+
+@code {
+    private readonly BugReportModel _model = new();
+
+    private void HandleSubmit()
+    {
+    }
+
+    private sealed class BugReportModel
+    {
+        [Required]
+        [StringLength(80, MinimumLength = 5)]
+        public string? Title { get; set; }
+
+        [Required]
+        [StringLength(1000, MinimumLength = 20)]
+        public string? Description { get; set; }
+
+        [Required]
+        public string? Priority { get; set; }
+
+        public bool Notifications { get; set; }
+    }
+}

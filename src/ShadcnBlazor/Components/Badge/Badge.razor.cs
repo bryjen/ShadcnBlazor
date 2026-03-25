@@ -23,6 +23,10 @@ public partial class Badge : ShadcnComponentBase
     [Parameter]
     public Size Size { get; set; } = Size.Md;
 
+    /// <summary>ARIA label for screen readers. Required for icon-only or semantic badges (e.g., "5 unread messages", "In progress").</summary>
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
     private string GetClass()
     {
         var baseClasses = "inline-flex items-center justify-center rounded-full border w-fit whitespace-nowrap shrink-0 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all duration-200 overflow-hidden";

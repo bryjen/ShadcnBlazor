@@ -1,9 +1,26 @@
-<Card Size="@CardSize.Sm" Class="w-[350px]">
-    <Header>
-        <h3 class="text-lg font-semibold">Small Card</h3>
-        <p class="text-sm text-muted-foreground">This card uses the small size variant.</p>
-    </Header>
-    <ChildContent>
-        <p class="text-sm text-muted-foreground">The card component supports a size prop that can be set to "sm" for a more compact appearance.</p>
-    </ChildContent>
-</Card>
+<div class="flex flex-col gap-6 w-fit">
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Compact card (custom spacing)</p>
+        <Card Class="w-[350px] gap-3 py-3">
+            <CardHeader>
+                <CardTitle Class="text-base">Compact header</CardTitle>
+                <CardDescription Class="text-xs">Smaller, tighter spacing</CardDescription>
+            </CardHeader>
+            <CardContent Class="px-3">
+                <p class="text-sm text-muted-foreground">Content with reduced padding.</p>
+            </CardContent>
+        </Card>
+    </div>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Spacious card (custom spacing)</p>
+        <Card Class="w-[350px] gap-8 py-8">
+            <CardHeader>
+                <CardTitle>Spacious header</CardTitle>
+                <CardDescription>More generous spacing</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Content with extra padding.</p>
+            </CardContent>
+        </Card>
+    </div>
+</div>

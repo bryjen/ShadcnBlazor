@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Accordion;
@@ -8,7 +9,7 @@ namespace ShadcnBlazor.Components.Accordion;
 /// A vertically stacked set of interactive headings that each reveal a section of content.
 /// Use with <see cref="AccordionItem"/>, <see cref="AccordionTrigger"/>, and <see cref="AccordionContent"/>.
 /// </summary>
-public partial class Accordion : ShadcnComponentBase
+public partial class Accordion : ShadcnComponentBase, IAsyncDisposable
 {
     /// <summary>
     /// The content of the accordion, typically one or more <see cref="AccordionItem"/> components.
@@ -87,6 +88,8 @@ public partial class Accordion : ShadcnComponentBase
     private string? _localValue;
     private HashSet<string> _localValues = [];
     private AccordionContext _context = null!;
+    private ElementReference _rootRef;
+    private IJSObjectReference? _jsModule;
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -103,6 +106,35 @@ public partial class Accordion : ShadcnComponentBase
             _localValue = Value;
         if (Type == AccordionType.Multiple && IsControlledMultiple)
             _localValues = Values?.ToHashSet(StringComparer.Ordinal) ?? [];
+    }
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "/_content/ShadcnBlazor/Components/Accordion/Accordion.razor.js");
+            await _jsModule.InvokeVoidAsync("initialize", _rootRef);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_jsModule is not null)
+        {
+            try
+            {
+                await _jsModule.InvokeVoidAsync("destroy", _rootRef);
+                await _jsModule.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore if the JS runtime is already gone.
+            }
+        }
     }
 
     private bool IsControlledSingle => ValueChanged.HasDelegate;

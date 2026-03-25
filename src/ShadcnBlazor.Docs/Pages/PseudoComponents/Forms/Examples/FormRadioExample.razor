@@ -1,0 +1,16 @@
+<Field FieldId="visibility">
+    <FieldLabel>Visibility</FieldLabel>
+    <InputRadioGroup class="flex flex-col gap-2" @bind-Value="_visibility">
+        <label class="flex items-center gap-2 text-sm">
+            <InputRadio Value="@("public")" /> Public
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+            <InputRadio Value="@("private")" /> Private
+        </label>
+    </InputRadioGroup>
+    <FieldError />
+</Field>
+
+@code {
+    private string _visibility = "public";
+}

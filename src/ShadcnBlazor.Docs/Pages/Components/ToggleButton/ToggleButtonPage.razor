@@ -8,7 +8,7 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.ToggleButton">
     <DocsSection Title="Usage" Id="usage">
         <p class="mb-3">A button that toggles between two visual states (on/off). Uses <code>Button</code> internally. Bind <code>IsToggled</code> for two-way state, or use <code>IsToggledChanged</code> for one-way updates. Set <code>VariantUntoggled</code> and <code>VariantToggled</code> for the two states.</p>
@@ -30,8 +30,6 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("ToggleButton");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add togglebutton",
-    };
+    private const string InstallCommand = "shadcnblazor component add togglebutton";
 }
+

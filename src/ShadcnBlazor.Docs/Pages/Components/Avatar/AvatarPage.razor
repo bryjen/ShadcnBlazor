@@ -9,10 +9,21 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Avatar">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessible</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Avatar" />
+
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg.</p>
+        <p class="mb-3">The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg. For screen reader accessibility, provide an <code>AriaLabel</code> when displaying fallback content (e.g., initials).</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBasicExample })">
             <AvatarBasicExample />
         </ComponentPreview>
@@ -54,13 +65,27 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p class="mb-3"><code>Avatar</code> components automatically set <code>role="img"</code> when displaying fallback content (initials or custom content). For screen readers, provide <code>AriaLabel</code> with a descriptive label (e.g., "Profile picture of Jane Smith"). When using <code>AvatarBadge</code>, set its <code>AriaLabel</code> to describe the status (e.g., "Online").</p>
+        <p class="mb-3">For interactive avatars (buttons, dropdowns), wrap the Avatar in a <code>&lt;button&gt;</code> or use it as a trigger with interactive components for proper keyboard navigation and focus management.</p>
+        <p><code>AvatarGroup</code> with multiple avatars should include an <code>AriaLabel</code> describing the collection (e.g., "Team members", "Assignees").</p>
+    </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Avatar");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add avatar";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add avatar",
+        __builder => { <div>Automatic image fallback with accessible alt text</div> },
+        __builder => { <div>ARIA labels for fallback content and semantic avatars</div> },
+        __builder => { <div>Status badges with role="status" and aria-label support</div> },
+        __builder => { <div>Avatar groups with role="group" for accessible collections</div> },
+        __builder => { <div>Works with dropdowns and interactive elements</div> },
     };
 }
+

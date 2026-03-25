@@ -15,6 +15,7 @@ public class ComponentRegistryService
 {
     private static readonly ComponentDefinition[] PseudoComponents =
     [
+        new() { Name = "Forms", Description = "How to build forms with EditForm, Field, and validation." },
         new() { Name = "Icons", Description = "Icon usage with Lucide or other icon libraries." },
         new() { Name = "Typography", Description = "Text styling and typography utilities." },
     ];

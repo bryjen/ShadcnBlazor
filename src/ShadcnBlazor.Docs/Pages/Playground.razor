@@ -1,4 +1,6 @@
 @page "/playground"
+@using Microsoft.AspNetCore.Components
+@using ShadcnBlazor.Docs.Components.Examples
 @using ShadcnBlazor.Services
 @inject SonnerService Sonner
 
@@ -17,25 +19,25 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                     class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
-                    @onclick="() => Sonner.Show('This is a basic notification')">
+                    @onclick="ShowBasicToast">
                     Show Toast
                 </button>
 
                 <button
                     class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors"
-                    @onclick="() => Sonner.Success('Operation completed successfully!')">
+                    @onclick="ShowSuccessToast">
                     Success
                 </button>
 
                 <button
                     class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
-                    @onclick="() => Sonner.Error('An error occurred. Please try again.')">
+                    @onclick="ShowErrorToast">
                     Error
                 </button>
 
                 <button
                     class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-colors"
-                    @onclick="() => Sonner.Warning('Be careful with this action.')">
+                    @onclick="ShowWarningToast">
                     Warning
                 </button>
             </div>
@@ -75,6 +77,44 @@
             </div>
         </section>
 
+        <!-- Promise Toasts -->
+        <section class="space-y-4">
+            <h2 class="text-xl font-semibold">Promise Toasts</h2>
+            <p class="text-sm text-muted-foreground">
+                Track async operations with automatic loading, success, and error states
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                    class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowPromiseToast">
+                    Async Operation (Success)
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowPromiseErrorToast">
+                    Async Operation (Error)
+                </button>
+            </div>
+        </section>
+
+        <!-- Component Toasts -->
+        <section class="space-y-4">
+            <h2 class="text-xl font-semibold">Component Toasts</h2>
+            <p class="text-sm text-muted-foreground">
+                Render full Blazor components or RenderFragments inside toasts
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                    class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowComponentToast">
+                    Component Toast
+                </button>
+            </div>
+        </section>
+
         <!-- Info Box -->
         <div class="bg-slate-100 dark:bg-slate-900 rounded-lg p-4">
             <h3 class="font-semibold text-sm mb-2">Features</h3>
@@ -85,6 +125,7 @@
                 <li>✓ Action buttons with C# callbacks</li>
                 <li>✓ Dismiss individual or all toasts</li>
                 <li>✓ Icon-based notifications (success, error, warning, info)</li>
+                <li>✓ RenderFragment and component toasts with full interactivity</li>
             </ul>
         </div>
     </div>
@@ -95,6 +136,14 @@
     {
         await Sonner.InitializeAsync();
     }
+
+    private async Task ShowBasicToast() => await Sonner.Show("This is a basic notification");
+
+    private async Task ShowSuccessToast() => await Sonner.Success("Operation completed successfully!");
+
+    private async Task ShowErrorToast() => await Sonner.Error("An error occurred. Please try again.");
+
+    private async Task ShowWarningToast() => await Sonner.Warning("Be careful with this action.");
 
     private async Task ShowUndoToast()
     {
@@ -139,5 +188,55 @@
             else
                 await Sonner.Show(msg);
         }
+    }
+
+    private async Task ShowPromiseToast()
+    {
+        await Sonner.PromiseAsync(
+            SimulateAsyncOperation(2000),
+            "Processing your request...",
+            "Operation completed successfully!",
+            "Something went wrong during processing"
+        );
+    }
+
+    private async Task ShowPromiseErrorToast()
+    {
+        await Sonner.PromiseAsync(
+            SimulateAsyncOperationWithError(2000),
+            "Processing your request...",
+            "Operation completed successfully!",
+            "Operation failed as expected"
+        );
+    }
+
+    private async Task<string> SimulateAsyncOperation(int delayMs)
+    {
+        await Task.Delay(delayMs);
+        return "Success";
+    }
+
+    private async Task<string> SimulateAsyncOperationWithError(int delayMs)
+    {
+        await Task.Delay(delayMs);
+        throw new Exception("Simulated error");
+    }
+
+    private async Task ShowComponentToast()
+    {
+        var parameters = new Dictionary<string, object?>
+        {
+            ["Title"] = "Headless Blazor Toast",
+            ["Message"] = "Custom layout using toast.custom with Sonner animations.",
+            ["ButtonLabel"] = "Reply",
+            ["OnConfirm"] = EventCallback.Factory.Create(this, OnComponentConfirmed)
+        };
+
+        await Sonner.ShowHeadlessAsync<SonnerHeadlessToast>(parameters);
+    }
+
+    private async Task OnComponentConfirmed()
+    {
+        await Sonner.Success("Component confirmed!");
     }
 }

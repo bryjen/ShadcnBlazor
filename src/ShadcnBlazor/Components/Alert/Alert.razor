@@ -2,7 +2,9 @@
 
 <div 
     data-slot="alert"
-    role="alert"
+    role="@AriaRole"
+    aria-live="@AriaLive"
+    aria-atomic="@AriaAtomic"
     class="@GetClass()"
     @attributes="AdditionalAttributes">
     @ChildContent

@@ -1,19 +1,21 @@
 @using ShadcnBlazor.Components.DataTable
 @using ShadcnBlazor.Components.Button
 
-<div class="mb-2">
-    <Button Variant="Variant.Outline" OnClick="@(() => _isLoading = !_isLoading)">
-        @(_isLoading ? "Stop Loading" : "Start Loading")
-    </Button>
-</div>
+<div class="flex flex-col gap-4">
+    <div>
+        <Button Variant="Variant.Outline" OnClick="@(() => _isLoading = !_isLoading)">
+            @(_isLoading ? "Stop Loading" : "Start Loading")
+        </Button>
+    </div>
 
-<DataTable T="Person" Items="SamplePeople" IsLoading="_isLoading" Hover Label="People — loading demo">
-    <Columns>
-        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name" />
-        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
-        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" />
-    </Columns>
-</DataTable>
+    <DataTable T="Person" Items="SamplePeople" IsLoading="_isLoading" Hover Label="People — loading demo">
+        <Columns>
+            <DataTableColumn T="Person" Title="Name"   Field="x => x.Name" />
+            <DataTableColumn T="Person" Title="Email"  Field="x => x.Email" />
+            <DataTableColumn T="Person" Title="Status" Field="x => x.Status" />
+        </Columns>
+    </DataTable>
+</div>
 
 @code {
     private record Person(string Name, string Email, string Status);

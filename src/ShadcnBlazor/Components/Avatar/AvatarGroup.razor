@@ -2,6 +2,8 @@
 
 <div
     data-slot="avatar-group"
+    role="group"
+    aria-label="@AriaLabel"
     class="@GetClass()"
     @attributes="AdditionalAttributes">
     @ChildContent
@@ -10,6 +12,8 @@
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public Size Size { get; set; } = Size.Md;
+    /// <summary>ARIA label describing the group of avatars for screen readers (e.g. "Team members", "Assignees").</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     private string GetOverlapClass() => Size switch
     {
