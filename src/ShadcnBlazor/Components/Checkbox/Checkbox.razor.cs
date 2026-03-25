@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Enums;
 using TailwindMerge;
@@ -10,7 +14,7 @@ namespace ShadcnBlazor.Components.Checkbox;
 /// <summary>
 /// Checkbox input for boolean or multi-select form values.
 /// </summary>
-public partial class Checkbox : ShadcnComponentBase
+public partial class Checkbox : ShadcnComponentBase, IDisposable
 {
     /// <summary>
     /// Content to display alongside the checkbox (e.g., label).
@@ -19,16 +23,22 @@ public partial class Checkbox : ShadcnComponentBase
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
-    /// Whether the checkbox is checked.
+    /// The current value of the checkbox.
     /// </summary>
     [Parameter]
-    public bool Checked { get; set; }
+    public bool Value { get; set; }
 
     /// <summary>
-    /// Callback invoked when the checked state changes.
+    /// Callback invoked when the value changes.
     /// </summary>
     [Parameter]
-    public EventCallback<bool> CheckedChanged { get; set; }
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Expression identifying the bound field (required for EditForm validation).
+    /// </summary>
+    [Parameter]
+    public Expression<Func<bool>>? ValueExpression { get; set; }
 
     /// <summary>
     /// The size of the checkbox.
@@ -54,6 +64,36 @@ public partial class Checkbox : ShadcnComponentBase
     [Parameter]
     public bool Invalid { get; set; }
 
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+
+    private EditContext? _subscribedEditContext;
+
+    private FieldIdentifier FieldIdentifier => ValueExpression is null ? default : FieldIdentifier.Create(ValueExpression);
+
+    private bool HasValidationMessages => EditContext is not null &&
+                                         ValueExpression is not null &&
+                                         EditContext.GetValidationMessages(FieldIdentifier).Any();
+
+    internal bool IsInvalid => Invalid || HasValidationMessages;
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && ValueExpression is null)
+            throw new InvalidOperationException($"{GetType()} requires a value for the 'ValueExpression' parameter when used inside an EditForm.");
+
+        if (!ReferenceEquals(_subscribedEditContext, EditContext))
+        {
+            if (_subscribedEditContext is not null)
+                _subscribedEditContext.OnValidationStateChanged -= HandleValidationStateChanged;
+
+            _subscribedEditContext = EditContext;
+
+            if (_subscribedEditContext is not null)
+                _subscribedEditContext.OnValidationStateChanged += HandleValidationStateChanged;
+        }
+    }
+
     private string GetLabelClass()
     {
         var alignmentClass = Alignment switch
@@ -63,7 +103,7 @@ public partial class Checkbox : ShadcnComponentBase
             VerticalAlignment.Bottom => "items-end",
             _ => "items-center",
         };
-        var invalidClass = Invalid ? "data-[invalid]:text-destructive" : "";
+        var invalidClass = IsInvalid ? "data-[invalid]:text-destructive" : "";
         var disabledClass = Disabled ? "data-[disabled]:text-muted-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70" : "";
         return MergeCss("flex gap-2 cursor-pointer", alignmentClass, invalidClass, disabledClass);
     }
@@ -97,7 +137,7 @@ public partial class Checkbox : ShadcnComponentBase
 
     private string GetIndicatorClass()
     {
-        if (Checked)
+        if (Value)
         {
             return "grid place-content-center size-full text-current animate-in zoom-in-50 fade-in-0 duration-200";
         }
@@ -109,16 +149,29 @@ public partial class Checkbox : ShadcnComponentBase
 
     private string GetAriaChecked()
     {
-        return Checked ? "true" : "false";
+        return Value ? "true" : "false";
     }
 
     private async Task HandleClick()
     {
         if (!Disabled)
         {
-            Checked = !Checked;
-            await CheckedChanged.InvokeAsync(Checked);
+            Value = !Value;
+            await ValueChanged.InvokeAsync(Value);
+            if (EditContext is not null && ValueExpression is not null)
+                EditContext.NotifyFieldChanged(FieldIdentifier);
         }
+    }
+
+    private void HandleValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (_subscribedEditContext is not null)
+            _subscribedEditContext.OnValidationStateChanged -= HandleValidationStateChanged;
     }
 }
 

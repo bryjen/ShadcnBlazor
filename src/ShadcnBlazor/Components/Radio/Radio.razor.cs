@@ -34,12 +34,6 @@ public partial class Radio : RadioSelectableComponentBase
     [Parameter]
     public VerticalAlignment Alignment { get; set; } = VerticalAlignment.Center;
 
-    /// <summary>
-    /// Whether the radio is in an invalid state. When true, sets <c>aria-invalid="true"</c> and applies invalid styling.
-    /// </summary>
-    [Parameter]
-    public bool Invalid { get; set; }
-
     private string GetContainerClass()
     {
         var alignmentClass = Alignment switch
@@ -49,7 +43,7 @@ public partial class Radio : RadioSelectableComponentBase
             VerticalAlignment.Bottom => "items-end",
             _ => "items-center",
         };
-        var invalidClass = Invalid ? "data-[invalid]:text-destructive" : "";
+        var invalidClass = IsInvalid ? "data-[invalid]:text-destructive" : "";
         var disabledClass = IsDisabled ? "data-[disabled]:text-muted-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70" : "";
         return MergeCss("flex gap-2 cursor-pointer", alignmentClass, invalidClass, disabledClass, Class);
     }

@@ -4,6 +4,7 @@
     <div
         role="radiogroup"
         data-slot="radio-group"
+        data-invalid="@(IsInvalid ? "true" : null)"
         class="@GetClass()"
         @attributes="AdditionalAttributes">
         @ChildContent

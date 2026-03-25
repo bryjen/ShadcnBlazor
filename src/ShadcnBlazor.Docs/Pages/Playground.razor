@@ -1,5 +1,6 @@
 @page "/playground"
 @using Microsoft.AspNetCore.Components
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 @using ShadcnBlazor.Docs.Components.Examples
 @using ShadcnBlazor.Services
 @inject SonnerService Sonner
@@ -12,6 +13,14 @@
             <h1 class="text-3xl font-bold tracking-tight">Sonner Toast Notifications</h1>
             <p class="text-muted-foreground mt-2">Beautiful, accessible toast notifications with Blazor.</p>
         </div>
+
+        <section class="space-y-4">
+            <h2 class="text-xl font-semibold">Code Block Line Highlighting</h2>
+            <p class="text-sm text-muted-foreground">
+                Use the <code>HighlightedLines</code> parameter to emphasize specific lines.
+            </p>
+            <CodeBlock CodeFiles="@(new[] { _highlightExample })" HighlightedLines="4-6,10" />
+        </section>
 
         <!-- Basic Toasts -->
         <section class="space-y-4">
@@ -239,4 +248,18 @@
     {
         await Sonner.Success("Component confirmed!");
     }
+
+    private static readonly CodeFile _highlightExample = CodeFile.Create(
+        "<Field For=\"() => model.Title\" FieldId=\"title\">\n" +
+        "    <FieldLabel>Title</FieldLabel>\n" +
+        "    <Input id=\"title\" @bind-Value=\"model.Title\" Placeholder=\"Login button not working on mobile when switching themes\" AutoComplete=\"off\" />\n" +
+        "    <FieldDescription>Short and descriptive with enough context to test horizontal scrolling in the code block.</FieldDescription>\n" +
+        "    <FieldError />\n" +
+        "</Field>\n\n" +
+        "<Field For=\"() => model.Description\" FieldId=\"description\">\n" +
+        "    <FieldLabel>Description</FieldLabel>\n" +
+        "    <Textarea id=\"description\" Rows=\"4\" @bind-Value=\"model.Description\" Placeholder=\"Steps to reproduce: open the settings modal, toggle dark mode twice, then click the primary action button\" />\n" +
+        "    <FieldError />\n" +
+        "</Field>\n",
+        "razor", "Example.razor");
 }

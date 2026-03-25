@@ -1,4 +1,5 @@
 @page "/components/forms"
+
 @using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 @using ShadcnBlazor.Docs.Pages.PseudoComponents.Forms.Examples
 
@@ -12,7 +13,15 @@
     <div class="flex flex-col gap-1">
         <h1 class="text-3xl font-bold">Forms</h1>
         <p class="text-base text-muted-foreground">
-            Build forms in Blazor using <code>EditForm</code>, <code>DataAnnotationsValidator</code>, and our <a href="/components/field" class="text-primary hover:underline">Field</a> component family.
+            Build forms in Blazor using EditForm.
+        </p>
+    </div>
+
+    <div class="w-full text-[0.9rem] leading-[1.75] text-foreground/85">
+        <p class="mb-3">
+            Unlike most other component libraries, we do not ship a forms abstraction.
+            Rather, we recommend using Blazor's built-in <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/" target="_blank"><code class="text-[oklch(from_var(--primary)_calc(l_+_0.1)_c_h)] bg-card">EditForm</code></a> component, in tandem with our own <code>&lt;Field/&gt;</code> components.
+            This allows vendor-agnostic validation and logic on top our styled and accessible components.
         </p>
     </div>
 
@@ -124,7 +133,7 @@
         </DocsSubSection>
 
         <DocsSubSection Title="Checkbox list" Id="input-checkbox">
-            <p class="mb-3">For a list, manage a collection manually since <code>@@bind-Value</code> only handles a single <code>bool</code>.</p>
+            <p class="mb-3">Use <code>Checkbox</code> with <code>@@bind-Value</code> for form validation. For a list, manage a collection manually since <code>@@bind-Value</code> only handles a single <code>bool</code>.</p>
             <ul class="list-disc list-inside space-y-1 text-sm text-foreground/85 mb-3">
                 <li>Keep a <code>List&lt;T&gt;</code> or <code>HashSet&lt;T&gt;</code> of selected values.</li>
                 <li>Toggle items on change.</li>
@@ -135,9 +144,9 @@
         </DocsSubSection>
 
         <DocsSubSection Title="Radio group" Id="input-radio">
-            <p class="mb-3">Use <code>InputRadioGroup</code> with <code>InputRadio</code> children.</p>
+            <p class="mb-3">Use <code>RadioGroup</code> with <code>Radio</code> children. It plugs into <code>EditForm</code> when bound with <code>@@bind-Value</code>.</p>
             <ul class="list-disc list-inside space-y-1 text-sm text-foreground/85 mb-3">
-                <li>Bind the group with <code>@@bind-Value</code>.</li>
+                <li>Bind the group with <code>@@bind-Value</code> for form validation.</li>
                 <li>Each radio sets its own <code>Value</code>.</li>
             </ul>
             <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormRadioExample })">

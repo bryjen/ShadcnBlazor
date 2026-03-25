@@ -29,6 +29,9 @@
         }
     }
 
+    a {
+        color: oklch(from var(--primary) calc(l + 0.1) c h);
+    }
 
     h1:focus {
         outline: none;

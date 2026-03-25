@@ -119,12 +119,34 @@
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     padding: 1rem !important;
 }
+.docs-codeblock-pre {
+    position: relative;
+}
+.docs-codeblock-line-highlights {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.docs-codeblock-line-highlight {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+}
 .docs-codeblock pre code {
     background: transparent !important;
     color: #d4d4d4;
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-weight: 400;
     white-space: pre;
+}
+.docs-codeblock-code {
+    position: relative;
+    z-index: 1;
+}
+.docs-codeblock-linenos {
+    position: relative;
+    z-index: 1;
 }
 /* Override github-dark.min.css padding - p-4 equivalent (1rem). Scoped to docs-codeblock only. */
 .docs-codeblock pre code.hljs {
