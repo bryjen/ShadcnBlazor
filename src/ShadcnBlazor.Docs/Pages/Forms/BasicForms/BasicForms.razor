@@ -1,8 +1,8 @@
-@page "/components/forms"
+@page "/forms/basic"
 
 @using ShadcnBlazor.Docs.Components.Docs.CodeBlock
-@using ShadcnBlazor.Docs.Pages.PseudoComponents.Forms.Examples
-@using ShadcnBlazor.Docs.Pages.PseudoComponents.Forms.Examples.PaymentForm
+@using ShadcnBlazor.Docs.Pages.Forms.BasicForms.Examples
+@using ShadcnBlazor.Docs.Pages.Forms.BasicForms.Examples.PaymentForm
 
 <PageTitle>Forms - ShadcnBlazor</PageTitle>
 <HeadContent>
@@ -28,7 +28,7 @@
 
     <DocsSection Title="Demo" Id="demo">
         <p class="mb-3">A complete Bug Report form with a title input and description textarea. Browser validation is disabled to make validation errors obvious.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormBugReportExample })">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormBugReportExample })">
             <FormBugReportExample />
         </ComponentPreview>
     </DocsSection>
@@ -69,7 +69,7 @@
 
         <DocsSubSection Title="Step 3: Build the form" Id="step-3">
             <p class="mb-3">Combine everything into a single <code>.razor</code> file.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormBugReportExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormBugReportExample })">
                 <FormBugReportExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -106,7 +106,7 @@
                 <li>Bind with <code>@@bind-Value</code>.</li>
                 <li>Keep the <code>id</code> in sync with <code>FieldId</code>.</li>
             </ul>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormInputTextExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormInputTextExample })">
                 <FormInputTextExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -117,7 +117,7 @@
                 <li>Bind with <code>@@bind-Value</code>.</li>
                 <li>Set <code>Rows</code> for visible height.</li>
             </ul>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormTextareaExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormTextareaExample })">
                 <FormTextareaExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -128,7 +128,7 @@
                 <li>Bind with <code>@@bind-Value</code>.</li>
                 <li>The bound type must match the option values.</li>
             </ul>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormSelectExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormSelectExample })">
                 <FormSelectExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -139,7 +139,7 @@
                 <li>Keep a <code>List&lt;T&gt;</code> or <code>HashSet&lt;T&gt;</code> of selected values.</li>
                 <li>Toggle items on change.</li>
             </ul>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormCheckboxListExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormCheckboxListExample })">
                 <FormCheckboxListExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -150,7 +150,7 @@
                 <li>Bind the group with <code>@@bind-Value</code> for form validation.</li>
                 <li>Each radio sets its own <code>Value</code>.</li>
             </ul>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormRadioExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormRadioExample })">
                 <FormRadioExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -161,7 +161,7 @@
                 <li>Bind with <code>@@bind-Checked</code> to a <code>bool</code>.</li>
                 <li>Apply <code>aria-invalid</code> directly on the switch element.</li>
             </ul>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormSwitchExample })">
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormSwitchExample })">
                 <FormSwitchExample />
             </ComponentPreview>
         </DocsSubSection>
@@ -171,12 +171,12 @@
         <p class="mb-3">Combine multiple fields inside <a href="/components/field" class="text-primary hover:underline">Field</a> groupings to build more realistic forms.</p>
 
         @*
-        <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormComplexExample })">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormComplexExample })">
             <FormComplexExample />
         </ComponentPreview>
 *@
 
-        <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_PaymentForm_PaymentForm, Snippets.PseudoComponents_Forms_Examples_PaymentForm_PaymentForm_razor_cs })">
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_PaymentForm_PaymentForm, Snippets.Forms_BasicForms_Examples_PaymentForm_PaymentForm_razor_cs })">
             <PaymentForm />
         </ComponentPreview>
     </DocsSection>

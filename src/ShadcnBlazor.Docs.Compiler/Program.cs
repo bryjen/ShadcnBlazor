@@ -315,7 +315,8 @@ static IEnumerable<string> CollectExampleFiles(string docsDirPath)
     {
         Path.Combine(docsDirPath, "Pages", "Components"),
         Path.Combine(docsDirPath, "Pages", "Samples"),
-        Path.Combine(docsDirPath, "Pages", "PseudoComponents")
+        Path.Combine(docsDirPath, "Pages", "PseudoComponents"),
+        Path.Combine(docsDirPath, "Pages", "Forms")
     };
 
     var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);

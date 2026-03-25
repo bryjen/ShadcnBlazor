@@ -13,6 +13,7 @@
         @RenderSectionHeader("Sections", includeTopMargin: false)
         @RenderNavButton("Introduction", "introduction", [])
         @RenderNavButton("Components", "components", [])
+        @RenderNavButton("Forms", "forms", [])
         @RenderNavButton("Samples", "samples", [])
         @RenderNavButton("CLI", "cli", [])
         @RenderNavButton("MCP", "mcp", [ComponentDefinition.Tag.Alpha])  @* just reusing component tags *@
@@ -26,29 +27,17 @@
         }
     </div>
 
+    <div class="w-full flex flex-col gap-1">
+        @RenderSectionHeader("Forms", includeTopMargin: false)
+        @RenderNavButton("Prerequisites", "/forms/prerequisites", [])
+        @RenderNavButton("Basic Forms", "/forms/basic", [])
+        @RenderNavButton("Advanced", "/forms/advanced", [])
+    </div>
+
     @{
         var accordionTriggerClass = "text-foreground/70 group-hover:bg-accent group-hover:text-white px-2 py-1 mb-1 " +
                                     "rounded-md transition-colors hover:bg-accent text-sm font-semibold";
     }
-
-    @*
-    <div class="w-full flex flex-col gap-1">
-        @RenderSectionHeader("Samples", includeTopMargin: false)
-        <Accordion DefaultValue="components">
-            <AccordionItem Value="components" Class="border-none">
-                <AccordionTrigger Class="@accordionTriggerClass">
-                    AI Chat
-                </AccordionTrigger>
-                <AccordionContent>
-                    @foreach (var component in ComponentRegistry.Components)
-                    {
-                        @RenderNavButton(component.Name, $"components/{component.Slug}", component.Tags)
-                    }
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
-    </div>
-*@
 
     <div class="w-full flex flex-col gap-1">
         @RenderSectionHeader("Samples", includeTopMargin: false)

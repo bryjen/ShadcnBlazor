@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using ShadcnBlazor.Services;
 
-namespace ShadcnBlazor.Docs.Pages.PseudoComponents.Forms.Examples.PaymentForm;
+namespace ShadcnBlazor.Docs.Pages.Forms.BasicForms.Examples.PaymentForm;
 
 public partial class PaymentForm : ComponentBase
 {
