@@ -10,6 +10,11 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 namespace ShadcnBlazor.Components.Field;
 
 /// <summary>
+/// Context cascaded by Field to all child form controls.
+/// </summary>
+public record FieldContext(Expression<Func<object?>>? For, string? FieldId);
+
+/// <summary>
 /// Field wrapper that manages layout orientation and invalid state styling.
 /// </summary>
 public partial class Field : ShadcnComponentBase, IDisposable
@@ -26,7 +31,7 @@ public partial class Field : ShadcnComponentBase, IDisposable
     /// The field expression used to bind to EditContext validation.
     /// </summary>
     [Parameter]
-    public Expression<Func<object>>? For { get; set; }
+    public Expression<Func<object?>>? For { get; set; }
 
     /// <summary>
     /// Optional id of the associated form control. Used by FieldLabel and FieldError.
@@ -35,25 +40,20 @@ public partial class Field : ShadcnComponentBase, IDisposable
     public string? FieldId { get; set; }
 
     [CascadingParameter]
-    private EditContext? EditContext { get; set; }
+    public EditContext? EditContext { get; set; }
 
     private EditContext? _subscribedEditContext;
+    private FieldContext? _fieldContext;
 
     internal bool IsInvalid => GetErrors().Any();
 
     internal string? ErrorMessageId => string.IsNullOrWhiteSpace(FieldId) ? null : $"{FieldId}-error";
 
-    internal IEnumerable<string> GetErrors()
-    {
-        if (EditContext is null || For is null)
-            return Array.Empty<string>();
-
-        var fieldIdentifier = FieldIdentifier.Create(For);
-        return EditContext.GetValidationMessages(fieldIdentifier);
-    }
-
     protected override void OnParametersSet()
     {
+        base.OnParametersSet();
+        _fieldContext = new(For, FieldId);
+
         if (!ReferenceEquals(_subscribedEditContext, EditContext))
         {
             if (_subscribedEditContext is not null)
@@ -64,6 +64,15 @@ public partial class Field : ShadcnComponentBase, IDisposable
             if (_subscribedEditContext is not null)
                 _subscribedEditContext.OnValidationStateChanged += HandleValidationStateChanged;
         }
+    }
+
+    internal IEnumerable<string> GetErrors()
+    {
+        if (EditContext is null || For is null)
+            return Array.Empty<string>();
+
+        var fieldIdentifier = FieldIdentifier.Create(For);
+        return EditContext.GetValidationMessages(fieldIdentifier);
     }
 
     public void Dispose()

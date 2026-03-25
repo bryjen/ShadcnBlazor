@@ -64,7 +64,6 @@ public static class TestMetadata
         { "DataTableTest3", new("Grid Mode & Custom Cells", "Grid interaction mode, row-click callback, and badge-based custom cells") },
 
         // Form tests
-        { "FormTest1", new("Validation Context", "Input and Button inheriting invalid-state accessibility attributes from FormValidationProvider") },
         { "FormTest2", new("Valid vs Invalid", "Side-by-side comparison of valid and invalid form contexts") },
     };
 

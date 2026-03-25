@@ -8,6 +8,10 @@
     class="@GetClass()"
     @attributes="AdditionalAttributes">
     <CascadingValue Value="this">
-        @ChildContent
+        <CascadingValue Value="EditContext">
+            <CascadingValue Value="_fieldContext">
+                @ChildContent
+            </CascadingValue>
+        </CascadingValue>
     </CascadingValue>
 </div>

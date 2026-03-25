@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using ShadcnBlazor.Components.Field;
 using ShadcnBlazor.Components.Shared;
 using TailwindMerge;
 
@@ -38,6 +40,41 @@ public partial class Textarea : ShadcnComponentBase
     /// </summary>
     [Parameter]
     public bool Disabled { get; set; }
+
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+
+    [CascadingParameter]
+    private FieldContext? FieldContext { get; set; }
+
+    private bool IsInvalid
+    {
+        get
+        {
+            if (EditContext is null || FieldContext?.For is null)
+                return false;
+
+            var fieldId = FieldIdentifier.Create(FieldContext.For);
+            return EditContext.GetValidationMessages(fieldId).Any();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        if (!IsInvalid)
+            return AdditionalAttributes;
+
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["aria-invalid"] = "true"
+        };
+
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+
+        return merged;
+    }
 
     /// <summary>
     /// Returns the CSS classes for the textarea.

@@ -282,9 +282,14 @@ string FindAssemblyPath(string docsDirPath)
 static (string PropertyName, string FileName, string EscapedContents, string Language) CreateSnippetFromFile(string filePath, string basePath)
 {
     var relativePath = Path.GetRelativePath(basePath, filePath);
-    var propertyName = Path.ChangeExtension(relativePath, null)
-        .Replace("\\", "_").Replace("/", "_").Replace("-", "_");
     var ext = Path.GetExtension(filePath).ToLowerInvariant();
+    var nameSource = ext is ".razor" or ".cshtml"
+        ? Path.ChangeExtension(relativePath, null)
+        : relativePath; // include extension for non-razor files to avoid collisions
+    var propertyName = nameSource
+        .Replace("\\", "_").Replace("/", "_").Replace("-", "_");
+    if (ext is not ".razor" and not ".cshtml")
+        propertyName = propertyName.Replace(".", "_");
     var language = ext switch
     {
         ".razor" or ".cshtml" => "razor",
@@ -319,13 +324,19 @@ static IEnumerable<string> CollectExampleFiles(string docsDirPath)
     {
         if (!Directory.Exists(root)) continue;
 
-        foreach (var file in Directory.EnumerateFiles(root, "*.razor", SearchOption.AllDirectories))
+        foreach (var file in Directory.EnumerateFiles(root, "*.*", SearchOption.AllDirectories))
         {
+            var ext = Path.GetExtension(file);
+            if (!ext.Equals(".razor", StringComparison.OrdinalIgnoreCase) &&
+                !ext.Equals(".cs", StringComparison.OrdinalIgnoreCase))
+                continue;
+
             var fileName = Path.GetFileName(file);
             var relativePath = Path.GetRelativePath(root, file);
             var pathParts = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-            var isExampleNamed = fileName.EndsWith("Example.razor", StringComparison.OrdinalIgnoreCase);
+            var isExampleNamed = fileName.EndsWith("Example.razor", StringComparison.OrdinalIgnoreCase) ||
+                                 fileName.EndsWith("Example.cs", StringComparison.OrdinalIgnoreCase);
             var isUnderExamples = pathParts.Contains("Examples", StringComparer.OrdinalIgnoreCase);
 
             if ((isExampleNamed || isUnderExamples) && seen.Add(file))

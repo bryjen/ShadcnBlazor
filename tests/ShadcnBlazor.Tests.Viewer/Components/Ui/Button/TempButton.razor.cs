@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ShadcnBlazor.Components.Button;
 using ShadcnBlazor.Components.Shared;
-using ShadcnBlazor.Components.Shared.Models.Accessibility;
 using ShadcnBlazor.Components.Shared.Models.Enums;
 
 namespace ShadcnBlazor.Tests.Viewer.Components.Ui.Button;
@@ -58,14 +57,11 @@ public partial class TempButton : ShadcnComponentBase
     [CascadingParameter]
     private PopoverTriggerContext? PopoverTriggerContext { get; set; }
 
-    [CascadingParameter]
-    private FormValidationContext? FormValidationContext { get; set; }
-
     private bool IsDisabled => State is ButtonState.Loading or ButtonState.Disabled;
 
     private IReadOnlyDictionary<string, object>? GetAttributes()
     {
-        var hasContext = PopoverTriggerContext is not null || FormValidationContext is not null || State is not null;
+        var hasContext = PopoverTriggerContext is not null || State is not null;
         if (!hasContext)
             return AdditionalAttributes;
 
@@ -82,13 +78,6 @@ public partial class TempButton : ShadcnComponentBase
             merged["aria-haspopup"] = PopoverTriggerContext.AriaHasPopup;
             if (!string.IsNullOrEmpty(PopoverTriggerContext.PopoverId))
                 merged["aria-controls"] = PopoverTriggerContext.PopoverId;
-        }
-
-        if (FormValidationContext is not null)
-        {
-            merged["aria-invalid"] = FormValidationContext.Invalid;
-            if (!string.IsNullOrEmpty(FormValidationContext.ErrorMessageId))
-                merged["aria-errormessage"] = FormValidationContext.ErrorMessageId;
         }
 
         if (AdditionalAttributes is not null)

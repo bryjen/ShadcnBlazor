@@ -2,6 +2,7 @@
 
 @using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 @using ShadcnBlazor.Docs.Pages.PseudoComponents.Forms.Examples
+@using ShadcnBlazor.Docs.Pages.PseudoComponents.Forms.Examples.PaymentForm
 
 <PageTitle>Forms - ShadcnBlazor</PageTitle>
 <HeadContent>
@@ -34,7 +35,7 @@
 
     <DocsSection Title="Approach" Id="approach">
         <p class="mb-3">A form in ShadcnBlazor is composed from a few small building blocks:</p>
-        <ul class="list-disc list-inside space-y-1 text-sm text-foreground/85">
+        <ul class="list-disc list-inside space-y-2 text-sm text-foreground/85">
             <li>Uses Blazor’s built-in <code>EditForm</code> and <code>EditContext</code> for form state.</li>
             <li><code>DataAnnotationsValidator</code> for validation (swappable with <code>Blazored.FluentValidation</code>).</li>
             <li><a href="/components/field" class="text-primary hover:underline">Field</a> components for accessible, styled field wrappers.</li>
@@ -168,8 +169,15 @@
 
     <DocsSection Title="Complex Forms" Id="complex-forms">
         <p class="mb-3">Combine multiple fields inside <a href="/components/field" class="text-primary hover:underline">Field</a> groupings to build more realistic forms.</p>
+
+        @*
         <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_FormComplexExample })">
             <FormComplexExample />
+        </ComponentPreview>
+*@
+
+        <ComponentPreview CodeFiles="@(new[] { Snippets.PseudoComponents_Forms_Examples_PaymentForm_PaymentForm, Snippets.PseudoComponents_Forms_Examples_PaymentForm_PaymentForm_razor_cs })">
+            <PaymentForm />
         </ComponentPreview>
     </DocsSection>
 
