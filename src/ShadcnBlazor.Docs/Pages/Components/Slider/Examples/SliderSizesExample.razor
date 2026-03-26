@@ -1,0 +1,20 @@
+<div class="space-y-4">
+    <div class="space-y-2">
+        <p class="text-sm font-medium">Small</p>
+        <Slider @bind-Value="_valueSm" Min="0" Max="100" Size="Size.Sm" AriaLabel="Small slider" />
+    </div>
+    <div class="space-y-2">
+        <p class="text-sm font-medium">Medium</p>
+        <Slider @bind-Value="_valueMd" Min="0" Max="100" Size="Size.Md" AriaLabel="Medium slider" />
+    </div>
+    <div class="space-y-2">
+        <p class="text-sm font-medium">Large</p>
+        <Slider @bind-Value="_valueLg" Min="0" Max="100" Size="Size.Lg" AriaLabel="Large slider" />
+    </div>
+</div>
+
+@code {
+    private double _valueSm = 50;
+    private double _valueMd = 50;
+    private double _valueLg = 50;
+}

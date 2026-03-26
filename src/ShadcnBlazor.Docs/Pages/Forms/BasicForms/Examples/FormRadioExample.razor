@@ -1,12 +1,21 @@
-<Field FieldId="visibility">
-    <FieldLabel>Visibility</FieldLabel>
-    <RadioGroup @bind-Value="_visibility">
-        <Radio Value="public">Public</Radio>
-        <Radio Value="private">Private</Radio>
-    </RadioGroup>
+<Field FieldId="visibility" For="() => _visibility">
+    <FieldSet>
+        <FieldLegend>Visibility</FieldLegend>
+        <RadioGroup @bind-Value="_visibility">
+            <div class="flex items-center gap-2">
+                <RadioItem Id="visibility-public" Value="public" />
+                <Label For="visibility-public">Public</Label>
+            </div>
+            <div class="flex items-center gap-2">
+                <RadioItem Id="visibility-private" Value="private" />
+                <Label For="visibility-private">Private</Label>
+            </div>
+        </RadioGroup>
+    </FieldSet>
     <FieldError />
 </Field>
 
 @code {
     private string _visibility = "public";
 }
+

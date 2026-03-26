@@ -1,9 +1,16 @@
 <RadioGroup @bind-Value="_choice">
-    <Radio Value="yes">Yes, enable notifications</Radio>
-    <Radio Value="no" Disabled="true">No, keep them off</Radio>
+    <div class="flex items-center gap-2">
+        <RadioItem Id="notify-yes" Value="yes" />
+        <Label For="notify-yes">Yes, enable notifications</Label>
+    </div>
+    <div class="flex items-center gap-2">
+        <RadioItem Id="notify-no" Value="no" Disabled="true" />
+        <Label For="notify-no">No, keep them off</Label>
+    </div>
 </RadioGroup>
 <p class="text-sm text-muted-foreground mt-2">Selected: @_choice</p>
 
 @code {
     private string? _choice = "yes";
 }
+

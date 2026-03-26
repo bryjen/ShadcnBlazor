@@ -1,0 +1,8 @@
+<div class="space-y-2">
+    <Slider @bind-Values="_values" Min="0" Max="100" AriaLabel="Multi-value slider" />
+    <p class="text-sm text-muted-foreground">Values: @string.Join(", ", _values.Select(v => v.ToString("0")))</p>
+</div>
+
+@code {
+    private List<double> _values = [25, 50, 75];
+}

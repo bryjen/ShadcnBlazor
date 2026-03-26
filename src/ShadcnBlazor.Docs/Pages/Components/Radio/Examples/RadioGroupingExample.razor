@@ -1,10 +1,23 @@
-<RadioGroup @bind-Value="_selected">
-    <Radio Value="all">All notifications</Radio>
-    <Radio Value="email">Email only</Radio>
-    <Radio Value="none">No notifications</Radio>
-</RadioGroup>
+<FieldSet>
+    <FieldLegend>Notifications</FieldLegend>
+    <RadioGroup @bind-Value="_selected">
+        <div class="flex items-center gap-2">
+            <RadioItem Id="notif-all" Value="all" />
+            <Label For="notif-all">All notifications</Label>
+        </div>
+        <div class="flex items-center gap-2">
+            <RadioItem Id="notif-email" Value="email" />
+            <Label For="notif-email">Email only</Label>
+        </div>
+        <div class="flex items-center gap-2">
+            <RadioItem Id="notif-none" Value="none" />
+            <Label For="notif-none">No notifications</Label>
+        </div>
+    </RadioGroup>
+</FieldSet>
 <p class="text-sm text-muted-foreground mt-2">Selected: @_selected</p>
 
 @code {
     private string? _selected = "email";
 }
+

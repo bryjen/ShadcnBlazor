@@ -1,6 +1,12 @@
 <div class="flex flex-col gap-4">
-    <Checkbox @bind-Value="_accept">I accept the terms and conditions</Checkbox>
-    <Checkbox @bind-Value="_newsletter">Subscribe to newsletter</Checkbox>
+    <div class="flex items-center gap-2">
+        <Checkbox Id="accept" @bind-Value="_accept" />
+        <Label For="accept">I accept the terms and conditions</Label>
+    </div>
+    <div class="flex items-center gap-2">
+        <Checkbox Id="newsletter" @bind-Value="_newsletter" />
+        <Label For="newsletter">Subscribe to newsletter</Label>
+    </div>
 </div>
 
 @code {

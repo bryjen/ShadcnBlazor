@@ -1,23 +1,39 @@
-@inherits SliderBase
+@inherits ShadcnComponentBase
 
 <div
+    id="@_elementId"
+    @ref="_containerRef"
     data-slot="slider"
     data-size="@Size.ToString().ToLower()"
     class="@GetContainerClass()"
-    @attributes="AdditionalAttributes">
-    <div class="pointer-events-none absolute top-1/2 left-0 right-0 -translate-y-1/2 rounded-full bg-muted/40" style="@GetTrackStyle()"></div>
-    <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-primary" style="@GetCurrentRangeStyle()"></div>
-    <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full border border-border bg-foreground shadow-xs" style="@GetCurrentThumbStyle()"></div>
+    @attributes="AdditionalAttributes"
+    @onpointermove="OnPointerMove"
+    @onpointerup="@(e => OnPointerUp(e))"
+    @onpointerleave="@(e => OnPointerUp(e))">
 
-    <input
-        type="range"
-        min="@Min"
-        max="@Max"
-        step="@Step"
-        value="@Value"
-        aria-label="@AriaLabel"
-        disabled="@Disabled"
-        class="@GetInputClass()"
-        @oninput="HandleInput"
-        @onchange="HandleChange" />
+    <!-- Track background (clickable for closest-thumb selection) -->
+    <div
+        class="pointer-events-auto absolute top-1/2 left-0 right-0 -translate-y-1/2 rounded-full bg-muted cursor-pointer"
+        style="@GetTrackStyle()"
+        @onpointerdown="OnTrackPointerDown">
+    </div>
+
+    <!-- Filled range (from first to last thumb) -->
+    <div class="pointer-events-none absolute top-1/2 -translate-y-1/2 rounded-full bg-primary" style="@GetRangeStyle()"></div>
+
+    <!-- Dynamic thumbs -->
+    @foreach (var (value, index) in _localValues.Select((v, i) => (v, i)))
+    {
+        <div
+            class="absolute top-1/2 -translate-y-1/2 rounded-full border border-ring bg-white ring-ring/50 cursor-grab active:cursor-grabbing"
+            style="@GetThumbStyle(ToPercent(value))"
+            @onpointerdown="@(e => OnThumbPointerDown(index, e))"
+            role="slider"
+            aria-label="@(AriaLabel) @(index + 1)"
+            aria-valuemin="@Min"
+            aria-valuenow="@value"
+            aria-valuemax="@Max"
+            tabindex="0">
+        </div>
+    }
 </div>

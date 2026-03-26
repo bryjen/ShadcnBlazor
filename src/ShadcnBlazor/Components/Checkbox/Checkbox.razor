@@ -1,26 +1,24 @@
 @inherits ShadcnComponentBase
 
-<label class="@GetLabelClass()" data-invalid="@(IsInvalid ? "true" : null)" data-disabled="@(Disabled ? "true" : null)">
-    <button
-        type="button"
-        role="checkbox"
-        aria-checked="@GetAriaChecked()"
-        aria-invalid="@(IsInvalid ? "true" : "false")"
-        data-slot="checkbox"
-        data-state="@(Value ? "checked" : "unchecked")"
-        data-size="@Size"
-        class="@GetClass()"
-        disabled="@Disabled"
-        @onclick="HandleClick"
-        @attributes="AdditionalAttributes">
-        <span
-            data-slot="checkbox-indicator"
-            class="@GetIndicatorClass()">
-            <svg class="@GetCheckmarkClass()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </span>
-    </button>
-    @ChildContent
-</label>
+<button
+    id="@Id"
+    type="button"
+    role="checkbox"
+    aria-checked="@GetAriaChecked()"
+    aria-invalid="@(IsInvalid ? "true" : "false")"
+    data-slot="checkbox"
+    data-state="@(Value ? "checked" : "unchecked")"
+    data-size="@Size"
+    class="@GetClass()"
+    disabled="@Disabled"
+    @onclick="HandleClick"
+    @attributes="AdditionalAttributes">
+    <span
+        data-slot="checkbox-indicator"
+        class="@GetIndicatorClass()">
+        <svg class="@GetCheckmarkClass()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+    </span>
+</button>
 

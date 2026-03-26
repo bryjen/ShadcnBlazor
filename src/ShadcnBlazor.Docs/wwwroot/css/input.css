@@ -10,23 +10,17 @@
 @source "../../App.razor";
 
 /* Scan the component library source files */
+/*
 @source "../../../ShadcnBlazor/Components/";
 @source "../../../ShadcnBlazor/Shared/";
+@source "../../../ShadcnBlazor/";
+*/
 
 @layer base {
     html,
     body {
         background-color: var(--background);
         color: var(--foreground);
-    }
-
-    /* Overlay scrollbar - doesn't take layout space (for browsers that support it) */
-    @supports (overflow: overlay) {
-
-        html,
-        body {
-            overflow: overlay;
-        }
     }
 
     a {
@@ -187,6 +181,7 @@
 
 .blazor-loader-progress-fill {
     height: 100%;
+    /*noinspection CssUnresolvedCustomProperty*/
     width: var(--blazor-load-percentage, 0%);
     min-width: 20%;
     background: rgba(255, 255, 255, 0.9);

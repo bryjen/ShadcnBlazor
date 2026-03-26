@@ -54,6 +54,13 @@ public partial class Input : ShadcnComponentBase
     public string? Placeholder { get; set; }
 
     /// <summary>
+    /// Whether the input is required.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public bool Required { get; set; }
+
+    /// <summary>
     /// Callback invoked when the input change event fires.
     /// </summary>
     [Parameter]

@@ -5,16 +5,6 @@
         color: var(--foreground);
     }
 
-    /* Overlay scrollbar - doesn't take layout space (for browsers that support it) */
-    @supports (overflow: overlay) {
-
-        html,
-        body {
-            overflow: overlay;
-        }
-    }
-
-
     h1:focus {
         outline: none;
     }

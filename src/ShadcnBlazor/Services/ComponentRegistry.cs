@@ -11,6 +11,7 @@ using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.DropdownMenu;
 using ShadcnBlazor.Components.Field;
 using ShadcnBlazor.Components.Input;
+using ShadcnBlazor.Components.Input.InputGroup;
 using ShadcnBlazor.Components.Label;
 using ShadcnBlazor.Components.Popover;
 using ShadcnBlazor.Components.Popover.Services;
@@ -136,7 +137,6 @@ public static class ComponentRegistry
             Name = nameof(Checkbox), 
             Description = "Checkbox input for boolean or multi-select form values.", 
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -186,8 +186,8 @@ public static class ComponentRegistry
         },
         new()
         {
-            Name = nameof(Input), 
-            Description = "Single-line text input with variant styling.", 
+            Name = nameof(Input),
+            Description = "Single-line text input with variant styling.",
             Dependencies = CreateDeps(),
             Tags = [ComponentDefinition.Tag.WorkRequired]
         },
@@ -206,8 +206,8 @@ public static class ComponentRegistry
         },
         new()
         {
-            Name = nameof(Radio), 
-            Description = "Radio and RadioCard options for single selection within a RadioGroup.", 
+            Name = "Radio Group",
+            Description = "RadioGroup with RadioItem and RadioCard options for single selection.",
             Dependencies = CreateDeps()
         },
         new()
@@ -233,7 +233,6 @@ public static class ComponentRegistry
             Name = nameof(Slider), 
             Description = "Single-thumb slider for selecting a value within a min/max range.",
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new() 
         {

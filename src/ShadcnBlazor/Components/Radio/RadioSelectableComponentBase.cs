@@ -5,7 +5,7 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 namespace ShadcnBlazor.Components.Radio;
 
 /// <summary>
-/// Base class for Radio and RadioCard, providing selection state and group coordination.
+/// Base class for RadioItem and RadioCard, providing selection state and group coordination.
 /// </summary>
 public abstract class RadioSelectableComponentBase : ShadcnComponentBase
 {

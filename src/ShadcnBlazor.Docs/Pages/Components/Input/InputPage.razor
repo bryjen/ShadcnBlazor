@@ -20,10 +20,73 @@
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Field" Id="field">
+            <p>Wrap the input in a <code>Field</code> component to add a label and description.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputFieldExample })">
+                <InputFieldExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Field Group" Id="field-group">
+            <p>Use <code>FieldGroup</code> to organize multiple fields together.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputFieldGroupExample })">
+                <InputFieldGroupExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p>Set <code>Disabled</code> on both the Field and Input to disable a field with proper styling.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputDisabledExample })">
+                <InputDisabledExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Invalid" Id="invalid">
+            <p>Mark invalid inputs with <code>aria-invalid="true"</code> and add a <code>FieldError</code> message.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputInvalidExample })">
+                <InputInvalidExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="File" Id="file">
+            <p>Use <code>Type="file"</code> for file upload inputs.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputFileExample })">
+                <InputFileExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Inline" Id="inline">
+            <p>Use <code>Orientation="FieldOrientation.Horizontal"</code> for side-by-side label and input.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputInlineExample })">
+                <InputInlineExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Grid" Id="grid">
+            <p>Arrange multiple inputs using CSS Grid for complex layouts.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputGridExample })">
+                <InputGridExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Required" Id="required">
+            <p>Use the <code>Required</code> parameter to mark inputs as required.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputRequiredExample })">
+                <InputRequiredExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
         <DocsSubSection Title="Sizes" Id="sizes">
             <p>Use the <code>Size</code> parameter for Sm, Md, or Lg inputs.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputSizeExample })">
                 <InputSizeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Input Group" Id="input-group">
+            <p>Use <code>InputGroup</code> to combine an input with prefix/suffix addons and buttons.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputInputGroupExample })">
+                <InputInputGroupExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

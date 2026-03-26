@@ -1,0 +1,14 @@
+<div class="space-y-4">
+    <div class="space-y-2">
+        <p class="text-sm font-medium">Default</p>
+        <Slider @bind-Value="_value" Min="0" Max="100" AriaLabel="Volume" />
+    </div>
+    <div class="space-y-2">
+        <p class="text-sm font-medium">Disabled</p>
+        <Slider Value="50" Min="0" Max="100" Disabled="true" AriaLabel="Disabled volume" />
+    </div>
+</div>
+
+@code {
+    private double _value = 50;
+}

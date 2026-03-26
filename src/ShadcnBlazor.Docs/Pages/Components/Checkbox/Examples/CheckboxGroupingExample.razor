@@ -1,9 +1,18 @@
-<div class="flex flex-col gap-2">
-    <Checkbox Value="@_selected.Contains("email")" ValueChanged="@(v => Toggle("email", v))">Email notifications</Checkbox>
-    <Checkbox Value="@_selected.Contains("sms")" ValueChanged="@(v => Toggle("sms", v))">SMS notifications</Checkbox>
-    <Checkbox Value="@_selected.Contains("push")" ValueChanged="@(v => Toggle("push", v))">Push notifications</Checkbox>
+<div class="flex flex-col gap-3">
+    <div class="flex items-center gap-2">
+        <Checkbox Id="email" Value="@_selected.Contains("email")" ValueChanged="@(v => Toggle("email", v))" />
+        <Label For="email">Email notifications</Label>
+    </div>
+    <div class="flex items-center gap-2">
+        <Checkbox Id="sms" Value="@_selected.Contains("sms")" ValueChanged="@(v => Toggle("sms", v))" />
+        <Label For="sms">SMS notifications</Label>
+    </div>
+    <div class="flex items-center gap-2">
+        <Checkbox Id="push" Value="@_selected.Contains("push")" ValueChanged="@(v => Toggle("push", v))" />
+        <Label For="push">Push notifications</Label>
+    </div>
 </div>
-<p class="text-sm text-muted-foreground mt-2">Selected: @string.Join(", ", _selected)</p>
+<p class="text-sm text-muted-foreground mt-4">Selected: @string.Join(", ", _selected)</p>
 
 @code {
     private HashSet<string> _selected = new();

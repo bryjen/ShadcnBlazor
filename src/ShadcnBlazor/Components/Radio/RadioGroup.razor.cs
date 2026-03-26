@@ -9,18 +9,18 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 namespace ShadcnBlazor.Components.Radio;
 
 /// <summary>
-/// Container for Radio or RadioCard options, managing single-selection state.
+/// Container for RadioItem or RadioCard options, managing single-selection state.
 /// </summary>
 public partial class RadioGroup : ShadcnComponentBase, IDisposable
 {
     /// <summary>
-    /// The Radio or RadioCard options.
+    /// The RadioItem or RadioCard options.
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
-    /// The selected value (Value of the selected Radio/RadioCard).
+    /// The selected value (Value of the selected RadioItem/RadioCard).
     /// </summary>
     [Parameter]
     public string? Value { get; set; }

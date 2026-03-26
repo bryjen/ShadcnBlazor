@@ -93,24 +93,24 @@
         </div>
 
         <RadioGroup @bind-Value="_backupMethod" Size="@Size.Md" Class="w-full">
-            <Radio Value="planb" Alignment="@VerticalAlignment.Top">
+            <RadioCard Value="planb">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold">Backup Plan</span>
                     <span class="text-xs text-muted-foreground">Back up the full VM. These immutable backups are secured by backup vault against accidental or malicious deletion. </span>
                 </div>
-            </Radio>
-            <Radio Value="snapshots" Alignment="@VerticalAlignment.Top">
+            </RadioCard>
+            <RadioCard Value="snapshots">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold">Scheduled Snapshots</span>
                     <span class="text-xs text-muted-foreground">Back up disks only. This provides foundational protection at a lower cost.</span>
                 </div>
-            </Radio>
-            <Radio Value="rawdoggingit" Alignment="@VerticalAlignment.Top">
+            </RadioCard>
+            <RadioCard Value="rawdoggingit">
                 <div class="flex flex-col">
                     <span class="text-xs font-bold">No Backups</span>
                     <span class="text-xs text-muted-foreground">Neither VM nor disks will be backed up. If data is deleted or corrupted for any reason, you won't be able to recover it.</span>
                 </div>
-            </Radio>
+            </RadioCard>
         </RadioGroup>
     </div>
     

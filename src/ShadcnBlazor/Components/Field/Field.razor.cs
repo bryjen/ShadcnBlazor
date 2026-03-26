@@ -43,6 +43,13 @@ public partial class Field : ShadcnComponentBase, IDisposable
     [Category(ComponentCategory.Common)]
     public string? FieldId { get; set; }
 
+    /// <summary>
+    /// Whether the field is disabled.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public bool Disabled { get; set; }
+
     /// <summary>Current form edit context (if inside an EditForm).</summary>
     [CascadingParameter]
     public EditContext? EditContext { get; set; }
