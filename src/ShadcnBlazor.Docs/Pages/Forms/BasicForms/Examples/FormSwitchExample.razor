@@ -1,0 +1,10 @@
+<Field FieldId="notifications">
+    <FieldLabel>Notifications</FieldLabel>
+    <Switch id="notifications" @bind-Checked="_enabled" />
+    <FieldDescription>Send updates to your email.</FieldDescription>
+    <FieldError />
+</Field>
+
+@code {
+    private bool _enabled = true;
+}

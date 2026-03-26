@@ -11,7 +11,9 @@
     <PropertyGroup>
         <BlazorWasmPrerenderingBaseHref>/</BlazorWasmPrerenderingBaseHref>
         <!-- Explicitly list all routes to pre-render (relative to prerenderer server, NOT including base href) -->
-        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/input;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/forms;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/field;/components/input;/components/label;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+        <!-- Increase port range for Docker/CI environments -->
+        <BlazorWasmPrerenderingServerPort>5050-6000</BlazorWasmPrerenderingServerPort>
     </PropertyGroup>
 
     <ItemGroup>
@@ -53,13 +55,35 @@
         <Delete Files="Models\Snippets.generated.cs" Condition="Exists('Models\Snippets.generated.cs')" />
     </Target>
 
-    <!-- Build Sonner interop bundle before building the Docs app -->
-    <Target Name="BuildSonner" BeforeTargets="Build">
-        <Message Text="Building Sonner interop bundle..." Importance="high" />
-        <Exec Command="npm run build" WorkingDirectory="../../sonner-interop" />
+    <!-- Copy Sonner interop bundle (built as a separate workflow step in CI) -->
+    <Target Name="CopySonner" BeforeTargets="Build" Condition="Exists('../../sonner-interop/dist/sonner-interop.iife.js')">
+        <Message Text="Copying pre-built Sonner interop bundle..." Importance="high" />
         <Copy SourceFiles="../../sonner-interop/dist/sonner-interop.iife.js"
               DestinationFolder="wwwroot/js" />
-        <Message Text="Sonner bundle built and copied successfully." Importance="high" />
+        <Message Text="Sonner bundle copied successfully." Importance="high" />
+    </Target>
+
+    <!-- Build Vaul interop bundle before copy (local/dev builds) -->
+    <Target Name="BuildVaulInterop"
+            BeforeTargets="CopyVaul"
+            Inputs="..\..\vaul-interop\vaul-interop.js;..\..\vaul-interop\vaul.css;..\..\vaul-interop\package.json"
+            Outputs="..\..\vaul-interop\dist\vaul-interop.iife.js;..\..\vaul-interop\dist\vaul-interop.css"
+            Condition="Exists('../../vaul-interop/package.json') and '$(DesignTimeBuild)' != 'true'">
+        <Message Text="Building Vaul interop bundle..." Importance="high" />
+        <Exec WorkingDirectory="../../vaul-interop" Command="npm install" />
+        <Exec WorkingDirectory="../../vaul-interop" Command="npm run build" />
+    </Target>
+
+    <!-- Copy Vaul interop bundle -->
+    <Target Name="CopyVaul" BeforeTargets="Build" DependsOnTargets="BuildVaulInterop" Condition="Exists('../../vaul-interop/package.json')">
+        <Message Text="Copying pre-built Vaul interop bundle..." Importance="high" />
+        <Copy SourceFiles="../../vaul-interop/dist/vaul-interop.iife.js"
+              DestinationFolder="wwwroot/js"
+              Condition="Exists('../../vaul-interop/dist/vaul-interop.iife.js')" />
+        <Copy SourceFiles="../../vaul-interop/dist/vaul-interop.css"
+              DestinationFolder="wwwroot/js"
+              Condition="Exists('../../vaul-interop/dist/vaul-interop.css')" />
+        <Message Text="Vaul bundle copied successfully." Importance="high" />
     </Target>
 
     <ItemGroup>
@@ -86,5 +110,4 @@
       <None Include="wwwroot\themes\vtron.css" />
       <None Include="wwwroot\themes\zen-inspired-theme.css" />
     </ItemGroup>
-    
 </Project>

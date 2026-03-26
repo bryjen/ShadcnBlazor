@@ -1,30 +1,32 @@
 @using ShadcnBlazor.Components.DataTable
 
-<DataTable T="Person" Items="SamplePeople" MultiSelection
-           InteractionMode="DataTableInteractionMode.Grid"
-           @bind-SelectedItems="_gridSelectedPeople"
-           OnRowClick="OnGridPersonClick"
-           Hover Striped PageSize="5"
-           Label="People directory grid mode">
-    <Columns>
-        <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
-        <DataTableColumn T="Person" Title="Email"  Field="x => x.Email"  Sortable />
-        <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
-        <DataTableColumn T="Person" Title="Score"  Field="x => x.Score"  Sortable />
-    </Columns>
-</DataTable>
+<div class="flex flex-col gap-4">
+    <DataTable T="Person" Items="SamplePeople" MultiSelection
+               InteractionMode="DataTableInteractionMode.Grid"
+               @bind-SelectedItems="_gridSelectedPeople"
+               OnRowClick="OnGridPersonClick"
+               Hover Striped PageSize="5"
+               Label="People directory grid mode">
+        <Columns>
+            <DataTableColumn T="Person" Title="Name"   Field="x => x.Name"   Sortable />
+            <DataTableColumn T="Person" Title="Email"  Field="x => x.Email"  Sortable />
+            <DataTableColumn T="Person" Title="Status" Field="x => x.Status" Sortable />
+            <DataTableColumn T="Person" Title="Score"  Field="x => x.Score"  Sortable />
+        </Columns>
+    </DataTable>
 
-<div class="rounded-md border border-border p-3 text-sm space-y-1 mt-4">
-    <p class="font-medium">Grid selection: @_gridSelectedPeople.Count row(s)</p>
-    @if (_gridLastClicked is not null)
-    {
-        <p class="text-muted-foreground">Last Enter/click row: @_gridLastClicked.Name (@_gridLastClicked.Email)</p>
-    }
+    <div class="rounded-md border border-border p-3 text-sm space-y-1">
+        <p class="font-medium">Grid selection: @_gridSelectedPeople.Count row(s)</p>
+        @if (_gridLastClicked is not null)
+        {
+            <p class="text-muted-foreground">Last Enter/click row: @_gridLastClicked.Name (@_gridLastClicked.Email)</p>
+        }
+    </div>
+
+    <p class="text-xs text-muted-foreground">
+        <strong>Tip:</strong> Use Arrow Up/Down to navigate, Home/End to jump, Enter to click, Space to select.
+    </p>
 </div>
-
-<p class="text-xs text-muted-foreground mt-4">
-    <strong>Tip:</strong> Use Arrow Up/Down to navigate, Home/End to jump, Enter to click, Space to select.
-</p>
 
 @code {
     private record Person(string Name, string Email, string Status, int Score);

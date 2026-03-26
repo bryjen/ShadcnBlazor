@@ -1,5 +1,9 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Field;
 using ShadcnBlazor.Components.Select;
 using ShadcnBlazor.Components.Select.Base;
 using ShadcnBlazor.Components.Shared.Models.Enums;
@@ -9,45 +13,125 @@ namespace ShadcnBlazor.Components.Combobox;
 /// <summary>
 /// Searchable dropdown that lets the user filter and pick a single value.
 /// </summary>
-public partial class Combobox<T> : SelectBase<T>
+public partial class Combobox<T> : SelectBase<T>, IDisposable
 {
     private string _searchText = string.Empty;
 
 #region Parameters
     /// <summary>Currently selected value.</summary>
     [Parameter]
+    [Category(ComponentCategory.Data)]
     public T? Value { get; set; }
 
     /// <summary>Callback invoked when the selected value changes.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<T?> ValueChanged { get; set; }
 
     /// <summary>Optional label shown at the top of the dropdown and used as the trigger aria-label.</summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string? Label { get; set; }
 
     /// <summary>Placeholder text shown when no value is selected.</summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string Placeholder { get; set; } = "Search...";
 
     /// <summary>Size variant applied to the trigger input.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
 
     /// <summary>When true, the popover expands to fit option content instead of matching trigger width.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool PopoverFitContent { get; set; }
 
     /// <summary>When true, body scroll is locked while the popover is open.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool LockScroll { get; set; } = true;
 
     /// <summary>Additional CSS classes applied to the trigger input element.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string TriggerClass { get; set; } = string.Empty;
 #endregion
 
+#region EditForm Integration
+    [Inject]
+    private IJSRuntime JS { get; set; } = null!;
+
+    [CascadingParameter]
+    private EditContext? EditContext { get; set; }
+
+    [CascadingParameter]
+    private FieldContext? FieldContext { get; set; }
+
+    private EditContext? _subscribedEditContext;
+
+    private bool IsInvalid
+    {
+        get
+        {
+            if (EditContext is null || FieldContext?.For is null)
+                return false;
+
+            var fieldId = FieldIdentifier.Create(FieldContext.For);
+            return EditContext.GetValidationMessages(fieldId).Any();
+        }
+    }
+
+    private IReadOnlyDictionary<string, object>? GetAttributes()
+    {
+        if (!IsInvalid)
+            return AdditionalAttributes;
+
+        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
+        {
+            ["aria-invalid"] = "true"
+        };
+
+        if (AdditionalAttributes is not null)
+            foreach (var kv in AdditionalAttributes)
+                merged[kv.Key] = kv.Value;
+
+        return merged;
+    }
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (!ReferenceEquals(_subscribedEditContext, EditContext))
+        {
+            if (_subscribedEditContext is not null)
+                _subscribedEditContext.OnValidationStateChanged -= HandleValidationStateChanged;
+
+            _subscribedEditContext = EditContext;
+
+            if (_subscribedEditContext is not null)
+                _subscribedEditContext.OnValidationStateChanged += HandleValidationStateChanged;
+        }
+    }
+
+    private void HandleValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
+    {
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        if (_subscribedEditContext is not null)
+            _subscribedEditContext.OnValidationStateChanged -= HandleValidationStateChanged;
+    }
+#endregion
+
 #region Overrides
+    /// <inheritdoc />
     protected override bool IsSelected(SelectDeclarativeNode node)
     {
         if (node.Kind != SelectNodeKind.Item)
@@ -84,6 +168,7 @@ public partial class Combobox<T> : SelectBase<T>
             .ToList();
     }
 
+    /// <inheritdoc />
     protected override void EnsureActiveOnOpen()
     {
         // Always point to the first match so the user sees what Enter will select.
@@ -121,6 +206,7 @@ public partial class Combobox<T> : SelectBase<T>
         SetActiveIndex(null);
     }
 
+    /// <inheritdoc />
     protected override Task HandleOpenChanged(bool open)
     {
         if (open)
@@ -129,6 +215,7 @@ public partial class Combobox<T> : SelectBase<T>
         return base.HandleOpenChanged(open);
     }
 
+    /// <inheritdoc />
     protected override async Task OnItemSelectAsync(int idx, T? value)
     {
         // idx is relative to the current filtered list — grab text before closing.
@@ -156,6 +243,7 @@ public partial class Combobox<T> : SelectBase<T>
 #endregion
 
 #region Search
+    /// <summary>Updates the filter text and reopens the list when typing.</summary>
     protected async Task HandleSearchInput(ChangeEventArgs e)
     {
         _searchText = e.Value?.ToString() ?? string.Empty;
@@ -180,6 +268,12 @@ public partial class Combobox<T> : SelectBase<T>
         if (e.Key.Length == 1 && !char.IsControl(e.Key[0]))
             return;
 
+        // Prevent form submission on Enter when combobox is focused
+        if (e.Key == "Enter")
+        {
+            await JS.InvokeVoidAsync("eval", "event.preventDefault()");
+        }
+
         await HandleTriggerKeyDown(e);
     }
 #endregion
@@ -202,13 +296,14 @@ public partial class Combobox<T> : SelectBase<T>
             "flex w-full items-center gap-2 rounded-md border border-input",
             "bg-input/30 shadow-xs hover:bg-input/50",
             "transition-all duration-200 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+            "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
         ]);
         var sizeClasses = Size switch
         {
-            Size.Sm => "h-6 px-1.75 py-0.75 text-[0.6rem]",
-            Size.Md => "h-7 px-2.5 py-1 text-sm",
-            Size.Lg => "h-8 px-2.75 py-1.25 text-base md:text-sm",
-            _ => "h-7 px-2.5 py-1 text-sm",
+            Size.Sm => "h-8 px-3 py-1 text-sm",
+            Size.Md => "h-9 px-3 py-1 text-base md:text-sm",
+            Size.Lg => "h-10 px-3 py-1 text-base md:text-sm",
+            _ => "h-9 px-3 py-1 text-base md:text-sm",
         };
         return MergeCss(baseClasses, sizeClasses, TriggerClass);
     }

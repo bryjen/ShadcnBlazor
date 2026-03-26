@@ -1,0 +1,9 @@
+<Field FieldId="details">
+    <FieldLabel>Details</FieldLabel>
+    <Textarea id="details" Rows="4" @bind-Value="_details" Placeholder="Add context..." />
+    <FieldError />
+</Field>
+
+@code {
+    private string? _details;
+}

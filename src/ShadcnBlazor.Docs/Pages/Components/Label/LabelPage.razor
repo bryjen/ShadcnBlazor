@@ -1,0 +1,38 @@
+@page "/components/label"
+
+<PageTitle>Label - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Label - Accessible labels for form controls." />
+</HeadContent>
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Label.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallCommand="@InstallCommand"
+                 ApiDoc="@ApiDocumentation.Label">
+    <DocsSection Title="Usage" Id="usage">
+        <p>Use <code>Label</code> to associate text with a form control via <code>for</code>/<code>id</code>. Clicking the label focuses the control.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Label_Examples_LabelBasicExample })">
+            <LabelBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Label in Field" Id="label-in-field">
+        <p>For composed form fields, use <code>Field</code> and <code>FieldLabel</code>. It includes layout, description, and error slots.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Label_Examples_LabelInFieldExample })">
+            <LabelInFieldExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p>Always pair <code>Label</code> with a control using <code>For</code> and a matching <code>id</code>. This improves focus behavior and screen reader announcements.</p>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Label");
+
+    private const string InstallCommand = "shadcnblazor component add label";
+}
+

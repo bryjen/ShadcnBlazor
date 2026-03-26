@@ -19,12 +19,14 @@ public abstract class ShadcnComponentBase : ComponentBase
     /// Additional CSS classes to apply to the component.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string Class { get; set; } = string.Empty;
 
     /// <summary>
     /// Additional HTML attributes to apply to the root element.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
+    [Category(ComponentCategory.Common)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     /// <summary>

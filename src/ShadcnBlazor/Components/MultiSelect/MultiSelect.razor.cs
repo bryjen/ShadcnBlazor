@@ -22,54 +22,67 @@ public partial class MultiSelect<T>
 #region Parameters
     /// <summary>Currently selected values.</summary>
     [Parameter]
+    [Category(ComponentCategory.Data)]
     public IReadOnlyList<T> Values { get; set; } = [];
 
     /// <summary>Callback invoked when the selected values change.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<IReadOnlyList<T>> ValuesChanged { get; set; }
 
     /// <summary>Optional label displayed at the top of the dropdown content and used as the trigger aria-label.</summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string? Label { get; set; }
 
     /// <summary>Placeholder text shown when no values are selected.</summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string Placeholder { get; set; } = "Select...";
 
     /// <summary>Size variant applied to the trigger.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
 
     /// <summary>When true, the popover expands to fit the width of its option content instead of matching the trigger width.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool PopoverFitContent { get; set; }
 
     /// <summary>When true, body scroll is locked while the popover is open.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool LockScroll { get; set; } = true;
 
     /// <summary>Additional CSS classes applied to the trigger element.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string TriggerClass { get; set; } = string.Empty;
 
     /// <summary>Maximum number of values to display before showing "+ X more".</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public int MaxDisplayedValues { get; set; } = 3;
 
     /// <summary>When true, shows a search input at the top of the dropdown that focuses on open and keeps focus during keyboard nav.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool Search { get; set; }
 
     /// <summary>When true, appends a Clear action node at the bottom of the list that resets all selected values.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool ClearButton { get; set; }
 #endregion
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         _valuesSet = [.. Values.Select(v => v)];
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -83,6 +96,7 @@ public partial class MultiSelect<T>
     }
 
 #region Node overrides
+    /// <inheritdoc />
     protected override List<SelectDeclarativeNode> GetRenderNodes()
     {
         var all = base.GetRenderNodes();
@@ -111,6 +125,7 @@ public partial class MultiSelect<T>
         return result;
     }
 
+    /// <inheritdoc />
     protected override bool IsSelected(SelectDeclarativeNode node)
     {
         if (node.Kind != SelectNodeKind.Item)
@@ -127,6 +142,7 @@ public partial class MultiSelect<T>
 #endregion
 
 #region Open / close
+    /// <inheritdoc />
     protected override Task HandleOpenChanged(bool open)
     {
         if (!open)
@@ -135,6 +151,7 @@ public partial class MultiSelect<T>
         return base.HandleOpenChanged(open);
     }
 
+    /// <inheritdoc />
     protected override async Task HandleTabKeyAsync(bool shiftKey)
     {
         _open = false;
@@ -146,6 +163,7 @@ public partial class MultiSelect<T>
 #endregion
 
 #region Search input
+    /// <summary>Updates the filter text and refreshes active selection.</summary>
     protected async Task HandleSearchInput(ChangeEventArgs e)
     {
         _searchText = e.Value?.ToString() ?? string.Empty;
@@ -168,6 +186,7 @@ public partial class MultiSelect<T>
 #endregion
 
 #region Selection
+    /// <inheritdoc />
     protected override async Task OnItemSelectAsync(int idx, T? value)
     {
         // Toggle — do NOT call base (which would close the dropdown).

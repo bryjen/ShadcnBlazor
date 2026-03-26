@@ -13,6 +13,7 @@ public partial class CodeBlock : ShadcnComponentBase
     [Parameter] public bool ShowLineNumbers { get; set; } = true;
     [Parameter] public bool ShowCopyButton { get; set; } = true;
     [Parameter] public bool Focusable { get; set; } = true;
+    [Parameter] public string? HighlightedLines { get; set; }
 
     private readonly string _idBase = Guid.NewGuid().ToString("N")[..8];
     private IReadOnlyList<CodeFile> _files = [];
@@ -23,6 +24,8 @@ public partial class CodeBlock : ShadcnComponentBase
     private bool _copied;
 
     private string _id => $"{_idBase}-{_selectedIndex}";
+    private string _preId => $"{_idBase}-{_selectedIndex}-pre";
+    private string _overlayId => $"{_idBase}-{_selectedIndex}-overlay";
     private bool HasMultipleFiles => _files.Count > 1;
     private CodeFile? Current => _files.Count > 0 ? _files[_selectedIndex] : null;
 
@@ -54,7 +57,14 @@ public partial class CodeBlock : ShadcnComponentBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!string.IsNullOrWhiteSpace(_code))
+        {
             await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.highlightElement", _id);
+            await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.applyLineHighlights", _preId, _overlayId, HighlightedLines ?? "", _lineNumbers.Length);
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.applyLineHighlights", _preId, _overlayId, "", 0);
+        }
     }
 
     private string WrapperClass => MergeCss(

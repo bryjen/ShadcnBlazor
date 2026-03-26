@@ -1,0 +1,25 @@
+@namespace ShadcnBlazor.Components.Vaul
+@implements IDisposable
+@inject ShadcnBlazor.Services.VaulComponentRegistry Registry
+
+@if (_fragment is not null)
+{
+    @_fragment
+}
+
+@* ReSharper disable once CSharpWarnings::CS1591 *@
+@code {
+    [Parameter] public string? FragmentId { get; set; }
+
+    private RenderFragment? _fragment;
+
+    protected override void OnParametersSet()
+    {
+        _fragment = Registry.TryGet(FragmentId);
+    }
+
+    public void Dispose()
+    {
+        Registry.Remove(FragmentId);
+    }
+}

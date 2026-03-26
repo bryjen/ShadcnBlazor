@@ -3,31 +3,12 @@
 @inherits ShadcnComponentBase
 
 <div class="@(MergeCss("w-full rounded-lg overflow-hidden border border-border", Class))">
-    <div class="flex items-center justify-between p-2 border-b border-border">
-        <div class="flex items-center gap-3">
-            <span class="text-muted-foreground/70" aria-hidden="true">
+    <div class="flex items-center justify-between px-3 py-1 border-b border-border bg-card">
+        <div class="flex items-center gap-2 text-muted-foreground">
+            <span aria-hidden="true">
                 <LuTerminal class="size-3.5" />
             </span>
-            @if (Options.Count > 0)
-            {
-                <div class="command-block-toggle-group inline-flex h-7 overflow-hidden rounded-md border border-input/70 bg-transparent"
-                     role="group">
-                    @foreach (var kvp in Options)
-                    {
-                        var key = kvp.Key;
-                        var isSelected = SelectedKey == key;
-                        <ToggleButton Size="@Size.Sm"
-                                      VariantToggled="@Variant.Outline"
-                                      VariantUntoggled="@Variant.Ghost"
-                                      IsToggled="@isSelected"
-                                      IsToggledChanged="@(toggled => { if (toggled) SelectOption(key); })"
-                                      Class="px-2.5 py-0 text-xs font-medium"
-                                      AdditionalAttributes="@(new Dictionary<string, object> { ["data-state"] = isSelected ? "on" : "off", ["data-option"] = key })">
-                            <span class="font-bold">@key</span>
-                        </ToggleButton>
-                    }
-                </div>
-            }
+            <span class="text-xs tracking-wide">Terminal</span>
         </div>
         <Button Size="@Size.Sm"
                 Variant="@Variant.Ghost"
@@ -44,10 +25,17 @@
             }
         </Button>
     </div>
-    @if (SelectedKey != null && Options.TryGetValue(SelectedKey, out var value))
-    {
-        <div class="p-2 text-sm overflow-x-auto bg-card font-['JetBrains_Mono']">
-            @value
-        </div>
-    }
+
+    <style>
+        .docs-codeblock .hljs-meta {
+            color: #ae93ea;
+        }
+    </style>
+    <div class="docs-codeblock command-block docs-codeblock--solo">
+        <pre class="flex-1 min-w-0 !px-4 !py-3 overflow-x-auto max-lg:text-[0.6rem] lg:text-sm font-mono leading-[1.65] m-0 border-0 whitespace-pre !bg-background">
+            <code id="@_codeId" class="!text-[#a7cafa] language-command">
+                @Command
+            </code>
+        </pre>
+    </div>
 </div>

@@ -10,15 +10,29 @@ namespace ShadcnBlazor.Components.Avatar;
 public partial class Avatar : ShadcnComponentBase
 {
     /// <summary>The URL of the avatar image.</summary>
-    [Parameter] public string? Src { get; set; }
+    [Parameter]
+    [Category(ComponentCategory.Data)]
+    public string? Src { get; set; }
     /// <summary>Alt text for the image; used to generate fallback initials when the image fails to load.</summary>
-    [Parameter] public string? Alt { get; set; }
+    [Parameter]
+    [Category(ComponentCategory.Data)]
+    public string? Alt { get; set; }
     /// <summary>Content rendered when no image is shown (e.g. initials or custom fallback).</summary>
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment? ChildContent { get; set; }
     /// <summary>Optional badge overlay, typically an <see cref="AvatarBadge"/>.</summary>
-    [Parameter] public RenderFragment? Badge { get; set; }
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment? Badge { get; set; }
     /// <summary>The size of the avatar.</summary>
-    [Parameter] public Size Size { get; set; } = Size.Md;
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public Size Size { get; set; } = Size.Md;
+    /// <summary>ARIA label for screen readers. Used when showing fallback content or for interactive avatars (e.g. "Profile picture of John Doe").</summary>
+    [Parameter]
+    [Category(ComponentCategory.Common)]
+    public string? AriaLabel { get; set; }
 
     private string? _lastSrc;
     private bool _imageFailed;

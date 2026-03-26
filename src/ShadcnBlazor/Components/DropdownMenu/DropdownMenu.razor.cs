@@ -17,6 +17,7 @@ public partial class DropdownMenu : ComponentBase
     /// The trigger and content of the dropdown menu.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <inheritdoc />

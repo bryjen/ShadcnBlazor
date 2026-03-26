@@ -1,0 +1,31 @@
+@using ShadcnBlazor.Services
+@using ShadcnBlazor.Components.Button
+@inject SonnerService Sonner
+@implements IAsyncDisposable
+
+<div class="flex flex-wrap gap-2">
+    <Button OnClick="ShowDefault">Default</Button>
+    <Button Variant="@Variant.Secondary" OnClick="ShowSuccess">Success</Button>
+    <Button Variant="@Variant.Destructive" OnClick="ShowError">Error</Button>
+    <Button OnClick="ShowWarning">Warning</Button>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Sonner.InitializeAsync();
+        }
+    }
+
+    private async Task ShowDefault() => await Sonner.Show("Default toast");
+    private async Task ShowSuccess() => await Sonner.Success("Success!");
+    private async Task ShowError() => await Sonner.Error("Something went wrong.");
+    private async Task ShowWarning() => await Sonner.Warning("Warning: Proceed with caution.");
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        await ValueTask.CompletedTask;
+    }
+}

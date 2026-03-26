@@ -88,7 +88,9 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         "ShadcnBlazor.Components.Textarea.ComposableTextArea",
         "ShadcnBlazor.Components.Dialog.DialogProvider",
         "ShadcnBlazor.Components.DropdownMenu.DropdownMenu",
+        "ShadcnBlazor.Components.Field.Field",
         "ShadcnBlazor.Components.Input.Input",
+        "ShadcnBlazor.Components.Label.Label",
         "ShadcnBlazor.Components.Popover.Popover",
         "ShadcnBlazor.Components.Radio.Radio",
         "ShadcnBlazor.Components.Combobox.Combobox`1",
@@ -133,9 +135,10 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         var typeSummary = GetXmlElement(xmlDocs, typeXmlKey, "summary");
 
         var safeName = GetSafeTypeIdentifier(type.Name);
+        var displayName = GetFormattedTypeName(type);
         output.AppendLine($"    public static readonly DocumentedType {safeName} = new()");
         output.AppendLine("    {");
-        output.AppendLine($"        Name = \"{type.Name}\",");
+        output.AppendLine($"        Name = \"{displayName}\",");
         output.AppendLine($"        FullName = \"{EscapeQuotes(type.FullName ?? "")}\",");
         output.AppendLine($"        Summary = @\"{EscapeQuotes(typeSummary)}\",");
 
@@ -159,8 +162,9 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             var summary = GetXmlElement(xmlDocs, propXmlKey, "summary");
             var remarks = GetXmlElement(xmlDocs, propXmlKey, "remarks");
 
-            var categoryAttr = prop.GetCustomAttribute<System.ComponentModel.CategoryAttribute>();
+            var categoryAttr = prop.GetCustomAttribute<ShadcnBlazor.CategoryAttribute>();
             var defaultValue = GetDefaultValue(prop, type);
+            var isInherited = prop.DeclaringType != type;
 
             output.AppendLine("            new DocumentedProperty");
             output.AppendLine("            {");
@@ -168,17 +172,31 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             output.AppendLine($"                Type = \"{GetFriendlyTypeName(prop.PropertyType)}\",");
             output.AppendLine($"                Summary = @\"{EscapeQuotes(summary)}\",");
             output.AppendLine($"                Remarks = @\"{EscapeQuotes(remarks)}\",");
-            output.AppendLine($"                Category = \"{EscapeQuotes(categoryAttr?.Category ?? "Common")}\",");
+            output.AppendLine($"                Category = \"{EscapeQuotes(categoryAttr?.Name ?? "Common")}\",");
+            output.AppendLine($"                Order = {(int?)(categoryAttr?.Category) ?? int.MaxValue},");
             output.AppendLine($"                DefaultValue = \"{EscapeForRegularString(defaultValue)}\",");
+            output.AppendLine($"                IsInherited = {(isInherited ? "true" : "false")},");
             output.AppendLine("            },");
         }
 
             output.AppendLine("        },");
         }
 
+        var excludedMethods = new HashSet<string>(StringComparer.Ordinal)
+        {
+            "Equals",
+            "GetHashCode",
+            "GetType",
+            "ToString",
+            "SetParametersAsync",
+            "StateHasChanged",
+            "InvokeAsync"
+        };
+
         var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
             .Where(m => !m.IsSpecialName)
             .Where(m => !m.Name.StartsWith("get_") && !m.Name.StartsWith("set_"))
+            .Where(m => !excludedMethods.Contains(m.Name))
             .OrderBy(m => m.Name)
             .ToList();
 
@@ -197,6 +215,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             var methodXmlKey = $"M:{type.FullName}.{method.Name}";
             var summary = GetXmlElement(xmlDocs, methodXmlKey, "summary");
             var returns = GetXmlElement(xmlDocs, methodXmlKey, "returns");
+            var isInherited = method.DeclaringType != type;
 
             output.AppendLine("            new DocumentedMethod");
             output.AppendLine("            {");
@@ -204,6 +223,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
             output.AppendLine($"                Summary = @\"{EscapeQuotes(summary)}\",");
             output.AppendLine($"                ReturnType = \"{GetFriendlyTypeName(method.ReturnType)}\",");
             output.AppendLine($"                Returns = @\"{EscapeQuotes(returns)}\",");
+            output.AppendLine($"                IsInherited = {(isInherited ? "true" : "false")},");
             output.AppendLine("            },");
         }
 
@@ -231,12 +251,14 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         {
             var evtXmlKey = $"P:{type.FullName}.{evt.Name}";
             var summary = GetXmlElement(xmlDocs, evtXmlKey, "summary");
+            var isInherited = evt.DeclaringType != type;
 
             output.AppendLine("            new DocumentedEvent");
             output.AppendLine("            {");
             output.AppendLine($"                Name = \"{evt.Name}\",");
             output.AppendLine($"                Type = \"{GetFriendlyTypeName(evt.PropertyType)}\",");
             output.AppendLine($"                Summary = @\"{EscapeQuotes(summary)}\",");
+            output.AppendLine($"                IsInherited = {(isInherited ? "true" : "false")},");
             output.AppendLine("            },");
         }
 
@@ -280,9 +302,14 @@ string FindAssemblyPath(string docsDirPath)
 static (string PropertyName, string FileName, string EscapedContents, string Language) CreateSnippetFromFile(string filePath, string basePath)
 {
     var relativePath = Path.GetRelativePath(basePath, filePath);
-    var propertyName = Path.ChangeExtension(relativePath, null)
-        .Replace("\\", "_").Replace("/", "_").Replace("-", "_");
     var ext = Path.GetExtension(filePath).ToLowerInvariant();
+    var nameSource = ext is ".razor" or ".cshtml"
+        ? Path.ChangeExtension(relativePath, null)
+        : relativePath; // include extension for non-razor files to avoid collisions
+    var propertyName = nameSource
+        .Replace("\\", "_").Replace("/", "_").Replace("-", "_");
+    if (ext is not ".razor" and not ".cshtml")
+        propertyName = propertyName.Replace(".", "_");
     var language = ext switch
     {
         ".razor" or ".cshtml" => "razor",
@@ -308,7 +335,8 @@ static IEnumerable<string> CollectExampleFiles(string docsDirPath)
     {
         Path.Combine(docsDirPath, "Pages", "Components"),
         Path.Combine(docsDirPath, "Pages", "Samples"),
-        Path.Combine(docsDirPath, "Pages", "PseudoComponents")
+        Path.Combine(docsDirPath, "Pages", "PseudoComponents"),
+        Path.Combine(docsDirPath, "Pages", "Forms")
     };
 
     var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -317,13 +345,19 @@ static IEnumerable<string> CollectExampleFiles(string docsDirPath)
     {
         if (!Directory.Exists(root)) continue;
 
-        foreach (var file in Directory.EnumerateFiles(root, "*.razor", SearchOption.AllDirectories))
+        foreach (var file in Directory.EnumerateFiles(root, "*.*", SearchOption.AllDirectories))
         {
+            var ext = Path.GetExtension(file);
+            if (!ext.Equals(".razor", StringComparison.OrdinalIgnoreCase) &&
+                !ext.Equals(".cs", StringComparison.OrdinalIgnoreCase))
+                continue;
+
             var fileName = Path.GetFileName(file);
             var relativePath = Path.GetRelativePath(root, file);
             var pathParts = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-            var isExampleNamed = fileName.EndsWith("Example.razor", StringComparison.OrdinalIgnoreCase);
+            var isExampleNamed = fileName.EndsWith("Example.razor", StringComparison.OrdinalIgnoreCase) ||
+                                 fileName.EndsWith("Example.cs", StringComparison.OrdinalIgnoreCase);
             var isUnderExamples = pathParts.Contains("Examples", StringComparer.OrdinalIgnoreCase);
 
             if ((isExampleNamed || isUnderExamples) && seen.Add(file))
@@ -511,4 +545,16 @@ bool IsEventCallback(Type type)
 
     var genericDef = type.GetGenericTypeDefinition();
     return genericDef.Name.StartsWith("EventCallback");
+}
+
+string GetFormattedTypeName(Type type)
+{
+    if (!type.IsGenericType)
+        return type.Name;
+
+    var baseName = type.Name.Substring(0, type.Name.IndexOf('`'));
+    var genericArgs = type.GetGenericArguments();
+    var argNames = genericArgs.Select(arg => arg.Name).ToList();
+
+    return $"{baseName}<{string.Join(", ", argNames)}>";
 }

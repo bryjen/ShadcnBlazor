@@ -18,6 +18,39 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify Node.js
+        run: |
+          node --version
+          npm --version
+          which npm || echo "npm not found in PATH"
+          which npx || echo "npx not found in PATH"
+          echo "PATH: $PATH"
+
+      - name: Install npm dependencies
+        working-directory: ./sonner-interop
+        run: npm ci
+
+      - name: Build Sonner bundle
+        working-directory: ./sonner-interop
+        run: |
+          chmod +x node_modules/.bin/vite
+          npm run build
+
+      - name: Verify Sonner bundle
+        run: |
+          if [ -f ./sonner-interop/dist/sonner-interop.iife.js ]; then
+            echo "✓ Sonner bundle built successfully"
+            ls -lh ./sonner-interop/dist/sonner-interop.iife.js
+          else
+            echo "✗ Sonner bundle NOT found!"
+            exit 1
+          fi
+
       - name: Restore dependencies
         run: dotnet restore ShadcnBlazor.sln
 

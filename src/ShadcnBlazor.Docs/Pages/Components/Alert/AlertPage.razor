@@ -9,10 +9,12 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Alert">
+    <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Alert" />
+
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Alert component displays important messages or notifications. Use <code>ChildContent</code> to render your message. Set <code>Variant</code> to <code>AlertVariant.Default</code> or <code>AlertVariant.Destructive</code> for different styling.</p>
+        <p>The Alert component displays important messages or notifications. Use <code>ChildContent</code> to render your message. Set <code>Variant</code> to <code>AlertVariant.Default</code> or <code>AlertVariant.Destructive</code> for different styling. Use <code>Announcement</code> to control how the alert is announced (<code>Alert</code>, <code>Status</code>, or <code>None</code>).</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertBasicExample })">
             <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                 <AlertBasicExample />
@@ -22,7 +24,7 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Icons" Id="icons">
-            <p class="mb-3">Although support for icons deos not natively exist, you can structure your alerts to use icons (for example from <code>Lucide</code>) like so:</p>
+            <p>Although support for icons deos not natively exist, you can structure your alerts to use icons (for example from <code>Lucide</code>) like so:</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertWithIconsExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AlertWithIconsExample />
@@ -31,7 +33,7 @@
         </DocsSubSection>
         
         <DocsSubSection Title="Variants" Id="variants">
-            <p class="mb-3">Use the <code>Variant</code> parameter to switch between default and destructive styling for error or warning messages. Only two variants are provided by default.</p>
+            <p>Use the <code>Variant</code> parameter to switch between default and destructive styling for error or warning messages. Only two variants are provided by default.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertVariantExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AlertVariantExample />
@@ -40,7 +42,7 @@
         </DocsSubSection>
         
         <DocsSubSection Title="Interactivity" Id="interactivity">
-            <p class="mb-3">You can embed other components into alerts to add interactivity.</p>
+            <p>You can embed other components into alerts to add interactivity.</p>
             <ComponentPreview CodeFiles="@(new [] { Snippets.Components_Alert_Examples_AlertWithInteractivityExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AlertWithInteractivityExample />
@@ -49,7 +51,7 @@
         </DocsSubSection>
         
         <DocsSubSection Title="Styling" Id="styling">
-            <p class="mb-3">Customize alert colors by adding Tailwind classes like <code>bg-amber-50 dark:bg-amber-950</code>. Use the <code>group</code> utility on the Alert to trigger hover animations on child elements:</p>
+            <p>Customize alert colors by adding Tailwind classes like <code>bg-amber-50 dark:bg-amber-950</code>. Use the <code>group</code> utility on the Alert to trigger hover animations on child elements:</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_CustomAlertStylingExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <CustomAlertStylingExample/>
@@ -62,8 +64,15 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Alert");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add alert";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add alert",
+        __builder => { <div>Announcement control (<code>Announcement</code>) with alert/status/none</div> },
+        __builder => { <div>Visual variants for default and destructive states</div> },
+        __builder => { <div>Composable content with optional icons and actions</div> },
+        __builder => { <div>Utility-friendly styling via class overrides</div> },
     };
 }
+
+

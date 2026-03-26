@@ -1,0 +1,30 @@
+@page "/starship-1"
+@inject ILogger<Starship1Example> Logger
+
+<div class="space-y-4">
+    <EditForm Model="Model" OnSubmit="Submit" FormName="Starship1" class="space-y-4">
+        <div class="space-y-2">
+            <label for="identifier" class="block text-sm font-medium">
+                Identifier:
+            </label>
+            <InputText id="identifier" @bind-Value="Model!.Id" class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" />
+        </div>
+        <button type="submit" class="px-3 py-1 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors">
+            Submit
+        </button>
+    </EditForm>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Starship? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private void Submit() => Logger.LogInformation("Id = {Id}", Model?.Id);
+
+    public class Starship
+    {
+        public string? Id { get; set; }
+    }
+}

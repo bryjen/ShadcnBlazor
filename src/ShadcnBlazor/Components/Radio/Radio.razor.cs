@@ -14,31 +14,29 @@ public partial class Radio : RadioSelectableComponentBase
     /// Optional label content displayed next to the radio.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? LabelContent { get; set; }
 
     /// <summary>
     /// Content displayed next to the radio (alternative to LabelContent).
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
     /// CSS classes for the radio button element.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string ButtonClass { get; set; } = string.Empty;
 
     /// <summary>
     /// Vertical alignment of the radio relative to its label.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public VerticalAlignment Alignment { get; set; } = VerticalAlignment.Center;
-
-    /// <summary>
-    /// Whether the radio is in an invalid state. When true, sets <c>aria-invalid="true"</c> and applies invalid styling.
-    /// </summary>
-    [Parameter]
-    public bool Invalid { get; set; }
 
     private string GetContainerClass()
     {
@@ -49,7 +47,7 @@ public partial class Radio : RadioSelectableComponentBase
             VerticalAlignment.Bottom => "items-end",
             _ => "items-center",
         };
-        var invalidClass = Invalid ? "data-[invalid]:text-destructive" : "";
+        var invalidClass = IsInvalid ? "data-[invalid]:text-destructive" : "";
         var disabledClass = IsDisabled ? "data-[disabled]:text-muted-foreground data-[disabled]:cursor-not-allowed data-[disabled]:opacity-70" : "";
         return MergeCss("flex gap-2 cursor-pointer", alignmentClass, invalidClass, disabledClass, Class);
     }

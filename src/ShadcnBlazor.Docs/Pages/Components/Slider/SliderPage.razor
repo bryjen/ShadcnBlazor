@@ -9,10 +9,10 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Slider">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for two-way binding.</p>
+        <p>The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for two-way binding.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderBasicExample })">
             <SliderBasicExample />
         </ComponentPreview>
@@ -20,7 +20,7 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Range" Id="range">
-            <p class="mb-3">Customize <code>Min</code>, <code>Max</code>, and <code>Step</code> for different value ranges.</p>
+            <p>Customize <code>Min</code>, <code>Max</code>, and <code>Step</code> for different value ranges.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderRangeExample })">
                 <SliderRangeExample />
             </ComponentPreview>
@@ -31,8 +31,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Slider");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add slider",
-    };
+    private const string InstallCommand = "shadcnblazor component add slider";
 }
+
+

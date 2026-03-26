@@ -5,8 +5,10 @@ using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Select.Base;
 
+/// <summary>Base component for select-style inputs with keyboard and ARIA behavior.</summary>
 public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposable
 {
+    /// <summary>JS runtime used for interop.</summary>
     [Inject]
     public IJSRuntime JsRuntime { get; set; } = null!;
 
@@ -42,20 +44,28 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
     public bool Disabled { get; set; }
 #endregion
 
+    /// <summary>Registry for declarative child nodes.</summary>
     protected readonly SelectDeclarativeRegistry _declarativeRegistry = new();
+    /// <summary>Unique id for the trigger element.</summary>
     protected readonly string _triggerId = $"select-trigger-{Guid.NewGuid():N}";
+    /// <summary>Unique id for the listbox element.</summary>
     protected readonly string _listboxId = $"select-listbox-{Guid.NewGuid():N}";
 
+    /// <summary>Whether the listbox is open.</summary>
     protected bool _open;
+    /// <summary>Active option index (for keyboard focus).</summary>
     protected int? _activeIndex;
+    /// <summary>Option id that should be scrolled into view after render.</summary>
     protected string? _pendingScrollOptionId;
 
+    /// <summary>JS module instance for select interop.</summary>
     protected IJSObjectReference? _module;
     private bool _maxVisibleItemsListenerRegistered;
     private int _lastMeasuredNodeCount = -1;
     private int? _lastMeasuredMaxVisibleItems;
     private const int PageJumpSize = 10;
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         _declarativeRegistry.Changed += HandleDeclarativeChanged;
@@ -98,8 +108,10 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
     }
 
 #region Selection
+    /// <summary>Returns true when the given node is selected.</summary>
     protected abstract bool IsSelected(SelectDeclarativeNode node);
 
+    /// <summary>Attempts to cast the node value to <typeparamref name="T"/>.</summary>
     protected bool TryGetNodeValue(SelectDeclarativeNode node, out T? typedValue)
     {
         if (node.Value is null)
@@ -221,6 +233,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
 #endregion
 
 #region Active
+    /// <summary>Returns the active descendant id for ARIA.</summary>
     protected string? GetActiveDescendant()
     {
         if (!_open || _activeIndex is null)
@@ -229,8 +242,10 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         return GetOptionId(_activeIndex.Value);
     }
 
+    /// <summary>Builds the option element id for the given index.</summary>
     protected string GetOptionId(int index) => $"{_listboxId}-option-{index}";
 
+    /// <summary>Sets the active option index and queues scroll if needed.</summary>
     protected void SetActiveIndex(int? index)
     {
         _activeIndex = index;
@@ -240,6 +255,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         }
     }
 
+    /// <summary>Updates the active option when hovering.</summary>
     protected void HandleOptionMouseEnter(int index)
     {
         var nodes = GetRenderNodes();
@@ -249,6 +265,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         SetActiveIndex(index);
     }
 
+    /// <summary>Ensures a valid active option when the listbox opens.</summary>
     protected virtual void EnsureActiveOnOpen()
     {
         var nodes = GetRenderNodes();
@@ -270,6 +287,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
 #endregion
 
 #region Open
+    /// <summary>Handles changes to the open state.</summary>
     protected virtual Task HandleOpenChanged(bool open)
     {
         _open = open;
@@ -281,6 +299,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         return Task.CompletedTask;
     }
 
+    /// <summary>Toggles the open state.</summary>
     protected Task ToggleOpen()
     {
         if (Disabled)
@@ -297,6 +316,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
 #endregion
 
 #region Keyboard
+    /// <summary>Keyboard handler for the trigger element.</summary>
     protected async Task HandleTriggerKeyDown(KeyboardEventArgs e)
     {
         if (Disabled)
@@ -399,6 +419,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         await InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>Handles tab navigation and optional selection behavior.</summary>
     protected virtual async Task HandleTabKeyAsync(bool shiftKey)
     {
         var nodes = GetRenderNodes();
@@ -453,6 +474,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
 #endregion
 
 #region Commit
+    /// <summary>Invoked after an item is selected.</summary>
     protected virtual async Task OnItemSelectAsync(int idx, T? value)
     {
         SetActiveIndex(idx);
@@ -460,6 +482,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         await Task.CompletedTask;
     }
 
+    /// <summary>Selects the option at the given index if selectable.</summary>
     protected async Task SelectOptionAtIndexAsync(int index)
     {
         var nodes = GetRenderNodes();
@@ -486,6 +509,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
 #endregion
 
 #region JS Interop
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_open && !string.IsNullOrEmpty(_pendingScrollOptionId))
@@ -548,6 +572,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
         await _module.InvokeVoidAsync("disposeListboxMaxVisibleItems", _listboxId);
     }
 
+    /// <summary>Ensures the JS module is loaded.</summary>
     protected async Task EnsureModuleAsync()
     {
         if (_module is not null)
@@ -558,6 +583,7 @@ public abstract partial class SelectBase<T> : ShadcnComponentBase, IAsyncDisposa
             "/_content/ShadcnBlazor/Components/Select/Base/SelectBase.razor.js");
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         _declarativeRegistry.Changed -= HandleDeclarativeChanged;

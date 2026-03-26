@@ -57,14 +57,17 @@
 </div>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await Sonner.InitializeAsync();
+        if (firstRender)
+        {
+            await Sonner.InitializeAsync();
+        }
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        // Cleanup if needed
+        await ValueTask.CompletedTask;
     }
 
     private async Task ShowToast()

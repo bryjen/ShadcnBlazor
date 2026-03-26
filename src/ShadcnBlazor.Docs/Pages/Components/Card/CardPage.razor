@@ -2,63 +2,85 @@
 
 <PageTitle>Card - ShadcnBlazor</PageTitle>
 <HeadContent>
-    <meta name="description" content="ShadcnBlazor Card - Container component for grouping related content." />
+    <meta name="description" content="ShadcnBlazor Card - Composable container components for grouping related content." />
 </HeadContent>
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Card.Examples
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Card">
-    <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">Displays a card with header, content, and footer. Use <code>Header</code>, <code>ChildContent</code>, and <code>Footer</code> child content to compose the card. When <code>Header</code> or <code>Footer</code> are provided, they render as distinct sections with borders and consistent padding.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardBasicExample })">
-            <CardBasicExample />
-        </ComponentPreview>
-    </DocsSection>
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Composable</span>
+            </Badge>
+        </div>
+    </UnderHeader>
 
-    <DocsSection Title="Examples" Id="examples">
-        <DocsSubSection Title="Header and Footer" Id="header-footer">
-            <p class="mb-3">
-                <code>Header</code> and <code>Footer</code> are optional child content slots. When provided, they render as distinct sections above and below the main content, each with a border separator and padding derived from the card's <code>Size</code>.
-            </p>
-            <p class="mb-3">
-                Customize each section with <code>HeaderClass</code>, <code>ContentClass</code>, and <code>FooterClass</code>. These apply only when the corresponding slot is used. For example, <code>HeaderClass="p-0"</code> removes header padding for a full-bleed image, and <code>ContentClass="p-0"</code> removes content padding for edge-to-edge content.
-            </p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardHeaderFooterExample })">
-                <CardHeaderFooterExample />
-            </ComponentPreview>
-        </DocsSubSection>
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Card" />
 
-        <DocsSubSection Title="Size" Id="size">
-            <p class="mb-3">Use the <code>Size</code> parameter set to <code>CardSize.Sm</code> for a more compact card. The small size variant uses smaller spacing.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardSizeExample })">
-                <CardSizeExample />
+        <DocsSection Title="Usage" Id="usage">
+            <p>Build cards by composing child components. <code>Card</code> is the container, <code>CardHeader</code>, <code>CardTitle</code>, <code>CardDescription</code>, <code>CardContent</code>, <code>CardFooter</code>, and <code>CardAction</code> are semantic sections you combine as needed.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardBasicExample })">
+                <CardBasicExample />
             </ComponentPreview>
-        </DocsSubSection>
+        </DocsSection>
 
-        <DocsSubSection Title="Image" Id="image">
-            <p class="mb-3">Add an image in the <code>Header</code> slot to create a card with an image. Use <code>HeaderClass="p-0"</code> for a full-bleed image.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardImageExample })">
-                <CardImageExample />
-            </ComponentPreview>
-        </DocsSubSection>
+        <DocsSection Title="Examples" Id="examples">
+            <DocsSubSection Title="Card Structure" Id="structure">
+                <p>
+                    Combine child components to create different card layouts. <code>CardHeader</code> contains <code>CardTitle</code> and <code>CardDescription</code>. <code>CardAction</code> positions content in the top-right of the header. <code>CardContent</code> is the main area, and <code>CardFooter</code> is the bottom section.
+                </p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardHeaderFooterExample })">
+                    <CardHeaderFooterExample />
+                </ComponentPreview>
+            </DocsSubSection>
 
-        <DocsSubSection Title="Variants" Id="variants">
-            <p class="mb-3">Use the <code>Variant</code> parameter to switch between Default (card background) and Outline (transparent with border).</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardVariantExample })">
-                <CardVariantExample />
-            </ComponentPreview>
-        </DocsSubSection>
-    </DocsSection>
+            <DocsSubSection Title="Image Cards" Id="image">
+                <p>Use <code>CardHeader</code> with an image and remove padding by adding <code>Class="!p-0"</code> to create edge-to-edge image cards.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardImageExample })">
+                    <CardImageExample />
+                </ComponentPreview>
+            </DocsSubSection>
+
+            <DocsSubSection Title="Spacing" Id="spacing">
+                <p>Customize spacing by overriding <code>Card</code> and child component classes. Use <code>gap</code> and <code>py</code> on the card, or <code>px</code> and <code>py</code> on sections.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardSizeExample })">
+                    <CardSizeExample />
+                </ComponentPreview>
+            </DocsSubSection>
+
+            <DocsSubSection Title="Customization" Id="customization">
+                <p>Override default styles with the <code>Class</code> parameter on any component. For example, use <code>Class="!bg-transparent"</code> on <code>Card</code> to remove the background.</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardVariantExample })">
+                    <CardVariantExample />
+                </ComponentPreview>
+            </DocsSubSection>
+        </DocsSection>
+
+        <DocsSection Title="Accessibility" Id="accessibility">
+            <p>Card components are semantic containers with no interactive elements. Use proper heading levels: <code>CardTitle</code> should typically be an h2 or h3, never h1. Ensure sufficient color contrast for text and backgrounds (see design tokens).</p>
+            <p>When <code>CardAction</code> contains interactive elements like buttons, they are keyboard accessible and focusable by default. Ensure the card's semantic structure aids screen reader users by maintaining proper heading and section hierarchy.</p>
+        </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Card");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add card";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add card",
+        __builder => { <div>Composable child components for flexible layouts</div> },
+        __builder => { <div>CardHeader with CardTitle, CardDescription, and CardAction</div> },
+        __builder => { <div>CardContent for main area and CardFooter for bottom section</div> },
+        __builder => { <div>Full class customization for spacing, colors, and backgrounds</div> },
+        __builder => { <div>Works with images, forms, and interactive content</div> },
     };
 }
+
+

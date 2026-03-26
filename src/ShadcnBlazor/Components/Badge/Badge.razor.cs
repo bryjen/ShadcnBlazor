@@ -13,15 +13,23 @@ public partial class Badge : ShadcnComponentBase
 {
     /// <summary>The content of the badge.</summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>The visual style variant of the badge.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Variant Variant { get; set; } = Variant.Default;
 
     /// <summary>The size of the badge.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
+
+    /// <summary>ARIA label for screen readers. Required for icon-only or semantic badges (e.g., "5 unread messages", "In progress").</summary>
+    [Parameter]
+    [Category(ComponentCategory.Common)]
+    public string? AriaLabel { get; set; }
 
     private string GetClass()
     {

@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-2">
-    <Checkbox Checked="@_selected.Contains("email")" CheckedChanged="@(v => Toggle("email", v))">Email notifications</Checkbox>
-    <Checkbox Checked="@_selected.Contains("sms")" CheckedChanged="@(v => Toggle("sms", v))">SMS notifications</Checkbox>
-    <Checkbox Checked="@_selected.Contains("push")" CheckedChanged="@(v => Toggle("push", v))">Push notifications</Checkbox>
+    <Checkbox Value="@_selected.Contains("email")" ValueChanged="@(v => Toggle("email", v))">Email notifications</Checkbox>
+    <Checkbox Value="@_selected.Contains("sms")" ValueChanged="@(v => Toggle("sms", v))">SMS notifications</Checkbox>
+    <Checkbox Value="@_selected.Contains("push")" ValueChanged="@(v => Toggle("push", v))">Push notifications</Checkbox>
 </div>
 <p class="text-sm text-muted-foreground mt-2">Selected: @string.Join(", ", _selected)</p>
 

@@ -9,10 +9,21 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Accordion">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessibility-friendly</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Accordion" />
+
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
+        <p>The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionBasicExample })">
             <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                 <AccordionBasicExample/>
@@ -22,7 +33,7 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Multiple" Id="multiple">
-            <p class="mb-3">Set <code>Type="AccordionType.Multiple"</code> to allow multiple items to be open at the same time. Each item can be toggled independently, and all items can be closed.</p>
+            <p>Set <code>Type="AccordionType.Multiple"</code> to allow multiple items to be open at the same time. Each item can be toggled independently, and all items can be closed.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionMultipleExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AccordionMultipleExample />
@@ -30,7 +41,7 @@
             </ComponentPreview>
         </DocsSubSection>
         <DocsSubSection Title="Collapsible" Id="collapsible">
-            <p class="mb-3">By default, clicking an open item closes it. Set <code>Collapsible="false"</code> to require at least one item to remain open—clicking the open item will have no effect.</p>
+            <p>By default, clicking an open item closes it. Set <code>Collapsible="false"</code> to require at least one item to remain open—clicking the open item will have no effect.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionCollapsibleExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AccordionCollapsibleExample />
@@ -38,7 +49,7 @@
             </ComponentPreview>
         </DocsSubSection>
         <DocsSubSection Title="Disabled" Id="disabled">
-            <p class="mb-3">Set <code>Disabled="true"</code> on an <code>AccordionItem</code> to prevent it from being expanded or collapsed. Disabled items appear grayed out and do not respond to clicks.</p>
+            <p>Set <code>Disabled="true"</code> on an <code>AccordionItem</code> to prevent it from being expanded or collapsed. Disabled items appear grayed out and do not respond to clicks.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionDisabledExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AccordionDisabledExample />
@@ -46,7 +57,7 @@
             </ComponentPreview>
         </DocsSubSection>
         <DocsSubSection Title="With Card" Id="with-card">
-            <p class="mb-3">The Accordion works well inside a <code>Card</code> for FAQ sections, settings panels, or other grouped content.</p>
+            <p>The Accordion works well inside a <code>Card</code> for FAQ sections, settings panels, or other grouped content.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionCardExample })">
                 <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                     <AccordionCardExample />
@@ -54,13 +65,24 @@
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Accordion");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add accordion";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add accordion",
+        __builder => { <div>Single or multiple open items (<code>AccordionType.Single</code>/<code>AccordionType.Multiple</code>)</div> },
+        __builder => { <div>Controlled/uncontrolled state (<code>Value</code>, <code>Values</code>, <code>ValueChanged</code>, <code>ValuesChanged</code>)</div> },
+        __builder => { <div>Optional non-collapsible single mode (<code>Collapsible="false"</code>)</div> },
+        __builder => { <div>Full keyboard support (Arrow keys, Home/End)</div> },
+        __builder => { <div>WAI-ARIA compliant structure (heading + button + region)</div> },
+        __builder => { <div>Disabled items support</div> },
+        __builder => { <div>Works seamlessly in cards and layout containers</div> },
     };
 }
+
+

@@ -11,18 +11,21 @@ public partial class Slider : SliderBase
     /// The current value.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Data)]
     public double Value { get; set; }
 
     /// <summary>
     /// Callback invoked when the value changes.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<double> ValueChanged { get; set; }
 
     /// <summary>
     /// Callback invoked when the user finishes changing the value (on change event).
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<double> OnChange { get; set; }
 
     private double ValuePercent => ToPercent(Value);

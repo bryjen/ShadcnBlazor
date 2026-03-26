@@ -17,28 +17,119 @@
     @if (Doc.Properties.Length > 0)
     {
         <div class="mb-8">
-            <h4 class="text-xl font-semibold text-foreground mb-3">Properties</h4>
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="text-xl font-semibold text-foreground">Properties</h4>
+                <div class="inline-flex border border-border rounded-md overflow-hidden">
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(PropertyView == PropertyViewMode.None ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => PropertyView = PropertyViewMode.None">
+                        NONE
+                    </button>
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(PropertyView == PropertyViewMode.Category ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => PropertyView = PropertyViewMode.Category">
+                        CATEGORY
+                    </button>
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(PropertyView == PropertyViewMode.Inheritance ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => PropertyView = PropertyViewMode.Inheritance">
+                        INHERITANCE
+                    </button>
+                </div>
+            </div>
+
             <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg" tabindex="0">
                 <table class="w-full table-auto">
                     <thead>
                         <tr>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Name</th>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Type</th>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm">Description</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs min-w-24">Name</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs min-w-24">Type</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs">Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var prop in Doc.Properties.OrderBy(p => p.Category).ThenBy(p => p.Name))
+                        @if (PropertyView == PropertyViewMode.None)
                         {
-                            <tr class="border-b border-border last:border-b-0">
-                                <td class="p-3 text-sm align-top min-w-24">
-                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@prop.Name</code>
-                                </td>
-                                <td class="p-3 text-sm align-top min-w-24 break-words">
-                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@prop.Type</code>
-                                </td>
-                                <td class="p-3 text-sm align-top min-w-0 text-muted-foreground">@prop.Summary</td>
-                            </tr>
+                            @foreach (var prop in Doc.Properties.OrderBy(p => p.Name))
+                            {
+                                <tr class="border-b border-border last:border-b-0">
+                                    <td class="p-2 text-xs align-top min-w-24">
+                                        <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@prop.Name</code>
+                                    </td>
+                                    <td class="p-2 text-xs align-top min-w-24 break-words">
+                                        <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@prop.Type</code>
+                                    </td>
+                                    <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@prop.Summary</td>
+                                </tr>
+                            }
+                        }
+                        else if (PropertyView == PropertyViewMode.Category)
+                        {
+                            @foreach (var group in Doc.Properties
+                                .GroupBy(p => p.Category)
+                                .OrderBy(g => Doc.Properties.First(p => p.Category == g.Key).Order)
+                                .ThenBy(g => g.Key))
+                            {
+                                <tr class="border-t-2 border-border/50">
+                                    <td colspan="3" class="p-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground bg-muted/30">
+                                        @group.Key
+                                    </td>
+                                </tr>
+                                @foreach (var prop in group.OrderBy(p => p.Name))
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@prop.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@prop.Type</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@prop.Summary</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else if (PropertyView == PropertyViewMode.Inheritance)
+                        {
+                            var ownProps = Doc.Properties.Where(p => !p.IsInherited).OrderBy(p => p.Name).ToArray();
+                            var inheritedProps = Doc.Properties.Where(p => p.IsInherited).OrderBy(p => p.Name).ToArray();
+
+                            @if (ownProps.Length > 0)
+                            {
+                                @foreach (var prop in ownProps)
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@prop.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@prop.Type</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@prop.Summary</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (inheritedProps.Length > 0)
+                            {
+                                <tr class="border-t-2 border-border/50">
+                                    <td colspan="3" class="p-2 text-sm font-semibold text-foreground bg-muted/30">
+                                        Inherited from ShadcnComponentBase
+                                    </td>
+                                </tr>
+                                @foreach (var prop in inheritedProps)
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@prop.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@prop.Type</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@prop.Summary</td>
+                                    </tr>
+                                }
+                            }
                         }
                     </tbody>
                 </table>
@@ -49,28 +140,87 @@
     @if (Doc.Events.Length > 0)
     {
         <div class="mb-8">
-            <h4 class="text-xl font-semibold text-foreground mb-3">Events</h4>
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="text-xl font-semibold text-foreground">Events</h4>
+                <div class="inline-flex border border-border rounded-md overflow-hidden">
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(EventView == InheritanceViewMode.None ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => EventView = InheritanceViewMode.None">
+                        NONE
+                    </button>
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(EventView == InheritanceViewMode.Inheritance ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => EventView = InheritanceViewMode.Inheritance">
+                        INHERITANCE
+                    </button>
+                </div>
+            </div>
             <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg" tabindex="0">
                 <table class="w-full table-auto">
                     <thead>
                         <tr>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Name</th>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Type</th>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm">Description</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs min-w-24">Name</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs min-w-24">Type</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs">Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var evt in Doc.Events)
+                        @if (EventView == InheritanceViewMode.None)
                         {
-                            <tr class="border-b border-border last:border-b-0">
-                                <td class="p-3 text-sm align-top min-w-24">
-                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@evt.Name</code>
-                                </td>
-                                <td class="p-3 text-sm align-top min-w-24 break-words">
-                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@evt.Type</code>
-                                </td>
-                                <td class="p-3 text-sm align-top min-w-0 text-muted-foreground">@evt.Summary</td>
-                            </tr>
+                            @foreach (var evt in Doc.Events.OrderBy(e => e.Name))
+                            {
+                                <tr class="border-b border-border last:border-b-0">
+                                    <td class="p-2 text-xs align-top min-w-24">
+                                        <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@evt.Name</code>
+                                    </td>
+                                    <td class="p-2 text-xs align-top min-w-24 break-words">
+                                        <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@evt.Type</code>
+                                    </td>
+                                    <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@evt.Summary</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            var ownEvents = Doc.Events.Where(e => !e.IsInherited).OrderBy(e => e.Name).ToArray();
+                            var inheritedEvents = Doc.Events.Where(e => e.IsInherited).OrderBy(e => e.Name).ToArray();
+
+                            @if (ownEvents.Length > 0)
+                            {
+                                @foreach (var evt in ownEvents)
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@evt.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@evt.Type</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@evt.Summary</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (inheritedEvents.Length > 0)
+                            {
+                                <tr class="border-t-2 border-border/50">
+                                    <td colspan="3" class="p-2 text-sm font-semibold text-foreground bg-muted/30">
+                                        Inherited from ShadcnComponentBase
+                                    </td>
+                                </tr>
+                                @foreach (var evt in inheritedEvents)
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@evt.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@evt.Type</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@evt.Summary</td>
+                                    </tr>
+                                }
+                            }
                         }
                     </tbody>
                 </table>
@@ -81,28 +231,87 @@
     @if (Doc.Methods.Length > 0)
     {
         <div>
-            <h4 class="text-xl font-semibold text-foreground mb-3">Methods</h4>
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="text-xl font-semibold text-foreground">Methods</h4>
+                <div class="inline-flex border border-border rounded-md overflow-hidden">
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(MethodView == InheritanceViewMode.None ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => MethodView = InheritanceViewMode.None">
+                        NONE
+                    </button>
+                    <button
+                        class="px-3 py-1.5 text-xs font-medium transition-colors @(MethodView == InheritanceViewMode.Inheritance ? "bg-primary text-primary-foreground" : "bg-background text-muted-foreground hover:text-foreground") border-r border-border last:border-r-0"
+                        @onclick="() => MethodView = InheritanceViewMode.Inheritance">
+                        INHERITANCE
+                    </button>
+                </div>
+            </div>
             <div class="w-full min-w-0 overflow-x-auto border border-border rounded-lg" tabindex="0">
                 <table class="w-full table-auto">
                     <thead>
                         <tr>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Method</th>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm min-w-24">Returns</th>
-                            <th class="text-left font-semibold p-3 bg-muted/60 border-b border-border text-sm">Description</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs min-w-24">Method</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs min-w-24">Returns</th>
+                            <th class="text-left font-semibold p-2 bg-muted/60 border-b border-border text-xs">Description</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var method in Doc.Methods)
+                        @if (MethodView == InheritanceViewMode.None)
                         {
-                            <tr class="border-b border-border last:border-b-0">
-                                <td class="p-3 text-sm align-top min-w-24">
-                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@method.Name</code>
-                                </td>
-                                <td class="p-3 text-sm align-top min-w-24 break-words">
-                                    <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@method.ReturnType</code>
-                                </td>
-                                <td class="p-3 text-sm align-top min-w-0 text-muted-foreground">@method.Summary</td>
-                            </tr>
+                            @foreach (var method in Doc.Methods.OrderBy(m => m.Name))
+                            {
+                                <tr class="border-b border-border last:border-b-0">
+                                    <td class="p-2 text-xs align-top min-w-24">
+                                        <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@method.Name</code>
+                                    </td>
+                                    <td class="p-2 text-xs align-top min-w-24 break-words">
+                                        <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@method.ReturnType</code>
+                                    </td>
+                                    <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@method.Summary</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            var ownMethods = Doc.Methods.Where(m => !m.IsInherited).OrderBy(m => m.Name).ToArray();
+                            var inheritedMethods = Doc.Methods.Where(m => m.IsInherited).OrderBy(m => m.Name).ToArray();
+
+                            @if (ownMethods.Length > 0)
+                            {
+                                @foreach (var method in ownMethods)
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@method.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@method.ReturnType</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@method.Summary</td>
+                                    </tr>
+                                }
+                            }
+
+                            @if (inheritedMethods.Length > 0)
+                            {
+                                <tr class="border-t-2 border-border/50">
+                                    <td colspan="3" class="p-2 text-sm font-semibold text-foreground bg-muted/30">
+                                        Inherited from ComponentBase
+                                    </td>
+                                </tr>
+                                @foreach (var method in inheritedMethods)
+                                {
+                                    <tr class="border-b border-border last:border-b-0">
+                                        <td class="p-2 text-xs align-top min-w-24">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border">@method.Name</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-24 break-words">
+                                            <code class="font-mono text-xs bg-muted text-foreground px-1.5 py-0.5 rounded border border-border whitespace-pre-wrap break-words">@method.ReturnType</code>
+                                        </td>
+                                        <td class="p-2 text-xs align-top min-w-0 text-muted-foreground">@method.Summary</td>
+                                    </tr>
+                                }
+                            }
                         }
                     </tbody>
                 </table>
@@ -112,12 +321,26 @@
 </div>
 
 @code {
+    private enum PropertyViewMode
+    {
+        None,
+        Category,
+        Inheritance
+    }
+
+    private enum InheritanceViewMode
+    {
+        None,
+        Inheritance
+    }
+
+    private PropertyViewMode PropertyView = PropertyViewMode.Category;
+    private InheritanceViewMode EventView = InheritanceViewMode.None;
+    private InheritanceViewMode MethodView = InheritanceViewMode.None;
+
     [Parameter, EditorRequired]
     public DocumentedType Doc { get; set; } = null!;
 
-    /// <summary>
-    /// When true, shows the "API Reference" heading, component name, and description. Set to false when embedded in a page that already provides this context.
-    /// </summary>
     [Parameter]
     public bool ShowHeader { get; set; } = true;
 }

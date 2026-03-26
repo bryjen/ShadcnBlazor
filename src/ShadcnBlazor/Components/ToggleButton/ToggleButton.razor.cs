@@ -13,38 +13,47 @@ public partial class ToggleButton : ShadcnComponentBase
 {
     /// <summary>The content rendered inside the button.</summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>The variant when the button is not toggled.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Variant VariantUntoggled { get; set; } = Variant.Outline;
 
     /// <summary>The variant when the button is toggled on.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Variant VariantToggled { get; set; } = Variant.Default;
 
     /// <summary>The size of the button.</summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
 
     /// <summary>The HTML button type.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public ButtonType Type { get; set; } = ButtonType.Button;
 
     /// <summary>When true, the button is disabled.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool Disabled { get; set; }
 
     /// <summary>Callback fired when the button is clicked.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     /// <summary>Whether the button is currently toggled on. Use with <see cref="IsToggledChanged"/> for two-way binding.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool IsToggled { get; set; }
 
     /// <summary>Callback fired when the toggled state changes. Use with <see cref="IsToggled"/> for two-way binding.</summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<bool> IsToggledChanged { get; set; }
 
     private bool _localToggled;

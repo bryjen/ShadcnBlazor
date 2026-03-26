@@ -11,6 +11,8 @@ public partial class AvatarBadge : ShadcnComponentBase
 {
     /// <summary>The content of the badge (e.g. a colored dot or status indicator).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>ARIA label describing the badge status for screen readers (e.g. "Online", "Away", "Do not disturb").</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     private string GetClass()
     {

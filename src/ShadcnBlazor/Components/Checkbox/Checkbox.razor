@@ -1,13 +1,13 @@
 @inherits ShadcnComponentBase
 
-<label class="@GetLabelClass()" data-invalid="@(Invalid ? "true" : null)" data-disabled="@(Disabled ? "true" : null)">
+<label class="@GetLabelClass()" data-invalid="@(IsInvalid ? "true" : null)" data-disabled="@(Disabled ? "true" : null)">
     <button
         type="button"
         role="checkbox"
         aria-checked="@GetAriaChecked()"
-        aria-invalid="@(Invalid ? "true" : "false")"
+        aria-invalid="@(IsInvalid ? "true" : "false")"
         data-slot="checkbox"
-        data-state="@(Checked ? "checked" : "unchecked")"
+        data-state="@(Value ? "checked" : "unchecked")"
         data-size="@Size"
         class="@GetClass()"
         disabled="@Disabled"

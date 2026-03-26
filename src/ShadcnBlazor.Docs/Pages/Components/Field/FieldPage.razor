@@ -1,0 +1,54 @@
+@page "/components/field"
+
+<PageTitle>Field - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Field - Compose labels, controls, helper text, and validation into accessible form fields." />
+</HeadContent>
+@using System.Reflection
+@using ShadcnBlazor.Docs.Pages.Components.Field.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallCommand="@InstallCommand"
+                 ApiDoc="@ApiDocumentation.Field">
+    <DocsSection Title="Usage" Id="usage">
+        <p>Use <code>Field</code> to wrap a label, control, description, and error message in a consistent layout. For simple inputs, start with a single Field.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Field_Examples_FieldBasicExample })">
+            <FieldBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Grouped fields" Id="grouped-fields">
+            <p>Use <code>FieldSet</code>, <code>FieldLegend</code>, and <code>FieldGroup</code> to group related fields and add a shared description.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Field_Examples_FieldSetExample })">
+                <FieldSetExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Horizontal layout" Id="horizontal">
+            <p>Set <code>Orientation="FieldOrientation.Horizontal"</code> to place the label beside the control.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Field_Examples_FieldHorizontalExample })">
+                <FieldHorizontalExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="EditForm validation" Id="editform-validation">
+            <p>When used inside <code>EditForm</code>, <code>Field</code> reads validation messages from the cascaded <code>EditContext</code> and exposes them via <code>FieldError</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Field_Examples_FieldValidationExample })">
+                <FieldValidationExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p>Provide a matching <code>FieldId</code> on <code>Field</code> and an <code>id</code> on your control. This allows <code>FieldLabel</code> and <code>FieldError</code> to associate with the input.</p>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Field");
+
+    private const string InstallCommand = "shadcnblazor component add field";
+}
+

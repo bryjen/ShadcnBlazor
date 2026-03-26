@@ -6,15 +6,14 @@
 </HeadContent>
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Input.Examples
-@using ShadcnBlazor.Docs.Pages.Examples
 @using ShadcnBlazor.Docs.Services
 @using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Input">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Input component provides a single-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Type</code>, and <code>Size</code> as needed.</p>
+        <p>The Input component provides a single-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Type</code>, and <code>Size</code> as needed.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputBasicExample })">
             <InputBasicExample />
         </ComponentPreview>
@@ -22,16 +21,9 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Sizes" Id="sizes">
-            <p class="mb-3">Use the <code>Size</code> parameter for Sm, Md, or Lg inputs.</p>
+            <p>Use the <code>Size</code> parameter for Sm, Md, or Lg inputs.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputSizeExample })">
                 <InputSizeExample />
-            </ComponentPreview>
-        </DocsSubSection>
-
-        <DocsSubSection Title="Form validation (aria-invalid)" Id="form-validation">
-            <p class="mb-3">Wrap your form in <code>FormValidationProvider</code> with <code>Invalid</code> and <code>ErrorMessageId</code>. Input and Button receive the context and apply <code>aria-invalid</code> and <code>aria-errormessage</code> automatically.</p>
-            <ComponentPreview CodeFiles="@(new[] { _formExampleCode })">
-                <AccessibilityFormExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
@@ -40,24 +32,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Input");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add input",
-    };
-
-    private static readonly CodeFile _formExampleCode = CodeFile.Create(
-        "<FormValidationProvider Invalid=\"_showInvalid\" ErrorMessageId=\"email-error\">\n" +
-        "    <div class=\"flex flex-col gap-2\">\n" +
-        "        <label for=\"email\">Email</label>\n" +
-        "        <Input id=\"email\" @bind-Value=\"_email\" Placeholder=\"you@example.com\" />\n" +
-        "        <span id=\"email-error\" class=\"text-sm text-destructive\" aria-live=\"polite\">\n" +
-        "            @(_showInvalid ? \"Please enter a valid email address.\" : null)\n" +
-        "        </span>\n" +
-        "    </div>\n" +
-        "    <div class=\"flex gap-2 mt-2\">\n" +
-        "        <Button Type=\"ButtonType.Submit\" OnClick=\"HandleSubmit\">Submit</Button>\n" +
-        "        <Button Variant=\"Variant.Outline\" OnClick=\"ToggleInvalid\">Toggle invalid</Button>\n" +
-        "    </div>\n" +
-        "</FormValidationProvider>",
-        "razor", "Example.razor");
+    private const string InstallCommand = "shadcnblazor component add input";
 }
+
+

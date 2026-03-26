@@ -9,10 +9,10 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Textarea">
     <DocsSection Title="Textarea" Id="textarea">
-        <p class="mb-3">The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
+        <p>The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaBasicExample })">
             <TextareaBasicExample />
         </ComponentPreview>
@@ -20,7 +20,7 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Rows" Id="rows">
-            <p class="mb-3">Use the <code>Rows</code> parameter to control the initial height of the textarea.</p>
+            <p>Use the <code>Rows</code> parameter to control the initial height of the textarea.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaRowsExample })">
                 <TextareaRowsExample />
             </ComponentPreview>
@@ -28,18 +28,18 @@
     </DocsSection>
 
     <DocsSection Title="ComposableTextArea" Id="composable-textarea">
-        <p class="mb-3">The ComposableTextArea extends the textarea pattern with optional <code>Header</code> and <code>Footer</code> slots. Use it when you need to add toolbar buttons, hints, or actions above or below the input. It lives in the same folder as Textarea—<code>shadcnblazor component add textarea</code> adds both.</p>
+        <p>The ComposableTextArea extends the textarea pattern with optional <code>Header</code> and <code>Footer</code> slots. Use it when you need to add toolbar buttons, hints, or actions above or below the input. It lives in the same folder as Textarea—<code>shadcnblazor component add textarea</code> adds both.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_ComposableTextAreaBasicExample })">
             <ComposableTextAreaBasicExample />
         </ComponentPreview>
         <DocsSubSection Title="With Header and Footer" Id="with-header-footer">
-            <p class="mb-3">Use the <code>Header</code> and <code>Footer</code> render fragments to add content above and below the textarea.</p>
+            <p>Use the <code>Header</code> and <code>Footer</code> render fragments to add content above and below the textarea.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_ComposableTextAreaWithSlotsExample })">
                 <ComposableTextAreaWithSlotsExample />
             </ComponentPreview>
         </DocsSubSection>
         <DocsSubSection Title="AI Chat input" Id="ai-chat-input">
-            <p class="mb-3">The <a href="/samples/ai-chat" class="text-primary hover:underline">AI Chat sample</a> uses ComposableTextArea for its input bar. The <code>Header</code> holds an "Add Context" button; the <code>Footer</code> has toggles (extended thinking, auto, sources) and a send button. The slots keep the input compact while exposing controls.</p>
+            <p>The <a href="/samples/ai-chat" class="text-primary hover:underline">AI Chat sample</a> uses ComposableTextArea for its input bar. The <code>Header</code> holds an "Add Context" button; the <code>Footer</code> has toggles (extended thinking, auto, sources) and a send button. The slots keep the input compact while exposing controls.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_ComposableTextAreaAiChatExample })">
                 <ComposableTextAreaAiChatExample />
             </ComponentPreview>
@@ -54,8 +54,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Textarea");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add textarea",
-    };
+    private const string InstallCommand = "shadcnblazor component add textarea";
 }
+
+

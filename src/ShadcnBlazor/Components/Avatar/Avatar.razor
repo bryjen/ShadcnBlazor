@@ -3,7 +3,9 @@
 <div
     data-slot="avatar"
     class="@GetClass()"
-    @attributes="AdditionalAttributes">
+    @attributes="AdditionalAttributes"
+    role="@(ShouldRenderImage ? null : "img")"
+    aria-label="@(ShouldRenderImage ? null : AriaLabel ?? Alt)">
     @if (ShouldRenderImage)
     {
         <img

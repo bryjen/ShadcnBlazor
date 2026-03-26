@@ -7,6 +7,7 @@ namespace ShadcnBlazor.Components.Shared.Services.Interop;
 /// </summary>
 public abstract class BaseInterop : IAsyncDisposable
 {
+    /// <summary>JS runtime used to import modules.</summary>
     protected readonly IJSRuntime JSRuntime;
     private IJSObjectReference? _module;
     private readonly SemaphoreSlim _lock = new(1, 1);
@@ -16,6 +17,7 @@ public abstract class BaseInterop : IAsyncDisposable
     /// </summary>
     protected abstract string GetModulePath();
 
+    /// <summary>Creates a new interop helper.</summary>
     protected BaseInterop(IJSRuntime jsRuntime)
     {
         JSRuntime = jsRuntime;

@@ -1,0 +1,134 @@
+﻿@using System.Text.Json
+
+<EditForm Model="@_model" OnValidSubmit="@OnSubmit" Context="formContext" novalidate>
+    <DataAnnotationsValidator />
+        <div>
+            <h3 class="text-sm font-medium mb-3 text-[var(--muted-foreground)]">Payment method</h3>
+
+            <div class="border border-[var(--border)] rounded-[var(--radius)] overflow-hidden bg-[var(--card)] shadow-sm">
+                <!-- Card Header -->
+                <div class="flex items-center px-4 py-3 border-b border-[var(--border)] bg-[var(--muted)]/50">
+                    <svg class="w-5 h-5 mr-2 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    <span class="font-semibold text-sm">Card</span>
+                </div>
+
+                <!-- Card Details -->
+                <div class="p-0">
+                    <!-- Card Number -->
+                    <div class="px-4 pt-4">
+                        <Field For="@(() => _model.CardNumber)" FieldId="card-number" Class="gap-0">
+                            <div class="flex gap-2 justify-between">
+                                <label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)] mb-1">
+                                    Card information*
+                                </label>
+                                <FieldError class="text-xs"/>
+                            </div>
+                            <div class="relative">
+                                <Input id="card-number" type="text" @bind-Value="_model.CardNumber" Placeholder="1234 1234 1234 1234"
+                                       Class="p-4 rounded-t-[var(--radius)] rounded-b-none shadow-none"/>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                                    <img src="https://js.stripe.com/v3/fingerprinted/img/visa-729c05c240c4bdb47b03ac81d9945bfe.svg" alt="Visa" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                                    <img src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg" alt="MasterCard" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                                    <img src="https://js.stripe.com/v3/fingerprinted/img/amex-a49b82f46c5cd6a96a6e418a6ca1717c.svg" alt="American Express" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                                </div>
+                            </div>
+                        </Field>
+
+                        <!-- Expiration & CVC -->
+                        <div class="grid grid-cols-2">
+                            <Field For="@(() => _model.ExpirationDate)" FieldId="expiration" class="w-full gap-0">
+                                <Input id="expiration" type="text" @bind-Value="_model.ExpirationDate" Placeholder="MM / YY"
+                                       Class="p-4 rounded-bl-[var(--radius)] rounded-t-none rounded-r-none" />
+                                <FieldError class="text-xs"/>
+                            </Field>
+
+                            <div class="relative w-full">
+                                <Field For="@(() => _model.Cvc)" FieldId="cvc" class="h-full gap-0">
+                                    <Input id="cvc" type="text" @bind-Value="_model.Cvc" Placeholder="CVC"
+                                           Class="p-4 rounded-br-[var(--radius)] rounded-t-none rounded-l-none" />
+                                    <FieldError class="text-xs text-right"/>
+                                </Field>
+                                <LuCreditCard class="absolute right-3 top-3 text-[var(--muted-foreground)] size-4"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cardholder Name -->
+                    <div class="px-4 py-4">
+                        <Field For="@(() => _model.CardholderName)" FieldId="cardholder" Class="gap-0">
+                            <div class="flex gap-2 justify-between">
+                                <label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)] mb-1">
+                                    Cardholder name*
+                                </label>
+                                <FieldError class="text-xs"/>
+                            </div>
+                            <Input id="cardholder" type="text" @bind-Value="_model.CardholderName" Placeholder="Full name on card" />
+                        </Field>
+                    </div>
+
+                    <!-- Country & ZIP -->
+                    <div class="px-4 pb-4">
+                        <Field For="@(() => _model.Country)" FieldId="country" Class="gap-0">
+                            <div class="flex gap-2 justify-between mb-1">
+                                <label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)]">
+                                    Country or region*
+                                </label>
+                                <FieldError class="text-xs"/>
+                            </div>
+                            <Combobox @bind-Value="_model.Country"
+                                      Placeholder="Search countries..."
+                                      TriggerClass="rounded-t-[var(--radius)] rounded-b-none shadow-none">
+                                @foreach (var group in _countryGroups)
+                                {
+                                    <SelectGroup>
+                                        <SelectLabel Text="@group.Region" />
+                                        @foreach (var country in group.Countries)
+                                        {
+                                            <SelectItem Text="@country" Value="@country">@country</SelectItem>
+                                        }
+                                        @if (group != _countryGroups.Last())
+                                        {
+                                            <SelectSeparator />
+                                        }
+                                    </SelectGroup>
+                                }
+                            </Combobox>
+                        </Field>
+
+                        <Field For="@(() => _model.Zip)" FieldId="zip" Class="gap-0">
+                            <Input id="zip" type="text" @bind-Value="_model.Zip" Placeholder="ZIP"
+                                   Class="rounded-b-[var(--radius)] rounded-t-none -mt-px" />
+                            <FieldError class="text-xs"/>
+                        </Field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-2 mt-4">
+            <Button Type="ButtonType.Button" Variant="Variant.Outline" class="flex-1" @onclick="FillSampleData">Fill Sample Data</Button>
+            <Button Type="ButtonType.Submit" class="flex-1">Pay</Button>
+        </div>
+</EditForm>
+
+@code {
+    private RenderFragment SubmitSonner => __builder =>
+    {
+        var json = JsonSerializer.Serialize(_model, new JsonSerializerOptions { WriteIndented = true });
+        var highlightedJson = System.Text.RegularExpressions.Regex.Replace(
+            System.Net.WebUtility.HtmlEncode(json),
+            @"(?<q>&quot;[^&]*&quot;)",
+            "<span style=\"color: oklch(0.809 0.105 251.813);\">$0</span>"
+        );
+
+        <div class="flex flex-col gap-4 min-w-0">
+            <p class="font-medium text-foreground">You submitted the following values:</p>
+            <div style="width: 100%; height: 12rem; overflow-x: auto; overflow-y: hidden; background-color: var(--card-dark); border: 1px solid var(--border-dark); border-radius: var(--radius); padding: 0.75rem; font-size: 0.875rem; font-family: var(--font-mono); color: var(--foreground); white-space: pre;">
+                @((MarkupString)highlightedJson)
+            </div>
+        </div>
+    };
+}

@@ -12,16 +12,16 @@
                 Disabled="@_loadingPresets">
         </Select>
         
-        <div class="mt-2 text-xs text-muted-foreground">
+        <div class="mt-2">
             For more themes, see <a class="underline font-semibold text-foreground" href="https://tweakcn.com/community" target="_blank">tweakcn.com/community</a>.
             To copy a theme, select a theme, click <code>Code</code>, copy the CSS, and then paste it in the css editor in the other tab.
         </div>
-        <div class="mt-2 text-xs text-muted-foreground/50">
+        <div class="mt-2">
             * Refresh the page to reset to the default theme.
         </div>
         
         <Alert Variant="@AlertVariant.Destructive" Class="lg:hidden mt-4 flex items-center">
-            <p class="text-xs text-destructive/75">
+            <p>
                 Unfortunately, the code tab is not available for mobile devices.
                 To view the theme in action, you can view any other page - the theme will persist.
             </p>
@@ -29,7 +29,7 @@
     </div>
     
     <div id="colors">
-        <h2 class="font-bold text-2xl text-foreground mb-4">
+        <h2>
             Colors
         </h2>
 
@@ -39,7 +39,7 @@
             var group = Sections[sectionIdx];
 
             <section class="pb-6" @key="group.Title">
-                <h3 class="text-sm font-semibold text-card-foreground">@group.Title</h3>
+                <h3>@group.Title</h3>
                 <div class="grid grid-cols-2 gap-x-2">
                     @for (var fieldIndex = 0; fieldIndex < group.Fields.Count; fieldIndex++)
                     {
@@ -68,7 +68,7 @@
     </div>
     
     <div id="typography">
-        <h2 class="font-bold text-2xl text-foreground mb-4">
+        <h2>
             Typography
         </h2>
 
@@ -120,7 +120,7 @@
                                Class="w-[5rem] shrink-0"
                                Value="@LetterSpacingInputValue"
                                OnChange="OnLetterSpacingInputChanged"></Input>
-                        <p class="text-sm text-muted-foreground">em</p>
+                        <p>em</p>
                     </div>
                 </div>
                 <Slider Size="Size.Md"
@@ -139,7 +139,7 @@
                                Class="w-[5rem] shrink-0"
                                Value="@LineSpacingInputValue"
                                OnChange="OnLineSpacingInputChanged"></Input>
-                        <p class="text-sm text-muted-foreground">rem</p>
+                        <p>rem</p>
                     </div>
                 </div>
                 <Slider Size="Size.Md"
@@ -153,7 +153,7 @@
     </div>
     
     <div id="other">
-        <h2 class="font-bold text-2xl text-foreground mb-4">
+        <h2>
             Other
         </h2>
 
@@ -166,7 +166,7 @@
                                Class="w-[5rem] shrink-0"
                                Value="@RadiusInputValue"
                                OnChange="OnRadiusInputChanged"></Input>
-                        <p class="text-sm text-muted-foreground">rem</p>
+                        <p>rem</p>
                     </div>
                 </div>
                 <Slider Size="Size.Md"
@@ -189,7 +189,7 @@
                                Class="w-[5rem] shrink-0"
                                Value="@ShadowBlurInputValue"
                                OnChange="OnShadowBlurInputChanged"></Input>
-                        <p class="text-sm text-muted-foreground">px</p>
+                        <p>px</p>
                     </div>
                 </div>
                 <Slider Size="Size.Md"
@@ -208,7 +208,7 @@
                                Class="w-[5rem] shrink-0"
                                Value="@ShadowSpreadInputValue"
                                OnChange="OnShadowSpreadInputChanged"></Input>
-                        <p class="text-sm text-muted-foreground">px</p>
+                        <p>px</p>
                     </div>
                 </div>
                 <Slider Size="Size.Md"
@@ -236,6 +236,8 @@
         </div>
     };
 }
+
+
 
 
 

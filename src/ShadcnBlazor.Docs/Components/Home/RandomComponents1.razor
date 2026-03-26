@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col gap-4">
     @* no team members card *@
-    <Card Variant="@CardVariant.Outline" Class="py-10 gap-4 justify-center items-center text-center">
+    <Card  Class="py-10 gap-4 justify-center items-center text-center">
         <AvatarGroup Size="@Size.Md">
             <Avatar Src="https://i.pravatar.cc/64?img=8" Alt="Bryan Miller" />
             <Avatar Src="https://i.pravatar.cc/64?img=11" Alt="Sam Moore" />
@@ -17,7 +17,7 @@
     </Card>
 
     @* we're processing your request card card *@
-    <Card Variant="@CardVariant.Outline" Class="gap-4 justify-center items-center text-center">
+    <Card  Class="gap-4 justify-center items-center text-center">
         <div class="p-2 rounded-xl bg-muted">
             <LuLoaderCircle class="animate-spin w-4 h-4"/>
         </div>
@@ -33,7 +33,7 @@
     </Card>
     
     @* accordion demo *@
-    <Card Variant="@CardVariant.Outline" Class="p-4">
+    <Card  Class="p-4">
         <Accordion Collapsible DefaultValue="shipping" Class="max-w-lg">
             <AccordionItem Value="shipping">
                 <AccordionTrigger>What are your shipping options?</AccordionTrigger>
@@ -63,7 +63,7 @@
     </div>
     
     @* slider demo *@
-    <Card Variant="@CardVariant.Outline" Class="gap-3">
+    <Card  Class="gap-3">
         <div class="flex items-center justify-between">
             <span class="text-xs text-muted-foreground font-bold">Volume</span>
             <span class="text-xs text-muted-foreground">@_demoSliderValue</span>

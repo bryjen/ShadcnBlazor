@@ -1,0 +1,12 @@
+<Field FieldId="visibility">
+    <FieldLabel>Visibility</FieldLabel>
+    <RadioGroup @bind-Value="_visibility">
+        <Radio Value="public">Public</Radio>
+        <Radio Value="private">Private</Radio>
+    </RadioGroup>
+    <FieldError />
+</Field>
+
+@code {
+    private string _visibility = "public";
+}

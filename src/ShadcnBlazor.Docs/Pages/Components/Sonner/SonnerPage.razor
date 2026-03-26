@@ -1,0 +1,198 @@
+@page "/components/sonner"
+
+@inject SonnerService Sonner
+
+<PageTitle>Sonner - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Sonner - Toast notifications powered by the Sonner library." />
+</HeadContent>
+
+@using ShadcnBlazor.Docs.Pages.Components.Sonner.Examples
+@using ShadcnBlazor.Docs.Components.Examples
+@using ShadcnBlazor.Docs.Services
+@using ShadcnBlazor.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallCommand="@InstallCommand">
+    <DocsSection Title="Setup" Id="setup">
+        <p>Sonner is a toast notification service. Register <code>SonnerService</code> in your service collection and call <code>InitializeAsync()</code> once from a Blazor component to enable action button callbacks.</p>
+        <DocsSubSection Title="Service Registration" Id="registration">
+            <p>Add <code>SonnerService</code> to your service collection in <code>Program.cs</code>:</p>
+            <p><code>services.AddScoped&lt;SonnerService&gt;();</code></p>
+        </DocsSubSection>
+        <DocsSubSection Title="Initialize in Layout" Id="initialize">
+            <p>Call <code>await Sonner.InitializeAsync()</code> once in your root layout component (e.g., <code>MainLayout.razor</code>) during <code>OnInitializedAsync</code> to enable action button callbacks.</p>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Usage" Id="usage">
+        <p>Inject <code>SonnerService</code> into your component and call one of the toast methods. All methods are async and return a <code>ValueTask</code>.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerBasicExample })">
+            <SonnerBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Toast Types" Id="toast-types">
+            <p>Use <code>Show()</code>, <code>Success()</code>, <code>Error()</code>, and <code>Warning()</code> for different toast variants. Each method accepts an optional <code>options</code> object for customization.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerTypesExample })">
+                <SonnerTypesExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="With Action Button" Id="with-action">
+            <p>Use <code>SuccessWithAction()</code> or <code>ErrorWithAction()</code> to add a clickable action button. The callback is invoked when the button is clicked.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerActionExample })">
+                <SonnerActionExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Promise Toast" Id="promise">
+            <p>Use <code>Promise()</code> to show a toast that updates based on a <code>Task</code>. Shows one message on success and another on error, and handles loading state automatically.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Sonner_Examples_SonnerPromiseExample })">
+                <SonnerPromiseExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Interactive Toasts" Id="interactive">
+            <p>Use action buttons and programmatic dismissals for interactive workflows.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                    class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowUndoToast">
+                    Undo Action
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowRetryToast">
+                    Retry Failed Action
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowMultipleToasts">
+                    Show Multiple (5)
+                </button>
+
+                <button
+                    class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="() => Sonner.Dismiss()">
+                    Dismiss All
+                </button>
+            </div>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Component Toasts" Id="component">
+            <p>Render full Blazor components or RenderFragments inside toasts.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                    class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowComponentToast">
+                    Component Toast
+                </button>
+                <button
+                    class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-md transition-colors"
+                    @onclick="ShowReplyToast">
+                    Reply Toast
+                </button>
+            </div>
+        </DocsSubSection>
+    </DocsSection>
+</ComponentDocPage>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Sonner.InitializeAsync();
+        }
+    }
+
+    private async Task ShowUndoToast()
+    {
+        await Sonner.SuccessWithAction(
+            "Event created successfully",
+            "Undo",
+            async () =>
+            {
+                await Sonner.Show("Event creation undone");
+            }
+        );
+    }
+
+    private async Task ShowRetryToast()
+    {
+        await Sonner.ErrorWithAction(
+            "Failed to upload file",
+            "Retry",
+            async () =>
+            {
+                await Sonner.Success("File uploaded successfully!");
+            }
+        );
+    }
+
+    private async Task ShowMultipleToasts()
+    {
+        var messages = new[]
+        {
+            ("Database sync started", "show"),
+            ("Validating data...", "show"),
+            ("Processing...", "show"),
+            ("Synced successfully!", "success"),
+            ("Ready to go!", "success")
+        };
+
+        foreach (var (msg, type) in messages)
+        {
+            await Task.Delay(300);
+            if (type == "success")
+                await Sonner.Success(msg);
+            else
+                await Sonner.Show(msg);
+        }
+    }
+
+    private async Task ShowComponentToast()
+    {
+        var parameters = new Dictionary<string, object?>
+        {
+            ["Title"] = "Headless Blazor Toast",
+            ["Message"] = "Custom layout using toast.custom with Sonner animations.",
+            ["ButtonLabel"] = "Reply",
+            ["OnConfirm"] = EventCallback.Factory.Create(this, OnComponentConfirmed)
+        };
+
+        await Sonner.ShowHeadlessAsync<SonnerHeadlessToast>(parameters);
+    }
+
+    private async Task OnComponentConfirmed()
+    {
+        await Sonner.Success("Component confirmed!");
+    }
+
+    private async Task ShowReplyToast()
+    {
+        var parameters = new Dictionary<string, object?>
+        {
+            ["OnReply"] = EventCallback.Factory.Create(this, async () =>
+            {
+                await Sonner.Success("Reply sent!");
+            }),
+            ["OnDismiss"] = EventCallback.Factory.Create(this, async () =>
+            {
+                await Sonner.Dismiss();
+            })
+        };
+
+        await Sonner.ShowHeadlessAsync<SonnerReplyToast>(parameters);
+    }
+
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Sonner");
+
+    private const string InstallCommand = "shadcnblazor component add sonner";
+}
+
+

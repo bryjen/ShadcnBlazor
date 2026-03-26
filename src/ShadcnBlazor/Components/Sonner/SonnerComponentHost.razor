@@ -1,0 +1,24 @@
+@namespace ShadcnBlazor.Components.Sonner
+@implements IDisposable
+@inject ShadcnBlazor.Services.SonnerComponentRegistry Registry
+
+@if (_fragment is not null)
+{
+    @_fragment
+}
+
+@code {
+    [Parameter] public string? FragmentId { get; set; }
+
+    private RenderFragment? _fragment;
+
+    protected override void OnParametersSet()
+    {
+        _fragment = Registry.TryGet(FragmentId);
+    }
+
+    public void Dispose()
+    {
+        Registry.Remove(FragmentId);
+    }
+}

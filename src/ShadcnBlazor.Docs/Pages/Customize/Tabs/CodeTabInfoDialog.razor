@@ -1,4 +1,4 @@
-<div class="flex flex-col text-sm text-muted-foreground gap-4">
+<div class="flex flex-col gap-4">
     <div class="space-y-4">
         <div>
             There are two main tabs, <code>Values</code> and <code>Code</code>. 
@@ -12,7 +12,7 @@
         
         <Alert Variant="@AlertVariant.Destructive">
             <LuTriangleAlert />
-            <p class="text-muted-foreground">Note that not all fonts are supported.</p>
+            <p>Note that not all fonts are supported.</p>
         </Alert>
     </div>
     
@@ -27,3 +27,4 @@
 
     private void OnSave() => DialogInstance?.Close(DialogResult.Ok(new object()));
 }
+

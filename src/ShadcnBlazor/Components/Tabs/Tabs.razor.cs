@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using ShadcnBlazor.Components.Shared;
 
@@ -14,35 +13,35 @@ public partial class Tabs : ShadcnComponentBase
     /// The content of the tabs, typically a <see cref="TabsList"/> and one or more <see cref="TabsContent"/> components.
     /// </summary>
     [Parameter]
-    [Category("Content")]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
     /// The value of the tab to select by default when uncontrolled.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Data)]
     public string? DefaultValue { get; set; }
 
     /// <summary>
     /// The currently selected tab value when controlled. Use with <see cref="ValueChanged"/> for two-way binding.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Data)]
     public string? Value { get; set; }
 
     /// <summary>
     /// Callback fired when the selected tab changes.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<string> ValueChanged { get; set; }
 
     /// <summary>
     /// The orientation of the tabs. Use "horizontal" (default) or "vertical".
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Appearance)]
     public string Orientation { get; set; } = "horizontal";
 
     private string? _localValue;

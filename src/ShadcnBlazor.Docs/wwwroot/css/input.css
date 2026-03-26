@@ -29,6 +29,9 @@
         }
     }
 
+    a {
+        color: oklch(from var(--primary) calc(l + 0.1) c h);
+    }
 
     h1:focus {
         outline: none;
@@ -37,6 +40,7 @@
     code {
         background-color: var(--muted);
         color: var(--foreground);
+        font-size: 0.8rem;
         padding: 0.125rem 0.25rem;
         border-radius: 0.25rem;
     }
@@ -103,6 +107,47 @@
         scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
     }
 
+    :where(.docs-page) {
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    :where(.docs-page) :is(h1, h2, h3, h4) {
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 1.25rem 0 0.5rem;
+    }
+
+    :where(.docs-page) h1 {
+        font-size: 1.875rem;
+        margin-top: 0;
+    }
+
+    :where(.docs-page) h2 { font-size: 1.5rem; }
+    :where(.docs-page) h3 { font-size: 1.25rem; }
+    :where(.docs-page) h4 { font-size: 1.125rem; }
+
+    :where(.docs-page) p {
+        margin: 0 0 0.75rem;
+    }
+
+    :where(.docs-page) :is(ul, ol) {
+        margin: 0 0 0.75rem;
+        padding-left: 1.25rem;
+    }
+
+    :where(.docs-page) li + li {
+        margin-top: 0.25rem;
+    }
+
+    :where(.docs-page) pre {
+        margin: 0 0 1rem;
+    }
+
+    :where(.docs-page) hr {
+        margin: 1.5rem 0;
+        border-color: var(--border);
+    }
 }
 
 @layer utilities {

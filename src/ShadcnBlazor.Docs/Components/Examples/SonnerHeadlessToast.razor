@@ -1,0 +1,28 @@
+@namespace ShadcnBlazor.Docs.Components.Examples
+
+<div class="flex flex-1 items-center">
+    <div class="w-full">
+        <p class="text-sm font-medium text-foreground">@Title</p>
+        <p class="mt-1 text-sm text-muted-foreground">@Message</p>
+    </div>
+</div>
+<div class="ml-5 shrink-0 rounded-md text-sm font-medium text-indigo-600 hover:text-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
+    <button class="rounded bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-600 hover:bg-indigo-100"
+            @onclick="Confirm">
+        @ButtonLabel
+    </button>
+</div>
+@code {
+    [Parameter] public string Title { get; set; } = "Headless Toast";
+    [Parameter] public string Message { get; set; } = "Custom layout with default styling.";
+    [Parameter] public string ButtonLabel { get; set; } = "Reply";
+    [Parameter] public EventCallback OnConfirm { get; set; }
+
+    private async Task Confirm()
+    {
+        if (OnConfirm.HasDelegate)
+        {
+            await OnConfirm.InvokeAsync();
+        }
+    }
+}
