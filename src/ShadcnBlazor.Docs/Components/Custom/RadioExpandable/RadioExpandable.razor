@@ -1,0 +1,44 @@
+@using TailwindMerge
+
+<CascadingValue Value="@_context">
+    <RadioGroup @bind-Value:get="_internalValue" @bind-Value:set="HandleValueChanged" Vertical="false">
+        <Accordion @bind-Value:get="_internalValue" @bind-Value:set="HandleValueChanged">
+            @ChildContent
+        </Accordion>
+    </RadioGroup>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public string? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string? _internalValue;
+    private RadioExpandableContext _context = null!;
+
+    protected override void OnInitialized()
+    {
+        _internalValue = Value;
+        _context = new RadioExpandableContext(Value);
+    }
+
+    protected override void OnParametersSet()
+    {
+        _internalValue = Value;
+        _context = _context with { Value = Value };
+    }
+
+    private async Task HandleValueChanged(string? newValue)
+    {
+        _internalValue = newValue;
+        _context = _context with { Value = newValue };
+        await ValueChanged.InvokeAsync(newValue);
+    }
+
+    public record RadioExpandableContext(string? Value);
+}

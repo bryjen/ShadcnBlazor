@@ -1,92 +1,48 @@
 @using ShadcnBlazor.Components.Popover
-@using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Components.Button
 
-<div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
-    <div class="space-y-2">
-        <div class="flex items-start justify-between">
-            <div>
-                <p class="font-semibold text-sm">@Label</p>
-                <p class="text-xs text-slate-600 mt-1">@Description</p>
-                @if (ShowOutsideClickHint)
-                {
-                    <p class="text-xs text-amber-600 mt-2">💡 Try clicking outside the popover</p>
-                }
-            </div>
-        </div>
-        <Popover
-            @bind-Open="_open"
-            AnchorOrigin="PopoverPlacement.BottomLeft"
-            CloseOnOutsideClick="@CloseOnOutsideClick"
-            Animate="@Animate"
-            LockScroll="@LockScroll"
-            ClampList="@ClampList"
-            Offset="8">
-            <Anchor>
-                <button class="px-3 py-2 text-sm bg-green-500 text-white rounded hover:bg-green-600" @onclick="Toggle">
-                    Try it
-                </button>
-            </Anchor>
-            <ChildContent>
-                <div class="p-3 bg-white rounded shadow-lg border border-slate-200 text-sm space-y-2 max-w-xs">
-                    <p class="font-semibold text-slate-900">@Label</p>
-                    <ul class="text-xs text-slate-700 space-y-1 list-disc list-inside">
-                        @if (CloseOnOutsideClick)
-                        {
-                            <li>Outside click closes</li>
-                        }
-                        @if (!Animate)
-                        {
-                            <li>No animations</li>
-                        }
-                        else
-                        {
-                            <li>Smooth animations</li>
-                        }
-                        @if (LockScroll)
-                        {
-                            <li>Body scroll locked</li>
-                        }
-                        @if (ClampList)
-                        {
-                            <li>Content height clamped</li>
-                        }
-                    </ul>
-                    <div class="pt-2 border-t border-slate-200 text-xs text-slate-600">
-                        <p><strong>Settings:</strong></p>
-                        <p>CloseOnOutsideClick: @CloseOnOutsideClick</p>
-                        <p>Animate: @Animate</p>
-                        <p>LockScroll: @LockScroll</p>
-                        <p>ClampList: @ClampList</p>
-                    </div>
-                </div>
-            </ChildContent>
-        </Popover>
+<div class="border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+    <div class="space-y-1.5 mb-3">
+        <p class="text-sm font-semibold">@Title</p>
+        <p class="text-xs text-muted-foreground">@Description</p>
     </div>
+    <Popover
+        @bind-Open="_open"
+        AnchorOrigin="PopoverPlacement.BottomLeft"
+        CloseOnOutsideClick="@CloseOnOutsideClick"
+        Animate="@Animate"
+        LockScroll="@LockScroll"
+        ClampList="@ClampList"
+        HideWhenDetached="@HideWhenDetached"
+        Offset="8">
+        <Anchor>
+            <Button Variant="Variant.Secondary" Size="Size.Sm" OnClick="Toggle">
+                Test Behavior
+            </Button>
+        </Anchor>
+        <ChildContent>
+            <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm space-y-2">
+                <p class="font-bold border-b pb-1">@Title</p>
+                <div class="text-[11px] space-y-1">
+                    <p>Outside Click: @(CloseOnOutsideClick ? "Enabled" : "Disabled")</p>
+                    <p>Animated: @(Animate ? "Yes" : "No")</p>
+                </div>
+            </div>
+        </ChildContent>
+    </Popover>
 </div>
 
 @code {
     private bool _open;
 
-    [Parameter]
-    public required string Label { get; set; }
-
-    [Parameter]
-    public required string Description { get; set; }
-
-    [Parameter]
-    public bool CloseOnOutsideClick { get; set; } = false;
-
-    [Parameter]
-    public bool Animate { get; set; } = true;
-
-    [Parameter]
-    public bool LockScroll { get; set; } = false;
-
-    [Parameter]
-    public bool ClampList { get; set; } = false;
-
-    [Parameter]
-    public bool ShowOutsideClickHint { get; set; } = false;
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public bool CloseOnOutsideClick { get; set; } = false;
+    [Parameter] public bool Animate { get; set; } = true;
+    [Parameter] public bool LockScroll { get; set; } = false;
+    [Parameter] public bool ClampList { get; set; } = false;
+    [Parameter] public bool HideWhenDetached { get; set; } = false;
+    [Parameter] public bool ShowOutsideClickHint { get; set; } = false;
 
     private void Toggle() => _open = !_open;
 }

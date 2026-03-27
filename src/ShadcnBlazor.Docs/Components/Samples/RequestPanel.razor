@@ -49,12 +49,12 @@
             else if (CurrentStatus == Status.Confirming || CurrentStatus == Status.Closing)
             {
                 <div class="w-full flex justify-center gap-4">
-                    <Button Variant="@Variant.Outline" Class="w-12 flex-1 @(CurrentStatus == Status.Closing ? "animate-merge-left" : "animate-split-left")"
+                    <Button Variant="@Variant.Outline" Class="@LeftButtonClass"
                             @onclick="BackToProcessing">
                         No
                     </Button>
 
-                    <Button Variant="@Variant.Destructive" Class="w-12 flex-1 @(CurrentStatus == Status.Closing ? "animate-merge-right" : "animate-split-right")"
+                    <Button Variant="@Variant.Destructive" Class="@RightButtonClass"
                             @onclick="ConfirmCancel">
                         Yes
                     </Button>
@@ -107,6 +107,9 @@
 @code {
     private enum Status { Processing, Confirming, Closing, Cancelled }
     private Status CurrentStatus = Status.Processing;
+
+    private string LeftButtonClass => $"w-12 flex-1 {(CurrentStatus == Status.Closing ? "animate-merge-left" : "animate-split-left")}";
+    private string RightButtonClass => $"w-12 flex-1 {(CurrentStatus == Status.Closing ? "animate-merge-right" : "animate-split-right")}";
 
     private void StartConfirm() => CurrentStatus = Status.Confirming;
 

@@ -1,16 +1,15 @@
-@using ShadcnBlazor.Components.Popover
-@using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Components.Button
 
 <Popover @bind-Open="_open" AnchorOrigin="@Placement" TransformOrigin="@Placement">
     <Anchor>
-        <button class="px-3 py-2 text-xs bg-blue-500 text-white rounded hover:bg-blue-600" @onclick="Toggle">
-            @Label
-        </button>
+        <Button Variant="Variant.Outline" Size="Size.Sm" OnClick="Toggle" class="w-full">
+            @DisplayName
+        </Button>
     </Anchor>
     <ChildContent>
-        <div class="p-3 bg-white rounded shadow-lg border border-slate-200 text-sm">
-            <p class="font-mono text-xs text-slate-600">@Label</p>
-            <p class="text-slate-700 mt-1">Popover at <span class="font-semibold">@Label</span></p>
+        <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-md min-w-[120px]">
+            <p class="font-mono text-[10px] text-muted-foreground uppercase tracking-widest mb-1">@Placement</p>
+            <p class="text-xs font-medium">Popover at @DisplayName</p>
         </div>
     </ChildContent>
 </Popover>
@@ -22,7 +21,7 @@
     public required PopoverPlacement Placement { get; set; }
 
     [Parameter]
-    public required string Label { get; set; }
+    public required string DisplayName { get; set; }
 
     private void Toggle() => _open = !_open;
 }

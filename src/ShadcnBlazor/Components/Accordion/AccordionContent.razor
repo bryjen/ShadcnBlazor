@@ -8,6 +8,7 @@
     data-state="@(IsOpen ? "open" : "closed")"
     class="@GetClass()"
     style="@GetStyle()"
+    inert="@(!IsOpen)"
     @ref="contentRef"
     @attributes="GetAttributes()">
     <div @ref="innerRef" class="@_mergedInnerClass">

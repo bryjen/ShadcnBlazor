@@ -1,0 +1,64 @@
+@using ShadcnBlazor.Components.Button
+
+<div class="border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+    <div class="space-y-4">
+        <div class="space-y-1">
+            <p class="text-sm font-semibold">OnInteractOutside Callback</p>
+            <p class="text-xs text-muted-foreground">Custom logic for outside interaction.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="handle-interact" 
+                   checked="@_handled" 
+                   @onchange="@((e) => _handled = (bool?)e.Value ?? false)"
+                   class="h-4 w-4 rounded border-input bg-background" />
+            <label for="handle-interact" class="text-xs font-medium cursor-pointer">
+                Prevent close on outside click
+            </label>
+        </div>
+
+        <div class="flex items-center justify-between gap-4">
+            <Popover 
+                @bind-Open="_open" 
+                CloseOnOutsideClick="true" 
+                OnInteractOutside="HandleInteractOutside"
+                Offset="8">
+                <Anchor>
+                    <Button Variant="Variant.Default" Size="Size.Sm" OnClick="Toggle">
+                        Open Popover
+                    </Button>
+                </Anchor>
+                <ChildContent>
+                    <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm max-w-xs space-y-2">
+                        <p class="font-bold border-b pb-1 uppercase text-[10px] text-muted-foreground tracking-widest">Status</p>
+                        <p class="text-xs">Last interaction: <span class="font-mono font-bold">@_lastEvent</span></p>
+                        <p class="text-xs text-muted-foreground italic">
+                            @( _handled 
+                                ? "Handled=true: Panel stays open." 
+                                : "Handled=false: Panel closes normally." )
+                        </p>
+                    </div>
+                </ChildContent>
+            </Popover>
+            
+            <div class="px-3 py-2 border border-dashed rounded text-[10px] text-muted-foreground uppercase font-bold tracking-tight animate-pulse">
+                Click outside area
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _open;
+    private bool _handled = true;
+    private string _lastEvent = "None";
+
+    private void Toggle() => _open = !_open;
+
+    private void HandleInteractOutside(InteractOutsideEventArgs args)
+    {
+        _lastEvent = args.EventType.ToString();
+        args.Handled = _handled;
+        StateHasChanged();
+    }
+}

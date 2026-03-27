@@ -1,0 +1,87 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Docs.Components.Custom.RadioExpandable
+@layout NoNavMenuLayout
+
+<div class="flex flex-col gap-4 w-full">
+    <div class="flex flex-col">
+        <span class="text-base font-bold">Application Source</span>
+        <span class="text-xs text-muted-foreground">Choose how to deploy your application.</span>
+    </div>
+
+    <RadioExpandable @bind-Value="_selectedSource">
+        <RadioExpandableItem Value="repo">
+            <RadioExpandableTrigger>
+                <div class="flex items-center gap-2">
+                    <LuGitBranch class="size-5 text-foreground"/>
+                    <span class="text-sm font-semibold">Pull from Repository</span>
+                </div>
+            </RadioExpandableTrigger>
+            <RadioExpandableContent>
+                <div class="px-4 pt-2 pb-4 flex flex-col gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-muted-foreground">Repository URL:</span>
+                        <Input Placeholder="https://github.com/user/repo" />
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-muted-foreground">Branch:</span>
+                        <Input Placeholder="main" />
+                    </div>
+                </div>
+            </RadioExpandableContent>
+        </RadioExpandableItem>
+
+        <RadioExpandableItem Value="docker">
+            <RadioExpandableTrigger>
+                <div class="flex items-center gap-2">
+                    <LuContainer class="size-5 text-foreground"/>
+                    <span class="text-sm font-semibold">Docker Image</span>
+                </div>
+            </RadioExpandableTrigger>
+            <RadioExpandableContent>
+                <div class="px-4 pt-2 pb-4 flex flex-col gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-muted-foreground">Image URL:</span>
+                        <Input Placeholder="registry.example.com/image:tag" />
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-muted-foreground">Tag:</span>
+                        <Input Placeholder="latest" />
+                    </div>
+                </div>
+            </RadioExpandableContent>
+        </RadioExpandableItem>
+
+        <RadioExpandableItem Value="vm">
+            <RadioExpandableTrigger>
+                <div class="flex items-center gap-2">
+                    <LuServer class="size-5 text-foreground"/>
+                    <span class="text-sm font-semibold">Virtual Machine</span>
+                </div>
+            </RadioExpandableTrigger>
+            <RadioExpandableContent>
+                <div class="px-4 pt-2 pb-4 flex flex-col gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-muted-foreground">Operating System:</span>
+                        <Select T="string" @bind-Value="_vmOs" Items="@_osOptions" Placeholder="Select an OS" Class="w-full" PopoverFitContent="true" />
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-muted-foreground">Disk Size:</span>
+                        <Input Placeholder="50 GB" />
+                    </div>
+                </div>
+            </RadioExpandableContent>
+        </RadioExpandableItem>
+    </RadioExpandable>
+</div>
+
+@code {
+    private string? _selectedSource = null;
+    private string? _vmOs = null;
+
+    private static readonly SelectOption<string>[] _osOptions =
+    [
+        new("ubuntu-24.04", "Ubuntu 24.04"),
+        new("debian-12", "Debian 12"),
+        new("rocky-9", "Rocky Linux 9"),
+    ];
+}

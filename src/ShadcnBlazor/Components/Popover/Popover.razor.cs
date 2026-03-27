@@ -162,6 +162,27 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     public int Offset { get; set; }
 
     /// <summary>
+    /// A secondary offset along the alignment axis, independent of sideOffset.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public int AlignOffset { get; set; }
+
+    /// <summary>
+    /// Hide the popover when the anchor element is scrolled completely out of the viewport.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public bool HideWhenDetached { get; set; }
+
+    /// <summary>
+    /// Callback invoked when interaction occurs outside the popover.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public EventCallback<InteractOutsideEventArgs> OnInteractOutside { get; set; }
+
+    /// <summary>
     /// Value for aria-haspopup on the trigger. Use "menu" for dropdown menus, "listbox" for selects, "dialog" for dialogs.
     /// </summary>
     [Parameter]
@@ -251,7 +272,9 @@ public partial class Popover : ComponentBase, IAsyncDisposable
                 ClampList = ClampList,
                 PopoverClass = PopoverClass,
                 PopoverAttributes = PopoverAttributes,
-                Offset = Offset
+                Offset = Offset,
+                AlignOffset = AlignOffset,
+                HideWhenDetached = HideWhenDetached
             });
 
             _isRegistered = true;
@@ -281,7 +304,9 @@ public partial class Popover : ComponentBase, IAsyncDisposable
                     anchorPlacement = PopoverHostItem.ToFloatingPlacement(AnchorOrigin),
                     widthMode = WidthMode.ToString().ToLowerInvariant(),
                     clampList = ClampList,
-                    offset = Offset
+                    offset = Offset,
+                    alignOffset = AlignOffset,
+                    hideWhenDetached = HideWhenDetached
                 };
                 await PopoverService.ConnectAsync(AnchorId, _popoverId, options);
             }
@@ -298,19 +323,33 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>
-    /// Handles pointer down events outside the popover for close-on-outside-click behavior.
+    /// Handles interaction events outside the popover (click or focus).
     /// </summary>
     [JSInvokable]
-    public async Task HandleOutsidePointerDown()
+    public async Task HandleInteractOutside(InteractOutsideEventType eventType)
     {
-        if (!_visualOpen || !CloseOnOutsideClick)
+        if (!_visualOpen)
         {
             return;
         }
 
-        if (OpenChanged.HasDelegate)
+        var args = new InteractOutsideEventArgs { EventType = eventType };
+        if (OnInteractOutside.HasDelegate)
         {
-            await OpenChanged.InvokeAsync(false);
+            await OnInteractOutside.InvokeAsync(args);
+        }
+
+        if (args.Handled)
+        {
+            return;
+        }
+
+        if (CloseOnOutsideClick)
+        {
+            if (OpenChanged.HasDelegate)
+            {
+                await OpenChanged.InvokeAsync(false);
+            }
         }
     }
 

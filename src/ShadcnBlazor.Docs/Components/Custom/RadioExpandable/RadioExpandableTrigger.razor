@@ -1,0 +1,20 @@
+
+@if (_itemContext != null)
+{
+    <AccordionTrigger NoChevron Class="px-2 py-2 !no-underline cursor-pointer transition-all duration-200 hover:bg-card/50">
+        <div class="w-full flex items-center justify-between pointer-events-none">
+            <div class="w-full flex items-center gap-4">
+                <RadioItem Size="@Size.Lg" Value="@_itemContext.Value" tabindex="-1" />
+                @ChildContent
+            </div>
+        </div>
+    </AccordionTrigger>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private RadioExpandableItem.RadioExpandableItemContext? _itemContext { get; set; }
+}

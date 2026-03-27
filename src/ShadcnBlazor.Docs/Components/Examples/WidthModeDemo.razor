@@ -1,11 +1,10 @@
-@using ShadcnBlazor.Components.Popover
-@using ShadcnBlazor.Components.Popover.Models
+@using ShadcnBlazor.Components.Button
 
-<div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+<div class="border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
     <div class="flex items-center justify-between">
         <div>
-            <p class="font-semibold text-sm">@Label</p>
-            <p class="text-xs text-slate-600 mt-1">
+            <p class="font-semibold text-sm">@DisplayName</p>
+            <p class="text-xs text-muted-foreground mt-1">
                 @(Mode switch
                 {
                     PopoverWidthMode.None => "Content flows naturally",
@@ -17,7 +16,7 @@
         </div>
         <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" WidthMode="@Mode" Offset="8">
             <Anchor>
-                <button class="px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 whitespace-nowrap" @onclick="Toggle">
+                <Button Variant="Variant.Secondary" Size="Size.Sm" OnClick="Toggle">
                     @(Mode switch
                     {
                         PopoverWidthMode.None => "Normal",
@@ -25,15 +24,12 @@
                         PopoverWidthMode.Adaptive => "Adaptive",
                         _ => "Unknown"
                     })
-                </button>
+                </Button>
             </Anchor>
             <ChildContent>
-                <div class="p-3 bg-white rounded shadow-lg border border-slate-200 text-sm space-y-2">
-                    <p class="font-semibold text-slate-900">@Label</p>
-                    <p class="text-slate-700 text-xs">This popover content demonstrates the <span class="font-mono">@Mode</span> width mode.</p>
-                    <div class="pt-2 border-t border-slate-200 text-xs text-slate-600">
-                        Mode: <span class="font-mono">@Mode</span>
-                    </div>
+                <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm min-w-[150px]">
+                    <p class="font-semibold">@DisplayName</p>
+                    <p class="text-muted-foreground text-xs mt-1">Demonstrating <span class="font-mono text-primary">@Mode</span> mode.</p>
                 </div>
             </ChildContent>
         </Popover>
@@ -47,7 +43,7 @@
     public required PopoverWidthMode Mode { get; set; }
 
     [Parameter]
-    public required string Label { get; set; }
+    public required string DisplayName { get; set; }
 
     private void Toggle() => _open = !_open;
 }

@@ -4,18 +4,17 @@
     <div class="flex items-center justify-between gap-4">
         <div>
             <p class="text-sm font-semibold">@DisplayName</p>
-            <p class="text-xs text-muted-foreground mt-1">Gap of @Offset px</p>
+            <p class="text-xs text-muted-foreground mt-1">Secondary alignment offset.</p>
         </div>
-        <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" Offset="@Offset">
+        <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" Offset="8" AlignOffset="@AlignOffset">
             <Anchor>
-                <Button Variant="Variant.Secondary" Size="Size.Sm" OnClick="Toggle">
-                    View Offset
+                <Button Variant="Variant.Outline" Size="Size.Sm" OnClick="Toggle">
+                    Try Offset
                 </Button>
             </Anchor>
             <ChildContent>
                 <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm">
-                    <p class="font-semibold">Offset: @Offset px</p>
-                    <p class="text-xs text-muted-foreground mt-1 italic">Notice the spacing from anchor.</p>
+                    <p class="font-semibold">AlignOffset: @AlignOffset px</p>
                 </div>
             </ChildContent>
         </Popover>
@@ -26,7 +25,7 @@
     private bool _open;
 
     [Parameter] public required string DisplayName { get; set; }
-    [Parameter] public required int Offset { get; set; }
+    [Parameter] public int AlignOffset { get; set; }
 
     private void Toggle() => _open = !_open;
 }

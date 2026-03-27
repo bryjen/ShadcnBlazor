@@ -2,7 +2,7 @@
  * Popover positioning via Floating UI.
  * https://floating-ui.com/docs/getting-started
  */
-import { computePosition, flip, shift, offset as fuOffset, autoUpdate }
+import { computePosition, flip, shift, offset as fuOffset, autoUpdate, hide }
   from 'https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.7.5/+esm';
 
 let _overflowPadding = 10;
@@ -11,7 +11,7 @@ let _baseZIndex = 1200;
 let _currentZ = 1200;
 
 const _cleanups = new Map();   // popoverId → autoUpdate cleanup fn
-const _outsideClick = new Map(); // popoverId → { handler, callbackReference }
+const _outsideInteract = new Map(); // popoverId → { handler, callbackReference }
 
 // ─── Exported API ───────────────────────────────────────────────────────────
 
@@ -50,27 +50,30 @@ export function disconnect(popoverId) {
 export function enableOutsideClickClose(anchorId, popoverId, callbackReference) {
   disableOutsideClickClose(popoverId);
 
-  const anchor   = document.getElementById(anchorId);
-  const floating = document.getElementById(popoverId);
-
   const handler = event => {
     const f = document.getElementById(popoverId);
     const a = document.getElementById(anchorId);
     if (!f || !a) return;
     if (!f.classList.contains('popover-open')) return;
+    
+    // Check if the interaction is outside both anchor and floating
     if (f.contains(event.target) || a.contains(event.target)) return;
-    callbackReference.invokeMethodAsync('HandleOutsidePointerDown');
+    
+    const eventType = (event.type === 'focusin' || event.type === 'focus') ? 1 : 0;
+    callbackReference.invokeMethodAsync('HandleInteractOutside', eventType);
   };
 
-  document.addEventListener('click', handler, false);
-  _outsideClick.set(popoverId, { handler, callbackReference });
+  document.addEventListener('pointerdown', handler, true);
+  document.addEventListener('focusin', handler, true);
+  _outsideInteract.set(popoverId, { handler, callbackReference });
 }
 
 export function disableOutsideClickClose(popoverId) {
-  const sub = _outsideClick.get(popoverId);
+  const sub = _outsideInteract.get(popoverId);
   if (!sub) return;
-  document.removeEventListener('click', sub.handler, false);
-  _outsideClick.delete(popoverId);
+  document.removeEventListener('pointerdown', sub.handler, true);
+  document.removeEventListener('focusin', sub.handler, true);
+  _outsideInteract.delete(popoverId);
 }
 
 export function repositionAll() {
@@ -81,10 +84,7 @@ export function repositionAll() {
       if (anchorId) {
         const anchor = document.getElementById(anchorId);
         if (anchor) {
-          // trigger a re-compute by calling autoUpdate's callback manually
-          // (autoUpdate already handles this; this is a manual fallback)
-          _cleanups.get(popoverId)?.();
-          connect(anchorId, popoverId, floating._floatingOptions ?? {});
+          _update(anchor, floating, popoverId, floating._floatingOptions ?? {});
         }
       }
     }
@@ -95,7 +95,7 @@ export function dispose() {
   for (const cleanup of _cleanups.values()) cleanup();
   _cleanups.clear();
 
-  for (const popoverId of _outsideClick.keys()) disableOutsideClickClose(popoverId);
+  for (const popoverId of _outsideInteract.keys()) disableOutsideClickClose(popoverId);
 }
 
 // ─── Internal ────────────────────────────────────────────────────────────────
@@ -106,7 +106,9 @@ async function _update(anchor, floating, popoverId, options) {
     anchorPlacement,
     widthMode,
     clampList = false,
-    offset: offsetPx = 0
+    offset: offsetPx = 0,
+    alignOffset = 0,
+    hideWhenDetached = false
   } = options;
 
   // Store options on the element so repositionAll can reuse them
@@ -117,34 +119,59 @@ async function _update(anchor, floating, popoverId, options) {
   // Width modes — applied before measuring
   const anchorRect = anchorTarget.getBoundingClientRect();
   floating.style.setProperty('--popover-width', anchorRect.width + 'px');
-  floating.style.width = 'auto';
-  floating.style.minWidth = 'none';
-  floating.style.maxWidth = 'none';
-
+  
   if (widthMode === 'relative') {
     floating.style.width    = anchorRect.width + 'px';
     floating.style.maxWidth = anchorRect.width + 'px';
     floating.style.minWidth = anchorRect.width + 'px';
   } else if (widthMode === 'adaptive') {
+    floating.style.width = 'auto';
     floating.style.minWidth = anchorRect.width + 'px';
+    floating.style.maxWidth = 'none';
+  } else {
+    floating.style.width = 'auto';
+    floating.style.minWidth = 'none';
+    floating.style.maxWidth = 'none';
   }
 
-  const { x, y, placement: resolvedPlacement } = await computePosition(anchorTarget, floating, {
+  const middleware = [
+    fuOffset({ mainAxis: offsetPx, crossAxis: alignOffset }),
+    flip({ padding: _flipMargin }),
+    shift({ padding: _overflowPadding }),
+  ];
+
+  if (hideWhenDetached) {
+    middleware.push(hide({ strategy: 'referenceHidden' }));
+  }
+
+  const { x, y, placement: resolvedPlacement, middlewareData } = await computePosition(anchorTarget, floating, {
     placement,
-    middleware: [
-      fuOffset(offsetPx),
-      flip({ padding: _flipMargin }),
-      shift({ padding: _overflowPadding }),
-    ],
+    middleware
   });
 
   Object.assign(floating.style, { left: `${x}px`, top: `${y}px` });
 
-  // data-resolved-side — used by tooltip arrow CSS in other.css lines 139-172
-  const resolvedSide = resolvedPlacement.split('-')[0]; // 'top-start' → 'top'
-  floating.setAttribute('data-resolved-side', resolvedSide);
+  if (hideWhenDetached && middlewareData.hide) {
+    floating.style.visibility = middlewareData.hide.referenceHidden ? 'hidden' : 'visible';
+  } else {
+    floating.style.visibility = 'visible';
+  }
 
-  // List clamping — mirrors original popoverHelper list clamp logic
+  // data-resolved-side and data-resolved-align
+  const [side, align = 'center'] = resolvedPlacement.split('-');
+  floating.setAttribute('data-resolved-side', side);
+  floating.setAttribute('data-resolved-align', align);
+
+  // --popover-transform-origin
+  const originSide = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }[side];
+  const originAlign = {
+    start: (side === 'top' || side === 'bottom') ? 'left' : 'top',
+    end: (side === 'top' || side === 'bottom') ? 'right' : 'bottom',
+    center: 'center'
+  }[align];
+  floating.style.setProperty('--popover-transform-origin', `${originSide} ${originAlign}`);
+
+  // List clamping
   if (clampList) {
     const firstChild = floating.firstElementChild;
     if (firstChild?.classList.contains('popover-list')) {

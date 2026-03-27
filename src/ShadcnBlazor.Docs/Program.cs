@@ -22,6 +22,7 @@ using TailwindMerge.Extensions;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
 builder.RootComponents.RegisterForJavaScript<SonnerComponentHost>(
     "ShadcnBlazor.Components.Sonner.SonnerComponentHost");
 builder.RootComponents.RegisterForJavaScript<VaulComponentHost>(

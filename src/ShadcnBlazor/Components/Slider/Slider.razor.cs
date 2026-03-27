@@ -264,6 +264,28 @@ public partial class Slider : ShadcnComponentBase, IAsyncDisposable
     }
 
     /// <summary>
+    /// Handles keyboard input on the thumb - left/right arrow keys move the slider.
+    /// </summary>
+    private async Task OnThumbKeyDown(int index, KeyboardEventArgs e)
+    {
+        if (Disabled)
+            return;
+
+        double newValue = _localValues[index];
+
+        if (e.Key == "ArrowLeft")
+        {
+            newValue -= Step;
+            await UpdateThumbValue(index, newValue);
+        }
+        else if (e.Key == "ArrowRight")
+        {
+            newValue += Step;
+            await UpdateThumbValue(index, newValue);
+        }
+    }
+
+    /// <summary>
     /// Handles pointer move during dragging - updates the active thumb value.
     /// </summary>
     private async Task OnPointerMove(PointerEventArgs e)
