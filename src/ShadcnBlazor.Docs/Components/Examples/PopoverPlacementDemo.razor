@@ -1,0 +1,24 @@
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Popover.Models
+
+<Popover AnchorOrigin="@Placement" TransformOrigin="@Placement">
+    <Anchor>
+        <button class="px-3 py-2 text-xs bg-blue-500 text-white rounded hover:bg-blue-600">
+            @Label
+        </button>
+    </Anchor>
+    <ChildContent>
+        <div class="p-3 bg-white rounded shadow-lg border border-slate-200 text-sm">
+            <p class="font-mono text-xs text-slate-600">@Label</p>
+            <p class="text-slate-700 mt-1">Popover at <span class="font-semibold">@Label</span></p>
+        </div>
+    </ChildContent>
+</Popover>
+
+@code {
+    [Parameter]
+    public required PopoverPlacement Placement { get; set; }
+
+    [Parameter]
+    public required string Label { get; set; }
+}

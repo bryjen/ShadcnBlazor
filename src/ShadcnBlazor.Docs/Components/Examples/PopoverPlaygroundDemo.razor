@@ -1,0 +1,80 @@
+@using ShadcnBlazor.Components.Popover.Models
+
+<div class="space-y-8">
+
+    <!-- Placement Demo -->
+    <div class="space-y-3">
+        <h3 class="font-semibold">Placement Options</h3>
+        <p class="text-sm text-slate-600">Click buttons around the grid to see different anchor placements</p>
+        <div class="border border-slate-200 rounded-lg p-8 bg-slate-50">
+            <div class="grid grid-cols-3 gap-4 w-fit mx-auto">
+                <!-- Top row -->
+                <PopoverPlacementDemo Placement="PopoverPlacement.TopLeft" Label="TopLeft" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.TopCenter" Label="TopCenter" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.TopRight" Label="TopRight" />
+
+                <!-- Middle row -->
+                <PopoverPlacementDemo Placement="PopoverPlacement.CenterLeft" Label="CenterLeft" />
+                <div class="flex items-center justify-center w-16 h-16 bg-slate-300 rounded text-xs text-slate-700 font-mono">anchor</div>
+                <PopoverPlacementDemo Placement="PopoverPlacement.CenterRight" Label="CenterRight" />
+
+                <!-- Bottom row -->
+                <PopoverPlacementDemo Placement="PopoverPlacement.BottomLeft" Label="BottomLeft" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.BottomCenter" Label="BottomCenter" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.BottomRight" Label="BottomRight" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Width Mode Demo -->
+    <div class="space-y-3">
+        <h3 class="font-semibold">Width Mode Options</h3>
+        <p class="text-sm text-slate-600">See how widthMode affects popover sizing</p>
+        <div class="space-y-4">
+            <WidthModeDemo Mode="PopoverWidthMode.None" Label="None (default)" />
+            <WidthModeDemo Mode="PopoverWidthMode.Relative" Label="Relative (match anchor width)" />
+            <WidthModeDemo Mode="PopoverWidthMode.Adaptive" Label="Adaptive (min-width)" />
+        </div>
+    </div>
+
+    <!-- Offset Demo -->
+    <div class="space-y-3">
+        <h3 class="font-semibold">Offset (gap from anchor)</h3>
+        <p class="text-sm text-slate-600">Adjust the gap between popover and anchor</p>
+        <div class="space-y-4">
+            <OffsetDemo Offset="0" Label="0px gap" />
+            <OffsetDemo Offset="8" Label="8px gap" />
+            <OffsetDemo Offset="16" Label="16px gap" />
+        </div>
+    </div>
+
+    <!-- Behavior Demo -->
+    <div class="space-y-3">
+        <h3 class="font-semibold">Behavior Options</h3>
+        <p class="text-sm text-slate-600">Toggle different popover behaviors</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <BehaviorDemo
+                Label="CloseOnOutsideClick"
+                Description="Click outside to close"
+                CloseOnOutsideClick="true"
+                ShowOutsideClickHint="true" />
+            <BehaviorDemo
+                Label="Animation Disabled"
+                Description="No open/close animation"
+                Animate="false" />
+            <BehaviorDemo
+                Label="LockScroll"
+                Description="Body scroll locked when open"
+                LockScroll="true" />
+            <BehaviorDemo
+                Label="ClampList"
+                Description="Content clamped to viewport height"
+                ClampList="true" />
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+}

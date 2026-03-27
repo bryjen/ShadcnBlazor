@@ -1,0 +1,49 @@
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Popover.Models
+
+<div class="border border-slate-200 rounded-lg p-4 bg-slate-50">
+    <div class="flex items-center justify-between">
+        <div>
+            <p class="font-semibold text-sm">@Label</p>
+            <p class="text-xs text-slate-600 mt-1">
+                @(Mode switch
+                {
+                    PopoverWidthMode.None => "Content flows naturally",
+                    PopoverWidthMode.Relative => "Popover width matches anchor width",
+                    PopoverWidthMode.Adaptive => "Popover has min-width of anchor",
+                    _ => ""
+                })
+            </p>
+        </div>
+        <Popover AnchorOrigin="PopoverPlacement.BottomCenter" WidthMode="@Mode" Offset="8">
+            <Anchor>
+                <button class="px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 whitespace-nowrap">
+                    @(Mode switch
+                    {
+                        PopoverWidthMode.None => "Normal",
+                        PopoverWidthMode.Relative => "Relative",
+                        PopoverWidthMode.Adaptive => "Adaptive",
+                        _ => "Unknown"
+                    })
+                </button>
+            </Anchor>
+            <ChildContent>
+                <div class="p-3 bg-white rounded shadow-lg border border-slate-200 text-sm space-y-2">
+                    <p class="font-semibold text-slate-900">@Label</p>
+                    <p class="text-slate-700 text-xs">This popover content demonstrates the <span class="font-mono">@Mode</span> width mode.</p>
+                    <div class="pt-2 border-t border-slate-200 text-xs text-slate-600">
+                        Mode: <span class="font-mono">@Mode</span>
+                    </div>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public required PopoverWidthMode Mode { get; set; }
+
+    [Parameter]
+    public required string Label { get; set; }
+}

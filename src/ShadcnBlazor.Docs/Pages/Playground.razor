@@ -2,6 +2,8 @@
 @using ShadcnBlazor.Docs.Components.Examples
 @using ShadcnBlazor.Docs.Components.Samples
 @using ShadcnBlazor.Services
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Popover.Models
 @inject VaulService Vaul
 
 <PageTitle>Playground - Vaul</PageTitle>
@@ -46,11 +48,11 @@
 
     <div class="space-y-6">
         <div>
-            <h1>Payment Form</h1>
-            <p>Test Area.</p>
+            <h1>Popover Options</h1>
+            <p>Explore different popover configurations and behaviors with Floating UI positioning.</p>
         </div>
 
-        <StripePaymentForm/>
+        <PopoverPlaygroundDemo />
 
     </div>
 </div>
