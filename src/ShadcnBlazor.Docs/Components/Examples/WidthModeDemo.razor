@@ -15,7 +15,7 @@
                 })
             </p>
         </div>
-        <Popover AnchorOrigin="PopoverPlacement.BottomCenter" WidthMode="@Mode" Offset="8">
+        <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" WidthMode="@Mode" Offset="8">
             <Anchor>
                 <button class="px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 whitespace-nowrap">
                     @(Mode switch
@@ -41,6 +41,8 @@
 </div>
 
 @code {
+    private bool _open;
+
     [Parameter]
     public required PopoverWidthMode Mode { get; set; }
 

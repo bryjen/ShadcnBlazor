@@ -14,6 +14,7 @@
             </div>
         </div>
         <Popover
+            @bind-Open="_open"
             AnchorOrigin="PopoverPlacement.BottomLeft"
             CloseOnOutsideClick="@CloseOnOutsideClick"
             Animate="@Animate"
@@ -64,6 +65,8 @@
 </div>
 
 @code {
+    private bool _open;
+
     [Parameter]
     public required string Label { get; set; }
 
