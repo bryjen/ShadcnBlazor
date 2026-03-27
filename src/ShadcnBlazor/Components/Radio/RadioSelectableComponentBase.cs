@@ -47,9 +47,8 @@ public abstract class RadioSelectableComponentBase : ShadcnComponentBase
     /// <summary>
     /// Whether this option is currently selected.
     /// </summary>
-    protected bool IsChecked => IsInGroup
-        ? Value is not null && string.Equals(ParentGroup!.Value, Value, StringComparison.Ordinal)
-        : false;
+    protected bool IsChecked =>
+        IsInGroup && Value is not null && string.Equals(ParentGroup!.Value, Value, StringComparison.Ordinal);
 
     /// <summary>
     /// Whether this option is invalid (from self or parent group).

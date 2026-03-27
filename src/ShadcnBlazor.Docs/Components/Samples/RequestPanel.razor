@@ -1,0 +1,126 @@
+﻿<Card Class="gap-4 justify-center items-center text-center" data-status="@CurrentStatus.ToString().ToLower()">
+    <div class="p-2 rounded-xl bg-muted transition-all duration-700 @(CurrentStatus == Status.Cancelled ? "spinner-hidden" : "")">
+        <div class="relative mx-auto h-4 w-4">
+            <div class="spinner-track"></div>
+            <div class="spinner-head"></div>
+        </div>
+    </div>
+
+    <div class="flex flex-col">
+        <span class="text-base font-bold transition-all duration-500 @(CurrentStatus == Status.Cancelled ? "text-muted-foreground" : "text-foreground")">
+            @if (CurrentStatus == Status.Cancelled)
+            {
+                <span>Request Cancelled</span>
+            }
+            else
+            {
+                <span>Processing your payment</span>
+            }
+        </span>
+
+        <span class="text-sm text-muted-foreground">
+            @if (CurrentStatus == Status.Processing)
+            {
+                <span class="fade-in">Please wait while we process your request. Do not refresh the page.</span>
+            }
+            else if (CurrentStatus == Status.Confirming || CurrentStatus == Status.Closing)
+            {
+                <span class="@(CurrentStatus == Status.Closing ? "animate-text-out" : "animate-text-in")">Are you sure you want to cancel?</span>
+            }
+            else if (CurrentStatus == Status.Cancelled)
+            {
+                <span class="animate-reveal">Your request has been cancelled.</span>
+                <Button Variant="@Variant.Outline" Size="@Size.Sm" Class="flex-1 mt-4">
+                    Return Home
+                </Button>
+            }
+        </span>
+    </div>
+
+    @if (CurrentStatus != Status.Cancelled)
+    {
+        <div class="flex gap-2 @(CurrentStatus == Status.Confirming || CurrentStatus == Status.Closing ? "w-full" : "")">
+            @if (CurrentStatus == Status.Processing)
+            {
+                <Button Variant="@Variant.Outline" Class="fade-in" @onclick="StartConfirm">
+                    Cancel
+                </Button>
+            }
+            else if (CurrentStatus == Status.Confirming || CurrentStatus == Status.Closing)
+            {
+                <div class="w-full flex justify-center gap-4">
+                    <Button Variant="@Variant.Outline" Class="w-12 flex-1 @(CurrentStatus == Status.Closing ? "animate-merge-left" : "animate-split-left")"
+                            @onclick="BackToProcessing">
+                        No
+                    </Button>
+
+                    <Button Variant="@Variant.Destructive" Class="w-12 flex-1 @(CurrentStatus == Status.Closing ? "animate-merge-right" : "animate-split-right")"
+                            @onclick="ConfirmCancel">
+                        Yes
+                    </Button>
+                </div>
+            }
+        </div>
+    }
+</Card>
+
+<style>
+    /* Spinner Styles */
+    .spinner-track { position: absolute; inset: 0; border: 2px solid rgba(255,255,255,0.1); border-radius: 999px; }
+    .spinner-head {
+        position: absolute; inset: 0; border: 2px solid transparent; border-top-color: currentColor;
+        border-radius: 999px; animation: spin 1s linear infinite;
+    }
+    .spinner-hidden { opacity: 0; transform: scale(0.5); width: 0; height: 0; padding: 0; margin: calc(var(--spacing) * -4); }
+
+    [data-status="processing"] { border-color: var(--border); transition: border-color 0.5s ease; }
+    [data-status="cancelled"] { border-color: transparent; transition: border-color 0.5s ease; }
+    [data-status="confirming"],
+    [data-status="closing"] {
+        /* Use color-mix to apply opacity to a variable */
+        border-width: 2px;
+        border-color: color-mix(in srgb, var(--destructive), transparent 50%);
+        transition: border-color 0.5s ease;
+    }
+
+    /* Keyframes */
+    @@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    @@keyframes splitLeft { 0% { opacity: 0; transform: translateX(30px) scale(0.6); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
+    @@keyframes splitRight { 0% { opacity: 0; transform: translateX(-30px) scale(0.6); } 100% { opacity: 1; transform: translateX(0) scale(1); } }
+    @@keyframes mergeLeft { 0% { opacity: 1; transform: translateX(0) scale(1); } 100% { opacity: 0; transform: translateX(30px) scale(0.6); } }
+    @@keyframes mergeRight { 0% { opacity: 1; transform: translateX(0) scale(1); } 100% { opacity: 0; transform: translateX(-30px) scale(0.6); } }
+    @@keyframes revealUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    @@keyframes textIn { 0% { opacity: 0; transform: translateY(-5px); } 100% { opacity: 1; transform: translateY(0); } }
+    @@keyframes textOut { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-5px); } }
+
+    .animate-split-left { animation: splitLeft 0.3s ease forwards; }
+    .animate-split-right { animation: splitRight 0.3s ease forwards; }
+    .animate-merge-left { animation: mergeLeft 0.2s ease-in forwards; }
+    .animate-merge-right { animation: mergeRight 0.2s ease-in forwards; }
+    .animate-reveal { animation: revealUp 0.4s ease-out forwards; }
+    .fade-in { animation: revealUp 0.3s ease-out forwards; }
+    .animate-text-in { animation: textIn 0.2s ease-out forwards; }
+    .animate-text-out { animation: textOut 0.2s ease-in forwards; }
+</style>
+
+@code {
+    private enum Status { Processing, Confirming, Closing, Cancelled }
+    private Status CurrentStatus = Status.Processing;
+
+    private void StartConfirm() => CurrentStatus = Status.Confirming;
+
+    private async Task BackToProcessing()
+    {
+        CurrentStatus = Status.Closing;
+        await Task.Delay(300); // Matches CSS animation duration
+        CurrentStatus = Status.Processing;
+    }
+
+    private async Task ConfirmCancel()
+    {
+        CurrentStatus = Status.Closing;
+        await Task.Delay(300);
+        CurrentStatus = Status.Cancelled;
+    }
+}

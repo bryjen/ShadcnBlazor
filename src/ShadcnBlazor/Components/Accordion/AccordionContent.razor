@@ -10,7 +10,7 @@
     style="@GetStyle()"
     @ref="contentRef"
     @attributes="GetAttributes()">
-    <div @ref="innerRef" class="pb-4 pt-0 text-sm text-muted-foreground">
+    <div @ref="innerRef" class="@_mergedInnerClass">
         @ChildContent
     </div>
 </div>
@@ -24,6 +24,11 @@
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string InnerClass { get; set; } = string.Empty;
+
+    private string _mergedInnerClass => MergeCss("pb-4 pt-0 text-sm text-muted-foreground", InnerClass);
 
     private ElementReference contentRef;
     private ElementReference innerRef;

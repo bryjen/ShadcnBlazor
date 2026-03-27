@@ -1,5 +1,6 @@
 @page "/playground"
 @using ShadcnBlazor.Docs.Components.Examples
+@using ShadcnBlazor.Docs.Components.Samples
 @using ShadcnBlazor.Services
 @inject VaulService Vaul
 
@@ -40,6 +41,16 @@
                 <div>@(string.IsNullOrWhiteSpace(_callbackLog) ? "No events yet." : _callbackLog)</div>
             </div>
         </section>
+
+    </div>
+
+    <div class="space-y-6">
+        <div>
+            <h1>Payment Form</h1>
+            <p>Test Area.</p>
+        </div>
+
+        <StripePaymentForm/>
 
     </div>
 </div>

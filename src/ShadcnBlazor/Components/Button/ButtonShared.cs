@@ -28,7 +28,7 @@ internal static class ButtonStyles
         var variantClasses = variant switch
         {
             Variant.Default => "bg-primary text-primary-foreground hover:bg-primary/90",
-            Variant.Destructive => "bg-destructive/60 text-white hover:bg-destructive/90 focus-visible:ring-destructive/40",
+            Variant.Destructive => "bg-destructive/25 text-destructive hover:bg-destructive/35 focus-visible:ring-destructive/40",
             Variant.Outline => "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground bg-input/30 border-input hover:bg-input/50",
             Variant.Secondary => "bg-secondary text-secondary-foreground hover:bg-secondary/80",
             Variant.Ghost => "hover:bg-accent hover:text-accent-foreground hover:bg-accent/50",

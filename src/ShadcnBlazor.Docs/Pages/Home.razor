@@ -1,6 +1,7 @@
 @page "/"
 
 @using ShadcnBlazor.Docs.Components.Home
+@using ShadcnBlazor.Docs.Components.Samples
 @using ShadcnBlazor.Docs.Components.Samples.AiChat
 
 @layout NoNavMenuLayout
@@ -80,11 +81,19 @@
     {
         <div data-device="desktop" class="max-lg:hidden grid grid-cols-4 gap-x-4 w-full">
             @* col 1 *@
-            <SamplePaymentForm />
+            <div class="flex flex-col gap-6">
+                <StripePaymentForm/>
+                <div class="h-px bg-border"></div>
+                <RequestPanel/>
+            </div>
+            @* <SamplePaymentForm /> *@
+
             @* col 2 *@
             <RandomComponents1 />
+
             @* col 3 *@
             <SampleInstanceCreateForm />
+
             @* col 4 *@
             <RandomComponents2 />
         </div>

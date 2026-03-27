@@ -16,45 +16,28 @@
         <Button Variant="@Variant.Default"><LuShare/>Share Invite Link</Button>
     </Card>
 
-    @* we're processing your request card card *@
-    <Card  Class="gap-4 justify-center items-center text-center">
-        <div class="p-2 rounded-xl bg-muted">
-            <LuLoaderCircle class="animate-spin w-4 h-4"/>
-        </div>
-        
-        <div class="flex flex-col">
-            <span class="text-base font-bold">Processing your request</span>
-            <span class="text-sm text-muted-foreground">Please wait while we process your request. Do not refresh the page.</span>
-        </div>
-
-        <div class="flex gap-2">
-            <Button Variant="@Variant.Outline">Cancel</Button>
-        </div>
-    </Card>
-    
     @* accordion demo *@
-    <Card  Class="p-4">
-        <Accordion Collapsible DefaultValue="shipping" Class="max-w-lg">
-            <AccordionItem Value="shipping">
-                <AccordionTrigger>What are your shipping options?</AccordionTrigger>
-                <AccordionContent>
-                    We offer standard (5-7 days), express (2-3 days), and overnight shipping. Free shipping on international orders.
-                </AccordionContent>
-            </AccordionItem>
-            <AccordionItem Value="returns">
-                <AccordionTrigger>What is your return policy?</AccordionTrigger>
-                <AccordionContent>
-                    Returns accepted within 30 days. Items must be unused and in original packaging. Refunds processed within 5-7 business days.
-                </AccordionContent>
-            </AccordionItem>
-            <AccordionItem Value="support">
-                <AccordionTrigger>How can I contact customer support?</AccordionTrigger>
-                <AccordionContent>
-                    Reach us via email, live chat, or phone. We respond within 24 hours during business days.
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
-    </Card>
+    <Accordion Type="AccordionType.Single">
+        <AccordionItem Value="item-1">
+            <AccordionTrigger>Can I open multiple items at once?</AccordionTrigger>
+            <AccordionContent>
+                Yes! Set Type="AccordionType.Multiple" on the Accordion component to allow multiple items to be expanded simultaneously. This is useful when you want users to compare content across several sections or keep context from one section visible while reading another. Unlike the default Single mode, opening a new item won't automatically close the one that was previously open.
+            </AccordionContent>
+        </AccordionItem>
+        <AccordionItem Value="item-2">
+            <AccordionTrigger>How does the toggle behavior work?</AccordionTrigger>
+            <AccordionContent>
+                Each item can be toggled independently. Clicking an open item will collapse it; clicking a closed item will expand it. There's no limit to how many items can be open at the same time—you could have all of them expanded if that suits your use case. This makes the Multiple mode ideal for FAQ pages, settings panels, or any content where users might want to reference several sections at once.
+            </AccordionContent>
+        </AccordionItem>
+        <AccordionItem Value="item-3">
+            <AccordionTrigger>Can I close all items so nothing is expanded?</AccordionTrigger>
+            <AccordionContent>
+                Yes. In Multiple mode, you can expand and collapse any combination of items, including having none open. Users can close each item individually by clicking its trigger, and there's no requirement to keep at least one section expanded. This gives you full flexibility for both the initial state and how users interact with the accordion over time.
+            </AccordionContent>
+        </AccordionItem>
+    </Accordion>
+
     @* badge demos *@
     <div>
         <Badge Size="@Size.Lg"><LuLoaderCircle class="animate-spin"/>Syncing</Badge>
