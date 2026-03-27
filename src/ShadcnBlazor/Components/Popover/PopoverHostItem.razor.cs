@@ -6,25 +6,18 @@ namespace ShadcnBlazor.Components.Popover;
 /// <summary>Renders a single popover registration entry.</summary>
 public partial class PopoverHostItem : ComponentBase
 {
-    /// <summary>The registration object that describes this popover instance.</summary>
     [Parameter, EditorRequired]
     public required object RegistrationObject { get; set; }
 
     private PopoverRegistration Registration => (PopoverRegistration)RegistrationObject;
     private object? _lastRenderedRegistration;
 
-    /// <inheritdoc />
     protected override bool ShouldRender()
     {
-        if (_lastRenderedRegistration is null)
-        {
-            return true;
-        }
-
+        if (_lastRenderedRegistration is null) return true;
         return !ReferenceEquals(_lastRenderedRegistration, RegistrationObject);
     }
 
-    /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
         _lastRenderedRegistration = RegistrationObject;
@@ -51,17 +44,10 @@ public partial class PopoverHostItem : ComponentBase
 
     private string GetPopoverClass(PopoverRegistration registration)
     {
-        var classes = new List<string>
-        {
-            "popover-content",
-            ToTransformClass(registration.TransformOrigin),
-            ToAnchorClass(registration.AnchorOrigin)
-        };
+        var classes = new List<string> { "popover-content" };
 
         if (registration.Open)
-        {
             classes.Add("popover-open");
-        }
 
         switch (registration.WidthMode)
         {
@@ -74,60 +60,32 @@ public partial class PopoverHostItem : ComponentBase
         }
 
         if (!string.IsNullOrWhiteSpace(registration.PopoverClass))
-        {
             classes.Add(registration.PopoverClass);
-        }
 
         return string.Join(" ", classes);
     }
 
-    private static string ToTransformClass(PopoverPlacement placement)
+    /// <summary>Maps placement to the cardinal side the popover appears on (used for CSS animations).</summary>
+    internal static string ToSide(PopoverPlacement placement) => placement switch
     {
-        return placement switch
-        {
-            PopoverPlacement.TopLeft => "popover-top-left",
-            PopoverPlacement.TopCenter => "popover-top-center",
-            PopoverPlacement.TopRight => "popover-top-right",
-            PopoverPlacement.CenterLeft => "popover-center-left",
-            PopoverPlacement.Center => "popover-center-center",
-            PopoverPlacement.CenterRight => "popover-center-right",
-            PopoverPlacement.BottomLeft => "popover-bottom-left",
-            PopoverPlacement.BottomCenter => "popover-bottom-center",
-            PopoverPlacement.BottomRight => "popover-bottom-right",
-            _ => "popover-bottom-left"
-        };
-    }
+        PopoverPlacement.TopLeft or PopoverPlacement.TopCenter or PopoverPlacement.TopRight => "top",
+        PopoverPlacement.BottomLeft or PopoverPlacement.BottomCenter or PopoverPlacement.BottomRight => "bottom",
+        PopoverPlacement.CenterLeft => "left",
+        PopoverPlacement.CenterRight => "right",
+        _ => "bottom"
+    };
 
-    private static string ToAnchorClass(PopoverPlacement placement)
+    /// <summary>Maps placement to a Floating UI placement string.</summary>
+    internal static string ToFloatingPlacement(PopoverPlacement placement) => placement switch
     {
-        return placement switch
-        {
-            PopoverPlacement.TopLeft => "popover-anchor-top-left",
-            PopoverPlacement.TopCenter => "popover-anchor-top-center",
-            PopoverPlacement.TopRight => "popover-anchor-top-right",
-            PopoverPlacement.CenterLeft => "popover-anchor-center-left",
-            PopoverPlacement.Center => "popover-anchor-center-center",
-            PopoverPlacement.CenterRight => "popover-anchor-center-right",
-            PopoverPlacement.BottomLeft => "popover-anchor-bottom-left",
-            PopoverPlacement.BottomCenter => "popover-anchor-bottom-center",
-            PopoverPlacement.BottomRight => "popover-anchor-bottom-right",
-            _ => "popover-anchor-bottom-left"
-        };
-    }
-
-    private static string ToSide(PopoverPlacement placement)
-    {
-        return placement switch
-        {
-            PopoverPlacement.TopLeft => "top",
-            PopoverPlacement.TopCenter => "top",
-            PopoverPlacement.TopRight => "top",
-            PopoverPlacement.BottomLeft => "bottom",
-            PopoverPlacement.BottomCenter => "bottom",
-            PopoverPlacement.BottomRight => "bottom",
-            PopoverPlacement.CenterLeft => "left",
-            PopoverPlacement.CenterRight => "right",
-            _ => "bottom"
-        };
-    }
+        PopoverPlacement.TopLeft => "top-start",
+        PopoverPlacement.TopCenter => "top",
+        PopoverPlacement.TopRight => "top-end",
+        PopoverPlacement.BottomLeft => "bottom-start",
+        PopoverPlacement.BottomCenter => "bottom",
+        PopoverPlacement.BottomRight => "bottom-end",
+        PopoverPlacement.CenterLeft => "left",
+        PopoverPlacement.CenterRight => "right",
+        _ => "bottom"
+    };
 }

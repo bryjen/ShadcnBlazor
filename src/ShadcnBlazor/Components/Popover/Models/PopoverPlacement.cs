@@ -14,15 +14,6 @@ public enum PopoverPlacement
     /// <summary>Top-right corner.</summary>
     TopRight,
 
-    /// <summary>Center left.</summary>
-    CenterLeft,
-
-    /// <summary>Center.</summary>
-    Center,
-
-    /// <summary>Center right.</summary>
-    CenterRight,
-
     /// <summary>Bottom-left corner.</summary>
     BottomLeft,
 
@@ -30,5 +21,11 @@ public enum PopoverPlacement
     BottomCenter,
 
     /// <summary>Bottom-right corner.</summary>
-    BottomRight
+    BottomRight,
+
+    /// <summary>Center left.</summary>
+    CenterLeft,
+
+    /// <summary>Center right.</summary>
+    CenterRight
 }
