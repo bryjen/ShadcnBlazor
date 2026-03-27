@@ -275,7 +275,15 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         {
             if (_visualOpen)
             {
-                await PopoverService.ConnectAsync(AnchorId, _popoverId);
+                var options = new
+                {
+                    placement = PopoverHostItem.ToFloatingPlacement(TransformOrigin),
+                    anchorPlacement = PopoverHostItem.ToFloatingPlacement(AnchorOrigin),
+                    widthMode = WidthMode.ToString().ToLowerInvariant(),
+                    clampList = ClampList,
+                    offset = Offset
+                };
+                await PopoverService.ConnectAsync(AnchorId, _popoverId, options);
             }
             else
             {

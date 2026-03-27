@@ -30,7 +30,7 @@ public interface IPopoverService
     /// <summary>
     /// Connects an anchor to its popover for positioning.
     /// </summary>
-    Task ConnectAsync(string anchorId, string popoverId);
+    Task ConnectAsync(string anchorId, string popoverId, object options);
 
     /// <summary>
     /// Disconnects a popover from its anchor.

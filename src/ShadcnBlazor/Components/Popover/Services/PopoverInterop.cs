@@ -79,10 +79,10 @@ public class PopoverInterop : IAsyncDisposable
     }
 
     /// <summary>Connects an anchor to its popover for positioning.</summary>
-    public async ValueTask ConnectAsync(string anchorId, string popoverId, CancellationToken cancellationToken = default)
+    public async ValueTask ConnectAsync(string anchorId, string popoverId, object options, CancellationToken cancellationToken = default)
     {
         var module = await GetModuleAsync(cancellationToken);
-        await module.InvokeVoidAsync("connect", cancellationToken, anchorId, popoverId);
+        await module.InvokeVoidAsync("connect", cancellationToken, anchorId, popoverId, options);
     }
 
     /// <summary>Disconnects a popover from its anchor.</summary>
