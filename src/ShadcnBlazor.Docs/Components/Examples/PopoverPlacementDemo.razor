@@ -3,13 +3,13 @@
 <Popover @bind-Open="_open" AnchorOrigin="@Placement" TransformOrigin="@Placement">
     <Anchor>
         <Button Variant="Variant.Outline" Size="Size.Sm" OnClick="Toggle" class="w-full">
-            @DisplayName
+            @Label
         </Button>
     </Anchor>
     <ChildContent>
-        <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-md min-w-[120px]">
+        <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-md min-w-[120px]">
             <p class="font-mono text-[10px] text-muted-foreground uppercase tracking-widest mb-1">@Placement</p>
-            <p class="text-xs font-medium">Popover at @DisplayName</p>
+            <p class="text-xs font-medium">Popover at @Label</p>
         </div>
     </ChildContent>
 </Popover>
@@ -21,7 +21,7 @@
     public required PopoverPlacement Placement { get; set; }
 
     [Parameter]
-    public required string DisplayName { get; set; }
+    public required string Label { get; set; }
 
     private void Toggle() => _open = !_open;
 }

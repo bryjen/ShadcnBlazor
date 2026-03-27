@@ -1,6 +1,7 @@
 /**
  * Sheet component JavaScript interop.
- * Provides overlay animation, ESC handling, overlay click, and focus trap.
+ * Provides overlay animation, ESC handling, and overlay click.
+ * Focus trapping is handled by the FocusTrap component.
  * Uses data-sheet-* attributes to avoid conflicts with Dialog.
  * Exported as ES module for Blazor JS interop.
  */
@@ -56,37 +57,11 @@ export function initialize(sheetId, dotNetRef) {
             if (e.target === overlayElement && contentElement.getAttribute('data-state') === 'open') {
                 dotNetRef.invokeMethodAsync('HandleOverlayClick');
             }
-        },
-        trapFocus: (e) => {
-            if (e.key !== 'Tab') return;
-            const contentElement = getContentElement(sheetId);
-            if (!contentElement || contentElement.getAttribute('data-state') !== 'open') return;
-
-            const focusableElements = contentElement.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            );
-            if (focusableElements.length === 0) return;
-
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-
-            if (e.shiftKey) {
-                if (document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement?.focus();
-                }
-            } else {
-                if (document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement?.focus();
-                }
-            }
         }
     };
 
     document.addEventListener('keydown', handler.handleEscape);
     document.addEventListener('click', handler.handleOverlayClick, true);
-    document.addEventListener('keydown', handler.trapFocus);
 
     sheetHandlers.set(sheetId, handler);
 }
@@ -111,20 +86,8 @@ export function open(sheetId) {
             contentElement.setAttribute('data-state', 'open');
             handler.openRaf1 = null;
             handler.openRaf2 = null;
-            focusFirstInSheet(sheetId);
         });
     });
-}
-
-export function focusFirstInSheet(sheetId) {
-    const contentElement = getContentElement(sheetId);
-    if (!contentElement) return;
-    setTimeout(() => {
-        const firstFocusable = contentElement.querySelector(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        firstFocusable?.focus();
-    }, 50);
 }
 
 export function close(sheetId) {
@@ -155,7 +118,6 @@ export function dispose(sheetId) {
 
     document.removeEventListener('keydown', handler.handleEscape);
     document.removeEventListener('click', handler.handleOverlayClick, true);
-    document.removeEventListener('keydown', handler.trapFocus);
 
     sheetHandlers.delete(sheetId);
 }

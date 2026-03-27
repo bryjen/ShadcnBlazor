@@ -9,6 +9,7 @@ using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Components.Sheet.Services;
+using ShadcnBlazor.Components.FocusTrap.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using ShadcnBlazor.Docs.Services;
@@ -64,6 +65,10 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
 
     services.AddScoped<ISheetJsService, SheetJsService>();
     services.AddScoped<ISheetService, SheetService>();
+
+    services.AddScoped<FocusService>();
+    services.AddScoped<FocusJsInterop>();
+
 
     services.AddScoped<ThemeFetcher>();
     services.AddScoped<ThemeService>();

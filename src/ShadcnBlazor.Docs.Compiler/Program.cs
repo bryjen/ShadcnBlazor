@@ -103,6 +103,7 @@ void GenerateApiDocumentation(string? assemblyPathArg, string docsDirPath, strin
         "ShadcnBlazor.Components.Switch.Switch",
         "ShadcnBlazor.Components.Textarea.Textarea",
         "ShadcnBlazor.Components.Tooltip.Tooltip",
+        "ShadcnBlazor.Components.FocusTrap.FocusTrap",
     };
 
     var componentTypes = assembly.GetTypes()

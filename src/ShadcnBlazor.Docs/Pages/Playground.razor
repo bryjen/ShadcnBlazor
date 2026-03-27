@@ -7,54 +7,55 @@
 @using ShadcnBlazor.Components.Popover.Models
 @inject VaulService Vaul
 
-<PageTitle>Playground - Vaul</PageTitle>
+<PageTitle>Playground</PageTitle>
 
-<div class="w-full max-w-2xl mx-auto p-8 mb-[100vh]">
-    <div class="space-y-6">
-        <div>
-            <h1>Vaul Drawer</h1>
-            <p>Minimal Vaul drawer demo powered by the interop bundle.</p>
+<div class="max-w-[1240px] mx-auto p-12 space-y-24 mb-[200px]">
+    <!-- Vaul -->
+    <div class="space-y-4 max-w-[800px]">
+        <div class="space-y-1">
+            <h1 class="text-3xl font-bold tracking-tight">Vaul Drawer</h1>
+            <p class="text-muted-foreground">Minimal Vaul drawer demo powered by the interop bundle.</p>
         </div>
 
-        <section class="space-y-4">
-            <div class="flex items-center gap-4">
-                <button
-                    class="relative flex h-10 flex-shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-4 text-sm font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19] dark:text-white"
-                    @onclick="OpenVaulDrawer">
-                    Open Drawer
-                </button>
-            </div>
-        </section>
+        <div class="flex items-center gap-3 py-4">
+            <button
+                class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:scale-95"
+                @onclick="OpenVaulDrawer">
+                Open Drawer
+            </button>
+            <button
+                class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground active:scale-95"
+                @onclick="OpenVaulDrawerWithCallbacks">
+                Test Callbacks
+            </button>
+        </div>
 
-        <section class="space-y-3">
-            <div class="flex items-center gap-4">
-                <button
-                    class="relative flex h-10 flex-shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-4 text-sm font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19] dark:text-white"
-                    @onclick="OpenVaulDrawerWithCallbacks">
-                    Open Drawer (Callbacks)
-                </button>
-                <button
-                    class="text-sm text-slate-600 underline"
-                    @onclick="ClearCallbackLog">
-                    Clear log
-                </button>
+        @if (!string.IsNullOrWhiteSpace(_callbackLog))
+        {
+            <div class="rounded-lg border bg-muted/30 p-4 font-mono text-[11px] leading-relaxed">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-bold uppercase tracking-widest text-muted-foreground">Event Log</span>
+                    <button @onclick="ClearCallbackLog" class="hover:underline">Clear</button>
+                </div>
+                <div class="text-foreground">@_callbackLog</div>
             </div>
-            <div class="rounded-md border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700">
-                <div class="font-medium mb-2">Callback log</div>
-                <div>@(string.IsNullOrWhiteSpace(_callbackLog) ? "No events yet." : _callbackLog)</div>
-            </div>
-        </section>
-
+        }
     </div>
 
-    <div class="space-y-6">
-        <div>
-            <h1>Popover Options</h1>
-            <p>Explore different popover configurations and behaviors with Floating UI positioning.</p>
+    <!-- Popover -->
+    <div class="space-y-4">
+        <div class="space-y-1">
+            <h2 class="text-3xl font-bold tracking-tight">Popover</h2>
+            <p class="text-muted-foreground">Configurable behaviors with Floating UI positioning.</p>
         </div>
-
-        <PopoverPlaygroundDemo />
-
+        
+        <div class="grid grid-cols-1 gap-12 pt-4">
+            <div class="max-w-[440px]">
+                <PopoverDimensionsDemo />
+            </div>
+            
+            <PopoverPlaygroundDemo />
+        </div>
     </div>
 </div>
 

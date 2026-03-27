@@ -35,6 +35,9 @@
       <UpToDateCheckInput Remove="Components\Calendar\DateRangePicker.razor" />
       <UpToDateCheckInput Remove="Components\Calendar\MonthPicker.razor" />
     </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Components\FocusTrap\FocusTrap.razor" />
+    </ItemGroup>
 
 
 </Project>

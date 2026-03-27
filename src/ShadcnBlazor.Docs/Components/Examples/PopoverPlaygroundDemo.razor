@@ -1,63 +1,80 @@
 @using ShadcnBlazor.Components.Popover.Models
 
-<div class="space-y-8">
+<div class="space-y-12">
     <!-- Placement Demo -->
-    <div class="space-y-3">
-        <h3 class="text-xl font-semibold">Placement Options</h3>
-        <p class="text-sm text-muted-foreground">Click buttons around the grid to see different anchor placements</p>
-        <div class="border rounded-lg p-8 bg-card">
-            <div class="grid grid-cols-3 gap-4 w-fit mx-auto">
+    <div class="space-y-4">
+        <div class="space-y-1">
+            <h3 class="text-lg font-semibold tracking-tight">Placement</h3>
+            <p class="text-sm text-muted-foreground">Select a position relative to the anchor.</p>
+        </div>
+        <div class="rounded-xl border border-border bg-card p-12 shadow-sm">
+            <div class="grid grid-cols-3 gap-3 w-fit mx-auto">
                 <!-- Top row -->
-                <PopoverPlacementDemo Placement="PopoverPlacement.TopLeft" DisplayName="TopLeft" />
-                <PopoverPlacementDemo Placement="PopoverPlacement.TopCenter" DisplayName="TopCenter" />
-                <PopoverPlacementDemo Placement="PopoverPlacement.TopRight" DisplayName="TopRight" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.TopLeft" Label="Top Left" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.TopCenter" Label="Top" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.TopRight" Label="Top Right" />
 
                 <!-- Middle row -->
-                <PopoverPlacementDemo Placement="PopoverPlacement.CenterLeft" DisplayName="CenterLeft" />
-                <div class="flex items-center justify-center w-20 h-20 bg-muted/50 rounded-md border text-[11px] text-muted-foreground font-bold uppercase tracking-wider">anchor</div>
-                <PopoverPlacementDemo Placement="PopoverPlacement.CenterRight" DisplayName="CenterRight" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.CenterLeft" Label="Left" />
+                <div class="flex items-center justify-center w-24 h-24 bg-muted/30 rounded-lg border border-border border-dashed text-[10px] text-muted-foreground font-bold uppercase tracking-widest bg-stripes">
+                    Anchor
+                </div>
+                <PopoverPlacementDemo Placement="PopoverPlacement.CenterRight" Label="Right" />
 
                 <!-- Bottom row -->
-                <PopoverPlacementDemo Placement="PopoverPlacement.BottomLeft" DisplayName="BottomLeft" />
-                <PopoverPlacementDemo Placement="PopoverPlacement.BottomCenter" DisplayName="BottomCenter" />
-                <PopoverPlacementDemo Placement="PopoverPlacement.BottomRight" DisplayName="BottomRight" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.BottomLeft" Label="Bottom Left" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.BottomCenter" Label="Bottom" />
+                <PopoverPlacementDemo Placement="PopoverPlacement.BottomRight" Label="Bottom Right" />
             </div>
         </div>
     </div>
 
-    <!-- Width Mode Demo -->
-    <div class="space-y-3">
-        <h3 class="text-xl font-semibold">Width Mode Options</h3>
-        <p class="text-sm text-muted-foreground">See how widthMode affects popover sizing</p>
-        <div class="grid grid-cols-1 gap-4">
-            <WidthModeDemo Mode="PopoverWidthMode.None" DisplayName="Normal Width" />
-            <WidthModeDemo Mode="PopoverWidthMode.Relative" DisplayName="Relative Width" />
-            <WidthModeDemo Mode="PopoverWidthMode.Adaptive" DisplayName="Adaptive Width" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Width Mode Demo -->
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Width Mode</h3>
+                <p class="text-sm text-muted-foreground">Control how popover width relates to the anchor.</p>
+            </div>
+            <div class="space-y-3">
+                <WidthModeDemo Mode="PopoverWidthMode.None" Label="Standard" />
+                <WidthModeDemo Mode="PopoverWidthMode.Relative" Label="Match Anchor" />
+                <WidthModeDemo Mode="PopoverWidthMode.Adaptive" Label="Min-Width Anchor" />
+            </div>
+        </div>
+
+        <!-- Offset Demo -->
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Offsets</h3>
+                <p class="text-sm text-muted-foreground">Adjust spacing and secondary alignment.</p>
+            </div>
+            <div class="space-y-3">
+                <OffsetDemo Offset="12" Label="12px Gap" />
+                <AlignOffsetDemo AlignOffset="32" Label="32px Alignment Offset" />
+            </div>
         </div>
     </div>
 
-    <!-- Offset Demo -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Behavior & Interaction -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div class="space-y-4">
-            <h3 class="text-xl font-semibold">Offsets & Alignment</h3>
-            <OffsetDemo Offset="0" DisplayName="0px Gap" />
-            <OffsetDemo Offset="16" DisplayName="16px Gap" />
-            <AlignOffsetDemo AlignOffset="24" DisplayName="24px Align Offset" />
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Behavior</h3>
+                <p class="text-sm text-muted-foreground">Configure visibility and interaction constraints.</p>
+            </div>
+            <div class="space-y-3">
+                <BehaviorDemo Title="Outside Click" Description="Closes when clicking outside" CloseOnOutsideClick="true" />
+                <BehaviorDemo Title="Auto-Hide" Description="Hides if anchor leaves viewport" HideWhenDetached="true" />
+            </div>
         </div>
 
         <div class="space-y-4">
-            <h3 class="text-xl font-semibold">Behavior & Interaction</h3>
-            <BehaviorDemo Title="Auto-Close" Description="Stops on outside click" CloseOnOutsideClick="true" />
-            <BehaviorDemo Title="Auto-Hide" Description="Hides when anchor is detached" HideWhenDetached="true" />
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Custom Interaction</h3>
+                <p class="text-sm text-muted-foreground">Handle outside interaction with custom logic.</p>
+            </div>
+            <InteractOutsideDemo />
         </div>
-    </div>
-
-    <div class="space-y-4 mt-8">
-        <h3 class="text-xl font-semibold">Interaction Logic</h3>
-        <InteractOutsideDemo />
     </div>
 </div>
-
-@code {
-
-}

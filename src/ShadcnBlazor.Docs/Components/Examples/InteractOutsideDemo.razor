@@ -1,6 +1,6 @@
 @using ShadcnBlazor.Components.Button
 
-<div class="border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+<div class="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
     <div class="space-y-4">
         <div class="space-y-1">
             <p class="text-sm font-semibold">OnInteractOutside Callback</p>
@@ -29,8 +29,8 @@
                     </Button>
                 </Anchor>
                 <ChildContent>
-                    <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm max-w-xs space-y-2">
-                        <p class="font-bold border-b pb-1 uppercase text-[10px] text-muted-foreground tracking-widest">Status</p>
+                    <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm max-w-xs space-y-2">
+                        <p class="font-bold border-b border-border pb-1 uppercase text-[10px] text-muted-foreground tracking-widest">Status</p>
                         <p class="text-xs">Last interaction: <span class="font-mono font-bold">@_lastEvent</span></p>
                         <p class="text-xs text-muted-foreground italic">
                             @( _handled 
@@ -41,7 +41,7 @@
                 </ChildContent>
             </Popover>
             
-            <div class="px-3 py-2 border border-dashed rounded text-[10px] text-muted-foreground uppercase font-bold tracking-tight animate-pulse">
+            <div class="px-3 py-2 border border-border border-dashed rounded text-[10px] text-muted-foreground uppercase font-bold tracking-tight animate-pulse">
                 Click outside area
             </div>
         </div>

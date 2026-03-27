@@ -78,7 +78,7 @@ The standard way to show a component in action with a "Show Code" toggle.
 - **Code**: Use `<code>` tags for inline property/method names.
 - **Spacing**: Use `flex flex-col gap-8` for the main page layout (handled by `ComponentDocPage`).
 - **Aesthetic**:
-    - Avoid excessive borders; use the existing `border-border` token.
+    - **Borders**: Always specify the border color when using the `border` class. Use `border-border` (e.g., `border border-border`). Avoid generic `border` without a color token.
     - Use `text-muted-foreground` for secondary descriptions.
     - Ensure all examples are centered within the preview container (using `flex justify-center items-center`).
 

@@ -25,6 +25,8 @@ using ShadcnBlazor.Components.Switch;
 using ShadcnBlazor.Components.Textarea;
 using ShadcnBlazor.Components.ToggleButton;
 using ShadcnBlazor.Components.Tooltip;
+using ShadcnBlazor.Components.FocusTrap;
+using ShadcnBlazor.Components.FocusTrap.Services;
 using ShadcnBlazor.Services.Models;
 using ShadcnBlazor.Services;
 
@@ -266,6 +268,22 @@ public static class ComponentRegistry
                 new AddToServicesAction(nameof(SonnerService)),
                 new AddToServicesAction(nameof(SonnerComponentRegistry)),
                 new CopyJsAction("sonner-interop.iife.js"),
+            ]
+        },
+        new()
+        {
+            Name = nameof(FocusTrap),
+            Description = "Traps focus within a container using the focus-trap library.",
+            Dependencies = CreateDeps(),
+            RequiredActions =
+            [
+                new AddToServicesAction(nameof(FocusJsInterop)),
+                new AddToServicesAction(nameof(FocusService)),
+                new MergeToImportsAction([
+                    "ShadcnBlazor.Components.FocusTrap",
+                    "ShadcnBlazor.Components.FocusTrap.Models",
+                    "ShadcnBlazor.Components.FocusTrap.Services"
+                ]),
             ]
         },
     ];

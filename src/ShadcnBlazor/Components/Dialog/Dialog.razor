@@ -1,55 +1,57 @@
 @inherits ShadcnComponentBase
 
-<div id="@_elementId"
-     class="@GetContentClass()"
-     data-dialog-content="@Instance.Id.ToString("N")"
-     data-state="closed"
-     role="dialog"
-     aria-modal="true"
-     aria-labelledby="@(_hasHeader ? _titleId : null)"
-     aria-describedby="@(_hasDescription ? _descriptionId : null)"
-     style="@GetDialogStyle()"
-     @onclick:stopPropagation
-     @attributes="AdditionalAttributes">
-    @if (_hasHeader)
-    {
-        <div class="flex flex-row items-start justify-between gap-2 px-6 pt-6">
-            <div class="flex-1">
-                <h2 class="text-lg font-semibold leading-normal text-foreground m-0" id="@_titleId">@Instance.Title</h2>
-                @if (_hasDescription)
+<FocusTrap Disabled="@(State != "open")" @attributes="AdditionalAttributes">
+    <div id="@_elementId"
+         class="@GetContentClass()"
+         data-dialog-content="@Instance.Id.ToString("N")"
+         data-state="@State"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="@(_hasHeader ? _titleId : null)"
+         aria-describedby="@(_hasDescription ? _descriptionId : null)"
+         style="@GetDialogStyle()"
+         @onclick:stopPropagation>
+        @if (_hasHeader)
+        {
+            <div class="flex flex-row items-start justify-between gap-2 px-6 pt-6">
+                <div class="flex-1">
+                    <h2 class="text-lg font-semibold leading-normal text-foreground m-0" id="@_titleId">@Instance.Title</h2>
+                    @if (_hasDescription)
+                    {
+                        <p class="text-sm text-muted-foreground mt-1" id="@_descriptionId">@Options.Description</p>
+                    }
+                </div>
+                @if (Options.CloseButton)
                 {
-                    <p class="text-sm text-muted-foreground mt-1" id="@_descriptionId">@Options.Description</p>
+                    <button type="button"
+                            class="inline-flex items-center justify-center size-8 rounded-md border-none bg-transparent text-muted-foreground cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+                            aria-label="Close"
+                            @onclick="OnCloseClick">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    </button>
                 }
             </div>
-            @if (Options.CloseButton)
-            {
-                <button type="button"
-                        class="inline-flex items-center justify-center size-8 rounded-md border-none bg-transparent text-muted-foreground cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
-                        aria-label="Close"
-                        @onclick="OnCloseClick">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </svg>
-                </button>
-            }
-        </div>
-    }
-    @if (Options.Unstyled)
-    {
-        <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
-            @ChildContent
-        </CascadingValue>
-    }
-    else
-    {
-        <div class="p-6 overflow-y-auto">
+        }
+        @if (Options.Unstyled)
+        {
             <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
                 @ChildContent
             </CascadingValue>
-        </div>
-    }
-</div>
+        }
+        else
+        {
+            <div class="p-6 overflow-y-auto">
+                <CascadingValue TValue="IDialogInstance" Value="_dialogInstance">
+                    @ChildContent
+                </CascadingValue>
+            </div>
+        }
+    </div>
+</FocusTrap>
+
 
 @code {
     [Parameter]
@@ -60,6 +62,9 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string State { get; set; } = "closed";
 
     [Parameter]
     public EventCallback<Models.DialogResult> OnCloseRequested { get; set; }

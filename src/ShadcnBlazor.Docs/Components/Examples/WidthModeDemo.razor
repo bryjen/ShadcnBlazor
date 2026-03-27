@@ -1,9 +1,9 @@
 @using ShadcnBlazor.Components.Button
 
-<div class="border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+<div class="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
     <div class="flex items-center justify-between">
         <div>
-            <p class="font-semibold text-sm">@DisplayName</p>
+            <p class="font-semibold text-sm">@Label</p>
             <p class="text-xs text-muted-foreground mt-1">
                 @(Mode switch
                 {
@@ -27,8 +27,8 @@
                 </Button>
             </Anchor>
             <ChildContent>
-                <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm min-w-[150px]">
-                    <p class="font-semibold">@DisplayName</p>
+                <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm min-w-[150px]">
+                    <p class="font-semibold">@Label</p>
                     <p class="text-muted-foreground text-xs mt-1">Demonstrating <span class="font-mono text-primary">@Mode</span> mode.</p>
                 </div>
             </ChildContent>
@@ -43,7 +43,7 @@
     public required PopoverWidthMode Mode { get; set; }
 
     [Parameter]
-    public required string DisplayName { get; set; }
+    public required string Label { get; set; }
 
     private void Toggle() => _open = !_open;
 }

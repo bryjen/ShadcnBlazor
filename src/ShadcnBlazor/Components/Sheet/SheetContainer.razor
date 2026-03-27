@@ -12,20 +12,24 @@
 <div class="fixed inset-0 z-[1401] flex items-stretch overflow-hidden sheet-container @_containerLayoutClass"
      data-side="@_sheetSide"
      @onclick="OnBackdropClick">
-    <div class="sheet-content"
-         data-sheet-content="@Instance.Id.ToString("N")"
-         data-side="@_sheetSide"
-         data-state="@_contentState"
-         role="dialog"
-         aria-modal="true"
-         style="@_sheetStyle"
-         @onclick:stopPropagation>
-        <CascadingValue TValue="ISheetInstance" Value="_sheetInstance">
-            <DynamicComponent Type="@Instance.ComponentType"
-                              Parameters="@GetComponentParameters()" />
-        </CascadingValue>
-    </div>
+    <FocusTrap Disabled="@(_contentState != "open")">
+        <div class="sheet-content"
+             data-sheet-content="@Instance.Id.ToString("N")"
+             data-side="@_sheetSide"
+             data-state="@_contentState"
+             role="dialog"
+             aria-modal="true"
+             style="@_sheetStyle"
+             @onclick:stopPropagation>
+            <CascadingValue TValue="ISheetInstance" Value="_sheetInstance">
+                <DynamicComponent Type="@Instance.ComponentType"
+                                  Parameters="@GetComponentParameters()" />
+            </CascadingValue>
+        </div>
+    </FocusTrap>
 </div>
+
+
 
 @code {
     [Parameter]

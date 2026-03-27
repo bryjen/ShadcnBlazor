@@ -13,6 +13,7 @@
      @onclick="OnBackdropClick">
     <Dialog Instance="@Instance"
             Options="@Instance.Options"
+            State="@_overlayState"
             OnCloseRequested="CloseAsync">
         <DynamicComponent Type="@Instance.ComponentType"
                           Parameters="@GetComponentParameters()" />

@@ -1,7 +1,7 @@
 @using ShadcnBlazor.Components.Popover
 @using ShadcnBlazor.Components.Button
 
-<div class="border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+<div class="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
     <div class="space-y-1.5 mb-3">
         <p class="text-sm font-semibold">@Title</p>
         <p class="text-xs text-muted-foreground">@Description</p>
@@ -21,8 +21,8 @@
             </Button>
         </Anchor>
         <ChildContent>
-            <div class="p-3 bg-popover text-popover-foreground rounded-md border shadow-lg text-sm space-y-2">
-                <p class="font-bold border-b pb-1">@Title</p>
+            <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm space-y-2">
+                <p class="font-bold border-b border-border pb-1">@Title</p>
                 <div class="text-[11px] space-y-1">
                     <p>Outside Click: @(CloseOnOutsideClick ? "Enabled" : "Disabled")</p>
                     <p>Animated: @(Animate ? "Yes" : "No")</p>
