@@ -22,7 +22,7 @@
             ClampList="@ClampList"
             Offset="8">
             <Anchor>
-                <button class="px-3 py-2 text-sm bg-green-500 text-white rounded hover:bg-green-600">
+                <button class="px-3 py-2 text-sm bg-green-500 text-white rounded hover:bg-green-600" @onclick="Toggle">
                     Try it
                 </button>
             </Anchor>
@@ -87,4 +87,6 @@
 
     [Parameter]
     public bool ShowOutsideClickHint { get; set; } = false;
+
+    private void Toggle() => _open = !_open;
 }

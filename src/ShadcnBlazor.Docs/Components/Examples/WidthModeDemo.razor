@@ -17,7 +17,7 @@
         </div>
         <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" WidthMode="@Mode" Offset="8">
             <Anchor>
-                <button class="px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 whitespace-nowrap">
+                <button class="px-4 py-2 text-sm bg-slate-700 text-white rounded hover:bg-slate-800 whitespace-nowrap" @onclick="Toggle">
                     @(Mode switch
                     {
                         PopoverWidthMode.None => "Normal",
@@ -48,4 +48,6 @@
 
     [Parameter]
     public required string Label { get; set; }
+
+    private void Toggle() => _open = !_open;
 }
