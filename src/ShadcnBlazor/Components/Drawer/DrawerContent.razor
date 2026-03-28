@@ -1,9 +1,8 @@
 @inherits ShadcnComponentBase
 @using ShadcnBlazor.Services
+@using ShadcnBlazor.Components.Drawer
 
 @code {
-    private const string BaseClass = "bg-popover flex flex-col rounded-t-[10px] h-fit fixed bottom-0 left-0 right-0 outline-none z-50";
-
     /// <summary>Content to render inside the drawer.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -15,7 +14,21 @@
     [CascadingParameter]
     private DrawerRoot? Root { get; set; }
 
-    private string GetFinalClass() => DisableBaseClass ? Class : MergeCss(BaseClass);
+    [CascadingParameter]
+    public DrawerDirection Direction { get; set; } = DrawerDirection.Bottom;
+
+    private const string BaseClasses = "bg-popover flex flex-col fixed outline-none z-50";
+
+    private string GetBaseClassForDirection(DrawerDirection direction) => BaseClasses + " " + direction switch
+    {
+        DrawerDirection.Bottom => "rounded-t-[10px] h-fit bottom-0 left-0 right-0",
+        DrawerDirection.Top => "rounded-b-[10px] h-fit top-0 left-0 right-0",
+        DrawerDirection.Left => "rounded-r-[10px] w-[35vw] overflow-y-auto overflow-x-hidden scrollbar-hide left-0 top-0 bottom-0",
+        DrawerDirection.Right => "rounded-l-[10px] w-[35vw] overflow-y-auto overflow-x-hidden scrollbar-hide right-0 top-0 bottom-0",
+        _ => "rounded-t-[10px] h-fit bottom-0 left-0 right-0"
+    };
+
+    private string GetFinalClass() => DisableBaseClass ? Class : MergeCss(GetBaseClassForDirection(Direction));
 
     protected override void OnInitialized()
     {

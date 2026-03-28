@@ -6,7 +6,9 @@
 @inject ScrollLockService ScrollLock
 
 <CascadingValue Value="this" IsFixed="true">
-    @ChildContent
+    <CascadingValue Value="Direction" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
 </CascadingValue>
 
 @code {
@@ -24,9 +26,9 @@
     [Parameter]
     public bool Modal { get; set; } = true;
 
-    /// <summary>The direction the drawer opens from (top, bottom, left, right).</summary>
+    /// <summary>The direction the drawer opens from.</summary>
     [Parameter]
-    public string Direction { get; set; } = "bottom";
+    public DrawerDirection Direction { get; set; } = DrawerDirection.Bottom;
 
     /// <summary>Snap points for the drawer.</summary>
     [Parameter]
@@ -101,7 +103,7 @@
                 {
                     Dismissible = Dismissible,
                     Modal = Modal,
-                    Direction = Direction,
+                    Direction = Direction.ToString().ToLower(),
                     SnapPoints = SnapPoints,
                     ActiveSnapPoint = ActiveSnapPoint
                 },
@@ -210,7 +212,7 @@
             if (options.Drawer.Modal.HasValue)
                 drawer["modal"] = options.Drawer.Modal;
             if (!string.IsNullOrEmpty(options.Drawer.Direction))
-                drawer["direction"] = options.Drawer.Direction;
+                drawer["direction"] = options.Drawer.Direction.ToLower();
             if (options.Drawer.SnapPoints != null)
                 drawer["snapPoints"] = options.Drawer.SnapPoints;
             if (options.Drawer.ActiveSnapPoint != null)
