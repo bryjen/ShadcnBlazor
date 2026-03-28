@@ -1,7 +1,4 @@
-@using ShadcnBlazor.Services
-@using ShadcnBlazor.Components.Button
-@inject SonnerService Sonner
-@implements IAsyncDisposable
+@inject SonnerService SonnerService
 
 <div class="flex flex-wrap gap-2">
     <Button Variant="@Variant.Secondary" OnClick="ShowSuccessAction">Success with Undo</Button>
@@ -9,34 +6,21 @@
 </div>
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Sonner.InitializeAsync();
-        }
-    }
-
     private async Task ShowSuccessAction()
     {
-        await Sonner.SuccessWithAction(
+        await SonnerService.SuccessWithAction(
             "Post published successfully.",
             "Undo",
-            async () => await Sonner.Show("Action undone!")
+            async () => await SonnerService.Show("Action undone!")
         );
     }
 
     private async Task ShowErrorAction()
     {
-        await Sonner.ErrorWithAction(
+        await SonnerService.ErrorWithAction(
             "Failed to save changes.",
             "Retry",
-            async () => await Sonner.Show("Retrying...")
+            async () => await SonnerService.Show("Retrying...")
         );
-    }
-
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        await ValueTask.CompletedTask;
     }
 }

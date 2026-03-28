@@ -1,0 +1,64 @@
+<div class="space-y-4">
+    <DrawerRoot @ref="_drawer"
+        Title="Callback Demo"
+        Description="Watch the event log as you interact with the drawer."
+        OnOpenChange="HandleOpenChange"
+        OnClose="HandleClose">
+        <DrawerTrigger>
+            <button class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:scale-95">
+                Open Drawer with Callbacks
+            </button>
+        </DrawerTrigger>
+        <DrawerPortal>
+            <DrawerOverlay />
+            <DrawerContent>
+                <DrawerCallbackContent />
+            </DrawerContent>
+        </DrawerPortal>
+    </DrawerRoot>
+
+    @if (!string.IsNullOrWhiteSpace(_callbackLog))
+    {
+        <div class="rounded-lg border border-border bg-popover p-4 font-mono text-[11px] leading-relaxed">
+            <div class="flex items-center justify-between mb-2">
+                <span class="font-bold uppercase tracking-widest text-muted-foreground">Event Log</span>
+                <button @onclick="ClearCallbackLog" class="hover:underline text-popover-foreground text-xs">Clear</button>
+            </div>
+            <div class="text-popover-foreground">@_callbackLog</div>
+        </div>
+    }
+</div>
+
+@code {
+    private DrawerRoot _drawer = null!;
+    private string _callbackLog = string.Empty;
+
+    private async Task HandleOpenChange(bool open)
+    {
+        await AppendLogAsync($"OnOpenChange: {open}");
+    }
+
+    private async Task HandleClose()
+    {
+        await AppendLogAsync("OnClose");
+    }
+
+    private async Task AppendLogAsync(string message)
+    {
+        await InvokeAsync(() =>
+        {
+            if (!string.IsNullOrWhiteSpace(_callbackLog))
+            {
+                _callbackLog = $"{_callbackLog} | ";
+            }
+
+            _callbackLog = $"{_callbackLog}{message}";
+            StateHasChanged();
+        });
+    }
+
+    private void ClearCallbackLog()
+    {
+        _callbackLog = string.Empty;
+    }
+}

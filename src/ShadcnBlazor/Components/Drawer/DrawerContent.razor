@@ -1,13 +1,12 @@
+@inherits ShadcnComponentBase
 @using ShadcnBlazor.Services
 
 @code {
+    private const string BaseClass = "bg-popover flex flex-col rounded-t-[10px] h-fit fixed bottom-0 left-0 right-0 outline-none z-50";
+
     /// <summary>Content to render inside the drawer.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>Custom CSS class for the content container.</summary>
-    [Parameter]
-    public string? Class { get; set; }
 
     /// <summary>Whether to disable the default base content class.</summary>
     [Parameter]
@@ -16,12 +15,14 @@
     [CascadingParameter]
     private DrawerRoot? Root { get; set; }
 
+    private string GetFinalClass() => DisableBaseClass ? Class : MergeCss(BaseClass);
+
     protected override void OnInitialized()
     {
         Root?.RegisterContent(new DrawerContentOptions
         {
-            ClassName = Class,
-            DisableBaseClass = DisableBaseClass
+            ClassName = GetFinalClass(),
+            DisableBaseClass = true
         }, ChildContent);
     }
 
@@ -29,8 +30,8 @@
     {
         Root?.RegisterContent(new DrawerContentOptions
         {
-            ClassName = Class,
-            DisableBaseClass = DisableBaseClass
+            ClassName = GetFinalClass(),
+            DisableBaseClass = true
         }, ChildContent);
     }
 }

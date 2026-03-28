@@ -13,6 +13,7 @@ public partial class CodeBlock : ShadcnComponentBase
     [Parameter] public bool ShowLineNumbers { get; set; } = true;
     [Parameter] public bool ShowCopyButton { get; set; } = true;
     [Parameter] public bool Focusable { get; set; } = true;
+    [Parameter] public bool AllowVerticalScroll { get; set; } = false;
     [Parameter] public string?[]? HighlightedLines { get; set; }
 
     private readonly string _idBase = Guid.NewGuid().ToString("N")[..8];
@@ -72,9 +73,11 @@ public partial class CodeBlock : ShadcnComponentBase
         "docs-codeblock-wrapper bg-card relative w-full max-w-full min-w-0 overflow-x-auto",
         Style == CodeBlockStyle.Embedded ? "rounded-b-lg" : "rounded-lg");
 
-    private string CodeBlockClass => Style == CodeBlockStyle.Embedded
-        ? "docs-codeblock docs-codeblock--embedded"
-        : "docs-codeblock docs-codeblock--solo";
+    private string CodeBlockClass => MergeCss(
+        Style == CodeBlockStyle.Embedded
+            ? "docs-codeblock docs-codeblock--embedded"
+            : "docs-codeblock docs-codeblock--solo",
+        AllowVerticalScroll ? "overflow-y-auto" : "overflow-y-hidden");
 
     private string TabClass(int i) => i == _selectedIndex
         ? "px-3 py-2 text-xs font-medium transition-colors duration-250 border-b-3 -mb-px border-primary text-foreground whitespace-nowrap"

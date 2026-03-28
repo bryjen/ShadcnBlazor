@@ -101,6 +101,7 @@
         scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
     }
 
+
     :where(.docs-page) {
         font-size: 0.9rem;
         line-height: 1.7;
@@ -123,6 +124,14 @@
 
     :where(.docs-page) p {
         margin: 0 0 0.75rem;
+    }
+
+    :where(.docs-page) a {
+        color: var(--primary);
+        font-weight: bold;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
     }
 
     :where(.docs-page) :is(ul, ol) {

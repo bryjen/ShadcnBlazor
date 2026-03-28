@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using ShadcnBlazor.Services;
+using ShadcnBlazor.Components.Sonner.Services;
 
 namespace ShadcnBlazor.Docs.Pages.Forms.BasicForms.Examples.PaymentForm;
 

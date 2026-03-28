@@ -9,7 +9,7 @@
             @ChildContent
         </div>
         
-        @if (HasCode)
+        @if (HasCode && !DisableHide)
         {
             <Button Size="@Size.Md"
                     Variant="@Variant.Ghost"
@@ -31,15 +31,24 @@
 
     @if (HasCode)
     {
-        <div class="docs-codeblock-accordion @(_showCode ? "docs-codeblock-accordion-expanded" : "") overflow-hidden @(_showCode ? "border-t border-border" : "") relative" inert="@(_showCode ? null : "true")">
-            <div class="docs-codeblock-accordion-inner min-w-0">
-                <CodeBlock CodeFiles="@CodeFiles" Style="@CodeBlockStyle.Embedded" Focusable="@_showCode" HighlightedLines="@HighlightedLines" />
+        <div class="docs-codeblock-accordion @((_showCode || DisableHide) ? "docs-codeblock-accordion-expanded" : "") overflow-hidden @((_showCode || DisableHide) ? "border-t border-border" : "") relative" inert="@((_showCode || DisableHide) ? null : "true")">
+            <div class="docs-codeblock-accordion-inner min-w-0 overflow-y-auto @InnerClass">
+                <CodeBlock CodeFiles="@CodeFiles" Style="@CodeBlockStyle.Embedded" Focusable="@(_showCode || DisableHide)" AllowVerticalScroll="false" HighlightedLines="@HighlightedLines" />
             </div>
         </div>
     }
 </div>
 
 @code {
+    [Parameter]
+    public bool DisableHide { get; set; } = false;
+
+    [Parameter]
+    public string InnerClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool AllowVerticalScroll { get; set; } = false;
+
     private bool _showCode;
     private bool HasCode => CodeFiles is { Count: > 0 } files && files.Any(f => !string.IsNullOrWhiteSpace(f.Contents));
 

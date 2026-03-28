@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
-using ShadcnBlazor.Services;
+using ShadcnBlazor.Components.Sonner.Services;
 
 namespace ShadcnBlazor.Docs.Components.Samples;
 

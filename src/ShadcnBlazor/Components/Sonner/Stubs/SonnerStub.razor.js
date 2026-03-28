@@ -531,7 +531,7 @@ if (typeof window !== 'undefined') {
   };
 
   /**
-   * Initialize Sonner callbacks (called from C# SonnerService.InitializeAsync)
+   * Initialize Sonner callbacks (called from C# SonnerService.EnsureInitializedAsync)
    * @param {DotNetObjectReference} serviceRef - Reference to the SonnerService instance
    */
   window.InitializeSonnerCallbacks = function(serviceRef) {

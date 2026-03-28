@@ -27,6 +27,7 @@ using ShadcnBlazor.Components.ToggleButton;
 using ShadcnBlazor.Components.Tooltip;
 using ShadcnBlazor.Components.FocusTrap;
 using ShadcnBlazor.Components.FocusTrap.Services;
+using ShadcnBlazor.Components.Sonner.Services;
 using ShadcnBlazor.Services.Models;
 using ShadcnBlazor.Services;
 
@@ -190,7 +191,6 @@ public static class ComponentRegistry
             Name = nameof(Input),
             Description = "Single-line text input with variant styling.",
             Dependencies = CreateDeps(),
-            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -261,12 +261,11 @@ public static class ComponentRegistry
         new()
         {
             Name = "Sonner",
-            Description = "An opinionated toast notification service powered by Sonner.",
+            Description = "An opinionated toast component for Blazor.",
             RequiredActions =
             [
                 new AddToServicesAction(nameof(SonnerService)),
                 new AddToServicesAction(nameof(SonnerComponentRegistry)),
-                new CopyJsAction("sonner-interop.iife.js"),
             ]
         },
         new()
@@ -288,18 +287,19 @@ public static class ComponentRegistry
         new()
         {
             Name = "Drawer",
-            Description = "A drawer component for React (Vaul) styled for ShadcnBlazor.",
+            Description = "Declarative drawer component for Blazor using Vaul.",
             Dependencies = CreateDeps(),
             RequiredActions =
             [
-                new AddToServicesAction(nameof(DrawerService)),
                 new AddToServicesAction(nameof(DrawerComponentRegistry)),
+                new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("vaul-interop.iife.js"),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Drawer",
                     "ShadcnBlazor.Services"
                 ]),
-            ]
+            ],
+            Tags = []
         },
     ];
 }

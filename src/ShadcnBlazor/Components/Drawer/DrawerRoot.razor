@@ -1,5 +1,9 @@
 @using ShadcnBlazor.Services
-@inject DrawerService DrawerService
+@using ShadcnBlazor.Components.Shared.Services
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+@inject DrawerComponentRegistry ComponentRegistry
+@inject ScrollLockService ScrollLock
 
 <CascadingValue Value="this" IsFixed="true">
     @ChildContent
@@ -52,6 +56,7 @@
     private DrawerContentOptions? _contentOptions;
     private RenderFragment? _drawerContent;
     private string? _drawerId;
+    private DotNetObjectReference<DrawerCallbackReceiver>? _callbackReference;
 
     internal void RegisterOverlay(DrawerOverlayOptions options)
     {
@@ -71,42 +76,67 @@
     {
         if (_drawerContent == null) return;
 
-        var options = new DrawerOptions
-        {
-            Drawer = new DrawerOptionsInner
-            {
-                Dismissible = Dismissible,
-                Modal = Modal,
-                Direction = Direction,
-                SnapPoints = SnapPoints,
-                ActiveSnapPoint = ActiveSnapPoint
-            },
-            Overlay = _overlayOptions ?? new DrawerOverlayOptions
-            {
-                ClassName = "fixed inset-0 bg-black/40 z-40",
-                DisableBaseClass = true
-            },
-            Content = _contentOptions ?? new DrawerContentOptions
-            {
-                ClassName = "fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px] z-50",
-                DisableBaseClass = true
-            },
-            Title = Title ?? "Drawer",
-            Description = Description ?? "Drawer content",
-            A11yHidden = true
-        };
+        var fragmentId = ComponentRegistry.Register(_drawerContent);
+        var componentIdentifier = GetComponentIdentifier(typeof(DrawerComponentHost));
 
-        var callbacks = new DrawerCallbacks
-        {
-            OnOpenChange = async open => await OnOpenChange.InvokeAsync(open),
-            OnClose = async () =>
+        var receiver = new DrawerCallbackReceiver(
+            new DrawerCallbacks
             {
-                _drawerId = null;
-                await OnClose.InvokeAsync();
+                OnOpenChange = async open => await OnOpenChange.InvokeAsync(open),
+                OnClose = async () =>
+                {
+                    _drawerId = null;
+                    await OnClose.InvokeAsync();
+                }
+            },
+            ReleaseCallbacksAsync);
+
+        _callbackReference = DotNetObjectReference.Create(receiver);
+
+        try
+        {
+            var options = new DrawerOptions
+            {
+                Drawer = new DrawerOptionsInner
+                {
+                    Dismissible = Dismissible,
+                    Modal = Modal,
+                    Direction = Direction,
+                    SnapPoints = SnapPoints,
+                    ActiveSnapPoint = ActiveSnapPoint
+                },
+                Overlay = _overlayOptions,
+                Content = _contentOptions,
+                Title = Title ?? "Drawer",
+                Description = Description ?? "Drawer content",
+                A11yHidden = true
+            };
+
+            var jsOptions = BuildOptions(options);
+            var drawerId = await JSRuntime.InvokeAsync<string?>(
+                "window.Vaul.openComponent",
+                componentIdentifier,
+                fragmentId,
+                jsOptions,
+                _callbackReference);
+
+            if (drawerId is null)
+            {
+                ComponentRegistry.Remove(fragmentId);
+                _callbackReference.Dispose();
+                return;
             }
-        };
 
-        _drawerId = await DrawerService.OpenAsync(_drawerContent, options, callbacks);
+            receiver.DrawerId = drawerId;
+            _drawerId = drawerId;
+            await LockDrawerAsync(drawerId);
+        }
+        catch
+        {
+            ComponentRegistry.Remove(fragmentId);
+            _callbackReference?.Dispose();
+            throw;
+        }
     }
 
     /// <summary>
@@ -116,8 +146,126 @@
     {
         if (_drawerId != null)
         {
-            await DrawerService.CloseAsync(_drawerId);
-            _drawerId = null;
+            try
+            {
+                await JSRuntime.InvokeAsync<object>("window.Vaul.close", _drawerId);
+            }
+            catch
+            {
+                // Ignore JS errors
+            }
+            finally
+            {
+                await UnlockDrawerAsync(_drawerId);
+                _drawerId = null;
+            }
         }
+    }
+
+    private async Task ReleaseCallbacksAsync(string drawerId)
+    {
+        _callbackReference?.Dispose();
+        _callbackReference = null;
+        await UnlockDrawerAsync(drawerId);
+    }
+
+    private async ValueTask LockDrawerAsync(string drawerId)
+    {
+        try
+        {
+            await ScrollLock.LockAsync();
+        }
+        catch
+        {
+            // Ignore scroll lock errors
+        }
+    }
+
+    private async ValueTask UnlockDrawerAsync(string drawerId)
+    {
+        try
+        {
+            await ScrollLock.UnlockAsync();
+        }
+        catch
+        {
+            // Ignore scroll lock errors
+        }
+    }
+
+    private static Dictionary<string, object?>? BuildOptions(DrawerOptions? options)
+    {
+        if (options is null)
+        {
+            return null;
+        }
+
+        var result = new Dictionary<string, object?>();
+
+        if (options.Drawer is not null)
+        {
+            var drawer = new Dictionary<string, object?>();
+            if (options.Drawer.Dismissible.HasValue)
+                drawer["dismissible"] = options.Drawer.Dismissible;
+            if (options.Drawer.Modal.HasValue)
+                drawer["modal"] = options.Drawer.Modal;
+            if (!string.IsNullOrEmpty(options.Drawer.Direction))
+                drawer["direction"] = options.Drawer.Direction;
+            if (options.Drawer.SnapPoints != null)
+                drawer["snapPoints"] = options.Drawer.SnapPoints;
+            if (options.Drawer.ActiveSnapPoint != null)
+                drawer["activeSnapPoint"] = options.Drawer.ActiveSnapPoint;
+
+            if (drawer.Count > 0)
+                result["drawer"] = drawer;
+        }
+
+        if (options.Overlay is not null)
+        {
+            var overlay = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(options.Overlay.ClassName))
+                overlay["className"] = options.Overlay.ClassName;
+            if (overlay.Count > 0)
+                result["overlay"] = overlay;
+        }
+
+        if (options.Content is not null)
+        {
+            var content = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(options.Content.ClassName))
+                content["className"] = options.Content.ClassName;
+            if (content.Count > 0)
+                result["content"] = content;
+        }
+
+        if (!string.IsNullOrEmpty(options.Title))
+            result["title"] = options.Title;
+        if (!string.IsNullOrEmpty(options.Description))
+            result["description"] = options.Description;
+        if (options.A11yHidden.HasValue)
+            result["a11yHidden"] = options.A11yHidden;
+
+        return result.Count > 0 ? result : null;
+    }
+
+    private static string GetComponentIdentifier(Type componentType)
+    {
+        var assemblyName = componentType.Assembly.GetName().Name ?? string.Empty;
+        var typeName = componentType.FullName ?? componentType.Name;
+        return $"{assemblyName}::{typeName}";
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        try
+        {
+            if (_drawerId is not null)
+            {
+                await CloseAsync();
+            }
+        }
+        catch { }
+
+        _callbackReference?.Dispose();
     }
 }

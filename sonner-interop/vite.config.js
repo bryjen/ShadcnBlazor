@@ -7,11 +7,12 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify('production')
   },
   build: {
+    outDir: '../src/ShadcnBlazor/Components/Sonner/Stubs',
     lib: {
       entry: './sonner-interop.js',
       name: 'Sonner',
       formats: ['iife'],
-      fileName: () => 'sonner-interop.iife.js'
+      fileName: () => 'SonnerStub.razor.js'
     },
     rollupOptions: {
       external: [],

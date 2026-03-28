@@ -46,7 +46,7 @@ public partial class Badge : ShadcnComponentBase
         {
             Variant.Default => "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
             Variant.Secondary => "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-            Variant.Destructive => "border-transparent bg-destructive/60 text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/40",
+            Variant.Destructive => "border-transparent bg-destructive/25 text-destructive [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/40",
             Variant.Outline => "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
             Variant.Ghost => "border-transparent [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
             Variant.Link => "border-transparent text-primary underline-offset-4 [a&]:hover:underline",

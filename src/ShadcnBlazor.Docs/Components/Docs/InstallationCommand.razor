@@ -1,0 +1,12 @@
+﻿<DocsSection Title="Installation" Id="installation">
+    <p class="mb-3">Add the @Metadata.Name component using the CLI:</p>
+    <CommandBlock Command="@InstallCommand" />
+</DocsSection>
+
+@code {
+    [Parameter, EditorRequired]
+    public ComponentMetadata Metadata { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public string InstallCommand { get; set; } = string.Empty;
+}

@@ -1,25 +1,10 @@
-@using ShadcnBlazor.Services
-@inject SonnerService Sonner
-@implements IAsyncDisposable
+@inject SonnerService SonnerService
 
-<Button OnClick="HandleClick">Show Toast</Button>
+<Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="HandleClick">Show Toast</Button>
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Sonner.InitializeAsync();
-        }
-    }
-
     private async Task HandleClick()
     {
-        await Sonner.Show("Event has been created.");
-    }
-
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        await ValueTask.CompletedTask;
+        await SonnerService.Show("Event has been created.");
     }
 }

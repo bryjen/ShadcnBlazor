@@ -7,8 +7,8 @@
             <Button Variant="@Variant.Outline">Open Declarative Drawer</Button>
         </DrawerTrigger>
         <DrawerPortal>
-            <DrawerOverlay Class="fixed inset-0 bg-black/40 z-40" DisableBaseClass="true" />
-            <DrawerContent Class="fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px] z-50" DisableBaseClass="true">
+            <DrawerOverlay />
+            <DrawerContent Class="h-full max-h-[97%]">
                 <div class="flex flex-col max-w-md mx-auto w-full p-4 pt-5 overflow-y-auto">
                     <div class="flex items-center">
                         <svg
@@ -62,29 +62,29 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                     </div>
-                    <h2 class="text-2xl mt-2 font-medium text-gray-900">The Hidden Details</h2>
-                    <p class="text-sm mt-1 text-gray-600 mb-6">40 videos, 20+ exercises</p>
-                    <p class="text-gray-600">
+                    <h2 class="text-2xl mt-2 font-medium text-popover-foreground">The Hidden Details</h2>
+                    <p class="text-sm mt-1 text-popover-foreground mb-6">40 videos, 20+ exercises</p>
+                    <p class="text-popover-foreground">
                         The world of user interface design is an intricate landscape filled with hidden details and nuance. In this
                         course, you will learn something cool. To the untrained eye, a beautifully designed UI.
                     </p>
-                    <button class="bg-black text-gray-50 mt-8 rounded-md h-[48px] flex-shrink-0 font-medium">
+                    <button class="bg-primary text-primary-foreground mt-8 rounded-md h-[48px] flex-shrink-0 font-medium">
                         Buy for $199
                     </button>
                     <div class="mt-12">
-                        <h2 class="text-xl font-medium text-gray-900">Module 01. The Details</h2>
+                        <h2 class="text-xl font-medium text-popover-foreground">Module 01. The Details</h2>
                         <div class="space-y-4 mt-4">
                             <div>
-                                <span class="block text-gray-900">Layers of UI</span>
-                                <span class="text-gray-600">A basic introduction to Layers of Design.</span>
+                                <span class="block text-popover-foreground">Layers of UI</span>
+                                <span class="text-popover-foreground">A basic introduction to Layers of Design.</span>
                             </div>
                             <div>
-                                <span class="block text-gray-900">Typography</span>
-                                <span class="text-gray-600">The fundamentals of type.</span>
+                                <span class="block text-popover-foreground">Typography</span>
+                                <span class="text-popover-foreground">The fundamentals of type.</span>
                             </div>
                             <div>
-                                <span class="block text-gray-900">UI Animations</span>
-                                <span class="text-gray-600">Going through the right easings and durations.</span>
+                                <span class="block text-popover-foreground">UI Animations</span>
+                                <span class="text-popover-foreground">Going through the right easings and durations.</span>
                             </div>
                         </div>
                     </div>

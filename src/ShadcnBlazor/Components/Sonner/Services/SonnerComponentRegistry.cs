@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using System.Collections.Concurrent;
 
-namespace ShadcnBlazor.Services;
+namespace ShadcnBlazor.Components.Sonner.Services;
 
 /// <summary>
 /// Registry for RenderFragments used by Sonner component toasts.

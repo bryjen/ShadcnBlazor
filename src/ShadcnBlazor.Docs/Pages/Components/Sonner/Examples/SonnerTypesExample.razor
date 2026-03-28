@@ -1,31 +1,17 @@
-@using ShadcnBlazor.Services
-@using ShadcnBlazor.Components.Button
-@inject SonnerService Sonner
-@implements IAsyncDisposable
+@inject SonnerService SonnerService
 
 <div class="flex flex-wrap gap-2">
-    <Button OnClick="ShowDefault">Default</Button>
-    <Button Variant="@Variant.Secondary" OnClick="ShowSuccess">Success</Button>
-    <Button Variant="@Variant.Destructive" OnClick="ShowError">Error</Button>
-    <Button OnClick="ShowWarning">Warning</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowDefault">Default</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowSuccess">Success</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowInfo">Info</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowWarning">Warning</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowError">Error</Button>
 </div>
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Sonner.InitializeAsync();
-        }
-    }
-
-    private async Task ShowDefault() => await Sonner.Show("Default toast");
-    private async Task ShowSuccess() => await Sonner.Success("Success!");
-    private async Task ShowError() => await Sonner.Error("Something went wrong.");
-    private async Task ShowWarning() => await Sonner.Warning("Warning: Proceed with caution.");
-
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        await ValueTask.CompletedTask;
-    }
+    private async Task ShowDefault() => await SonnerService.Show("Event has been created.");
+    private async Task ShowSuccess() => await SonnerService.Success("Success!");
+    private async Task ShowInfo() => await SonnerService.Show("Info message.");
+    private async Task ShowWarning() => await SonnerService.Warning("Warning: Proceed with caution.");
+    private async Task ShowError() => await SonnerService.Error("Something went wrong.");
 }

@@ -39,10 +39,36 @@ function injectStyles() {
       background: var(--card);
       color: var(--foreground);
       border: 1px solid var(--border);
-      border-radius: 12px;
+    }
+
+    /* Default bottom direction styling */
+    [data-vaul-drawer]:not([data-vaul-drawer-direction="left"]):not([data-vaul-drawer-direction="right"]):not([data-vaul-drawer-direction="top"]) .vaul-blazor-content {
+      border-radius: 12px 12px 0 0;
       padding: 16px;
       width: min(640px, 92vw);
-      margin: 0 auto 16px auto;
+      margin: 0 auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Left/Right direction - full height */
+    [data-vaul-drawer-direction="left"] .vaul-blazor-content,
+    [data-vaul-drawer-direction="right"] .vaul-blazor-content {
+      height: 100%;
+      width: auto;
+      border-radius: 0;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
+      border: none;
+    }
+
+    /* Top direction - full width */
+    [data-vaul-drawer-direction="top"] .vaul-blazor-content {
+      width: 100%;
+      height: auto;
+      border-radius: 0 0 12px 12px;
+      padding: 16px;
+      margin: 0;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     }
   `;
@@ -290,6 +316,7 @@ function DrawerInstance({ entry }) {
       fadeFromIndex,
       modal: modal,
       dismissible,
+      'data-vaul-drawer-direction': drawerProps.direction || 'bottom',
     },
     React.createElement(
       React.Fragment,

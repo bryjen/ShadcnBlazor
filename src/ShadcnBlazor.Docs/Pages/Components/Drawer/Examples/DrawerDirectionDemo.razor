@@ -1,0 +1,21 @@
+<div class="flex items-center justify-center gap-2 p-8">
+    @foreach (var direction in new[] { "top", "right", "bottom", "left" })
+    {
+        <DrawerRoot Direction="@direction" Title="@($"{char.ToUpper(direction[0])}{direction.Substring(1)} Drawer")" Description="@($"Opening from the {direction}.")">
+            <DrawerTrigger>
+                <Button Variant="@Variant.Outline" Size="@Size.Sm">@(char.ToUpper(direction[0]) + direction.Substring(1))</Button>
+            </DrawerTrigger>
+            <DrawerPortal>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <div class="p-4 overflow-y-auto">
+                        <h3 class="font-semibold text-lg text-popover-foreground mb-2">@(char.ToUpper(direction[0]) + direction.Substring(1)) Drawer</h3>
+                        <p class="text-muted-foreground text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="text-muted-foreground text-sm mb-4">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        <p class="text-muted-foreground text-sm">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                </DrawerContent>
+            </DrawerPortal>
+        </DrawerRoot>
+    }
+</div>

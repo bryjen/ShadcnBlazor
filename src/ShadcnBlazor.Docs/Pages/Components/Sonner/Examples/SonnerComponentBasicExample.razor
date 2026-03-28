@@ -1,0 +1,25 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowCustomToast">Show Custom Toast</Button>
+</div>
+
+@code {
+    private RenderFragment CustomToast => @<div class="flex items-center gap-3">
+        <div>
+            <p class="font-semibold">This is a custom toast</p>
+            <p class="text-sm text-muted-foreground">Rendered directly from a RenderFragment</p>
+        </div>
+        <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="OnToastAction">Action</Button>
+    </div>;
+
+    private async Task ShowCustomToast()
+    {
+        await SonnerService.ShowHeadlessAsync(CustomToast);
+    }
+
+    private async Task OnToastAction()
+    {
+        await SonnerService.Success("Action confirmed!");
+    }
+}

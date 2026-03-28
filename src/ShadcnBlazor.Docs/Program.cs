@@ -10,6 +10,7 @@ using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Components.FocusTrap.Services;
+using ShadcnBlazor.Components.Sonner.Services;
 using ShadcnBlazor.Docs;
 using ShadcnBlazor.Docs.Components.Samples.AiChat.Services;
 using ShadcnBlazor.Docs.Services;

@@ -1,0 +1,18 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowToast">Show Toast</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="DismissAll">Dismiss All</Button>
+</div>
+
+@code {
+    private async Task ShowToast()
+    {
+        await SonnerService.Show("This is a toast. Click 'Dismiss All' to close it.");
+    }
+
+    private async Task DismissAll()
+    {
+        await SonnerService.Dismiss();
+    }
+}
