@@ -15,11 +15,11 @@
             }
         </div>
     }
-    <div class="@CodeBlockClass flex min-w-0 overflow-x-auto relative">
+    <div class="@CodeBlockClass flex min-w-0 overflow-x-auto overflow-y-hidden relative">
         <div id="@_overlayId" class="docs-codeblock-line-highlights" aria-hidden="true"></div>
         @if (ShowLineNumbers)
         {
-            <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right max-lg:text-[0.6rem] lg:text-xs text-muted-foreground leading-[1.65]">
+            <div class="docs-codeblock-linenos select-none py-4 pr-4 pl-4 text-right max-lg:text-[0.6rem] lg:text-xs font-mono text-muted-foreground leading-[1.65]">
                 @foreach (var lineNum in _lineNumbers)
                 {
                     <div>@lineNum</div>

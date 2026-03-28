@@ -92,7 +92,7 @@ public class ComponentTools(ComponentRegistryService registry)
             .Select(p =>
             {
                 var desc = p.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
-                var category = p.GetCustomAttribute<CategoryAttribute>()?.Category ?? "General";
+                var category = p.GetCustomAttribute<CategoryAttribute>()?.Category.ToString() ?? "General";
                 return (object)new
                 {
                     name = p.Name,

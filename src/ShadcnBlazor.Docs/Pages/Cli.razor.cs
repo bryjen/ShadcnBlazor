@@ -85,22 +85,11 @@ public partial class Cli : ComponentBase
         Contents =
             """
             Dialog/
-            ├── Declarative/
-            │   ├── DialogRoot.razor
-            │   ├── DialogContent.razor
-            │   ├── DialogTrigger.razor
-            │   └── ... (5 more files)
-            ├── Models/
-            │   ├── DialogOptions.cs
-            │   ├── DialogResult.cs
-            │   └── ... (4 more files)
-            ├── Services/
-            │   ├── DialogService.cs
-            │   └── IDialogService.cs
-            ├── Dialog.razor
-            ├── DialogProvider.razor
-            ├── DialogReference.cs
-            └── ... (3 more files)
+            ├── DialogRoot.razor
+            ├── DialogContent.razor
+            ├── DialogTrigger.razor
+            ├── DialogContext.cs
+            └── Dialog.razor.js
             """
     };
     

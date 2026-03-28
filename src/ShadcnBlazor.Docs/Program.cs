@@ -56,8 +56,7 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
     services.AddScoped<IPopoverRegistry, PopoverRegistry>();
     services.AddScoped<IPopoverService, PopoverService>();
 
-    services.AddScoped<IDialogService, DialogService>();
-    services.AddScoped<IDialogJsService, DialogJsService>();
+    services.AddScoped<DialogInterop>();
     services.AddScoped<ScrollLockService>();
 
     services.AddScoped<IKeyInterceptorService, KeyInterceptorService>();
@@ -108,13 +107,6 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new ScrollLockInterop(jsRuntime, ["/_content/ShadcnBlazor/js/scroll-lock.js"]);
-    });
-
-    services.AddScoped<DialogInterop>(sp =>
-    {
-        var jsRuntime = sp.GetService<IJSRuntime>();
-        if (jsRuntime == null) return null!;
-        return new DialogInterop(jsRuntime, ["/_content/ShadcnBlazor/js/dialog.js"]);
     });
 
     services.AddScoped<SheetInterop>(sp =>

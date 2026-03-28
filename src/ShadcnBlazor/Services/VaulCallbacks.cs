@@ -3,13 +3,22 @@ using System.Threading;
 
 namespace ShadcnBlazor.Services;
 
+/// <summary>
+/// Callbacks for Vaul drawer events.
+/// </summary>
 public sealed class VaulCallbacks
 {
+    /// <summary>Called when the drawer open state changes.</summary>
     public Action<bool>? OnOpenChange { get; set; }
+    /// <summary>Called when the drawer is closed.</summary>
     public Action? OnClose { get; set; }
+    /// <summary>Called during dragging, providing the drag percentage.</summary>
     public Action<double>? OnDrag { get; set; }
+    /// <summary>Called when the drawer is released.</summary>
     public Action<bool>? OnRelease { get; set; }
+    /// <summary>Called when the drawer animation finishes.</summary>
     public Action<bool>? OnAnimationEnd { get; set; }
+    /// <summary>Called when the active snap point changes.</summary>
     public Action<object?>? OnSnapPointChange { get; set; }
 }
 

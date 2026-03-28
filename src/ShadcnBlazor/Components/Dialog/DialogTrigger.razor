@@ -8,11 +8,12 @@
 </span>
 
 @code {
+    /// <summary>Trigger element (typically a Button). Supports Enter and Space keys.</summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [CascadingParameter]
-    private DeclarativeDialogContext? Context { get; set; }
+    private DialogContext? Context { get; set; }
 
     private void OnClick() => Context?.OpenDialog();
 

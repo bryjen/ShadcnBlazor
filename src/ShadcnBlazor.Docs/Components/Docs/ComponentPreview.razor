@@ -33,7 +33,7 @@
     {
         <div class="docs-codeblock-accordion @(_showCode ? "docs-codeblock-accordion-expanded" : "") overflow-hidden @(_showCode ? "border-t border-border" : "") relative" inert="@(_showCode ? null : "true")">
             <div class="docs-codeblock-accordion-inner min-w-0">
-                <CodeBlock CodeFiles="@CodeFiles" Style="@CodeBlockStyle.Embedded" Focusable="@_showCode" />
+                <CodeBlock CodeFiles="@CodeFiles" Style="@CodeBlockStyle.Embedded" Focusable="@_showCode" HighlightedLines="@HighlightedLines" />
             </div>
         </div>
     }

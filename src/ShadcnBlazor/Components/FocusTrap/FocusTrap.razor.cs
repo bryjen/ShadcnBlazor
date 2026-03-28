@@ -6,19 +6,38 @@ using Microsoft.JSInterop;
 
 namespace ShadcnBlazor.Components.FocusTrap;
 
+/// <summary>
+/// Component that traps keyboard focus within its child content.
+/// </summary>
 public partial class FocusTrap : ShadcnComponentBase, IAsyncDisposable
 {
-    [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public bool Disabled { get; set; } = false;
-    [Parameter] public FocusOptions? Options { get; set; }
+    /// <summary>
+    /// Gets or sets the content to trap focus within.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 
-    [Inject] private FocusService FocusService { get; set; } = default!;
+    /// <summary>
+    /// Gets or sets whether the focus trap is disabled.
+    /// </summary>
+    [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets the options for the focus trap.
+    /// </summary>
+    [Parameter]
+    public FocusOptions? Options { get; set; }
+
+    [Inject]
+    private FocusService FocusService { get; set; } = default!;
 
     private ElementReference _container;
     private IFocusTrapHandle? _trapHandle;
     private bool _isInitialized;
     private bool _wasDisabled = true;
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -34,6 +53,7 @@ public partial class FocusTrap : ShadcnComponentBase, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     protected override async Task OnParametersSetAsync()
     {
         if (_isInitialized && _trapHandle is not null && _wasDisabled != Disabled)
@@ -50,6 +70,7 @@ public partial class FocusTrap : ShadcnComponentBase, IAsyncDisposable
         }
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         if (_trapHandle is not null)

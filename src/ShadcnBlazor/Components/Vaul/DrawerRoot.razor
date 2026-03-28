@@ -1,0 +1,115 @@
+@using ShadcnBlazor.Services
+@inject VaulService VaulService
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    /// <summary>
+    /// The content of the drawer root, containing the trigger and potential overlay/content areas.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Whether the drawer can be dismissed by clicking outside or dragging.</summary>
+    [Parameter]
+    public bool Dismissible { get; set; } = true;
+
+    /// <summary>Whether the drawer is modal.</summary>
+    [Parameter]
+    public bool Modal { get; set; } = true;
+
+    /// <summary>The direction the drawer opens from (top, bottom, left, right).</summary>
+    [Parameter]
+    public string Direction { get; set; } = "bottom";
+
+    /// <summary>Snap points for the drawer.</summary>
+    [Parameter]
+    public object[]? SnapPoints { get; set; }
+
+    /// <summary>The active snap point.</summary>
+    [Parameter]
+    public object? ActiveSnapPoint { get; set; }
+
+    /// <summary>Accessible title for the drawer.</summary>
+    [Parameter]
+    public string? Title { get; set; }
+
+    /// <summary>Accessible description for the drawer.</summary>
+    [Parameter]
+    public string? Description { get; set; }
+
+    /// <summary>Callback invoked when the drawer's open state changes.</summary>
+    [Parameter]
+    public EventCallback<bool> OnOpenChange { get; set; }
+
+    /// <summary>Callback invoked when the drawer closes.</summary>
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private VaulOverlayOptions? _overlayOptions;
+    private VaulContentOptions? _contentOptions;
+    private RenderFragment? _drawerContent;
+    private string? _drawerId;
+
+    internal void RegisterOverlay(VaulOverlayOptions options)
+    {
+        _overlayOptions = options;
+    }
+
+    internal void RegisterContent(VaulContentOptions options, RenderFragment? content)
+    {
+        _contentOptions = options;
+        _drawerContent = content;
+    }
+
+    /// <summary>
+    /// Opens the drawer.
+    /// </summary>
+    public async Task OpenAsync()
+    {
+        if (_drawerContent == null) return;
+
+        var options = new VaulOptions
+        {
+            Drawer = new VaulDrawerOptions
+            {
+                Dismissible = Dismissible,
+                Modal = Modal,
+                Direction = Direction,
+                SnapPoints = SnapPoints,
+                ActiveSnapPoint = ActiveSnapPoint
+            },
+            Overlay = _overlayOptions,
+            Content = _contentOptions,
+            Title = Title ?? "Drawer",
+            Description = Description ?? "Drawer content",
+            A11yHidden = true
+        };
+
+        var callbacks = new VaulCallbacks
+        {
+            OnOpenChange = async open => await OnOpenChange.InvokeAsync(open),
+            OnClose = async () =>
+            {
+                _drawerId = null;
+                await OnClose.InvokeAsync();
+            }
+        };
+
+        _drawerId = await VaulService.OpenAsync(_drawerContent, options, callbacks);
+    }
+
+    /// <summary>
+    /// Closes the drawer.
+    /// </summary>
+    public async Task CloseAsync()
+    {
+        if (_drawerId != null)
+        {
+            await VaulService.CloseAsync(_drawerId);
+            _drawerId = null;
+        }
+    }
+}

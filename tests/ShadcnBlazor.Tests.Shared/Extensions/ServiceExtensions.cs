@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Components.Popover.Services;
-using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Components.Shared.Models.Options;
 using ShadcnBlazor.Components.Popover;
@@ -37,7 +36,6 @@ public static class ServiceExtensions
         
         // Dialog
         services.AddScoped<DialogInterop>();
-        services.AddScoped<IDialogService, DialogService>();
         services.AddScoped<IDialogJsService, DialogJsService>();
         
         // Sheet

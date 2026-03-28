@@ -29,15 +29,4 @@
     <ItemGroup>
         <Content Include="Components/**/*.razor.js" />
     </ItemGroup>
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Components\Calendar\CalendarView.razor" />
-      <UpToDateCheckInput Remove="Components\Calendar\DatePicker.razor" />
-      <UpToDateCheckInput Remove="Components\Calendar\DateRangePicker.razor" />
-      <UpToDateCheckInput Remove="Components\Calendar\MonthPicker.razor" />
-    </ItemGroup>
-    <ItemGroup>
-      <AdditionalFiles Include="Components\FocusTrap\FocusTrap.razor" />
-    </ItemGroup>
-
-
 </Project>

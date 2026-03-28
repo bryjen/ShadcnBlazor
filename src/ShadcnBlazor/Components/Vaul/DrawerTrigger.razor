@@ -1,0 +1,38 @@
+@inherits ShadcnComponentBase
+
+<span @onclick="OnClick"
+      @onkeydown="OnKeyDown"
+      class="@MergeCss("contents")"
+      role="button"
+      tabindex="0"
+      @attributes="AdditionalAttributes">
+    @ChildContent
+</span>
+
+@code {
+    /// <summary>Trigger element (typically a Button).</summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private DrawerRoot? Root { get; set; }
+
+    private async Task OnClick()
+    {
+        if (Root != null)
+        {
+            await Root.OpenAsync();
+        }
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " ")
+        {
+            if (Root != null)
+            {
+                await Root.OpenAsync();
+            }
+        }
+    }
+}

@@ -13,7 +13,7 @@ public partial class CodeBlock : ShadcnComponentBase
     [Parameter] public bool ShowLineNumbers { get; set; } = true;
     [Parameter] public bool ShowCopyButton { get; set; } = true;
     [Parameter] public bool Focusable { get; set; } = true;
-    [Parameter] public string? HighlightedLines { get; set; }
+    [Parameter] public string?[]? HighlightedLines { get; set; }
 
     private readonly string _idBase = Guid.NewGuid().ToString("N")[..8];
     private IReadOnlyList<CodeFile> _files = [];
@@ -56,10 +56,11 @@ public partial class CodeBlock : ShadcnComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        var highlightedLines = HighlightedLines?[_selectedIndex] ?? "";
         if (!string.IsNullOrWhiteSpace(_code))
         {
             await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.highlightElement", _id);
-            await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.applyLineHighlights", _preId, _overlayId, HighlightedLines ?? "", _lineNumbers.Length);
+            await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.applyLineHighlights", _preId, _overlayId, highlightedLines, _lineNumbers.Length);
         }
         else
         {

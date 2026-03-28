@@ -47,6 +47,9 @@ public static class ComponentRegistry
             .Concat([nameof(Shared)])
             .ToArray();
 
+    /// <summary>
+    /// Gets the list of all registered components in the library.
+    /// </summary>
     public static readonly ComponentDefinition[] AllComponents =
     [
         new()
@@ -142,24 +145,20 @@ public static class ComponentRegistry
         },
         new()
         {
-            Name = nameof(Dialog),
-            Description = "Imperative dialog service; show dialogs via IDialogService.Show. Requires DialogProvider in layout.",
+            Name = "Dialog",
+            Description = "Declarative dialog component using DialogRoot, DialogTrigger, DialogContent, and related composable pieces.",
             Dependencies = CreateDeps(),
             RequiredActions =
             [
-                new AddToServicesAction(nameof(IDialogService), nameof(DialogService)),
                 new AddToServicesAction(nameof(DialogInterop)),
-                new AddToServicesAction(nameof(IDialogJsService), nameof(DialogJsService)),
-                new AddToServicesAction(nameof(ScrollLockInterop)),
                 new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("dialog.js"),
                 new CopyJsAction("scroll-lock.js"),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Dialog",
-                    "ShadcnBlazor.Components.Dialog.Declarative",
-                    "ShadcnBlazor.Components.Dialog.Models"]),
+                    "ShadcnBlazor.Components.Dialog.Services"]),
             ],
-            Tags = [ComponentDefinition.Tag.WorkRequired]
+            Tags = []
         },
         new()
         {

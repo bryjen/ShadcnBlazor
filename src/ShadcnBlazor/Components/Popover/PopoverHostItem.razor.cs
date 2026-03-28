@@ -6,18 +6,21 @@ namespace ShadcnBlazor.Components.Popover;
 /// <summary>Renders a single popover registration entry.</summary>
 public partial class PopoverHostItem : ComponentBase
 {
+    /// <summary>The registration object for the popover.</summary>
     [Parameter, EditorRequired]
     public required object RegistrationObject { get; set; }
 
     private PopoverRegistration Registration => (PopoverRegistration)RegistrationObject;
     private object? _lastRenderedRegistration;
 
+    /// <inheritdoc />
     protected override bool ShouldRender()
     {
         if (_lastRenderedRegistration is null) return true;
         return !ReferenceEquals(_lastRenderedRegistration, RegistrationObject);
     }
 
+    /// <inheritdoc />
     protected override void OnAfterRender(bool firstRender)
     {
         _lastRenderedRegistration = RegistrationObject;

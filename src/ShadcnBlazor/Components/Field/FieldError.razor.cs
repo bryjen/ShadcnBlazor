@@ -14,7 +14,7 @@ public partial class FieldError : ShadcnComponentBase
 
     internal string? FirstError => ParentField?.GetErrors().FirstOrDefault();
 
-    internal bool ShouldRender => !string.IsNullOrWhiteSpace(FirstError);
+    internal bool HasError => !string.IsNullOrWhiteSpace(FirstError);
 
     internal string? ErrorMessageId
     {

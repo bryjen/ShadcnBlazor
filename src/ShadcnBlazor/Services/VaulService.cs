@@ -26,6 +26,7 @@ public sealed class VaulService
     /// </summary>
     /// <param name="jsRuntime">The JavaScript runtime.</param>
     /// <param name="componentRegistry">Registry for drawer fragments.</param>
+    /// <param name="scrollLock">Service for managing body scroll locking.</param>
     public VaulService(
         IJSRuntime jsRuntime,
         VaulComponentRegistry componentRegistry,

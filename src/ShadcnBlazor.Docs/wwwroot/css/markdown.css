@@ -195,6 +195,9 @@
 .docs-codeblock .hljs {
     color: #d4d4d4;
     background: transparent !important;
+
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
 }
 .docs-codeblock .hljs-keyword,
 .docs-codeblock .hljs-selector-tag,
@@ -315,7 +318,6 @@
 }
 .docs-codeblock-codemirror .cm-scroller {
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
     line-height: 1.65;
 }
 .docs-codeblock-codemirror .cm-content {

@@ -1,0 +1,118 @@
+@implements IAsyncDisposable
+@using ShadcnBlazor.Components.Dialog.Services
+@using ShadcnBlazor.Components.Shared.Services
+@inject DialogInterop DialogInterop
+@inject ScrollLockService ScrollLock
+
+<CascadingValue Value="_context">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    /// <summary>Dialog content.</summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Whether clicking the backdrop closes the dialog. Default: true.</summary>
+    [Parameter]
+    public bool CloseOnBackdropClick { get; set; } = true;
+
+    /// <summary>Whether pressing Escape closes the dialog. Default: true.</summary>
+    [Parameter]
+    public bool CloseOnEscapeKey { get; set; } = true;
+
+    /// <summary>Callback invoked when dialog closes via overlay click.</summary>
+    [Parameter]
+    public Func<Task>? OnClosedByOverlay { get; set; }
+
+    /// <summary>Callback invoked when dialog closes via Escape key.</summary>
+    [Parameter]
+    public Func<Task>? OnClosedByEscape { get; set; }
+
+    private bool _open;
+    private readonly string _dialogId = Guid.NewGuid().ToString("N");
+    private DialogContext _context = null!;
+    private DotNetObjectReference<DialogRoot>? _dotNetRef;
+
+    protected override void OnInitialized()
+    {
+        _dotNetRef = DotNetObjectReference.Create(this);
+        _context = new DialogContext
+        {
+            DialogId = _dialogId,
+            CloseOnBackdropClick = CloseOnBackdropClick,
+            CloseAsync = CloseAsync,
+            OpenDialog = OpenDialog,
+            SetAnimationState = s => { _context.AnimationState = s; StateHasChanged(); },
+            OnClosedByOverlay = OnClosedByOverlay,
+            OnClosedByEscape = OnClosedByEscape,
+            DotNetRef = _dotNetRef
+        };
+    }
+
+    protected override void OnParametersSet()
+    {
+        _context.Open = _open;
+    }
+
+    /// <summary>Opens the dialog. Call via @ref="dialog" from component.</summary>
+    public void OpenDialog()
+    {
+        if (_open) return;
+        _open = true;
+        _context.Open = true;
+        _context.AnimationState = "closed";
+        _ = ScrollLock.LockAsync();
+        StateHasChanged();
+    }
+
+    /// <summary>Closes the dialog with animation. Call via @ref="dialog" from component.</summary>
+    public async Task CloseAsync()
+    {
+        if (!_open) return;
+
+        _context.IsClosing = true;
+        _context.SetAnimationState("closed");
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(250);
+
+        try { await ScrollLock.UnlockAsync(); }
+        catch (JSException) { }
+
+        _open = false;
+        _context.Open = false;
+        _context.IsClosing = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    [JSInvokable]
+    public void HandleEscape()
+    {
+        if (CloseOnEscapeKey)
+            _ = CloseByEscapeAsync();
+    }
+
+    [JSInvokable]
+    public void HandleOverlayClick() => _ = CloseByOverlayAsync();
+
+    private async Task CloseByOverlayAsync()
+    {
+        if (OnClosedByOverlay != null)
+            await OnClosedByOverlay();
+        await CloseAsync();
+    }
+
+    private async Task CloseByEscapeAsync()
+    {
+        if (OnClosedByEscape != null)
+            await OnClosedByEscape();
+        await CloseAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try { await DialogInterop.DisposeAsync(_dialogId); }
+        catch { }
+        _dotNetRef?.Dispose();
+    }
+}

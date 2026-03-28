@@ -1,0 +1,65 @@
+﻿@* same form as before *@
+<DialogRoot @ref="_dialog"
+            OnClosedByEscape="@(async () => _tcs.SetResult(null))"
+            OnClosedByOverlay="@(async () => _tcs.SetResult(null))">
+    <DialogContent Unstyled Class="p-0 flex flex-col bg-popover border border-border rounded-lg w-[22.5vw]">
+        <div class="flex flex-col px-4 pt-2">
+            <div class="h-fit flex justify-between gap-2">
+                <span class="font-bold text-foreground">Edit Profile</span>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="size-6" OnClick="@(() => Cancel())">
+                    <LuX class="size-4"/>
+                </Button>
+            </div>
+            <span class="text-sm text-muted-foreground">Make changes to your profile here. Click save when you're done.</span>
+        </div>
+        <div class="space-y-4 px-4 mt-4 mb-6">
+            <div>
+                <span class="text-xs font-bold text-muted-foreground">Repository URL:</span>
+                <Input Placeholder="https://github.com/user/repo" @bind-Value="_model.BaseUrl" />
+            </div>
+            <div>
+                <span class="text-xs font-bold text-muted-foreground">Branch:</span>
+                <Input Placeholder="main" @bind-Value="_model.Branch" />
+            </div>
+        </div>
+        <div class="bg-accent/50 flex justify-end gap-2 p-4 rounded-b-lg">
+            <Button Variant="@Variant.Outline" OnClick="@(() => Cancel())">Close</Button>
+            <Button Variant="@Variant.Default" OnClick="@(() => Submit())">Done</Button>
+        </div>
+    </DialogContent>
+</DialogRoot>
+
+@code {
+    public class FormModel
+    {
+        public string BaseUrl { get; set; } = string.Empty;
+        public string Branch { get; set; } = string.Empty;
+    }
+
+    private DialogRoot _dialog = null!;
+    private FormModel _model = new();
+    private TaskCompletionSource<FormModel?> _tcs = new();
+
+    public Task<FormModel?> Show()
+    {
+        // don't forget to clear the state.
+        // this can be done before the dialog is shown (here), or directly after it's closed
+        _model = new();
+
+        _dialog.OpenDialog();
+        _tcs = new TaskCompletionSource<FormModel?>();
+        return _tcs.Task;
+    }
+
+    private async Task Cancel()
+    {
+        _tcs.SetResult(null);
+        await _dialog.CloseAsync();
+    }
+
+    private async Task Submit()
+    {
+        _tcs.SetResult(_model);
+        await _dialog.CloseAsync();
+    }
+}

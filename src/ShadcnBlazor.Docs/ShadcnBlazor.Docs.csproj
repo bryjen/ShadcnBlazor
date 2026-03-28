@@ -110,8 +110,4 @@
       <None Include="wwwroot\themes\vtron.css" />
       <None Include="wwwroot\themes\zen-inspired-theme.css" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Components\Custom\" />
-    </ItemGroup>
 </Project>
