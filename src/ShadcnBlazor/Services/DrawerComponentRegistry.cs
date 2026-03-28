@@ -6,7 +6,7 @@ namespace ShadcnBlazor.Services;
 /// <summary>
 /// Registry for RenderFragments used by Vaul component drawers.
 /// </summary>
-public sealed class VaulComponentRegistry
+public sealed class DrawerComponentRegistry
 {
     private readonly ConcurrentDictionary<string, RenderFragment> _fragments = new();
 

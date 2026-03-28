@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Sonner;
-using ShadcnBlazor.Components.Vaul;
+using ShadcnBlazor.Components.Drawer;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
@@ -26,8 +26,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.RootComponents.RegisterForJavaScript<SonnerComponentHost>(
     "ShadcnBlazor.Components.Sonner.SonnerComponentHost");
-builder.RootComponents.RegisterForJavaScript<VaulComponentHost>(
-    "ShadcnBlazor.Components.Vaul.VaulComponentHost");
+builder.RootComponents.RegisterForJavaScript<DrawerComponentHost>(
+    "ShadcnBlazor.Components.Drawer.DrawerComponentHost");
 
 // Pre-render-safe services (called by both pre-render and runtime)
 ConfigureServices(builder.Services, builder.HostEnvironment);
@@ -76,8 +76,8 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
 
     services.AddScoped<SonnerService>();
     services.AddScoped<SonnerComponentRegistry>();
-    services.AddScoped<VaulService>();
-    services.AddScoped<VaulComponentRegistry>();
+    services.AddScoped<DrawerService>();
+    services.AddScoped<DrawerComponentRegistry>();
 
     // JavaScript interop services (runtime only, skipped during pre-rendering)
     // These require IJSRuntime which is not available during pre-rendering

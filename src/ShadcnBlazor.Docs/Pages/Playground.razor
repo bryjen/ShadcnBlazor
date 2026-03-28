@@ -1,11 +1,12 @@
 @page "/playground"
 @using Microsoft.AspNetCore.Components.Rendering
 @using ShadcnBlazor.Docs.Components.Examples
+@using ShadcnBlazor.Docs.Pages.Components.Drawer.Examples
 @using ShadcnBlazor.Docs.Components.Samples
 @using ShadcnBlazor.Services
 @using ShadcnBlazor.Components.Popover
 @using ShadcnBlazor.Components.Popover.Models
-@inject VaulService Vaul
+@inject DrawerService Vaul
 
 <PageTitle>Playground</PageTitle>
 
@@ -40,6 +41,11 @@
                 <div class="text-foreground">@_callbackLog</div>
             </div>
         }
+
+        <div class="pt-4">
+            <h3 class="text-lg font-semibold mb-2">Declarative API</h3>
+            <DrawerDeclarativeDemo />
+        </div>
     </div>
 
     <!-- Popover -->
@@ -94,7 +100,7 @@
             }
         };
 
-        _vaulDrawerId = await Vaul.OpenAsync<VaulPlaygroundDemo>(parameters, options);
+        _vaulDrawerId = await Vaul.OpenAsync<DrawerPlaygroundDemo>(parameters, options);
     }
 
     private async Task OpenVaulDrawerWithCallbacks()
@@ -104,22 +110,22 @@
             await Vaul.CloseAsync(_callbackDrawerId);
         }
 
-        var options = new VaulOptions
+        var options = new DrawerOptions
         {
             Title = "The Hidden Details",
             Description = "Snap points demo inspired by the Vaul docs.",
             A11yHidden = true,
-            Overlay = new VaulOverlayOptions
+            Overlay = new DrawerOverlayOptions
             {
                 ClassName = "fixed inset-0 bg-black/40",
                 DisableBaseClass = true
             },
-            Content = new VaulContentOptions
+            Content = new DrawerContentOptions
             {
                 ClassName = "fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px]",
                 DisableBaseClass = true
             },
-            Drawer = new VaulDrawerOptions
+            Drawer = new DrawerOptionsInner
             {
                 Dismissible = true,
                 Modal = true,
@@ -127,7 +133,7 @@
             }
         };
 
-        var callbacks = new VaulCallbacks
+        var callbacks = new DrawerCallbacks
         {
             OnOpenChange = open => _ = AppendLogAsync($"OpenChange: {open}"),
             OnClose = () => _ = AppendLogAsync("Close"),
@@ -137,7 +143,7 @@
             OnSnapPointChange = value => _ = UpdateSnapPointAsync(value)
         };
 
-        _callbackDrawerId = await Vaul.OpenAsync<VaulSnapPointsDemo>(null, options, callbacks);
+        _callbackDrawerId = await Vaul.OpenAsync<DrawerSnapPointsDemo>(null, options, callbacks);
     }
 
     private async Task CloseVaulDrawer()

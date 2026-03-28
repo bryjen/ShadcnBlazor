@@ -1,0 +1,59 @@
+@page "/components/drawer"
+
+<PageTitle>Drawer - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Drawer - A drawer component for React (Vaul) styled for ShadcnBlazor." />
+</HeadContent>
+@using System.Reflection
+@using ShadcnBlazor.Docs.Components.Examples
+@using ShadcnBlazor.Docs.Pages.Components.Drawer.Examples
+@using ShadcnBlazor.Docs.Services
+
+<ComponentDocPage Metadata="@Metadata"
+                 InstallCommand="@InstallCommand">
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Drawer" />
+
+    <DocsSection Title="Declarative Usage" Id="usage">
+        <p>The Drawer displays a dismissible panel overlaying the application content. It uses Vaul under the hood. You can compose it declaratively using <code>DrawerRoot</code>, <code>DrawerTrigger</code>, <code>DrawerPortal</code>, <code>DrawerOverlay</code>, and <code>DrawerContent</code>.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Drawer_Examples_DrawerDeclarativeDemo })">
+            <div class="w-full flex items-center justify-center p-8">
+                <DrawerDeclarativeDemo/>
+            </div>
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Simple Declarative Drawer" Id="simple">
+            <p>A simple drawer with minimal configuration.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Drawer_Examples_DrawerSimpleDemo })">
+                <div class="w-full flex items-center justify-center p-8">
+                    <DrawerSimpleDemo />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Snap Points" Id="snap-points">
+            <p>Drawers can have snap points allowing them to stop at certain heights before fully expanding.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Drawer_Examples_DrawerSnapPointsDemo })">
+                <div class="w-full flex items-center justify-center p-8">
+                    <DrawerSnapPointsDemo />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+    </ChildContent>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Drawer");
+
+    private const string InstallCommand = "shadcnblazor component add drawer";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Declarative and Imperative API options</div> },
+        __builder => { <div>Accessibility-friendly with focus management</div> },
+        __builder => { <div>Supports swipe, drag, and snap points</div> },
+        __builder => { <div>Fully customizable matching Shadcn principles</div> },
+    };
+}

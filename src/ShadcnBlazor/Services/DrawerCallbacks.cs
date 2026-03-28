@@ -6,7 +6,7 @@ namespace ShadcnBlazor.Services;
 /// <summary>
 /// Callbacks for Vaul drawer events.
 /// </summary>
-public sealed class VaulCallbacks
+public sealed class DrawerCallbacks
 {
     /// <summary>Called when the drawer open state changes.</summary>
     public Action<bool>? OnOpenChange { get; set; }
@@ -22,13 +22,13 @@ public sealed class VaulCallbacks
     public Action<object?>? OnSnapPointChange { get; set; }
 }
 
-internal sealed class VaulCallbackReceiver
+internal sealed class DrawerCallbackReceiver
 {
-    private readonly VaulCallbacks? _callbacks;
+    private readonly DrawerCallbacks? _callbacks;
     private readonly Func<string, Task> _release;
     private int _released;
 
-    public VaulCallbackReceiver(VaulCallbacks? callbacks, Func<string, Task> release)
+    public DrawerCallbackReceiver(DrawerCallbacks? callbacks, Func<string, Task> release)
     {
         _callbacks = callbacks;
         _release = release;

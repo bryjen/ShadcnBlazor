@@ -1,5 +1,5 @@
 @using ShadcnBlazor.Services
-@inject VaulService VaulService
+@inject DrawerService DrawerService
 
 <CascadingValue Value="this" IsFixed="true">
     @ChildContent
@@ -48,17 +48,17 @@
     [Parameter]
     public EventCallback OnClose { get; set; }
 
-    private VaulOverlayOptions? _overlayOptions;
-    private VaulContentOptions? _contentOptions;
+    private DrawerOverlayOptions? _overlayOptions;
+    private DrawerContentOptions? _contentOptions;
     private RenderFragment? _drawerContent;
     private string? _drawerId;
 
-    internal void RegisterOverlay(VaulOverlayOptions options)
+    internal void RegisterOverlay(DrawerOverlayOptions options)
     {
         _overlayOptions = options;
     }
 
-    internal void RegisterContent(VaulContentOptions options, RenderFragment? content)
+    internal void RegisterContent(DrawerContentOptions options, RenderFragment? content)
     {
         _contentOptions = options;
         _drawerContent = content;
@@ -71,9 +71,9 @@
     {
         if (_drawerContent == null) return;
 
-        var options = new VaulOptions
+        var options = new DrawerOptions
         {
-            Drawer = new VaulDrawerOptions
+            Drawer = new DrawerOptionsInner
             {
                 Dismissible = Dismissible,
                 Modal = Modal,
@@ -81,14 +81,22 @@
                 SnapPoints = SnapPoints,
                 ActiveSnapPoint = ActiveSnapPoint
             },
-            Overlay = _overlayOptions,
-            Content = _contentOptions,
+            Overlay = _overlayOptions ?? new DrawerOverlayOptions
+            {
+                ClassName = "fixed inset-0 bg-black/40 z-40",
+                DisableBaseClass = true
+            },
+            Content = _contentOptions ?? new DrawerContentOptions
+            {
+                ClassName = "fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px] z-50",
+                DisableBaseClass = true
+            },
             Title = Title ?? "Drawer",
             Description = Description ?? "Drawer content",
             A11yHidden = true
         };
 
-        var callbacks = new VaulCallbacks
+        var callbacks = new DrawerCallbacks
         {
             OnOpenChange = async open => await OnOpenChange.InvokeAsync(open),
             OnClose = async () =>
@@ -98,7 +106,7 @@
             }
         };
 
-        _drawerId = await VaulService.OpenAsync(_drawerContent, options, callbacks);
+        _drawerId = await DrawerService.OpenAsync(_drawerContent, options, callbacks);
     }
 
     /// <summary>
@@ -108,7 +116,7 @@
     {
         if (_drawerId != null)
         {
-            await VaulService.CloseAsync(_drawerId);
+            await DrawerService.CloseAsync(_drawerId);
             _drawerId = null;
         }
     }

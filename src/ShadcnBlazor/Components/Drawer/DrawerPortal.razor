@@ -1,0 +1,7 @@
+<div style="display: none;">@ChildContent</div>
+
+@code {
+    /// <summary>Portal area for overlay and content - captures config but doesn't render visibly.</summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

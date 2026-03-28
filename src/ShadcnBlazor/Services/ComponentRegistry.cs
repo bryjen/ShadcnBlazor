@@ -285,5 +285,21 @@ public static class ComponentRegistry
                 ]),
             ]
         },
+        new()
+        {
+            Name = "Drawer",
+            Description = "A drawer component for React (Vaul) styled for ShadcnBlazor.",
+            Dependencies = CreateDeps(),
+            RequiredActions =
+            [
+                new AddToServicesAction(nameof(DrawerService)),
+                new AddToServicesAction(nameof(DrawerComponentRegistry)),
+                new CopyJsAction("vaul-interop.iife.js"),
+                new MergeToImportsAction([
+                    "ShadcnBlazor.Components.Drawer",
+                    "ShadcnBlazor.Services"
+                ]),
+            ]
+        },
     ];
 }

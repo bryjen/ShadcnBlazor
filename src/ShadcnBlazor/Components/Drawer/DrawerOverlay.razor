@@ -1,0 +1,32 @@
+@using ShadcnBlazor.Services
+
+@code {
+    /// <summary>Custom CSS class for the overlay.</summary>
+    [Parameter]
+    public string? Class { get; set; }
+
+    /// <summary>Whether to disable the default base overlay class.</summary>
+    [Parameter]
+    public bool DisableBaseClass { get; set; }
+
+    [CascadingParameter]
+    private DrawerRoot? Root { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Root?.RegisterOverlay(new DrawerOverlayOptions
+        {
+            ClassName = Class,
+            DisableBaseClass = DisableBaseClass
+        });
+    }
+
+    protected override void OnParametersSet()
+    {
+        Root?.RegisterOverlay(new DrawerOverlayOptions
+        {
+            ClassName = Class,
+            DisableBaseClass = DisableBaseClass
+        });
+    }
+}

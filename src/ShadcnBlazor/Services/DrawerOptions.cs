@@ -3,16 +3,16 @@ namespace ShadcnBlazor.Services;
 /// <summary>
 /// Root options for a Vaul drawer.
 /// </summary>
-public sealed class VaulOptions
+public sealed class DrawerOptions
 {
     /// <summary>Options for the drawer itself.</summary>
-    public VaulDrawerOptions? Drawer { get; set; }
+    public DrawerOptionsInner? Drawer { get; set; }
     /// <summary>Options for the overlay.</summary>
-    public VaulOverlayOptions? Overlay { get; set; }
+    public DrawerOverlayOptions? Overlay { get; set; }
     /// <summary>Options for the drawer content.</summary>
-    public VaulContentOptions? Content { get; set; }
+    public DrawerContentOptions? Content { get; set; }
     /// <summary>Options for the drawer handle.</summary>
-    public VaulHandleOptions? Handle { get; set; }
+    public DrawerHandleOptions? Handle { get; set; }
     /// <summary>Accessible title for the drawer.</summary>
     public string? Title { get; set; }
     /// <summary>Accessible description for the drawer.</summary>
@@ -22,7 +22,7 @@ public sealed class VaulOptions
 }
 
 /// <summary>Detailed configuration for a Vaul drawer.</summary>
-public sealed class VaulDrawerOptions
+public sealed class DrawerOptionsInner
 {
     /// <summary>Whether the drawer can be dismissed by clicking outside or dragging.</summary>
     public bool? Dismissible { get; set; }
@@ -69,7 +69,7 @@ public sealed class VaulDrawerOptions
 }
 
 /// <summary>Options for the Vaul overlay.</summary>
-public sealed class VaulOverlayOptions
+public sealed class DrawerOverlayOptions
 {
     /// <summary>Custom CSS class for the overlay.</summary>
     public string? ClassName { get; set; }
@@ -80,7 +80,7 @@ public sealed class VaulOverlayOptions
 }
 
 /// <summary>Options for the Vaul content area.</summary>
-public sealed class VaulContentOptions
+public sealed class DrawerContentOptions
 {
     /// <summary>Custom CSS class for the content area.</summary>
     public string? ClassName { get; set; }
@@ -91,7 +91,7 @@ public sealed class VaulContentOptions
 }
 
 /// <summary>Options for the Vaul drawer handle.</summary>
-public sealed class VaulHandleOptions
+public sealed class DrawerHandleOptions
 {
     /// <summary>Whether to prevent cycling through snap points.</summary>
     public bool? PreventCycle { get; set; }

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared.Services;
-using ShadcnBlazor.Components.Vaul;
+using ShadcnBlazor.Components.Drawer;
 using System.Collections.Concurrent;
 
 namespace ShadcnBlazor.Services;
@@ -13,23 +13,23 @@ namespace ShadcnBlazor.Services;
 /// Provides an async API for opening Vaul drawers through the window.Vaul JavaScript library.
 /// The Vaul interop bundle must be loaded globally before Blazor initializes.
 /// </remarks>
-public sealed class VaulService
+public sealed class DrawerService
 {
     private readonly IJSRuntime _jsRuntime;
-    private readonly VaulComponentRegistry _componentRegistry;
+    private readonly DrawerComponentRegistry _componentRegistry;
     private readonly ScrollLockService _scrollLock;
-    private readonly ConcurrentDictionary<string, DotNetObjectReference<VaulCallbackReceiver>> _callbackReferences = new();
+    private readonly ConcurrentDictionary<string, DotNetObjectReference<DrawerCallbackReceiver>> _callbackReferences = new();
     private readonly ConcurrentDictionary<string, byte> _lockedDrawers = new();
 
     /// <summary>
-    /// Creates a new VaulService.
+    /// Creates a new DrawerService.
     /// </summary>
     /// <param name="jsRuntime">The JavaScript runtime.</param>
     /// <param name="componentRegistry">Registry for drawer fragments.</param>
     /// <param name="scrollLock">Service for managing body scroll locking.</param>
-    public VaulService(
+    public DrawerService(
         IJSRuntime jsRuntime,
-        VaulComponentRegistry componentRegistry,
+        DrawerComponentRegistry componentRegistry,
         ScrollLockService scrollLock)
     {
         _jsRuntime = jsRuntime;
@@ -47,14 +47,14 @@ public sealed class VaulService
     /// <returns>The drawer ID as a string, or null if creation failed.</returns>
     public async ValueTask<string?> OpenAsync(
         RenderFragment fragment,
-        VaulOptions? options,
-        VaulCallbacks? callbacks,
+        DrawerOptions? options,
+        DrawerCallbacks? callbacks,
         CancellationToken cancellationToken = default)
     {
         var fragmentId = _componentRegistry.Register(fragment);
-        var componentIdentifier = GetComponentIdentifier(typeof(VaulComponentHost));
+        var componentIdentifier = GetComponentIdentifier(typeof(DrawerComponentHost));
 
-        var receiver = new VaulCallbackReceiver(callbacks, ReleaseCallbacksAsync);
+        var receiver = new DrawerCallbackReceiver(callbacks, ReleaseCallbacksAsync);
         var callbackReference = DotNetObjectReference.Create(receiver);
 
         try
@@ -113,7 +113,7 @@ public sealed class VaulService
         CancellationToken cancellationToken = default)
     {
         var fragmentId = _componentRegistry.Register(fragment);
-        var componentIdentifier = GetComponentIdentifier(typeof(VaulComponentHost));
+        var componentIdentifier = GetComponentIdentifier(typeof(DrawerComponentHost));
 
         try
         {
@@ -164,8 +164,8 @@ public sealed class VaulService
     /// <returns>The drawer ID as a string, or null if creation failed.</returns>
     public async ValueTask<string?> OpenAsync<TComponent>(
         Dictionary<string, object?>? parameters,
-        VaulOptions? options,
-        VaulCallbacks? callbacks,
+        DrawerOptions? options,
+        DrawerCallbacks? callbacks,
         CancellationToken cancellationToken = default)
         where TComponent : IComponent
     {
@@ -298,7 +298,7 @@ public sealed class VaulService
         }
     }
 
-    private static Dictionary<string, object?>? BuildOptions(VaulOptions? options)
+    private static Dictionary<string, object?>? BuildOptions(DrawerOptions? options)
     {
         if (options is null)
         {
