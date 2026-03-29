@@ -1,6 +1,7 @@
 @using ShadcnBlazor.Docs.Components.Samples.Command
 @using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @using System.Text.Json.Serialization
+@using ShadcnBlazor.Components.Drawer
 
 @implements IAsyncDisposable
 
@@ -27,7 +28,7 @@
         </div>
 
         <div data-device="mobile" class="hidden max-lg:flex h-full items-center gap-2">
-            <Button Variant="@Variant.Ghost" Size="@Size.Sm" Class="size-8 px-2" OnClick="@OpenMobileMenu">
+            <Button Variant="@Variant.Ghost" Size="@Size.Sm" Class="size-8 px-2" OnClick="@(async () => await OpenMobileMenu())">
                 <LuMenu class="size-5" />
             </Button>
         </div>
@@ -101,8 +102,8 @@
     private CommandInline _command = default!;
     private IJSObjectReference? _themeModule;
 
-    [Inject]
-    public required ISheetService SheetService { get; set; }
+    [CascadingParameter(Name = "MobileMenuDrawer")]
+    public DrawerRoot? MobileMenuDrawer { get; set; }
 
     [Inject]
     public HttpClient Http { get; set; } = null!;
@@ -116,9 +117,23 @@
     [Inject]
     public IWebAssemblyHostEnvironment HostEnvironment { get; set; } = null!;
 
-    private void OpenMobileMenu()
+    protected override void OnInitialized()
     {
-        SheetService.Show<MobileNavSheet>();
+        Console.WriteLine($"[Header.OnInitialized] MobileMenuDrawer: {MobileMenuDrawer}");
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine($"[Header.OnParametersSet] MobileMenuDrawer: {MobileMenuDrawer}");
+    }
+
+    private async Task OpenMobileMenu()
+    {
+        Console.WriteLine($"[Header.OpenMobileMenu] MobileMenuDrawer is null: {MobileMenuDrawer is null}");
+        if (MobileMenuDrawer != null)
+        {
+            await MobileMenuDrawer.OpenAsync();
+        }
     }
 
     @*TODO: MERGE THIS WITH THAT IN MAVMENU*@

@@ -1,7 +1,8 @@
 @using ShadcnBlazor.Docs.Components.Layout
+@using ShadcnBlazor.Components.Drawer
 @inherits LayoutComponentBase
 
-<header class="fixed top-0 left-0 right-0 z-50 h-14 w-full bg-background">
+<header class="fixed top-0 left-0 right-0 z-20 h-14 w-full bg-background">
     <Header></Header>
 </header>
 
@@ -22,7 +23,7 @@
         <div class="w-[10rem] shrink-0"></div>
     </div>
     
-    <div data-device="desktop" class="max-lg:hidden fixed top-14 right-10 w-[10rem] pt-10 bg-background z-40">
+    <div data-device="desktop" class="max-lg:hidden fixed top-14 right-10 w-[10rem] pt-10 bg-background z-20">
         <OnThisPage />
     </div>
 </main>

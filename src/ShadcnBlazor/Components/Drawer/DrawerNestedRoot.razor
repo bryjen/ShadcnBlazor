@@ -1,0 +1,26 @@
+@* Convenience wrapper — identical to DrawerRoot but Nested defaults to true *@
+<DrawerRoot Nested="true"
+            Dismissible="@Dismissible"
+            Modal="@Modal"
+            Direction="@Direction"
+            SnapPoints="@SnapPoints"
+            ActiveSnapPoint="@ActiveSnapPoint"
+            Title="@Title"
+            Description="@Description"
+            OnOpenChange="@OnOpenChange"
+            OnClose="@OnClose">
+    @ChildContent
+</DrawerRoot>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Dismissible { get; set; } = true;
+    [Parameter] public bool Modal { get; set; } = true;
+    [Parameter] public DrawerDirection Direction { get; set; } = DrawerDirection.Bottom;
+    [Parameter] public object[]? SnapPoints { get; set; }
+    [Parameter] public object? ActiveSnapPoint { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public EventCallback<bool> OnOpenChange { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+}

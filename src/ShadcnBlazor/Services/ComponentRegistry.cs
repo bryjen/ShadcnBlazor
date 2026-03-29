@@ -5,22 +5,16 @@ using ShadcnBlazor.Components.Badge;
 using ShadcnBlazor.Components.Button;
 using ShadcnBlazor.Components.Card;
 using ShadcnBlazor.Components.Checkbox;
-using ShadcnBlazor.Components.DataTable;
-using ShadcnBlazor.Components.Dialog;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.DropdownMenu;
 using ShadcnBlazor.Components.Field;
 using ShadcnBlazor.Components.Input;
-using ShadcnBlazor.Components.Input.InputGroup;
 using ShadcnBlazor.Components.Label;
 using ShadcnBlazor.Components.Popover;
 using ShadcnBlazor.Components.Popover.Services;
-using ShadcnBlazor.Components.Radio;
-using ShadcnBlazor.Components.Select;
 using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Components.Skeleton;
-using ShadcnBlazor.Components.Slider;
 using ShadcnBlazor.Components.Switch;
 using ShadcnBlazor.Components.Textarea;
 using ShadcnBlazor.Components.ToggleButton;
@@ -29,7 +23,6 @@ using ShadcnBlazor.Components.FocusTrap;
 using ShadcnBlazor.Components.FocusTrap.Services;
 using ShadcnBlazor.Components.Sonner.Services;
 using ShadcnBlazor.Services.Models;
-using ShadcnBlazor.Services;
 
 namespace ShadcnBlazor.Services;
 
@@ -229,13 +222,7 @@ public static class ComponentRegistry
             Description = "Loading placeholder with pulse animation.", 
             Dependencies = CreateDeps(),
         },
-        new() 
-        {
-            Name = nameof(Slider), 
-            Description = "Single-thumb slider for selecting a value within a min/max range.",
-            Dependencies = CreateDeps(),
-        },
-        new() 
+        new()
         {
             Name = nameof(Switch), 
             Description = "Toggle switch for boolean on/off values.", 

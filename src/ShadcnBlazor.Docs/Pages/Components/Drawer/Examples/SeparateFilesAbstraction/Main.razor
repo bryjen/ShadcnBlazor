@@ -1,0 +1,30 @@
+@using System.Text.Json
+
+@* ReSharper disable once Razor.UnresolvedComponent *@
+
+<div class="space-y-6">
+    <Button OnClick="@OnButtonClick">
+        <LuGitBranch size="size-4"/>
+        Add Repository
+    </Button>
+
+    <ConcreteDrawer @ref="_drawer"></ConcreteDrawer>
+
+    <div>
+        <span class="font-bold">Form Model:</span>
+        <br/>
+        <span class="whitespace-pre text-muted-foreground text-xs font-mono">
+            @JsonSerializer.Serialize(_model, new JsonSerializerOptions { WriteIndented = true})
+        </span>
+    </div>
+</div>
+
+@code {
+    private ConcreteDrawer _drawer = null!;
+    private ConcreteDrawer.FormModel? _model;
+
+    private async Task OnButtonClick()
+    {
+        _model = await _drawer.Show();
+    }
+}

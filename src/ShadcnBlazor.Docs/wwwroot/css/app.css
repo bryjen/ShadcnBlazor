@@ -362,6 +362,9 @@
   .end {
     inset-inline-end: var(--spacing);
   }
+  .-top-0 {
+    top: calc(var(--spacing) * -0);
+  }
   .-top-0\.5 {
     top: calc(var(--spacing) * -0.5);
   }
@@ -382,6 +385,9 @@
   }
   .top-14 {
     top: calc(var(--spacing) * 14);
+  }
+  .-right-0 {
+    right: calc(var(--spacing) * -0);
   }
   .-right-0\.5 {
     right: calc(var(--spacing) * -0.5);
@@ -424,6 +430,9 @@
   }
   .z-20 {
     z-index: 20;
+  }
+  .z-30 {
+    z-index: 30;
   }
   .z-40 {
     z-index: 40;
@@ -695,6 +704,9 @@
     width: 100%;
     height: 100%;
   }
+  .h-1 {
+    height: calc(var(--spacing) * 1);
+  }
   .h-1\.5 {
     height: calc(var(--spacing) * 1.5);
   }
@@ -761,6 +773,9 @@
   .h-\[60\%\] {
     height: 60%;
   }
+  .h-\[60vh\] {
+    height: 60vh;
+  }
   .h-\[125px\] {
     height: 125px;
   }
@@ -803,8 +818,20 @@
   .max-h-\[50vh\] {
     max-height: 50vh;
   }
+  .max-h-\[94\%\] {
+    max-height: 94%;
+  }
+  .max-h-\[96\%\] {
+    max-height: 96%;
+  }
   .max-h-\[97\%\] {
     max-height: 97%;
+  }
+  .max-h-\[100\%\] {
+    max-height: 100%;
+  }
+  .max-h-\[100vh\] {
+    max-height: 100vh;
   }
   .max-h-\[calc\(75vh-0\.5rem\)\] {
     max-height: calc(75vh - 0.5rem);
@@ -2077,6 +2104,9 @@
   }
   .py-10 {
     padding-block: calc(var(--spacing) * 10);
+  }
+  .py-12 {
+    padding-block: calc(var(--spacing) * 12);
   }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);
@@ -3612,6 +3642,16 @@
       margin-top: calc(var(--spacing) * -1);
     }
   }
+  .max-lg\:my-1 {
+    @media (width < 64rem) {
+      margin-block: calc(var(--spacing) * 1);
+    }
+  }
+  .max-lg\:my-2 {
+    @media (width < 64rem) {
+      margin-block: calc(var(--spacing) * 2);
+    }
+  }
   .max-lg\:block {
     @media (width < 64rem) {
       display: block;
@@ -3657,6 +3697,11 @@
       padding-inline: calc(var(--spacing) * 6);
     }
   }
+  .max-lg\:py-3 {
+    @media (width < 64rem) {
+      padding-block: calc(var(--spacing) * 3);
+    }
+  }
   .max-lg\:py-12 {
     @media (width < 64rem) {
       padding-block: calc(var(--spacing) * 12);
@@ -3672,6 +3717,12 @@
       padding-bottom: calc(var(--spacing) * 6);
     }
   }
+  .max-lg\:text-2xl {
+    @media (width < 64rem) {
+      font-size: var(--text-2xl);
+      line-height: var(--tw-leading, var(--text-2xl--line-height));
+    }
+  }
   .max-lg\:text-3xl {
     @media (width < 64rem) {
       font-size: var(--text-3xl);
@@ -3681,6 +3732,22 @@
   .max-lg\:text-\[0\.6rem\] {
     @media (width < 64rem) {
       font-size: 0.6rem;
+    }
+  }
+  .max-lg\:text-foreground\/35 {
+    @media (width < 64rem) {
+      color: var(--foreground);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--foreground) 35%, transparent);
+      }
+    }
+  }
+  .max-lg\:text-foreground\/50 {
+    @media (width < 64rem) {
+      color: var(--foreground);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--foreground) 50%, transparent);
+      }
     }
   }
   .sm\:grid-cols-2 {
@@ -3754,6 +3821,11 @@
       gap: calc(var(--spacing) * 25);
     }
   }
+  .lg\:bg-accent {
+    @media (width >= 64rem) {
+      background-color: var(--accent);
+    }
+  }
   .lg\:p-10 {
     @media (width >= 64rem) {
       padding: calc(var(--spacing) * 10);
@@ -3764,6 +3836,11 @@
       padding: 7.5%;
     }
   }
+  .lg\:px-2 {
+    @media (width >= 64rem) {
+      padding-inline: calc(var(--spacing) * 2);
+    }
+  }
   .lg\:px-24 {
     @media (width >= 64rem) {
       padding-inline: calc(var(--spacing) * 24);
@@ -3772,6 +3849,11 @@
   .lg\:px-40 {
     @media (width >= 64rem) {
       padding-inline: calc(var(--spacing) * 40);
+    }
+  }
+  .lg\:py-1 {
+    @media (width >= 64rem) {
+      padding-block: calc(var(--spacing) * 1);
     }
   }
   .lg\:pt-8 {
@@ -3787,6 +3869,11 @@
   .lg\:pb-40 {
     @media (width >= 64rem) {
       padding-bottom: calc(var(--spacing) * 40);
+    }
+  }
+  .lg\:pb-64 {
+    @media (width >= 64rem) {
+      padding-bottom: calc(var(--spacing) * 64);
     }
   }
   .lg\:text-5xl {
@@ -3811,6 +3898,50 @@
     @media (width >= 64rem) {
       font-size: var(--text-xs);
       line-height: var(--tw-leading, var(--text-xs--line-height));
+    }
+  }
+  .lg\:text-foreground\/50 {
+    @media (width >= 64rem) {
+      color: var(--foreground);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--foreground) 50%, transparent);
+      }
+    }
+  }
+  .lg\:text-foreground\/70 {
+    @media (width >= 64rem) {
+      color: var(--foreground);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--foreground) 70%, transparent);
+      }
+    }
+  }
+  .lg\:group-hover\:bg-accent {
+    @media (width >= 64rem) {
+      &:is(:where(.group):hover *) {
+        @media (hover: hover) {
+          background-color: var(--accent);
+        }
+      }
+    }
+  }
+  .lg\:group-hover\:text-white {
+    @media (width >= 64rem) {
+      &:is(:where(.group):hover *) {
+        @media (hover: hover) {
+          color: var(--color-white);
+        }
+      }
+    }
+  }
+  .max-lg\:lg\:text-foreground\/35 {
+    @media (width < 64rem) {
+      @media (width >= 64rem) {
+        color: var(--foreground);
+        @supports (color: color-mix(in lab, red, red)) {
+          color: color-mix(in oklab, var(--foreground) 35%, transparent);
+        }
+      }
     }
   }
   .\@md\/field-group\:flex-row {

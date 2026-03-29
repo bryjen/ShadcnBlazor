@@ -1,26 +1,57 @@
 @inject ThemeService ThemeService
+@using ShadcnBlazor.Docs.Components.Layout
 @using ShadcnBlazor.Docs.Services.Theme
 @implements IDisposable
 
 <style id="shadcn-runtime-theme">@ThemeService.RuntimeStyleSheet</style>
 
-<PopoverProvider RepositionDebounceMilliseconds="1" />
-<SheetProvider />
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <NotFound />
-    </NotFound>
-</Router>
+<DrawerRoot @ref="_mobileMenuDrawer"
+            Direction="DrawerDirection.Bottom"
+            SnapPoints="@(new object[] { 0.75, 1 })">
+    <DrawerOverlay />
+    <DrawerContent Class="h-full max-h-[100%]">
+        <MobileNavSheet DrawerRoot="_mobileMenuDrawer" />
+    </DrawerContent>
+</DrawerRoot>
+
+<CascadingValue Value="@_mobileMenuDrawer" Name="MobileMenuDrawer">
+    <PopoverProvider RepositionDebounceMilliseconds="1" />
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <NotFound />
+        </NotFound>
+    </Router>
+</CascadingValue>
 
 @code {
+    private DrawerRoot? _mobileMenuDrawer;
+
     protected override void OnInitialized()
     {
         ThemeService.ThemeChanged += OnThemeChanged;
+        Console.WriteLine($"[App.OnInitialized] DrawerRoot ref: {_mobileMenuDrawer}");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Console.WriteLine($"[App.OnAfterRender] First render, DrawerRoot ref: {_mobileMenuDrawer}");
+            if (_mobileMenuDrawer != null)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine($"[App.OnParametersSet] DrawerRoot ref: {_mobileMenuDrawer}");
     }
 
     private void OnThemeChanged()

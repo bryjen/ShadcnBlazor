@@ -76,14 +76,6 @@
                     </div>
                 </ComponentPreview>
             </DocsSubSection>
-            <DocsSubSection Title="Snap Points" Id="snap-points">
-                <p>Drawers can have snap points allowing them to stop at certain heights before fully expanding.</p>
-                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Drawer_Examples_DrawerSnapPointsDemo })">
-                    <div class="w-full flex items-center justify-center p-8">
-                        <DrawerSnapPointsDemo/>
-                    </div>
-                </ComponentPreview>
-            </DocsSubSection>
             <DocsSubSection Title="Callbacks" Id="callbacks">
                 <p>Track drawer events using callbacks like <code>OnOpenChange</code>, <code>OnDrag</code>, and more.</p>
                 <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Drawer_Examples_DrawerCallbacksDemo })">
@@ -100,6 +92,31 @@
                     </div>
                 </ComponentPreview>
             </DocsSubSection>
+        </DocsSection>
+
+        <DocsSection Title="Separate Files" Id="separate-files">
+            <p>Organize drawer UI into separate components for better maintainability and reusability.</p>
+            <ComponentPreview CodeFiles="@(new[] {
+                                             Snippets.Components_Drawer_Examples_SeparateFiles_Main,
+                                             Snippets.Components_Drawer_Examples_SeparateFiles_Drawer })"
+                              HighlightedLines="@(new []{ "1,7-8,27-28", "2-4,8-11,13-16,20-23" })">
+                <div class="w-full flex items-center justify-center p-8">
+                    <ShadcnBlazor.Docs.Pages.Components.Drawer.Examples.SeparateFiles.Main />
+                </div>
+            </ComponentPreview>
+        </DocsSection>
+
+        <DocsSection Title="Abstracting Separate Files" Id="abstracting-separate-files">
+            <p>Create reusable, typed drawer components using an abstract base class pattern.</p>
+            <ComponentPreview CodeFiles="@(new[] {
+                                             Snippets.Components_Drawer_Examples_SeparateFilesAbstraction_AbstractDrawer_cs,
+                                             Snippets.Components_Drawer_Examples_SeparateFilesAbstraction_ConcreteDrawer,
+                                             Snippets.Components_Drawer_Examples_SeparateFilesAbstraction_Main })"
+                              HighlightedLines="@(new []{ "9-34", "", "" })">
+                <div class="w-full flex items-center justify-center p-8">
+                    <ShadcnBlazor.Docs.Pages.Components.Drawer.Examples.SeparateFilesAbstraction.Main />
+                </div>
+            </ComponentPreview>
         </DocsSection>
     </ChildContent>
 </ComponentDocPage>

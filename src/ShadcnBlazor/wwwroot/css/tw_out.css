@@ -255,6 +255,9 @@
   .left-2 {
     left: calc(var(--spacing) * 2);
   }
+  .z-30 {
+    z-index: 30;
+  }
   .z-40 {
     z-index: 40;
   }

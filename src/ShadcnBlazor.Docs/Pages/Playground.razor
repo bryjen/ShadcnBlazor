@@ -1,53 +1,13 @@
 @page "/playground"
 @using Microsoft.AspNetCore.Components.Rendering
 @using ShadcnBlazor.Docs.Components.Examples
-@using ShadcnBlazor.Docs.Pages.Components.Drawer.Examples
 @using ShadcnBlazor.Docs.Components.Samples
-@using ShadcnBlazor.Services
 @using ShadcnBlazor.Components.Popover
 @using ShadcnBlazor.Components.Popover.Models
-@inject DrawerService Vaul
 
 <PageTitle>Playground</PageTitle>
 
 <div class="max-w-[1240px] mx-auto p-12 space-y-24 mb-[200px]">
-    <!-- Vaul -->
-    <div class="space-y-4 max-w-[800px]">
-        <div class="space-y-1">
-            <h1 class="text-3xl font-bold tracking-tight">Vaul Drawer</h1>
-            <p class="text-muted-foreground">Minimal Vaul drawer demo powered by the interop bundle.</p>
-        </div>
-
-        <div class="flex items-center gap-3 py-4">
-            <button
-                class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:scale-95"
-                @onclick="OpenVaulDrawer">
-                Open Drawer
-            </button>
-            <button
-                class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground active:scale-95"
-                @onclick="OpenVaulDrawerWithCallbacks">
-                Test Callbacks
-            </button>
-        </div>
-
-        @if (!string.IsNullOrWhiteSpace(_callbackLog))
-        {
-            <div class="rounded-lg border bg-muted/30 p-4 font-mono text-[11px] leading-relaxed">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="font-bold uppercase tracking-widest text-muted-foreground">Event Log</span>
-                    <button @onclick="ClearCallbackLog" class="hover:underline">Clear</button>
-                </div>
-                <div class="text-foreground">@_callbackLog</div>
-            </div>
-        }
-
-        <div class="pt-4">
-            <h3 class="text-lg font-semibold mb-2">Declarative API</h3>
-            <DrawerDeclarativeDemo />
-        </div>
-    </div>
-
     <!-- Popover -->
     <div class="space-y-4">
         <div class="space-y-1">
@@ -64,120 +24,3 @@
         </div>
     </div>
 </div>
-
-@code {
-    private string? _vaulDrawerId;
-    private string? _callbackDrawerId;
-    private string _callbackLog = string.Empty;
-
-    private async Task OpenVaulDrawer()
-    {
-        if (_vaulDrawerId is not null)
-        {
-            await Vaul.CloseAsync(_vaulDrawerId);
-        }
-
-        var parameters = new Dictionary<string, object?>
-        {
-            ["Title"] = "Drawer for React.",
-            ["Message"] = "This component can be used as a Dialog replacement on mobile and tablet devices.",
-        };
-
-        var options = new
-        {
-            title = "Drawer for React.",
-            description = "Vaul drawer demo content.",
-            a11yHidden = true,
-            overlay = new
-            {
-                className = "fixed inset-0 bg-black/40",
-                disableBaseClass = true
-            },
-            content = new
-            {
-                className = "bg-gray-100 flex flex-col rounded-t-[10px] mt-24 h-fit fixed bottom-0 left-0 right-0 outline-none",
-                disableBaseClass = true
-            }
-        };
-
-        _vaulDrawerId = await Vaul.OpenAsync<DrawerPlaygroundDemo>(parameters, options);
-    }
-
-    private async Task OpenVaulDrawerWithCallbacks()
-    {
-        if (_callbackDrawerId is not null)
-        {
-            await Vaul.CloseAsync(_callbackDrawerId);
-        }
-
-        var options = new DrawerOptions
-        {
-            Title = "The Hidden Details",
-            Description = "Snap points demo inspired by the Vaul docs.",
-            A11yHidden = true,
-            Overlay = new DrawerOverlayOptions
-            {
-                ClassName = "fixed inset-0 bg-black/40",
-                DisableBaseClass = true
-            },
-            Content = new DrawerContentOptions
-            {
-                ClassName = "fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px]",
-                DisableBaseClass = true
-            },
-            Drawer = new DrawerOptionsInner
-            {
-                Dismissible = true,
-                Modal = true,
-                SnapPoints = new object[] { "148px", "355px", 1 },
-            }
-        };
-
-        var callbacks = new DrawerCallbacks
-        {
-            OnOpenChange = open => _ = AppendLogAsync($"OpenChange: {open}"),
-            OnClose = () => _ = AppendLogAsync("Close"),
-            OnDrag = value => _ = AppendLogAsync($"Drag: {value:0.00}"),
-            OnRelease = open => _ = AppendLogAsync($"Release: {open}"),
-            OnAnimationEnd = open => _ = AppendLogAsync($"AnimationEnd: {open}"),
-            OnSnapPointChange = value => _ = UpdateSnapPointAsync(value)
-        };
-
-        _callbackDrawerId = await Vaul.OpenAsync<DrawerSnapPointsDemo>(null, options, callbacks);
-    }
-
-    private async Task CloseVaulDrawer()
-    {
-        if (_vaulDrawerId is null)
-        {
-            return;
-        }
-
-        await Vaul.CloseAsync(_vaulDrawerId);
-        _vaulDrawerId = null;
-    }
-
-    private async Task AppendLogAsync(string message)
-    {
-        await InvokeAsync(() =>
-        {
-            if (!string.IsNullOrWhiteSpace(_callbackLog))
-            {
-                _callbackLog = $"{_callbackLog} | ";
-            }
-
-            _callbackLog = $"{_callbackLog}{message}";
-            StateHasChanged();
-        });
-    }
-
-    private async Task UpdateSnapPointAsync(object? value)
-    {
-        await AppendLogAsync($"SnapPoint: {value ?? "null"}");
-    }
-
-    private void ClearCallbackLog()
-    {
-        _callbackLog = string.Empty;
-    }
-}

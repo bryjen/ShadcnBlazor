@@ -8,7 +8,6 @@ using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
 using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Components.Shared.Services.Interop;
-using ShadcnBlazor.Components.Sheet.Services;
 using ShadcnBlazor.Components.FocusTrap.Services;
 using ShadcnBlazor.Components.Sonner.Services;
 using ShadcnBlazor.Docs;
@@ -63,9 +62,6 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
     services.AddScoped<IKeyInterceptorService, KeyInterceptorService>();
     services.AddScoped<IFocusScopeService, FocusScopeService>();
 
-    services.AddScoped<ISheetJsService, SheetJsService>();
-    services.AddScoped<ISheetService, SheetService>();
-
     services.AddScoped<FocusService>();
     services.AddScoped<FocusJsInterop>();
 
@@ -108,12 +104,5 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
         var jsRuntime = sp.GetService<IJSRuntime>();
         if (jsRuntime == null) return null!;
         return new ScrollLockInterop(jsRuntime, ["/_content/ShadcnBlazor/js/scroll-lock.js"]);
-    });
-
-    services.AddScoped<SheetInterop>(sp =>
-    {
-        var jsRuntime = sp.GetService<IJSRuntime>();
-        if (jsRuntime == null) return null!;
-        return new SheetInterop(jsRuntime, ["/_content/ShadcnBlazor/js/sheet.js"]);
     });
 }

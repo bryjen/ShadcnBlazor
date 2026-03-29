@@ -29,4 +29,9 @@
     <ItemGroup>
         <Content Include="Components/**/*.razor.js" />
     </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Slider\Slider.razor" />
+      <UpToDateCheckInput Remove="Components\Sheet\SheetContainer.razor" />
+      <UpToDateCheckInput Remove="Components\Sheet\SheetProvider.razor" />
+    </ItemGroup>
 </Project>
