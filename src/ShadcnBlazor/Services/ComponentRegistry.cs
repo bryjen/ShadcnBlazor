@@ -73,7 +73,7 @@ public static class ComponentRegistry
             Name = "Combobox",
             Description = "Searchable dropdown that lets the user filter and pick a single value; requires PopoverProvider in layout.",
             Dependencies = CreateDeps(nameof(Popover)),
-            Tags = [ComponentDefinition.Tag.Alpha]
+            Tags = [ComponentDefinition.Tag.Alpha, ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -162,7 +162,6 @@ public static class ComponentRegistry
             Name = nameof(DropdownMenu),
             Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.",
             Dependencies = CreateDeps(nameof(Popover)),
-            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -192,14 +191,15 @@ public static class ComponentRegistry
         new()
         {
             Name = "Select",
-            Description = "Dropdown select for choosing a single value from a list of options; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover))
+            Description = "Dropdown select for choosing a single value from a list of options; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover)),
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
             Name = "MultiSelect",
             Description = "Dropdown select for choosing multiple values from a list; requires PopoverProvider in layout.",
             Dependencies = CreateDeps(nameof(Popover)),
-            Tags = [ComponentDefinition.Tag.Alpha]
+            Tags = [ComponentDefinition.Tag.Alpha, ComponentDefinition.Tag.WorkRequired]
         },
         new() 
         {

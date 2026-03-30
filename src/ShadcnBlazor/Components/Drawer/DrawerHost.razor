@@ -19,6 +19,8 @@
     {
         if (firstRender)
         {
+            await JS.InvokeVoidAsync("import", "./_content/ShadcnBlazor/Components/Drawer/Stubs/VaulStub.razor.js");
+
             _dotNetRef = DotNetObjectReference.Create(this);
             try
             {

@@ -54,7 +54,6 @@ public class ThemeFetcher(HttpClient http)
         "brownie", 
         "claude", 
         "claude+", 
-        "default", 
         "modern-minimal", 
         "portfolio-theme", 
         "sage-green", 

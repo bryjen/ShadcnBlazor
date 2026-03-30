@@ -18,6 +18,48 @@
             <DropdownMenuBasicExample />
         </ComponentPreview>
     </DocsSection>
+    <DocsSection Title="Shortcuts" Id="shortcuts">
+        <p>Add <code>DropdownMenuShortcut</code> to show keyboard hints.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuShortcutsExample })">
+            <DropdownMenuShortcutsExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Icons" Id="icons">
+        <p>Combine icons with labels for quick scanning.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuIconsExample })">
+            <DropdownMenuIconsExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Checkboxes" Id="checkbox">
+        <p>Use <code>DropdownMenuCheckboxItem</code> for toggles. Checkbox items do not close the menu on selection, allowing multiple toggles.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuCheckboxExample })">
+            <DropdownMenuCheckboxExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Checkboxes with Icons" Id="checkbox-icons">
+        <p>Add icons to checkbox items.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuCheckboxIconsExample })">
+            <DropdownMenuCheckboxIconsExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Radio Group" Id="radio">
+        <p>Use <code>DropdownMenuRadioGroup</code> with <code>DropdownMenuRadioItem</code> for mutually exclusive selections. Radio items close the menu on selection.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuRadioExample })">
+            <DropdownMenuRadioExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Radio with Icons" Id="radio-icons">
+        <p>Show radio options with icons.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuRadioIconsExample })">
+            <DropdownMenuRadioIconsExample />
+        </ComponentPreview>
+    </DocsSection>
+    <DocsSection Title="Destructive" Id="destructive">
+        <p>Use <code>Class="text-destructive"</code> on <code>DropdownMenuItem</code> for irreversible actions.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuDestructiveExample })">
+            <DropdownMenuDestructiveExample />
+        </ComponentPreview>
+    </DocsSection>
     <DocsSection Title="Avatar" Id="avatar">
         <p>An account switcher dropdown triggered by an avatar. Use <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and pass an <code>Avatar</code> as the trigger.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuAvatarExample })">
@@ -28,18 +70,6 @@
         <p>A richer example combining groups, icons, shortcuts, a checked state, and a destructive action.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuComplexExample })">
             <DropdownMenuComplexExample />
-        </ComponentPreview>
-    </DocsSection>
-    <DocsSection Title="Checkbox Items" Id="checkbox">
-        <p>Use <code>DropdownMenuCheckboxItem</code> for togglable options. Checkbox items do not close the menu on selection, allowing multiple toggles.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuCheckboxExample })">
-            <DropdownMenuCheckboxExample />
-        </ComponentPreview>
-    </DocsSection>
-    <DocsSection Title="Radio Items" Id="radio">
-        <p>Use <code>DropdownMenuRadioGroup</code> with <code>DropdownMenuRadioItem</code> for mutually exclusive selections. Radio items close the menu on selection.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuRadioExample })">
-            <DropdownMenuRadioExample />
         </ComponentPreview>
     </DocsSection>
 </ComponentDocPage>

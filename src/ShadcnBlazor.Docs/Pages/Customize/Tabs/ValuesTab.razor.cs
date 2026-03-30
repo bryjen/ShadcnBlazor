@@ -33,6 +33,7 @@ public partial class ValuesTab : ComponentBase, IDisposable
     private bool _loadingFonts;
 
     private ThemePreset? _selectedThemePreset;
+    private IReadOnlyList<SelectOption<ThemePreset>> _themeOptions = [];
 
     private List<SelectOption<FontMetadata>> _sansSerifFontOptions = [];
     private List<SelectOption<FontMetadata>> _serifFontOptions = [];
@@ -55,8 +56,6 @@ public partial class ValuesTab : ComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
-        // ValuesTabColors.cs
-        BuildSectionsFromTheme();
         ThemeService.ThemeChanged += OnThemeChanged;
     }
 
@@ -75,6 +74,8 @@ public partial class ValuesTab : ComponentBase, IDisposable
             ThemeService.EnsureExternalThemesLoadedAsync(),
             ThemeService.EnsureFontCatalogLoadedAsync());
 
+        UpdateThemeOptions();
+        BuildSectionsFromTheme();
         BuildTypographyOptions();
         SyncSelectedFontsFromTheme();
         SyncNumericControlsFromTheme();
@@ -94,8 +95,11 @@ public partial class ValuesTab : ComponentBase, IDisposable
         ThemeService.ThemeChanged -= OnThemeChanged;
     }
 
-    private IReadOnlyList<SelectOption<ThemePreset>> GetThemeOptions() =>
-        ThemeService.Presets.Select(preset => new SelectOption<ThemePreset>(preset, preset.Name)).ToList();
+    private void UpdateThemeOptions()
+    {
+        _themeOptions = ThemeService.Presets.Select(preset => new SelectOption<ThemePreset>(preset, preset.Name)).ToList();
+        Console.WriteLine($"UpdateThemeOptions: {_themeOptions.Count} presets cached");
+    }
 
     private async Task OnThemePresetChanged(ThemePreset? option)
     {

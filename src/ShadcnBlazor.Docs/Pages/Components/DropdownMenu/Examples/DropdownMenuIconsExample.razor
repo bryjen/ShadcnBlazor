@@ -1,0 +1,37 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild="true">
+        <Button Variant="Variant.Outline">Open</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Profile</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuUser class="mr-2 h-4 w-4" />
+                <span>Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuBadge class="mr-2 h-4 w-4" />
+                <span>Badge</span>
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Settings</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuSettings class="mr-2 h-4 w-4" />
+                <span>Settings</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuBell class="mr-2 h-4 w-4" />
+                <span>Notifications</span>
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+            <LuLogOut class="mr-2 h-4 w-4" />
+            <span>Log out</span>
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>

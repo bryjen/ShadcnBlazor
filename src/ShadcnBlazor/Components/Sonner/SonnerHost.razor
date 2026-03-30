@@ -18,6 +18,8 @@
     {
         if (firstRender)
         {
+            await JS.InvokeVoidAsync("import", "./_content/ShadcnBlazor/Components/Sonner/Stubs/SonnerStub.razor.js");
+
             _dotNetRef = DotNetObjectReference.Create(this);
             try
             {

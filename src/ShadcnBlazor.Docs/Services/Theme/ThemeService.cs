@@ -24,12 +24,12 @@ public sealed class ThemeService
     /// <summary>
     /// Gets the current theme state.
     /// </summary>
-    public ThemeStateFull CurrentTheme { get; private set; }
+    public ThemeStateFull? CurrentTheme { get; private set; }
 
     /// <summary>
     /// Gets the current runtime stylesheet text injected by <c>App.razor</c>.
     /// </summary>
-    public string RuntimeStyleSheet => ThemeStateFullConverter.ToStyleSheet(CurrentTheme);
+    public string RuntimeStyleSheet => CurrentTheme is null ? string.Empty : ThemeStateFullConverter.ToStyleSheet(CurrentTheme);
 
     /// <summary>
     /// Raised when theme state changes and the app should re-render the runtime style block.
@@ -46,14 +46,17 @@ public sealed class ThemeService
     /// </summary>
     public IReadOnlyList<ThemePreset> Presets => _themes;
 
-    private readonly List<ThemePreset> _themes;
+    private List<ThemePreset> _themes;
     private readonly ThemeFetcher _themeFetcher;
     private readonly ThemeInterop _themeInterop;
     private readonly HttpClient _httpClient;
 
     private readonly SemaphoreSlim _fontCatalogLock = new(1, 1);
-    private readonly HashSet<string> _loadedPreviewUrls = new(StringComparer.Ordinal);
-    private readonly HashSet<string> _loadedFullUrls = new(StringComparer.Ordinal);
+    private readonly SemaphoreSlim _externalThemeLock = new(1, 1);
+
+    // Maps a font stylesheet URL to the inflight (or completed) Task that injects it.
+    // Concurrent callers await the same Task; failed Tasks are removed so they can be retried.
+    private readonly Dictionary<string, Task> _fontLoadTasks = new(StringComparer.Ordinal);
     private readonly object _fontLoadSync = new();
 
     private Dictionary<string, List<FontMetadata>> _fontsByCategory = new(StringComparer.Ordinal)
@@ -75,38 +78,68 @@ public sealed class ThemeService
         _themeInterop = themeInterop;
         _httpClient = httpClient;
 
-        CurrentTheme = CreateDefaultTheme();
-        var themePreset = new ThemePreset("Default", ThemeFetcher.BuildSwatches(CurrentTheme), CurrentTheme.Clone());
-        _themes = [themePreset];
+        // CurrentTheme starts as null. The style block will yield nothing until
+        // the baseline theme finishes fetching from tw_in.css.
+        CurrentTheme = null;
+
+        // Presets start empty — they are populated asynchronously by EnsureExternalThemesLoadedAsync.
+        // The Customize page picker will be empty until that fetch completes, which is intentional.
+        _themes = [];
     }
 
     public async Task EnsureExternalThemesLoadedAsync(CancellationToken cancellationToken = default)
     {
+        // Fast-path: already loaded, no lock needed.
         if (_loadedExternalThemes)
             return;
 
-        var tasks = ThemeFetcher.BuiltInThemes
-            .Select(themeName => _themeFetcher.TryGetPresetAsync(themeName, cancellationToken))
-            .ToArray();
-        var presets = await Task.WhenAll(tasks);
-        var filtered = presets
-            .Where(preset => preset is not null)
-            .Cast<ThemePreset>()
-            .ToList();
-        
-        // By default, this service is initialized with a hard-coded version of the default theme as a C# object.
-        // This prevents the current theme preset from being a null value, which is "frustrating" for consumer code.
-        // Here, we replace the hard-coded default theme with the default from the above, if present.
-        var defaultPreset = filtered.FirstOrDefault(preset =>
-            string.Equals(preset.Name, "Default", StringComparison.InvariantCultureIgnoreCase));
-        if (defaultPreset is not null)
+        await _externalThemeLock.WaitAsync(cancellationToken);
+        try
         {
-            _themes.Clear();
-            CurrentTheme = defaultPreset.Theme;
+            // Double-check inside the lock to handle concurrent callers.
+            if (_loadedExternalThemes)
+                return;
+
+            // Console.WriteLine("Starting background load of external themes and base tw_in.css constraints.");
+
+            var twInBaseTask = _httpClient.GetStringAsync("_content/ShadcnBlazor/css/tw_in.css", cancellationToken);
+            
+            var presetTasks = ThemeFetcher.BuiltInThemes
+                .Select(themeName => _themeFetcher.TryGetPresetAsync(themeName, cancellationToken))
+                .ToArray();
+            
+            var presets = await Task.WhenAll(presetTasks);
+
+            // Harvest the base theme structure from the library CSS immediately.
+            try
+            {
+                var baseCss = await twInBaseTask;
+                // Console.WriteLine($"Fetched tw_in.css [{baseCss.Length} bytes]. Content being processed:\n{baseCss}");
+                CurrentTheme = ThemeStateFullConverter.FromStyleSheet(baseCss);
+                ThemeChanged?.Invoke(); // Tell the UI to immediately paint the base theme!
+            }
+            catch (Exception ex)
+            {
+                // Console.WriteLine($"Failed to load _content/ShadcnBlazor/css/tw_in.css during theme initialization. Base theme will be empty on startup. Exception: {ex.Message}");
+            }
+
+            var filtered = presets
+                .Where(preset => preset is not null)
+                .Cast<ThemePreset>()
+                .ToList();
+
+            // Atomically replace the backing list so no consumer ever sees a partially-mutated
+            // collection during a Blazor render cycle (avoids "collection was modified" exceptions).
+            // Do NOT overwrite CurrentTheme here — it is owned by the base CSS block above.
+            _themes = filtered;
+            _loadedExternalThemes = true;
+            
+            // Console.WriteLine("Completed loading external themes and base tw_in.css constraints.");
         }
-        
-        _themes.AddRange(filtered);
-        _loadedExternalThemes = true;
+        finally
+        {
+            _externalThemeLock.Release();
+        }
     }
 
     public async Task EnsureFontCatalogLoadedAsync(CancellationToken cancellationToken = default)
@@ -155,13 +188,13 @@ public sealed class ThemeService
     public Task EnsureFontPreviewLoadedAsync(FontMetadata font, CancellationToken cancellationToken = default)
     {
         var previewUrl = BuildGoogleFontsUrl(font.Family, preview: true);
-        return EnsureStylesheetLoadedAsync(previewUrl, _loadedPreviewUrls, cancellationToken);
+        return EnsureStylesheetLoadedAsync(previewUrl, cancellationToken);
     }
 
     public Task EnsureFontFullLoadedAsync(FontMetadata font, CancellationToken cancellationToken = default)
     {
         var fullUrl = BuildGoogleFontsUrl(font.Family, preview: false);
-        return EnsureStylesheetLoadedAsync(fullUrl, _loadedFullUrls, cancellationToken);
+        return EnsureStylesheetLoadedAsync(fullUrl, cancellationToken);
     }
 
     public async Task SetFontAsync(string category, FontMetadata font, CancellationToken cancellationToken = default)
@@ -228,24 +261,42 @@ public sealed class ThemeService
         await SaveThemeAsync(preset.Theme, cancellationToken);
     }
 
-    private async Task EnsureStylesheetLoadedAsync(string url, HashSet<string> dedupeSet, CancellationToken cancellationToken)
+    private Task EnsureStylesheetLoadedAsync(string url, CancellationToken cancellationToken)
     {
-        var shouldLoad = false;
+        Task? existing;
         lock (_fontLoadSync)
         {
-            if (!dedupeSet.Contains(url))
+            if (_fontLoadTasks.TryGetValue(url, out existing))
             {
-                dedupeSet.Add(url);
-                shouldLoad = true;
+                // Return the already-inflight (or successfully completed) task so the caller
+                // awaits the same work rather than returning immediately on a concurrent request.
+                return existing;
             }
-        }
 
-        if (!shouldLoad)
+            // Register a placeholder *before* we start awaiting so that any concurrent caller
+            // that arrives during the async gap will find it in the dictionary.
+            var inject = InjectAndCleanupAsync(url, cancellationToken);
+            _fontLoadTasks[url] = inject;
+            return inject;
+        }
+    }
+
+    private async Task InjectAndCleanupAsync(string url, CancellationToken cancellationToken)
+    {
+        try
         {
-            return;
+            await _themeInterop.InjectStylesheetAsync(url, cancellationToken);
         }
-
-        await _themeInterop.InjectStylesheetAsync(url, cancellationToken);
+        catch
+        {
+            // Injection failed — remove the entry so future callers can retry rather than
+            // silently receiving a completed-but-never-injected stylesheet.
+            lock (_fontLoadSync)
+            {
+                _fontLoadTasks.Remove(url);
+            }
+            throw;
+        }
     }
 
     private async Task<Dictionary<string, List<FontMetadata>>?> TryLoadFontCatalogFromFontsourceAsync(CancellationToken cancellationToken)
@@ -409,52 +460,6 @@ public sealed class ThemeService
         return $"\"{escapedFamily}\", {fallback}";
     }
 
-    private static ThemeStateFull CreateDefaultTheme()
-    {
-        var light = new ThemeState();
-        var dark = new ThemeState
-        {
-            Background = "oklch(0.1448 0 0)",
-            Foreground = "oklch(0.985 0 0)",
-            Card = "oklch(0.21 0.006 285.885)",
-            CardForeground = "oklch(0.985 0 0)",
-            Popover = "oklch(0.21 0.006 285.885)",
-            PopoverForeground = "oklch(0.985 0 0)",
-            Primary = "oklch(0.488 0.243 264.376)",
-            PrimaryForeground = "oklch(0.97 0.014 254.604)",
-            Secondary = "oklch(0.274 0.006 286.033)",
-            SecondaryForeground = "oklch(0.985 0 0)",
-            Muted = "oklch(0.274 0.006 286.033)",
-            MutedForeground = "oklch(0.705 0.015 286.067)",
-            Accent = "oklch(0.274 0.006 286.033)",
-            AccentForeground = "oklch(0.985 0 0)",
-            Destructive = "oklch(0.704 0.191 22.216)",
-            DestructiveForeground = "oklch(1 0 0)",
-            Border = "oklch(1 0 0 / 0.1)",
-            Input = "oklch(1 0 0 / 0.15)",
-            Ring = "oklch(0.556 0 0)",
-            Chart1 = "oklch(0.809 0.105 251.813)",
-            Chart2 = "oklch(0.623 0.214 259.815)",
-            Chart3 = "oklch(0.546 0.245 262.881)",
-            Chart4 = "oklch(0.488 0.243 264.376)",
-            Chart5 = "oklch(0.424 0.199 265.638)",
-            Sidebar = "oklch(0.21 0.006 285.885)",
-            SidebarForeground = "oklch(0.985 0 0)",
-            SidebarPrimary = "oklch(0.623 0.214 259.815)",
-            SidebarPrimaryForeground = "oklch(0.97 0.014 254.604)",
-            SidebarAccent = "oklch(0.274 0.006 286.033)",
-            SidebarAccentForeground = "oklch(0.985 0 0)",
-            SidebarBorder = "oklch(1 0 0 / 0.1)",
-            SidebarRing = "oklch(0.439 0 0)"
-        };
-
-        return new ThemeStateFull
-        {
-            Light = light,
-            Dark = dark,
-            Shared = light.Clone()
-        };
-    }
 }
 
 

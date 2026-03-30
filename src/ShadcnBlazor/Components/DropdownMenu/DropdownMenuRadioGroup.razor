@@ -1,7 +1,7 @@
 @inherits ShadcnComponentBase
 
 <div role="group" class="@MergeCss("dropdown-menu-radio-group", Class)" @attributes="AdditionalAttributes">
-    <CascadingValue Value="this" IsFixed="true">
+    <CascadingValue Value="this" IsFixed="false">
         @ChildContent
     </CascadingValue>
 </div>
@@ -35,6 +35,7 @@
     {
         SelectedValue = value;
         await SelectedValueChanged.InvokeAsync(value);
+        StateHasChanged();
         Context?.SetOpen?.Invoke(false);
     }
 }

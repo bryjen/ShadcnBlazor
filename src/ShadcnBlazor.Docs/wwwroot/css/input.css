@@ -9,12 +9,9 @@
 @source "../../Components/";
 @source "../../App.razor";
 
-/* Scan the component library source files */
-/*
 @source "../../../ShadcnBlazor/Components/";
 @source "../../../ShadcnBlazor/Shared/";
 @source "../../../ShadcnBlazor/";
-*/
 
 @layer base {
     html,

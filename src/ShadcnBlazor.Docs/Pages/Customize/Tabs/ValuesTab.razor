@@ -6,7 +6,7 @@
                 Value="@_selectedThemePreset"
                 ValueChanged="OnThemePresetChanged"
                 Label="Theme Preset"
-                Items="@(GetThemeOptions())"
+                Items="@_themeOptions"
                 RenderItem="@RenderThemePresetItem"
                 Placeholder="Select a theme"
                 Disabled="@_loadingPresets">

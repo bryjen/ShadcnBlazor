@@ -1,0 +1,28 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild="true">
+        <Button Variant="Variant.Outline">Actions</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <LuShare2 class="mr-2 h-4 w-4" />
+                Share
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <LuCopy class="mr-2 h-4 w-4" />
+                Duplicate
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Danger Zone</DropdownMenuLabel>
+            <DropdownMenuItem Class="text-destructive">
+                <LuTrash2 class="mr-2 h-4 w-4" />
+                Delete
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>

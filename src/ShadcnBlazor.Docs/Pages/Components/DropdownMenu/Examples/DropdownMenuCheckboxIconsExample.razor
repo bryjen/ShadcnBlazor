@@ -1,0 +1,45 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <DropdownMenu>
+        <DropdownMenuTrigger AsChild="true">
+            <Button Variant="Variant.Outline">Display Settings</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuLabel>View Options</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuCheckboxItem
+                Checked="showSidebar"
+                CheckedChanged="@((val) => showSidebar = val)">
+                <LuPanelLeft class="mr-2 h-4 w-4" />
+                Show sidebar
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+                Checked="showStatusBar"
+                CheckedChanged="@((val) => showStatusBar = val)">
+                <LuPanelBottom class="mr-2 h-4 w-4" />
+                Show status bar
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+                Checked="showToolbar"
+                CheckedChanged="@((val) => showToolbar = val)">
+                <LuPalette class="mr-2 h-4 w-4" />
+                Show toolbar
+            </DropdownMenuCheckboxItem>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <div class="text-sm space-y-1">
+        <p>Sidebar: @(showSidebar ? "Visible" : "Hidden")</p>
+        <p>Status bar: @(showStatusBar ? "Visible" : "Hidden")</p>
+        <p>Toolbar: @(showToolbar ? "Visible" : "Hidden")</p>
+    </div>
+</div>
+
+@code {
+    private bool showSidebar = true;
+    private bool showStatusBar = true;
+    private bool showToolbar = false;
+}

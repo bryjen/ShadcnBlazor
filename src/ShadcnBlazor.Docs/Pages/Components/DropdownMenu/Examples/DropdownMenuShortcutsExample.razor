@@ -1,0 +1,31 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+
+<DropdownMenu>
+    <DropdownMenuTrigger AsChild="true">
+        <Button Variant="Variant.Outline">Open</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-56">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Suggestions</DropdownMenuLabel>
+            <DropdownMenuItem Shortcut="⌘+T">
+                Create new tab
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut="⌘+N">
+                Create new window
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut="⌘+O">
+                Open file
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Tools</DropdownMenuLabel>
+            <DropdownMenuItem Shortcut="⌘+B">
+                Bookmarks
+            </DropdownMenuItem>
+            <DropdownMenuItem Shortcut="⌘+,">
+                Settings
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>

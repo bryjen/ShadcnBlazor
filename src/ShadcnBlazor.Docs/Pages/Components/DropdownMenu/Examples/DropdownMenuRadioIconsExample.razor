@@ -1,0 +1,39 @@
+@using EasyAppDev.Blazor.Icons.Lucide
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.DropdownMenu
+
+<div class="flex flex-col gap-4">
+    <DropdownMenu>
+        <DropdownMenuTrigger AsChild="true">
+            <Button Variant="Variant.Outline">Theme</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+            <DropdownMenuLabel>Theme</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup
+                SelectedValue="@selectedTheme"
+                SelectedValueChanged="@((val) => selectedTheme = val)">
+                <DropdownMenuRadioItem Value="light">
+                    <LuSun class="mr-2 h-4 w-4" />
+                    Light
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="dark">
+                    <LuMoon class="mr-2 h-4 w-4" />
+                    Dark
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="system">
+                    <LuMonitor class="mr-2 h-4 w-4" />
+                    System
+                </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+    </DropdownMenu>
+
+    <div class="text-sm">
+        <p>Selected theme: <strong>@selectedTheme</strong></p>
+    </div>
+</div>
+
+@code {
+    private string selectedTheme = "system";
+}
