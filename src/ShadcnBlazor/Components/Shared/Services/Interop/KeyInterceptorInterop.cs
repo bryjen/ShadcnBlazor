@@ -25,11 +25,20 @@ public class KeyInterceptorInterop : IAsyncDisposable
     private readonly SemaphoreSlim _lock = new(1, 1);
 
     /// <summary>
+    /// Creates a new <see cref="KeyInterceptorInterop"/> instance using the default module paths.
+    /// </summary>
+    /// <param name="jsRuntime">The JavaScript runtime for interop calls.</param>
+    public KeyInterceptorInterop(IJSRuntime jsRuntime)
+        : this(jsRuntime, null)
+    {
+    }
+
+    /// <summary>
     /// Creates a new <see cref="KeyInterceptorInterop"/> instance.
     /// </summary>
     /// <param name="jsRuntime">The JavaScript runtime for interop calls.</param>
-    /// <param name="modulePaths">Paths to try when loading the key-interceptor module. Uses <see cref="DefaultModulePaths"/> if null or empty.</param>
-    public KeyInterceptorInterop(IJSRuntime jsRuntime, string[]? modulePaths = null)
+    /// <param name="modulePaths">Paths to try when loading the key-interceptor module.</param>
+    public KeyInterceptorInterop(IJSRuntime jsRuntime, string[]? modulePaths)
     {
         _jsRuntime = jsRuntime;
         _modulePaths = modulePaths is { Length: > 0 } ? modulePaths : DefaultModulePaths;

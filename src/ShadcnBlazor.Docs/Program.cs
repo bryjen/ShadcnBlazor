@@ -30,7 +30,10 @@ static void ConfigureServices(IServiceCollection services, IWebAssemblyHostEnvir
     services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(hostEnv.BaseAddress) });
 
     services.AddAiChat();
-    services.AddTailwindMerge();
+    services.AddTailwindMerge(o =>
+    {
+        o.CacheSize = 100;
+    });
     services.AddScoped<PageTocService>();
     services.AddSingleton<ComponentRegistryService>();
     services.AddSingleton<PageRegistryService>();

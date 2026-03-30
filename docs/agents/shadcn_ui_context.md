@@ -1,2 +1,0 @@
-﻿You can find the .tsx files for the original shadcn/ui project, which this component library is heavily inspired by, at the file path: `./context/ui/apps/v4/registry/new-york-v4`, specifically `./context/ui/apps/v4/registry/new-york-v4/ui`.
-For the documentation pages which is viewable online from `https://ui.shadcn.com/docs/components/radix`, the source `.mdx` files can be found at `./context/ui/apps/v4/content/docs/components/radix`.

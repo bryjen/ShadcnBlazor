@@ -58,7 +58,7 @@
                             tabindex="@(isSortable ? 0 : (int?)null)"
                             class="@(containerClass)"
                             @onclick="@(async () => await OnHeaderClick(col))"
-                            @onkeydown="@(async (e) => await OnHeaderKeyDown(e, col))"
+                            @onkeydown="@(async (KeyboardEventArgs e) => await OnHeaderKeyDown(e, col))"
                             @onkeydown:preventDefault="isSortable">
                             <span class="inline-flex items-center gap-1">
                                 @col.Title

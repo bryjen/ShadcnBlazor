@@ -5,6 +5,7 @@ using ShadcnBlazor.Components.Badge;
 using ShadcnBlazor.Components.Button;
 using ShadcnBlazor.Components.Card;
 using ShadcnBlazor.Components.Checkbox;
+using ShadcnBlazor.Components.DataTable;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.DropdownMenu;
 using ShadcnBlazor.Components.Field;
@@ -149,18 +150,6 @@ public static class ComponentRegistry
                     "ShadcnBlazor.Components.Dialog.Services"]),
             ],
             Tags = []
-        },
-        new()
-        {
-            Name = "ContextMenu",
-            Description = "Right-click context menu with support for items, checkboxes, radio groups, and submenus.",
-            Dependencies = CreateDeps(nameof(Popover)),
-            RequiredActions =
-            [
-                new CopyJsAction("context-menu.js"),
-                new MergeToImportsAction(["ShadcnBlazor.Components.ContextMenu"]),
-            ],
-            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {

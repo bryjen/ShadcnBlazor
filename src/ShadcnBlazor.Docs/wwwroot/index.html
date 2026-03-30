@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>A shadcn/ui inspired Blazor component library</title>
+
     <base href="/" />
+    <link rel="preload" id="webassembly" />
 
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -17,6 +19,8 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/markdown.css" />
     <link rel="stylesheet" href="css/fonts.css" />
+
+    <script type="importmap"></script>
 </head>
 
 <body class="overflow-x-hidden">
@@ -41,8 +45,6 @@
     <script src="_content/ShadcnBlazor/Components/Sonner/Stubs/SonnerStub.razor.js"></script>
     <script src="_content/ShadcnBlazor/Components/Drawer/Stubs/VaulStub.razor.js"></script>
 
-    <link rel="stylesheet" href="_content/ShadcnBlazor/Components/Drawer/Stubs/vaul-interop.css" />
-    <script src="_framework/blazor.webassembly.js"></script>
     <script src="js/loading.js"></script>
 
     <!-- Defer syntax highlighting scripts - only needed for code blocks -->
@@ -56,6 +58,11 @@
     <script src="js/markdown-editor.js"></script>
     <script src="js/customize-codemirror.js"></script>
     <script src="js/theme.js"></script>
+
+    <!--
+    <script src="_framework/blazor.webassembly.js"></script>
+    -->
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
 </body>
 </html>
 

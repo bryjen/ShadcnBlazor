@@ -8,11 +8,10 @@
 
 <style id="shadcn-runtime-theme">@ThemeService.RuntimeStyleSheet</style>
 
-<SonnerHost />
-<DrawerHost />
-
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
+        <SonnerHost />
+        <DrawerHost />
         <PopoverProvider RepositionDebounceMilliseconds="1" />
         <CascadingValue Value="@_mobileMenuDrawer" Name="MobileMenuDrawer">
             <DrawerRoot @ref="_mobileMenuDrawer"

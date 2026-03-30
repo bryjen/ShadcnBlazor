@@ -8,6 +8,10 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\ShadcnBlazor.xml</DocumentationFile>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <IsTrimmable>false</IsTrimmable>
+    </PropertyGroup>
 
     <ItemGroup>
         <SupportedPlatform Include="browser" />
@@ -16,7 +20,8 @@
     <ItemGroup>
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
-        <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
+        <PackageReference Include="Planetarium.LruCacheNet" Version="1.2.0" />
+        <PackageReference Include="TailwindMerge.NET" Version="1.3.0" />
 
         <!-- Allows dynamic registration/configuration -->
         <!-- 

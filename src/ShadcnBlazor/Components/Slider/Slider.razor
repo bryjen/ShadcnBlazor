@@ -8,8 +8,8 @@
     class="@GetContainerClass()"
     @attributes="AdditionalAttributes"
     @onpointermove="OnPointerMove"
-    @onpointerup="@(e => OnPointerUp(e))"
-    @onpointerleave="@(e => OnPointerUp(e))">
+    @onpointerup="@OnPointerUp"
+    @onpointerleave="@OnPointerUp">
 
     <!-- Track background (clickable for closest-thumb selection) -->
     <div
@@ -27,8 +27,8 @@
         <div
             class="absolute top-1/2 -translate-y-1/2 rounded-full border border-ring bg-white ring-ring/50 cursor-grab active:cursor-grabbing focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             style="@GetThumbStyle(ToPercent(value))"
-            @onpointerdown="@(e => OnThumbPointerDown(index, e))"
-            @onkeydown="@(e => OnThumbKeyDown(index, e))"
+            @onpointerdown="@((PointerEventArgs e) => OnThumbPointerDown(index, e))"
+            @onkeydown="@((KeyboardEventArgs e) => OnThumbKeyDown(index, e))"
             role="slider"
             aria-label="@(AriaLabel) @(index + 1)"
             aria-valuemin="@Min"

@@ -23,11 +23,20 @@ public class ScrollLockInterop : IAsyncDisposable
     private readonly SemaphoreSlim _lock = new(1, 1);
 
     /// <summary>
+    /// Creates a new <see cref="ScrollLockInterop"/> instance using the default module paths.
+    /// </summary>
+    /// <param name="jsRuntime">The JavaScript runtime for interop calls.</param>
+    public ScrollLockInterop(IJSRuntime jsRuntime)
+        : this(jsRuntime, null)
+    {
+    }
+
+    /// <summary>
     /// Creates a new <see cref="ScrollLockInterop"/> instance.
     /// </summary>
     /// <param name="jsRuntime">The JavaScript runtime for interop calls.</param>
-    /// <param name="modulePaths">Paths to try when loading the scroll-lock module. Uses <see cref="DefaultModulePaths"/> if null or empty.</param>
-    public ScrollLockInterop(IJSRuntime jsRuntime, string[]? modulePaths = null)
+    /// <param name="modulePaths">Paths to try when loading the scroll-lock module.</param>
+    public ScrollLockInterop(IJSRuntime jsRuntime, string[]? modulePaths)
     {
         _jsRuntime = jsRuntime;
         _modulePaths = modulePaths is { Length: > 0 } ? modulePaths : DefaultModulePaths;
