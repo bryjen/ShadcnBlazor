@@ -1,4 +1,7 @@
-<Checkbox @bind-Checked="_checked" Invalid="true">Accept terms and conditions</Checkbox>
+<div class="flex items-center gap-2">
+    <Checkbox Id="terms" @bind-Value="_checked" Invalid="true" />
+    <Label For="terms" Class="text-destructive">Accept terms and conditions</Label>
+</div>
 
 @code {
     private bool _checked;

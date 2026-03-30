@@ -1,0 +1,28 @@
+<Field FieldId="features">
+    <FieldLabel>Features</FieldLabel>
+    <div class="flex flex-col gap-3">
+        @foreach (var (option, index) in _options.Select((o, i) => (o, i)))
+        {
+            <div class="flex items-center gap-2">
+                <Checkbox Id="@($"feature-{index}")" @bind-Value="option.Selected" />
+                <Label For="@($"feature-{index}")">@option.Label</Label>
+            </div>
+        }
+    </div>
+    <FieldError />
+</Field>
+
+@code {
+    private readonly List<OptionItem> _options =
+    [
+        new() { Label = "Notifications" },
+        new() { Label = "Analytics" },
+        new() { Label = "Billing" },
+    ];
+
+    private sealed class OptionItem
+    {
+        public string Label { get; set; } = string.Empty;
+        public bool Selected { get; set; }
+    }
+}

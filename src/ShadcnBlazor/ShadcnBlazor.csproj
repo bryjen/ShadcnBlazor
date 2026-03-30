@@ -7,9 +7,6 @@
         <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**</DefaultItemExcludes>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\ShadcnBlazor.xml</DocumentationFile>
-        <!-- Enable CS1591 to warn on missing XML documentation -->
-        <NoWarn>$(NoWarn.Replace('1591', '').Replace(';1591', '').Replace('1591;', '').Replace(';;',
-            ';'))</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,6 +17,13 @@
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
         <PackageReference Include="TailwindMerge.NET" Version="1.2.0" />
+
+        <!-- Allows dynamic registration/configuration -->
+        <!-- 
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Server" Version="9.0.6" />
+        -->
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.6" />
     </ItemGroup>
 
     <ItemGroup>

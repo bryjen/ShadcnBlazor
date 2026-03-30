@@ -13,50 +13,59 @@ public partial class Select<T>
     /// Currently selected value.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Data)]
     public T? Value { get; set; }
 
     /// <summary>
     /// Callback invoked when the selected value changes.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<T?> ValueChanged { get; set; }
 
     /// <summary>
     /// Optional label displayed at the top of the dropdown content and used as the trigger aria-label.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string? Label { get; set; }
 
     /// <summary>
     /// Placeholder text shown when no value is selected.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string Placeholder { get; set; } = "Select...";
 
     /// <summary>
     /// Size variant applied to the trigger.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
 
     /// <summary>
     /// When true, the popover expands to fit the width of its option content instead of matching the trigger width.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool PopoverFitContent { get; set; }
 
     /// <summary>
     /// When true, body scroll is locked while the popover is open.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool LockScroll { get; set; } = true;
 
     /// <summary>
     /// Additional CSS classes applied to the trigger element.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string TriggerClass { get; set; } = string.Empty;
 
+    /// <inheritdoc />
     protected override bool IsSelected(SelectDeclarativeNode node)
     {
         if (node.Kind != SelectNodeKind.Item)
@@ -74,6 +83,7 @@ public partial class Select<T>
         return EqualityComparer<T>.Default.Equals(nodeValue, Value);
     }
 
+    /// <inheritdoc />
     protected override async Task OnItemSelectAsync(int idx, T? value)
     {
         await base.OnItemSelectAsync(idx, value);

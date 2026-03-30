@@ -1,7 +1,11 @@
 <RadioGroup @bind-Value="_selected">
-    <Radio Value="accept" Invalid="true">Accept terms and conditions</Radio>
+    <div class="flex items-center gap-2">
+        <RadioItem Id="accept-terms" Value="accept" Invalid="true" />
+        <Label For="accept-terms" Class="text-destructive">Accept terms and conditions</Label>
+    </div>
 </RadioGroup>
 
 @code {
     private string? _selected;
 }
+

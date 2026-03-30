@@ -1,0 +1,28 @@
+{
+  "name": "sonner-interop",
+  "version": "1.0.0",
+  "description": "Sonner toast notification interop for Blazor",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sonner",
+    "toast",
+    "blazor",
+    "interop"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lucide-react": "^1.0.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sonner": "^2.0.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.2"
+  }
+}

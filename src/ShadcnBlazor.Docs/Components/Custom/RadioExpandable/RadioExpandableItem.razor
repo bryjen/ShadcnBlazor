@@ -1,0 +1,38 @@
+@using TailwindMerge
+
+@if (_context != null)
+{
+    <CascadingValue Value="@_itemContext">
+        <AccordionItem Value="@Value" Class="@GetClass()">
+            @ChildContent
+        </AccordionItem>
+    </CascadingValue>
+}
+
+@code {
+    [Parameter]
+    public string Value { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private RadioExpandable.RadioExpandableContext? _context { get; set; }
+
+    private RadioExpandableItemContext _itemContext = null!;
+
+    protected override void OnInitialized()
+    {
+        _itemContext = new RadioExpandableItemContext(Value);
+    }
+
+    private string GetClass()
+    {
+        var isSelected = _context?.Value == Value;
+        var borderClass = isSelected ? "border-l-primary" : "border-l-border";
+        var @class = $"pl-2 border-b-0 transition-all duration-250 ease-in border-l-2 {borderClass}";
+        return @class;
+    }
+
+    public record RadioExpandableItemContext(string Value);
+}

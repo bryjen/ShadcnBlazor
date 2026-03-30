@@ -1,0 +1,37 @@
+<div class="flex items-center gap-4">
+    <DrawerRoot Title="Drawer for React." Description="This component can be used as a Dialog replacement on mobile and tablet devices.">
+        <DrawerTrigger>
+            <Button Variant="@Variant.Outline">Open Simple Drawer</Button>
+        </DrawerTrigger>
+        <DrawerPortal>
+            <DrawerOverlay />
+            <DrawerContent>
+                <div class="p-4 bg-popover rounded-t-[10px] flex-1">
+                    <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-popover-foreground mb-8"></div>
+                    <div class="max-w-md mx-auto">
+                        <h3 class="font-medium mb-4 text-popover-foreground">Drawer for React.</h3>
+                        <p class="text-popover-foreground mb-2">
+                            This component can be used as a Dialog replacement on mobile and tablet devices.
+                            <a target="_blank" class="underline" href="https://emilkowal.ski/ui/building-a-drawer-component">here</a>.
+                        </p>
+                        <p class="text-popover-foreground mb-2">
+                            This one specifically is the most simplest setup you can have, just a simple drawer with a trigger.
+                        </p>
+                    </div>
+                </div>
+                <div class="p-4 bg-popover border-t border-border mt-auto">
+                    <div class="flex gap-6 justify-end max-w-md mx-auto">
+                        <a class="text-xs text-popover-foreground flex items-center gap-0.25" href="https://github.com/emilkowalski/vaul" target="_blank">
+                            GitHub
+                            <LuExternalLink class="ml-1 size-4"/>
+                        </a>
+                        <a class="text-xs text-muted-foreground flex items-center gap-0.25" href="https://twitter.com/emilkowalski_" target="_blank">
+                            Twitter
+                            <LuExternalLink class="ml-1 size-4"/>
+                        </a>
+                    </div>
+                </div>
+            </DrawerContent>
+        </DrawerPortal>
+    </DrawerRoot>
+</div>

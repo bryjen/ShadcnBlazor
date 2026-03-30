@@ -1,13 +1,17 @@
 @namespace ShadcnBlazor.Components.Accordion
 @inherits ShadcnComponentBase
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 
 <div
     data-slot="accordion-content"
     data-state="@(IsOpen ? "open" : "closed")"
     class="@GetClass()"
-    style="max-height: @(IsOpen ? "2000px" : "0")"
+    style="@GetStyle()"
+    inert="@(!IsOpen)"
+    @ref="contentRef"
     @attributes="GetAttributes()">
-    <div class="pb-4 pt-0 text-sm text-muted-foreground">
+    <div @ref="innerRef" class="@_mergedInnerClass">
         @ChildContent
     </div>
 </div>
@@ -22,15 +26,46 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
+    [Parameter]
+    public string InnerClass { get; set; } = string.Empty;
+
+    private string _mergedInnerClass => MergeCss("pb-4 pt-0 text-sm text-muted-foreground", InnerClass);
+
+    private ElementReference contentRef;
+    private ElementReference innerRef;
+    private IJSObjectReference? jsModule;
+
     private bool IsOpen => ItemContext?.IsOpen ?? false;
+    private string? contentHeight;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "/_content/ShadcnBlazor/Components/Accordion/AccordionContent.razor.js");
+        }
+
+        // Measure height whenever open state changes
+        if (jsModule is not null && innerRef.Context is not null)
+        {
+            contentHeight = await jsModule.InvokeAsync<string>(
+                "measureHeight", innerRef);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     private string GetClass()
     {
-        var baseClasses = "overflow-hidden transition-[max-height,opacity] duration-[300ms] ease-in-out";
-        var stateClasses = IsOpen
-            ? "opacity-100"
-            : "opacity-0";
-        return MergeCss(baseClasses, stateClasses, Class);
+        var baseClasses = "overflow-hidden transition-[height] duration-300 ease-in-out";
+        return MergeCss(baseClasses, Class);
+    }
+
+    private string GetStyle()
+    {
+        var height = IsOpen ? contentHeight ?? "auto" : "0";
+        return $"height: {height};";
     }
 
     private IReadOnlyDictionary<string, object>? GetAttributes()
@@ -40,13 +75,19 @@
 
         var merged = new Dictionary<string, object>(StringComparer.Ordinal)
         {
+            ["role"] = "region",
             ["id"] = ItemContext.ContentId,
-            ["aria-labelledby"] = ItemContext.TriggerId,
-            ["aria-hidden"] = IsOpen ? "false" : "true"
+            ["aria-labelledby"] = ItemContext.TriggerId
         };
         if (AdditionalAttributes is not null)
             foreach (var kv in AdditionalAttributes)
                 merged[kv.Key] = kv.Value;
         return merged;
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (jsModule is not null)
+            await jsModule.DisposeAsync();
     }
 }

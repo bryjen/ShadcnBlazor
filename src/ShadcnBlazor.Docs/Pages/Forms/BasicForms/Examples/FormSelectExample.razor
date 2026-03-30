@@ -1,0 +1,15 @@
+<Field FieldId="priority">
+    <FieldLabel>Priority</FieldLabel>
+    <InputSelect id="priority" class="w-full border border-input rounded-md px-3 py-2 text-sm"
+                 @bind-Value="_priority">
+        <option value="">Select a priority</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+    </InputSelect>
+    <FieldError />
+</Field>
+
+@code {
+    private string? _priority;
+}

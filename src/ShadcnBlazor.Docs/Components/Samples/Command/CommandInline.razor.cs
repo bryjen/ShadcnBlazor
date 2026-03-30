@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Options;
 using ShadcnBlazor.Components.Shared.Services;
+using ShadcnBlazor.Components.Dialog;
 using ShadcnBlazor.Docs.Components.Samples.Command.Models;
 using ShadcnBlazor.Docs.Services;
 
@@ -15,7 +16,7 @@ public partial class CommandInline : ShadcnComponentBase
     private NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
-    public IKeyInterceptorService KeyInterceptor { get; set; } = null!;
+    public KeyInterceptorService KeyInterceptor { get; set; } = null!;
 
     [Inject]
     public IJSRuntime JsRuntime { get; set; } = null!;
@@ -31,6 +32,8 @@ public partial class CommandInline : ShadcnComponentBase
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    private DialogRoot? dialog;
 
     private IReadOnlyList<CommandItem>? _commandItemsCache;
 

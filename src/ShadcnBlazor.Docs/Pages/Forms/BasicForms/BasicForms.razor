@@ -1,0 +1,294 @@
+@page "/forms/basic"
+
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
+@using ShadcnBlazor.Docs.Pages.Forms.BasicForms.Examples
+@using ShadcnBlazor.Docs.Pages.Forms.BasicForms.Examples.PaymentForm
+
+<PageTitle>Forms - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor Forms - Build forms with EditForm, Field, and validation." />
+</HeadContent>
+
+<TocPageBase>
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1>Forms</h1>
+        <p>
+            Build forms in Blazor using EditForm.
+        </p>
+    </div>
+
+    <p>
+        Unlike most other component libraries, we do not ship a forms abstraction.
+        Rather, we recommend using Blazor's built-in <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/" target="_blank"><code class="text-[oklch(from_var(--primary)_calc(l_+_0.1)_c_h)] bg-card">EditForm</code></a> component, in tandem with our own <code>&lt;Field/&gt;</code> components.
+        This allows vendor-agnostic validation and logic on top our styled and accessible components.
+    </p>
+
+    <DocsSection Title="Demo" Id="demo">
+        <p>A complete Bug Report form with a title input and description textarea. Browser validation is disabled to make validation errors obvious.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormBugReportExample })">
+            <FormBugReportExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Approach" Id="approach">
+        <p>A form in ShadcnBlazor is composed from a few small building blocks:</p>
+        <ul>
+            <li>Uses Blazor’s built-in <code>EditForm</code> and <code>EditContext</code> for form state.</li>
+            <li><code>DataAnnotationsValidator</code> for validation (swappable with <code>Blazored.FluentValidation</code>).</li>
+            <li><a href="/components/field" class="text-primary hover:underline">Field</a> components for accessible, styled field wrappers.</li>
+            <li><code>@@bind-Value</code> for two-way binding on all input types.</li>
+            <li><code>data-invalid</code> and <code>aria-invalid</code> for error state styling.</li>
+        </ul>
+    </DocsSection>
+
+    <DocsSection Title="Anatomy" Id="anatomy">
+        <p>A minimal field inside an <code>EditForm</code> looks like this:</p>
+        <CodeBlock CodeFiles="@(new[] { _anatomySnippet })" />
+        <ul>
+            <li><code>EditForm</code> supplies the <code>EditContext</code> and handles submit events.</li>
+            <li><code>DataAnnotationsValidator</code> connects your model’s attributes to validation messages.</li>
+            <li><a href="/components/field" class="text-primary hover:underline">Field</a> wraps the label, input, and error message.</li>
+            <li><code>FieldLabel</code> provides the accessible label text.</li>
+            <li><code>FieldError</code> renders the first validation message for the field.</li>
+        </ul>
+    </DocsSection>
+
+    <DocsSection Title="Form — Step by Step" Id="step-by-step">
+        <DocsSubSection Title="Step 1: Define your model" Id="step-1">
+            <p>Start with a model class and data annotation attributes.</p>
+            <CodeBlock CodeFiles="@(new[] { _step1ModelSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Step 2: Set up the form" Id="step-2">
+            <p>Create the model instance and submit handler in <code>@@code</code>.</p>
+            <CodeBlock CodeFiles="@(new[] { _step2SetupSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Step 3: Build the form" Id="step-3">
+            <p>Combine everything into a single <code>.razor</code> file.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormBugReportExample })">
+                <FormBugReportExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Step 4: Done" Id="step-4">
+            <p>On valid submit, <code>HandleSubmit</code> runs with the bound model. On invalid submit, <a href="/components/field" class="text-primary hover:underline">Field</a> shows errors next to each control automatically.</p>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Validation" Id="validation">
+        <DocsSubSection Title="Client-side validation" Id="client-validation">
+            <p><code>DataAnnotationsValidator</code> hooks into the <code>EditContext</code> and validates on submit by default.</p>
+            <CodeBlock CodeFiles="@(new[] { _validationModelSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Validation modes" Id="validation-modes">
+            <p>Blazor doesn’t name validation modes, but you can choose between two common patterns:</p>
+            <ul>
+                <li><strong>On submit</strong> (default): add <code>&lt;DataAnnotationsValidator /&gt;</code> and submit.</li>
+                <li><strong>On field change</strong>: subscribe to <code>EditContext.OnFieldChanged</code> or use a validator that supports validate-on-change.</li>
+            </ul>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Displaying errors" Id="displaying-errors">
+            <p>Use a consistent pattern: <a href="/components/field" class="text-primary hover:underline">Field</a> for layout, <code>aria-invalid</code> on the control, and <code>FieldError</code> for the message.</p>
+            <CodeBlock CodeFiles="@(new[] { _validationDisplaySnippet })" />
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Working with Different Field Types" Id="field-types">
+        <DocsSubSection Title="Input (text)" Id="input-text">
+            <p>A standard text field using the ShadcnBlazor <code>Input</code> component.</p>
+            <ul>
+                <li>Bind with <code>@@bind-Value</code>.</li>
+                <li>Keep the <code>id</code> in sync with <code>FieldId</code>.</li>
+            </ul>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormInputTextExample })">
+                <FormInputTextExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Textarea" Id="input-textarea">
+            <p>Use the ShadcnBlazor <code>Textarea</code> for multi-line input.</p>
+            <ul>
+                <li>Bind with <code>@@bind-Value</code>.</li>
+                <li>Set <code>Rows</code> for visible height.</li>
+            </ul>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormTextareaExample })">
+                <FormTextareaExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Select" Id="input-select">
+            <p>Use <code>InputSelect</code> for a simple select list.</p>
+            <ul>
+                <li>Bind with <code>@@bind-Value</code>.</li>
+                <li>The bound type must match the option values.</li>
+            </ul>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormSelectExample })">
+                <FormSelectExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Checkbox list" Id="input-checkbox">
+            <p>Use <code>Checkbox</code> with <code>@@bind-Value</code> for form validation. For a list, manage a collection manually since <code>@@bind-Value</code> only handles a single <code>bool</code>.</p>
+            <ul>
+                <li>Keep a <code>List&lt;T&gt;</code> or <code>HashSet&lt;T&gt;</code> of selected values.</li>
+                <li>Toggle items on change.</li>
+            </ul>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormCheckboxListExample })">
+                <FormCheckboxListExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Radio group" Id="input-radio">
+            <p>Use <code>RadioGroup</code> with <code>RadioItem</code> children. It plugs into <code>EditForm</code> when bound with <code>@@bind-Value</code>.</p>
+            <ul>
+                <li>Bind the group with <code>@@bind-Value</code> for form validation.</li>
+                <li>Each radio sets its own <code>Value</code>.</li>
+            </ul>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormRadioExample })">
+                <FormRadioExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Switch" Id="input-switch">
+            <p>Use the ShadcnBlazor <code>Switch</code> for boolean toggles.</p>
+            <ul>
+                <li>Bind with <code>@@bind-Checked</code> to a <code>bool</code>.</li>
+                <li>Apply <code>aria-invalid</code> directly on the switch element.</li>
+            </ul>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormSwitchExample })">
+                <FormSwitchExample />
+            </ComponentPreview>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Complex Forms" Id="complex-forms">
+        <p>Combine multiple fields inside <a href="/components/field" class="text-primary hover:underline">Field</a> groupings to build more realistic forms.</p>
+
+        @*
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_FormComplexExample })">
+            <FormComplexExample />
+        </ComponentPreview>
+*@
+
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_BasicForms_Examples_PaymentForm_PaymentForm, Snippets.Forms_BasicForms_Examples_PaymentForm_PaymentForm_razor_cs })">
+            <PaymentForm />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Resetting the Form" Id="resetting">
+        <p>Reset by replacing the model or rebuilding the <code>EditContext</code> instance.</p>
+        <CodeBlock CodeFiles="@(new[] { _resetSnippet })" />
+    </DocsSection>
+
+    <DocsSection Title="Dynamic / Array Fields" Id="dynamic-fields">
+        <p>Manage lists manually. Add and remove items, then notify the edit context when the list changes.</p>
+        <CodeBlock CodeFiles="@(new[] { _dynamicFieldsSnippet })" />
+    </DocsSection>
+</div>
+</TocPageBase>
+
+@code {
+    private static readonly CodeFile _anatomySnippet = CodeFile.Create(
+        "<EditForm Model=\"@model\" OnValidSubmit=\"@HandleSubmit\">\n" +
+        "    <DataAnnotationsValidator />\n" +
+        "    <Field For=\"() => model.Title\">\n" +
+        "        <FieldLabel>Title</FieldLabel>\n" +
+        "        <Input @bind-Value=\"model.Title\" aria-invalid=\"@IsInvalid(() => model.Title)\" />\n" +
+        "        <FieldError />\n" +
+        "    </Field>\n" +
+        "</EditForm>",
+        "razor", "Anatomy.razor");
+
+    private static readonly CodeFile _step1ModelSnippet = CodeFile.Create(
+        "public sealed class BugReportModel\n" +
+        "{\n" +
+        "    [Required]\n" +
+        "    [StringLength(80, MinimumLength = 5)]\n" +
+        "    public string? Title { get; set; }\n" +
+        "\n" +
+        "    [Required]\n" +
+        "    [StringLength(1000, MinimumLength = 20)]\n" +
+        "    public string? Description { get; set; }\n" +
+        "}\n",
+        "csharp", "BugReportModel.cs");
+
+    private static readonly CodeFile _step2SetupSnippet = CodeFile.Create(
+        "@code {\n" +
+        "    private BugReportModel _model = new();\n" +
+        "\n" +
+        "    private void HandleSubmit()\n" +
+        "    {\n" +
+        "        // Save or send the report\n" +
+        "    }\n" +
+        "}\n",
+        "razor", "BugReportForm.razor");
+
+    private static readonly CodeFile _validationModelSnippet = CodeFile.Create(
+        "public sealed class BugReportModel\n" +
+        "{\n" +
+        "    [Required]\n" +
+        "    public string? Title { get; set; }\n" +
+        "\n" +
+        "    [Required]\n" +
+        "    [StringLength(500, MinimumLength = 10)]\n" +
+        "    public string? Description { get; set; }\n" +
+        "}\n",
+        "csharp", "ValidationModel.cs");
+
+    private static readonly CodeFile _validationDisplaySnippet = CodeFile.Create(
+        "<Field For=\"() => model.Title\" FieldId=\"title\">\n" +
+        "    <FieldLabel>Title</FieldLabel>\n" +
+        "    <Input id=\"title\" @bind-Value=\"model.Title\" aria-invalid=\"@IsInvalid(() => model.Title)\" />\n" +
+        "    <FieldError />\n" +
+        "</Field>\n\n" +
+        "@code {\n" +
+        "    [CascadingParameter] private EditContext? EditContext { get; set; }\n" +
+        "\n" +
+        "    private bool IsInvalid(Expression<Func<object>> field)\n" +
+        "        => EditContext is not null && EditContext.GetValidationMessages(FieldIdentifier.Create(field)).Any();\n" +
+        "}\n",
+        "razor", "FieldValidation.razor");
+
+    private static readonly CodeFile _resetSnippet = CodeFile.Create(
+        "// Option A: Replace the model\n" +
+        "_model = new BugReportModel();\n" +
+        "\n" +
+        "// Option B: Rebuild the EditContext\n" +
+        "_editContext = new EditContext(_model);\n",
+        "csharp", "ResetForm.cs");
+
+    private static readonly CodeFile _dynamicFieldsSnippet = CodeFile.Create(
+        "public sealed class ContactModel\n" +
+        "{\n" +
+        "    public List<string> Emails { get; set; } = new();\n" +
+        "}\n\n" +
+        "@code {\n" +
+        "    private ContactModel _model = new();\n" +
+        "    private EditContext _editContext = null!;\n" +
+        "\n" +
+        "    protected override void OnInitialized()\n" +
+        "    {\n" +
+        "        _editContext = new EditContext(_model);\n" +
+        "    }\n" +
+        "\n" +
+        "    private void AddEmail()\n" +
+        "    {\n" +
+        "        _model.Emails.Add(string.Empty);\n" +
+        "        _editContext.NotifyFieldChanged(new FieldIdentifier(_model, nameof(_model.Emails)));\n" +
+        "    }\n" +
+        "\n" +
+        "    private void RemoveEmail(int index)\n" +
+        "    {\n" +
+        "        _model.Emails.RemoveAt(index);\n" +
+        "        _editContext.NotifyFieldChanged(new FieldIdentifier(_model, nameof(_model.Emails)));\n" +
+        "    }\n" +
+        "}\n",
+        "csharp", "DynamicFields.cs");
+}
+
+
+

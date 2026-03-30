@@ -1,0 +1,44 @@
+@using ShadcnBlazor.Components.Shared.Configuration
+@using ShadcnBlazor.Components.Sonner.Services
+
+@namespace ShadcnBlazor.Components.Sonner
+
+@implements IDisposable
+
+@inject SonnerComponentRegistry Registry
+
+<div id="sonner-component-@FragmentId" style="display:none">
+    @if (_fragment is not null)
+    {
+        @_fragment
+    }
+</div>
+
+@code {
+    [Parameter] public string? FragmentId { get; set; }
+
+    private RenderFragment? _fragment;
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"[SonnerComponentHost.OnInitialized] FragmentId={FragmentId}");
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine($"[SonnerComponentHost.OnParametersSet] Looking up FragmentId={FragmentId}");
+        _fragment = Registry.TryGet(FragmentId);
+        Console.WriteLine($"[SonnerComponentHost.OnParametersSet] Fragment found: {_fragment != null}");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"[SonnerComponentHost.OnAfterRender] firstRender={firstRender}, FragmentId={FragmentId}");
+    }
+
+    public void Dispose()
+    {
+        Console.WriteLine($"[SonnerComponentHost.Dispose] Removing FragmentId={FragmentId}");
+        Registry.Remove(FragmentId);
+    }
+}

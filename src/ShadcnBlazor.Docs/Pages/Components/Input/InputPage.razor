@@ -6,32 +6,87 @@
 </HeadContent>
 @using System.Reflection
 @using ShadcnBlazor.Docs.Pages.Components.Input.Examples
-@using ShadcnBlazor.Docs.Pages.Examples
 @using ShadcnBlazor.Docs.Services
 @using ShadcnBlazor.Docs.Components.Docs.CodeBlock
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Input">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Input component provides a single-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Type</code>, and <code>Size</code> as needed.</p>
+        <p>The Input component provides a single-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Type</code>, and <code>Size</code> as needed.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputBasicExample })">
             <InputBasicExample />
         </ComponentPreview>
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Field" Id="field">
+            <p>Wrap the input in a <code>Field</code> component to add a label and description.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputFieldExample })">
+                <InputFieldExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Field Group" Id="field-group">
+            <p>Use <code>FieldGroup</code> to organize multiple fields together.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputFieldGroupExample })">
+                <InputFieldGroupExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p>Set <code>Disabled</code> on both the Field and Input to disable a field with proper styling.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputDisabledExample })">
+                <InputDisabledExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Invalid" Id="invalid">
+            <p>Mark invalid inputs with <code>aria-invalid="true"</code> and add a <code>FieldError</code> message.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputInvalidExample })">
+                <InputInvalidExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="File" Id="file">
+            <p>Use <code>Type="file"</code> for file upload inputs.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputFileExample })">
+                <InputFileExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Inline" Id="inline">
+            <p>Use <code>Orientation="FieldOrientation.Horizontal"</code> for side-by-side label and input.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputInlineExample })">
+                <InputInlineExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Grid" Id="grid">
+            <p>Arrange multiple inputs using CSS Grid for complex layouts.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputGridExample })">
+                <InputGridExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Required" Id="required">
+            <p>Use the <code>Required</code> parameter to mark inputs as required.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputRequiredExample })">
+                <InputRequiredExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
         <DocsSubSection Title="Sizes" Id="sizes">
-            <p class="mb-3">Use the <code>Size</code> parameter for Sm, Md, or Lg inputs.</p>
+            <p>Use the <code>Size</code> parameter for Sm, Md, or Lg inputs.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputSizeExample })">
                 <InputSizeExample />
             </ComponentPreview>
         </DocsSubSection>
 
-        <DocsSubSection Title="Form validation (aria-invalid)" Id="form-validation">
-            <p class="mb-3">Wrap your form in <code>FormValidationProvider</code> with <code>Invalid</code> and <code>ErrorMessageId</code>. Input and Button receive the context and apply <code>aria-invalid</code> and <code>aria-errormessage</code> automatically.</p>
-            <ComponentPreview CodeFiles="@(new[] { _formExampleCode })">
-                <AccessibilityFormExample />
+        <DocsSubSection Title="Input Group" Id="input-group">
+            <p>Use <code>InputGroup</code> to combine an input with prefix/suffix addons and buttons.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Input_Examples_InputInputGroupExample })">
+                <InputInputGroupExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
@@ -40,24 +95,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Input");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add input",
-    };
-
-    private static readonly CodeFile _formExampleCode = CodeFile.Create(
-        "<FormValidationProvider Invalid=\"_showInvalid\" ErrorMessageId=\"email-error\">\n" +
-        "    <div class=\"flex flex-col gap-2\">\n" +
-        "        <label for=\"email\">Email</label>\n" +
-        "        <Input id=\"email\" @bind-Value=\"_email\" Placeholder=\"you@example.com\" />\n" +
-        "        <span id=\"email-error\" class=\"text-sm text-destructive\" aria-live=\"polite\">\n" +
-        "            @(_showInvalid ? \"Please enter a valid email address.\" : null)\n" +
-        "        </span>\n" +
-        "    </div>\n" +
-        "    <div class=\"flex gap-2 mt-2\">\n" +
-        "        <Button Type=\"ButtonType.Submit\" OnClick=\"HandleSubmit\">Submit</Button>\n" +
-        "        <Button Variant=\"Variant.Outline\" OnClick=\"ToggleInvalid\">Toggle invalid</Button>\n" +
-        "    </div>\n" +
-        "</FormValidationProvider>",
-        "razor", "Example.razor");
+    private const string InstallCommand = "shadcnblazor component add input";
 }
+
+

@@ -13,6 +13,8 @@ public partial class CodeBlock : ShadcnComponentBase
     [Parameter] public bool ShowLineNumbers { get; set; } = true;
     [Parameter] public bool ShowCopyButton { get; set; } = true;
     [Parameter] public bool Focusable { get; set; } = true;
+    [Parameter] public bool AllowVerticalScroll { get; set; } = false;
+    [Parameter] public string?[]? HighlightedLines { get; set; }
 
     private readonly string _idBase = Guid.NewGuid().ToString("N")[..8];
     private IReadOnlyList<CodeFile> _files = [];
@@ -23,6 +25,8 @@ public partial class CodeBlock : ShadcnComponentBase
     private bool _copied;
 
     private string _id => $"{_idBase}-{_selectedIndex}";
+    private string _preId => $"{_idBase}-{_selectedIndex}-pre";
+    private string _overlayId => $"{_idBase}-{_selectedIndex}-overlay";
     private bool HasMultipleFiles => _files.Count > 1;
     private CodeFile? Current => _files.Count > 0 ? _files[_selectedIndex] : null;
 
@@ -53,17 +57,27 @@ public partial class CodeBlock : ShadcnComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        var highlightedLines = HighlightedLines?[_selectedIndex] ?? "";
         if (!string.IsNullOrWhiteSpace(_code))
+        {
             await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.highlightElement", _id);
+            await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.applyLineHighlights", _preId, _overlayId, highlightedLines, _lineNumbers.Length);
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.applyLineHighlights", _preId, _overlayId, "", 0);
+        }
     }
 
     private string WrapperClass => MergeCss(
         "docs-codeblock-wrapper bg-card relative w-full max-w-full min-w-0 overflow-x-auto",
         Style == CodeBlockStyle.Embedded ? "rounded-b-lg" : "rounded-lg");
 
-    private string CodeBlockClass => Style == CodeBlockStyle.Embedded
-        ? "docs-codeblock docs-codeblock--embedded"
-        : "docs-codeblock docs-codeblock--solo";
+    private string CodeBlockClass => MergeCss(
+        Style == CodeBlockStyle.Embedded
+            ? "docs-codeblock docs-codeblock--embedded"
+            : "docs-codeblock docs-codeblock--solo",
+        AllowVerticalScroll ? "overflow-y-auto" : "overflow-y-hidden");
 
     private string TabClass(int i) => i == _selectedIndex
         ? "px-3 py-2 text-xs font-medium transition-colors duration-250 border-b-3 -mb-px border-primary text-foreground whitespace-nowrap"

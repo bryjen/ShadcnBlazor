@@ -117,6 +117,21 @@
 .docs-codeblock pre {
     background: transparent !important;
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    padding: 1rem !important;
+}
+.docs-codeblock-pre {
+    position: relative;
+}
+.docs-codeblock-line-highlights {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.docs-codeblock-line-highlight {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 .docs-codeblock pre code {
     background: transparent !important;
@@ -125,10 +140,18 @@
     font-weight: 400;
     white-space: pre;
 }
+.docs-codeblock-code {
+    position: relative;
+    z-index: 1;
+}
+.docs-codeblock-linenos {
+    position: relative;
+    z-index: 1;
+}
 /* Override github-dark.min.css padding - p-4 equivalent (1rem). Scoped to docs-codeblock only. */
 .docs-codeblock pre code.hljs {
     background: transparent !important;
-    padding: 1rem !important;
+    padding: 0 !important;
 }
 .docs-codeblock-linenos div {
     min-height: 1.65em;
@@ -157,23 +180,24 @@
 
 /* Component preview code block accordion - matches AccordionContent animation */
 .docs-codeblock-accordion {
-    max-height: 0;
-    opacity: 0;
-    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+    overflow: hidden;
+    height: 0;
+    transition: height 300ms ease-in-out;
 }
 .docs-codeblock-accordion-expanded {
-    max-height: 2000px;
-    opacity: 1;
-    transition: max-height 300ms ease-in-out, opacity 300ms ease-in-out;
+    height: auto;
 }
 .docs-codeblock-accordion-inner {
-    overflow: hidden;
+    /* Inner wrapper for consistent styling */
 }
 
 /* VS Code Dark+ color scheme for docs codeblock */
 .docs-codeblock .hljs {
     color: #d4d4d4;
     background: transparent !important;
+
+    font-size: var(--text-xs);
+    line-height: var(--text-xs--line-height);
 }
 .docs-codeblock .hljs-keyword,
 .docs-codeblock .hljs-selector-tag,
@@ -294,7 +318,6 @@
 }
 .docs-codeblock-codemirror .cm-scroller {
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
     line-height: 1.65;
 }
 .docs-codeblock-codemirror .cm-content {
@@ -304,7 +327,8 @@
 .docs-codeblock-codemirror .cm-gutters {
     background: color-mix(in oklab, var(--card) 92%, black 8%) !important;
     border-right: 1px solid hsl(var(--border));
-    color: hsl(var(--muted-foreground) / 0.5);`n}
+    color: hsl(var(--muted-foreground) / 0.5);
+}
 .docs-codeblock-codemirror .cm-activeLineGutter {
     background: color-mix(in oklab, var(--card) 85%, black 15%);
     color: hsl(var(--muted-foreground));

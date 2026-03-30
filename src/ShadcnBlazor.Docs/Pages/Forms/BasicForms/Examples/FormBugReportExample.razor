@@ -1,0 +1,41 @@
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@_model" OnValidSubmit="@HandleSubmit" novalidate>
+    <DataAnnotationsValidator />
+
+    <div class="flex flex-col gap-4">
+        <Field For="() => _model.Title" FieldId="bug-title">
+            <FieldLabel>Title</FieldLabel>
+            <Input id="bug-title" @bind-Value="_model.Title" Placeholder="Brief summary" />
+            <FieldError />
+        </Field>
+
+        <Field For="() => _model.Description" FieldId="bug-description">
+            <FieldLabel>Description</FieldLabel>
+            <Textarea id="bug-description" Rows="5" @bind-Value="_model.Description" Placeholder="What happened? Include steps to reproduce." />
+            <FieldDescription>Share as much detail as possible.</FieldDescription>
+            <FieldError />
+        </Field>
+
+        <Button Type="ButtonType.Submit">Submit report</Button>
+    </div>
+</EditForm>
+
+@code {
+    private readonly BugReportModel _model = new();
+
+    private void HandleSubmit()
+    {
+    }
+
+    private sealed class BugReportModel
+    {
+        [Required]
+        [StringLength(80, MinimumLength = 5)]
+        public string? Title { get; set; }
+
+        [Required]
+        [StringLength(1000, MinimumLength = 20)]
+        public string? Description { get; set; }
+    }
+}

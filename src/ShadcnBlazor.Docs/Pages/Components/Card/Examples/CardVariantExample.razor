@@ -1,10 +1,24 @@
 <div class="flex flex-col gap-4 w-fit">
-    <Card Variant="@CardVariant.Default" Class="w-[350px] gap-2">
-        <h3 class="text-lg font-semibold">Default</h3>
-        <p class="text-sm text-muted-foreground">Uses the card background color.</p>
-    </Card>
-    <Card Variant="@CardVariant.Outline" Class="w-[350px] gap-2">
-        <h3 class="text-lg font-semibold">Outline</h3>
-        <p class="text-sm text-muted-foreground">Transparent background with border.</p>
-    </Card>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Standard card</p>
+        <Card Class="w-[350px]">
+            <CardHeader>
+                <CardTitle>Standard card</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Default styling with background color.</p>
+            </CardContent>
+        </Card>
+    </div>
+    <div>
+        <p class="text-sm font-medium text-muted-foreground mb-2">Custom background (outline-like)</p>
+        <Card Class="w-[350px] !bg-transparent">
+            <CardHeader>
+                <CardTitle>Custom styling</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Override card styles with custom classes.</p>
+            </CardContent>
+        </Card>
+    </div>
 </div>

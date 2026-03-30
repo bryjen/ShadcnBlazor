@@ -9,20 +9,51 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Slider">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for two-way binding.</p>
+        <p>The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for single-thumb mode or <code>Values</code> for multi-thumb mode.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderBasicExample })">
-            <SliderBasicExample />
+            <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                <SliderBasicExample />
+            </div>
         </ComponentPreview>
     </DocsSection>
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Range" Id="range">
-            <p class="mb-3">Customize <code>Min</code>, <code>Max</code>, and <code>Step</code> for different value ranges.</p>
+            <p>Use <code>@@bind-Values</code> with a list of values to create a range slider with multiple thumbs.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderRangeExample })">
-                <SliderRangeExample />
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                    <SliderRangeExample />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Multiple Thumbs" Id="multiple">
+            <p>Create sliders with three or more independent thumbs by binding a list of values.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderMultipleExample })">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                    <SliderMultipleExample />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Disabled" Id="disabled">
+            <p>Use the <code>Disabled</code> parameter to prevent user interaction.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderDisabledExample })">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                    <SliderDisabledExample />
+                </div>
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Sizes" Id="sizes">
+            <p>The <code>Size</code> parameter controls the track and thumb dimensions. Choose from <code>Size.Sm</code>, <code>Size.Md</code>, or <code>Size.Lg</code>.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderSizesExample })">
+                <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
+                    <SliderSizesExample />
+                </div>
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
@@ -31,8 +62,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Slider");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add slider",
-    };
+    private const string InstallCommand = "shadcnblazor component add slider";
 }
+
+

@@ -1,0 +1,21 @@
+<AccordionContent InnerClass="pb-0">
+    @if (_itemContext != null && _parentContext != null)
+    {
+        <div class="w-full h-full opacity-0 transition-all duration-300 @GetOpacityClass()">
+            @ChildContent
+        </div>
+    }
+</AccordionContent>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private RadioExpandableItem.RadioExpandableItemContext? _itemContext { get; set; }
+
+    [CascadingParameter]
+    private RadioExpandable.RadioExpandableContext? _parentContext { get; set; }
+
+    private string GetOpacityClass() => _parentContext?.Value == _itemContext?.Value ? "opacity-100" : string.Empty;
+}

@@ -5,16 +5,6 @@
         color: var(--foreground);
     }
 
-    /* Overlay scrollbar - doesn't take layout space (for browsers that support it) */
-    @supports (overflow: overlay) {
-
-        html,
-        body {
-            overflow: overlay;
-        }
-    }
-
-
     h1:focus {
         outline: none;
     }
@@ -97,15 +87,6 @@
         will-change: transform, opacity;
     }
 
-    .popover-top-left { transform-origin: top left; }
-    .popover-top-center { transform-origin: top center; }
-    .popover-top-right { transform-origin: top right; }
-    .popover-center-left { transform-origin: center left; }
-    .popover-center-center { transform-origin: center; }
-    .popover-center-right { transform-origin: center right; }
-    .popover-bottom-left { transform-origin: bottom left; }
-    .popover-bottom-center { transform-origin: bottom center; }
-    .popover-bottom-right { transform-origin: bottom right; }
     .popover-content[data-state="open"] {
         opacity: 1;
         pointer-events: auto;
@@ -231,8 +212,8 @@
 
     /* Dialog - Shadcn styling with frosted backdrop */
     .dialog-overlay {
-        background-color: oklch(0 0 0 / 0.5);
-        backdrop-filter: blur(16px) saturate(150%);
+        background-color: oklch(0 0 0 / 0.2);
+        backdrop-filter: blur(4px) saturate(110%);
         transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1),
         backdrop-filter 200ms cubic-bezier(0.32, 0.72, 0, 1);
         pointer-events: none;
@@ -244,15 +225,6 @@
     }
 
     .dialog-content {
-        position: relative;
-        width: 100%;
-        background-color: var(--card);
-        color: var(--card-foreground);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-        display: grid;
-        gap: 0;
         transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1),
         transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
     }
@@ -262,21 +234,7 @@
         transform: scale(0.96) translateY(8px);
     }
 
-    .dialog-content.dialog-fullscreen {
-        max-width: none;
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-    }
-
-    .dialog-content.dialog-fullwidth {
-        max-width: 100%;
-    }
-
-    /* Unstyled: no preset styling; child content (e.g. Card) controls appearance */
     .dialog-unstyled {
-        position: relative;
-        width: fit-content;
         transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1),
         transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
     }

@@ -105,13 +105,8 @@
             return null;
 
         var count = triggers.Count;
-        for (var i = 1; i <= count; i++)
-        {
-            var index = ((currentIndex + direction * i) % count + count) % count;
-            return triggers[index];
-        }
-
-        return null;
+        var index = ((currentIndex + direction) % count + count) % count;
+        return triggers[index];
     }
 
     private string GetClass()

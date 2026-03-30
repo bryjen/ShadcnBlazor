@@ -1,0 +1,63 @@
+@page "/components/focustrap"
+
+<PageTitle>FocusTrap - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="ShadcnBlazor FocusTrap - A component that traps focus within a specific area, useful for modals, drawers, and popovers." />
+</HeadContent>
+@using ShadcnBlazor.Docs.Pages.Components.FocusTrap.Examples
+
+<ComponentDocPage Metadata="@Metadata"
+                  InstallCommand="@InstallCommand"
+                  ApiDoc="@ApiDocumentation.FocusTrap">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessible</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="FocusTrap" />
+
+    <DocsSection Title="Usage" Id="usage">
+        <p>The <code>FocusTrap</code> component is used to lock the keyboard focus within a specific DOM element. This is essential for building accessible modals and overlays. It is powered by the <code>focus-trap</code> library.</p>
+        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_FocusTrap_Examples_FocusTrapBasicExample })">
+            <FocusTrapBasicExample />
+        </ComponentPreview>
+    </DocsSection>
+
+    <DocsSection Title="Examples" Id="examples">
+        <DocsSubSection Title="Initial Focus" Id="initial-focus">
+            <p>You can specify which element should receive focus when the trap is activated using the <code>InitialFocus</code> property within <code>FocusOptions</code>. This can be a CSS selector or an element reference.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_FocusTrap_Examples_FocusTrapInitialFocusExample })">
+                <FocusTrapInitialFocusExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Disabled State" Id="disabled">
+            <p>Use the <code>Disabled</code> parameter to toggle the focus trap on and off. When disabled, the tab order returns to the normal document flow.</p>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p>Focus trapping is a critical accessibility requirement for modal-like experiences. It ensures that keyboard users don't accidentally navigate away from the content they are currently interacting with.</p>
+        <p>Our implementation handles nested traps automatically, pausing the parent trap when a child trap is activated (e.g., a dialog opening over another dialog).</p>
+    </DocsSection>
+    </ChildContent>
+</ComponentDocPage>
+
+@code {
+    private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("FocusTrap");
+
+    private const string InstallCommand = "shadcnblazor component add focustrap";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Standard-compliant focus trapping via focus-trap</div> },
+        __builder => { <div>Automatic handling of hidden and disabled elements</div> },
+        __builder => { <div>Support for nested focus traps</div> },
+        __builder => { <div>Configurable initial and fallback focus</div> },
+        __builder => { <div>JS Interop handled automatically by the component</div> },
+    };
+}

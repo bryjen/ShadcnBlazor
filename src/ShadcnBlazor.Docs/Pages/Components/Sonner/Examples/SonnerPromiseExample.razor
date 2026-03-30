@@ -1,0 +1,40 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2">
+    <Button OnClick="ShowSuccessPromise">Show Promise (Success)</Button>
+    <Button Variant="@Variant.Destructive" OnClick="ShowErrorPromise">Show Promise (Error)</Button>
+</div>
+
+@code {
+    private async Task ShowSuccessPromise()
+    {
+        await SonnerService.PromiseAsync(
+            DelayAsync(),
+            "Saving changes...",
+            "Changes saved successfully!",
+            "Failed to save changes."
+        );
+    }
+
+    private async Task ShowErrorPromise()
+    {
+        await SonnerService.PromiseAsync(
+            FailAsync(),
+            "Loading data...",
+            "Data loaded successfully!",
+            "Failed to load data."
+        );
+    }
+
+    private async Task<object> DelayAsync()
+    {
+        await Task.Delay(2000);
+        return new object();
+    }
+
+    private async Task<object> FailAsync()
+    {
+        await Task.Delay(500);
+        throw new Exception("Network error");
+    }
+}

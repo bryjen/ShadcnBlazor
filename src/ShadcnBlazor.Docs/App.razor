@@ -1,16 +1,32 @@
 @inject ThemeService ThemeService
+@inject ScrollLockInterop ScrollLockInterop
+@using ShadcnBlazor.Docs.Components.Layout
 @using ShadcnBlazor.Docs.Services.Theme
-@implements IDisposable
+@using ShadcnBlazor.Components.Shared.Services.Interop
+@using ShadcnBlazor.Components.Sonner
+@using ShadcnBlazor.Components.Drawer
 
 <style id="shadcn-runtime-theme">@ThemeService.RuntimeStyleSheet</style>
 
-<PopoverProvider RepositionDebounceMilliseconds="1" />
-<DialogProvider />
-<SheetProvider />
+<SonnerHost />
+<DrawerHost />
+
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        <PopoverProvider RepositionDebounceMilliseconds="1" />
+        <CascadingValue Value="@_mobileMenuDrawer" Name="MobileMenuDrawer">
+            <DrawerRoot @ref="_mobileMenuDrawer"
+                        Direction="@DrawerDirection.Bottom"
+                        SnapPoints="@(new object[] { 0.75, 1 })"
+                        OnOpenChange="@OnDrawerOpenChange">
+                <DrawerOverlay />
+                <DrawerContent Class="h-full max-h-[100%]">
+                    <MobileNavSheet DrawerRoot="_mobileMenuDrawer" />
+                </DrawerContent>
+            </DrawerRoot>
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        </CascadingValue>
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
@@ -19,9 +35,48 @@
 </Router>
 
 @code {
+    private DrawerRoot? _mobileMenuDrawer;
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine($"[App.OnParametersSet] DrawerRoot ref: {_mobileMenuDrawer}");
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Console.WriteLine($"[App.OnAfterRender] First render, DrawerRoot ref: {_mobileMenuDrawer}");
+            if (_mobileMenuDrawer != null)
+            {
+                StateHasChanged();
+            }
+        }
+    }
+
     protected override void OnInitialized()
     {
         ThemeService.ThemeChanged += OnThemeChanged;
+    }
+
+    private async Task OnDrawerOpenChange(bool isOpen)
+    {
+        // Ghost Gutter Protocol: Lock/unlock scroll based on drawer state
+        try
+        {
+            if (isOpen)
+            {
+                await ScrollLockInterop.LockAsync();
+            }
+            else
+            {
+                await ScrollLockInterop.UnlockAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error managing scroll lock: {ex.Message}");
+        }
     }
 
     private void OnThemeChanged()
@@ -29,8 +84,10 @@
         _ = InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         ThemeService.ThemeChanged -= OnThemeChanged;
+        await ScrollLockInterop.DisposeAsync();
     }
+
 }

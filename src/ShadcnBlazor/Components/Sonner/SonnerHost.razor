@@ -1,0 +1,73 @@
+@implements IAsyncDisposable
+@using ShadcnBlazor.Components.Sonner.Services
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@inject SonnerComponentRegistry Registry
+
+@foreach (var fragmentId in _activeFragments)
+{
+    <SonnerComponentHost FragmentId="@fragmentId" />
+}
+
+@code {
+    private readonly HashSet<string> _activeFragments = new();
+    private DotNetObjectReference<SonnerHost>? _dotNetRef;
+    private TaskCompletionSource<bool>? _renderComplete;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeVoidAsync("window.Sonner.setHostRef", _dotNetRef);
+            }
+            catch (JSDisconnectedException) { }
+            catch (OperationCanceledException) { }
+            catch (JSException) { }
+            catch (Exception) { }
+        }
+        else if (_renderComplete != null)
+        {
+            _renderComplete.TrySetResult(true);
+            _renderComplete = null;
+        }
+    }
+
+    /// <summary>
+    /// Shows a component in the Sonner host and waits for it to be rendered.
+    /// </summary>
+    [JSInvokable]
+    public async Task ShowComponent(string fragmentId, string containerId)
+    {
+        var fragment = Registry.TryGet(fragmentId);
+        if (fragment is null) return;
+
+        _renderComplete = new TaskCompletionSource<bool>();
+        _activeFragments.Add(fragmentId);
+        StateHasChanged();
+
+        // Wait for OnAfterRender to signal render is complete
+        await _renderComplete.Task;
+    }
+
+    /// <summary>
+    /// Removes a component from the Sonner host by its fragment ID.
+    /// </summary>
+    [JSInvokable]
+    public void RemoveComponent(string fragmentId)
+    {
+        if (_activeFragments.Remove(fragmentId))
+        {
+            Registry.Remove(fragmentId);
+            StateHasChanged();
+        }
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _dotNetRef?.Dispose();
+        return ValueTask.CompletedTask;
+    }
+}

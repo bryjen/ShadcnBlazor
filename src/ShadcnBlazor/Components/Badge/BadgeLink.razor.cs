@@ -21,6 +21,20 @@ public partial class BadgeLink : ShadcnComponentBase
     [Parameter] public Variant Variant { get; set; } = Variant.Link;
     /// <summary>The size of the badge.</summary>
     [Parameter] public Size Size { get; set; } = Size.Md;
+    /// <summary>ARIA label for screen readers. Required for icon-only badges or to clarify link purpose.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    private string GetAriaLabel()
+    {
+        if (AriaLabel is not null)
+            return AriaLabel;
+
+        // Warn users if link opens in new tab
+        if (Target == "_blank")
+            return "Opens in new window";
+
+        return "";
+    }
 
     private string GetClass()
     {

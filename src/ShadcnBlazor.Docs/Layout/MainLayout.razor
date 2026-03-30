@@ -1,13 +1,14 @@
 @using ShadcnBlazor.Docs.Components.Layout
+@using ShadcnBlazor.Components.Drawer
 @inherits LayoutComponentBase
 
-<header class="fixed top-0 left-0 right-0 z-50 h-14 w-full bg-background">
+<header class="fixed top-0 left-0 right-0 z-20 h-14 w-full bg-background">
     <Header></Header>
 </header>
 
 <main class="min-h-screen bg-background text-foreground flex pt-14">
     <div id="nav-area" data-device="desktop" class="max-lg:hidden fixed left-0 top-14 bottom-0 w-[17.5%]">
-        <div class="absolute top-0 right-0 w-[1px] h-full z-20" 
+        <div class="absolute top-0 right-0 w-[1px] h-full z-20"
              style="background: linear-gradient(to bottom, transparent 0%, transparent 5%, var(--border) 50%, transparent 95%, transparent 100%);"></div>
 
         <div class="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background via-background to-transparent pointer-events-none z-10"></div>
@@ -16,13 +17,14 @@
     </div>
 
     <div id="main-content" class="lg:mx-[clamp(5%,17.5%,17.5%)] flex-1 min-w-0 grid text-sm max-lg:p-4 lg:p-10 pt-12 min-h-[calc(100vh-3.5rem)]">
-        <div class="lg:mx-[clamp(2rem,15%,20%)] min-w-0 overflow-x-hidden">
+        <div class="docs-page lg:mx-[clamp(2rem,15%,20%)] min-w-0 overflow-x-hidden">
             @Body
         </div>
         <div class="w-[10rem] shrink-0"></div>
     </div>
-    
-    <div data-device="desktop" class="max-lg:hidden fixed top-14 right-10 w-[10rem] pt-10 bg-background z-40">
+
+    <div data-device="desktop" class="max-lg:hidden fixed top-14 right-10 w-[10rem] pt-10 bg-background z-20">
         <OnThisPage />
     </div>
 </main>
+

@@ -1,8 +1,11 @@
+using ShadcnBlazor.Components.Shared.Configuration;
+
 namespace ShadcnBlazor.Components.Popover.Services;
 
 /// <summary>
 /// Implementation of <see cref="IPopoverRegistry"/> that tracks the current PopoverProvider.
 /// </summary>
+[RegisterService(serviceType: typeof(IPopoverRegistry))]
 public sealed class PopoverRegistry : IPopoverRegistry
 {
     /// <inheritdoc />

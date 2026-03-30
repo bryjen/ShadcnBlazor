@@ -1,0 +1,15 @@
+<FieldGroup Label="Full Name">
+    <Field FieldId="firstName">
+        <FieldLabel>First Name</FieldLabel>
+        <Input id="firstName" @bind-Value="_firstName" Placeholder="John" />
+    </Field>
+    <Field FieldId="lastName">
+        <FieldLabel>Last Name</FieldLabel>
+        <Input id="lastName" @bind-Value="_lastName" Placeholder="Doe" />
+    </Field>
+</FieldGroup>
+
+@code {
+    private string _firstName = "";
+    private string _lastName = "";
+}

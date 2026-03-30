@@ -14,3 +14,9 @@ Models/Generated/
 !/src/ShadcnBlazor/Components/Shared/
 
 /src/ShadcnBlazor.Docs/publish/
+/src/ShadcnBlazor.Docs/output/
+
+node_modules
+/sonner-interop/node_modules
+sonner-interop/node_modules
+/vaul-interop/node_modules

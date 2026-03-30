@@ -55,12 +55,11 @@ public class SliderTests : BaseTest
     }
 
     [Test]
-    public void RangeSlider_RendersTwoInputs()
+    public void Slider_WithValues_RendersTwoInputs()
     {
         // Act
-        var cut = TestContext.Render<ShadcnBlazor.Components.Slider.RangeSlider>(p => p
-            .Add(x => x.LowerValue, 20)
-            .Add(x => x.UpperValue, 80));
+        var cut = TestContext.Render<ShadcnBlazor.Components.Slider.Slider>(p => p
+            .Add(x => x.Values, new List<double> { 20, 80 }));
 
         // Assert
         var inputs = cut.FindAll("input[type='range']");

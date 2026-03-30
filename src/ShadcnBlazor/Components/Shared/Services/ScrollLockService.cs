@@ -1,3 +1,4 @@
+using ShadcnBlazor.Components.Shared.Configuration;
 using ShadcnBlazor.Components.Shared.Services.Interop;
 
 namespace ShadcnBlazor.Components.Shared.Services;
@@ -6,10 +7,12 @@ namespace ShadcnBlazor.Components.Shared.Services;
 /// Service for locking body scroll with reference counting (supports nested modals).
 /// </summary>
 /// <param name="scrollLockInterop">The JavaScript interop for scroll lock.</param>
+[RegisterService]
 public class ScrollLockService(ScrollLockInterop scrollLockInterop)
 {
     private int _lockCount;
 
+    /// <summary>Increments the lock count and locks body scroll if needed.</summary>
     public async ValueTask LockAsync()
     {
         _lockCount++;
@@ -19,6 +22,7 @@ public class ScrollLockService(ScrollLockInterop scrollLockInterop)
         }
     }
 
+    /// <summary>Decrements the lock count and unlocks body scroll when it reaches zero.</summary>
     public async ValueTask UnlockAsync()
     {
         if (_lockCount > 0)
@@ -31,6 +35,7 @@ public class ScrollLockService(ScrollLockInterop scrollLockInterop)
         }
     }
 
+    /// <summary>Toggles the scroll lock based on the current count.</summary>
     public async ValueTask ToggleAsync()
     {
         if (_lockCount > 0)

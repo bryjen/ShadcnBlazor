@@ -13,30 +13,35 @@ public partial class Switch : ShadcnComponentBase
     /// Content to display alongside the switch (e.g., label).
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
     /// Whether the switch is on.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Data)]
     public bool Checked { get; set; }
 
     /// <summary>
     /// Callback invoked when the checked state changes.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<bool> CheckedChanged { get; set; }
 
     /// <summary>
     /// The size of the switch.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
 
     /// <summary>
     /// Whether the switch is disabled.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool Disabled { get; set; }
 
     private string GetTrackClass()

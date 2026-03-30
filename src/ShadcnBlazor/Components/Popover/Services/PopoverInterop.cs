@@ -1,10 +1,12 @@
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Shared.Configuration;
 
 namespace ShadcnBlazor.Components.Popover.Services;
 
 /// <summary>
 /// JavaScript interop for popover positioning, outside-click handling, and lifecycle.
 /// </summary>
+[RegisterService]
 public class PopoverInterop : IAsyncDisposable
 {
     /// <summary>
@@ -12,7 +14,7 @@ public class PopoverInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/_content/ShadcnBlazor/js/popovers.js",
+        "/_content/ShadcnBlazor/Components/Popover/Stubs/PopoverStub.razor.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;
@@ -79,10 +81,10 @@ public class PopoverInterop : IAsyncDisposable
     }
 
     /// <summary>Connects an anchor to its popover for positioning.</summary>
-    public async ValueTask ConnectAsync(string anchorId, string popoverId, CancellationToken cancellationToken = default)
+    public async ValueTask ConnectAsync(string anchorId, string popoverId, object options, CancellationToken cancellationToken = default)
     {
         var module = await GetModuleAsync(cancellationToken);
-        await module.InvokeVoidAsync("connect", cancellationToken, anchorId, popoverId);
+        await module.InvokeVoidAsync("connect", cancellationToken, anchorId, popoverId, options);
     }
 
     /// <summary>Disconnects a popover from its anchor.</summary>

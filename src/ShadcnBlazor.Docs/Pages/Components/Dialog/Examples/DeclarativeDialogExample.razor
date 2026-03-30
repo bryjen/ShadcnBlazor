@@ -1,46 +1,18 @@
-<DialogRoot>
-    <form>
-        <DialogTrigger>
-            <Button Variant="@Variant.Default">Open Dialog</Button>
-        </DialogTrigger>
-        <DialogContent MaxWidth="444px" Class="sm:max-w-sm">
-            <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>
-                    Make changes to your profile here. Click save when you're done.
-                </DialogDescription>
-            </DialogHeader>
-            <div class="grid gap-4 py-4">
-                <div class="grid gap-2">
-                    <label for="name" class="text-sm font-medium">Name</label>
-                    <Input id="name" @bind-Value="_name" placeholder="Pedro Duarte" />
-                </div>
-                <div class="grid gap-2">
-                    <label for="username" class="text-sm font-medium">Username</label>
-                    <Input id="username" @bind-Value="_username" placeholder="@_usernamePlaceholder" />
-                </div>
-            </div>
-            <DialogFooter>
-                <DialogClose>
-                    <Button Variant="@Variant.Secondary">Cancel</Button>
-                </DialogClose>
-                <Button Variant="@Variant.Default" OnClick="OnSave">Save changes</Button>
-            </DialogFooter>
-        </DialogContent>
-    </form>
+@using System.Text.Json
+<DialogRoot @ref="_dialog">
+    <DialogTrigger>
+        <Button Variant="@Variant.Default">Open Dialog</Button>
+    </DialogTrigger>
+    <DialogContent>
+        <h2 class="text-lg font-semibold">Hello</h2>
+        <p class="text-sm text-muted-foreground">This is a simple dialog component.</p>
+        <div class="flex justify-end gap-2 pt-4">
+            <Button Variant="@Variant.Outline" OnClick="@(() => _dialog.CloseAsync())">Close</Button>
+            <Button Variant="@Variant.Default" OnClick="@(() => _dialog.CloseAsync())">Done</Button>
+        </div>
+    </DialogContent>
 </DialogRoot>
 
 @code {
-    private string _name = "Pedro Duarte";
-    private string _username = "@peduarte";
-    private readonly string _usernamePlaceholder = "@peduarte";
-
-    [CascadingParameter]
-    private DeclarativeDialogContext? DialogContext { get; set; }
-
-    private async Task OnSave()
-    {
-        if (DialogContext != null)
-            await DialogContext.CloseAsync();
-    }
+    private DialogRoot _dialog = null!;
 }

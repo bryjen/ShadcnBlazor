@@ -1,0 +1,49 @@
+@using ShadcnBlazor.Components.Button
+
+<div class="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+    <div class="flex items-center justify-between">
+        <div>
+            <p class="font-semibold text-sm">@Label</p>
+            <p class="text-xs text-muted-foreground mt-1">
+                @(Mode switch
+                {
+                    PopoverWidthMode.None => "Content flows naturally",
+                    PopoverWidthMode.Relative => "Popover width matches anchor width",
+                    PopoverWidthMode.Adaptive => "Popover has min-width of anchor",
+                    _ => ""
+                })
+            </p>
+        </div>
+        <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" WidthMode="@Mode" Offset="8">
+            <Anchor>
+                <Button Variant="Variant.Secondary" Size="Size.Sm" OnClick="Toggle">
+                    @(Mode switch
+                    {
+                        PopoverWidthMode.None => "Normal",
+                        PopoverWidthMode.Relative => "Relative",
+                        PopoverWidthMode.Adaptive => "Adaptive",
+                        _ => "Unknown"
+                    })
+                </Button>
+            </Anchor>
+            <ChildContent>
+                <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm min-w-[150px]">
+                    <p class="font-semibold">@Label</p>
+                    <p class="text-muted-foreground text-xs mt-1">Demonstrating <span class="font-mono text-primary">@Mode</span> mode.</p>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
+
+@code {
+    private bool _open;
+
+    [Parameter]
+    public required PopoverWidthMode Mode { get; set; }
+
+    [Parameter]
+    public required string Label { get; set; }
+
+    private void Toggle() => _open = !_open;
+}

@@ -36,8 +36,8 @@
                             class="w-10 px-4 h-10 align-middle"
                             @onclick:stopPropagation="true"
                             aria-label="Select all rows">
-                            <Checkbox Checked="@AllSelected"
-                                      CheckedChanged="@(_ => ToggleAll())"
+                            <Checkbox Value="@AllSelected"
+                                      ValueChanged="@(_ => ToggleAll())"
                                       Size="Size.Md"
                                       aria-label="Select all rows" />
                         </th>
@@ -148,8 +148,8 @@
                                     role="@GetGridCellRole()"
                                     aria-colindex="@GetColIndex(0)"
                                     @onclick:stopPropagation="true">
-                                    <Checkbox Checked="@IsSelected(item)"
-                                              CheckedChanged="@(_ => ToggleItem(item))"
+                                    <Checkbox Value="@IsSelected(item)"
+                                              ValueChanged="@(_ => ToggleItem(item))"
                                               Size="Size.Md"
                                               aria-label="@($"Select row {absRowIndex}")" />
                                 </td>

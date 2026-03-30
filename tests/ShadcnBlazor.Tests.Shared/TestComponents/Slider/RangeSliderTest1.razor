@@ -3,18 +3,17 @@
 <div class="flex flex-col gap-6 max-w-sm">
     <div>
         <p class="text-xs text-muted-foreground mb-2">Basic range slider (0-100)</p>
-        <RangeSlider Min="0" Max="100" Step="1" LowerValue="20" UpperValue="80" />
+        <Slider Min="0" Max="100" Step="1" Values="@(new List<double> {20, 80})" />
         <p class="text-sm text-muted-foreground mt-3">Selected range: 20 - 80</p>
     </div>
 
     <div>
         <p class="text-xs text-muted-foreground mb-2">Interactive range slider</p>
-        <RangeSlider Min="0" Max="100" Step="1" LowerValue="@_lowerValue" UpperValue="@_upperValue" />
-        <p class="text-sm text-muted-foreground mt-3">Range: @_lowerValue - @_upperValue</p>
+        <Slider Min="0" Max="100" Step="1" @bind-Values="_rangeValues" />
+        <p class="text-sm text-muted-foreground mt-3">Range: @_rangeValues[0] - @_rangeValues[1]</p>
     </div>
 </div>
 
 @code {
-    private int _lowerValue = 25;
-    private int _upperValue = 75;
+    private List<double> _rangeValues = new List<double> { 25, 75 };
 }

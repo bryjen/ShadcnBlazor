@@ -1,0 +1,9 @@
+@inherits ShadcnComponentBase
+
+<legend
+    data-slot="field-legend"
+    data-variant="@Variant.ToString().ToLower()"
+    class="@GetClass()"
+    @attributes="AdditionalAttributes">
+    @ChildContent
+</legend>

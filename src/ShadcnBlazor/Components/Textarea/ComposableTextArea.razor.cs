@@ -12,60 +12,70 @@ public partial class ComposableTextArea : ShadcnComponentBase
     /// The current value of the text area.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Data)]
     public string? Value { get; set; }
 
     /// <summary>
     /// Callback invoked when the value changes.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<string?> ValueChanged { get; set; }
 
     /// <summary>
     /// Callback invoked when the input change event fires.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<ChangeEventArgs> OnChange { get; set; }
 
     /// <summary>
     /// The number of visible text rows.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public int Rows { get; set; } = 8;
 
     /// <summary>
     /// Placeholder text when the value is empty.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string? Placeholder { get; set; }
 
     /// <summary>
     /// Whether the text area is disabled.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool Disabled { get; set; }
 
     /// <summary>
     /// CSS classes for the header container.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string HeaderContainerClass { get; set; } = string.Empty;
 
     /// <summary>
     /// CSS classes for the footer container.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string FooterContainerClass { get; set; } = string.Empty;
 
     /// <summary>
     /// Optional header content above the text area.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? Header { get; set; }
 
     /// <summary>
     /// Optional footer content below the text area.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? Footer { get; set; }
 
     private string GetContainerClass()

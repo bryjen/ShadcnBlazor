@@ -1,0 +1,9 @@
+<Field FieldId="required">
+    <FieldLabel>Password <span class="text-destructive">*</span></FieldLabel>
+    <Input id="required" @bind-Value="_password" Type="password" Required="true" Placeholder="Enter your password" />
+    <FieldDescription>Choose a strong password.</FieldDescription>
+</Field>
+
+@code {
+    private string _password = "";
+}

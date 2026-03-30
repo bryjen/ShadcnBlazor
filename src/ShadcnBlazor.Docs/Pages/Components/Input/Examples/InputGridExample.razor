@@ -1,0 +1,15 @@
+<div class="grid grid-cols-2 gap-4">
+    <Field FieldId="email">
+        <FieldLabel>Email</FieldLabel>
+        <Input id="email" @bind-Value="_email" Placeholder="your@example.com" Type="email" />
+    </Field>
+    <Field FieldId="phone">
+        <FieldLabel>Phone</FieldLabel>
+        <Input id="phone" @bind-Value="_phone" Placeholder="(555) 123-4567" Type="tel" />
+    </Field>
+</div>
+
+@code {
+    private string _email = "";
+    private string _phone = "";
+}

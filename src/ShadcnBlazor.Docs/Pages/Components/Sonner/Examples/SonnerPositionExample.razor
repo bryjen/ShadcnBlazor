@@ -1,0 +1,19 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2 justify-center">
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowTopLeft">Top Left</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowTopCenter">Top Center</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowTopRight">Top Right</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowBottomLeft">Bottom Left</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowBottomCenter">Bottom Center</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowBottomRight">Bottom Right</Button>
+</div>
+
+@code {
+    private async Task ShowTopLeft() => await SonnerService.Show("Toast at top left", SonnerOptions.Default with { Position = SonnerPosition.TopLeft });
+    private async Task ShowTopCenter() => await SonnerService.Show("Toast at top center", SonnerOptions.Default with { Position = SonnerPosition.TopCenter });
+    private async Task ShowTopRight() => await SonnerService.Show("Toast at top right", SonnerOptions.Default with { Position = SonnerPosition.TopRight });
+    private async Task ShowBottomLeft() => await SonnerService.Show("Toast at bottom left", SonnerOptions.Default with { Position = SonnerPosition.BottomLeft });
+    private async Task ShowBottomCenter() => await SonnerService.Show("Toast at bottom center", SonnerOptions.Default with { Position = SonnerPosition.BottomCenter });
+    private async Task ShowBottomRight() => await SonnerService.Show("Toast at bottom right", SonnerOptions.Default with { Position = SonnerPosition.BottomRight });
+}

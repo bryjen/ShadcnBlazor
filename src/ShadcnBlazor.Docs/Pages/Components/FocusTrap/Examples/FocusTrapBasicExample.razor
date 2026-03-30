@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-4 border p-6 rounded-md bg-background">
+    <div class="flex items-center justify-between">
+        <h3 class="text-sm font-semibold">Trapper Zone</h3>
+        <Button Variant="Variant.Outline" Size="Size.Sm" OnClick="@(() => _disabled = !_disabled)">
+            @(_disabled ? "Enable Trap" : "Disable Trap")
+        </Button>
+    </div>
+
+    <FocusTrap Disabled="@_disabled">
+        <div class="flex flex-col gap-4 p-4 border-2 border-dashed border-primary/30 rounded-lg bg-accent/10">
+            <p class="text-xs text-muted-foreground">
+                @( _disabled 
+                    ? "Trap is DISABLED. You can tab out of this area." 
+                    : "Trap is ENABLED. You cannot tab out of this area.")
+            </p>
+            <div class="grid gap-2">
+                <Label>First Focusable</Label>
+                <Input Placeholder="Type something..." />
+            </div>
+            <div class="grid gap-2">
+                <Label>Second Focusable</Label>
+                <Input Placeholder="Another input..." />
+            </div>
+            <Button>Action Button</Button>
+        </div>
+    </FocusTrap>
+
+    <div class="mt-4 p-4 border rounded-md bg-muted/50">
+        <p class="text-xs text-muted-foreground mb-4">Outside area (always reachable when trap is disabled)</p>
+        <Input Placeholder="I am outside the trap" />
+    </div>
+</div>
+
+@code {
+    private bool _disabled = true;
+}

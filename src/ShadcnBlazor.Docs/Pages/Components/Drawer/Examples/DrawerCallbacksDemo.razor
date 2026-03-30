@@ -1,0 +1,88 @@
+<div class="space-y-4">
+    <DrawerRoot @ref="_drawer"
+        Title="Callback Demo"
+        Description="Watch the event log as you interact with the drawer."
+        OnOpenChange="HandleOpenChange"
+        OnClose="HandleClose">
+        <DrawerTrigger>
+            <button class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring active:scale-95">
+                Open Drawer with Callbacks
+            </button>
+        </DrawerTrigger>
+        <DrawerPortal>
+            <DrawerOverlay />
+            <DrawerContent>
+                @RenderDrawerContents
+            </DrawerContent>
+        </DrawerPortal>
+    </DrawerRoot>
+
+    @if (!string.IsNullOrWhiteSpace(_callbackLog))
+    {
+        <div class="rounded-lg border border-border bg-popover p-4 font-mono text-[11px] leading-relaxed">
+            <div class="flex items-center justify-between mb-2">
+                <span class="font-bold uppercase tracking-widest text-muted-foreground">Event Log</span>
+                <button @onclick="ClearCallbackLog" class="hover:underline text-popover-foreground text-xs">Clear</button>
+            </div>
+            <div class="text-popover-foreground">@_callbackLog</div>
+        </div>
+    }
+</div>
+
+@code {
+    private DrawerRoot _drawer = null!;
+    private string _callbackLog = string.Empty;
+
+    private async Task HandleOpenChange(bool open)
+    {
+        await AppendLogAsync($"OnOpenChange: {open}");
+    }
+
+    private async Task HandleClose()
+    {
+        await AppendLogAsync("OnClose");
+    }
+
+    private async Task AppendLogAsync(string message)
+    {
+        await InvokeAsync(() =>
+        {
+            if (!string.IsNullOrWhiteSpace(_callbackLog))
+            {
+                _callbackLog = $"{_callbackLog} | ";
+            }
+
+            _callbackLog = $"{_callbackLog}{message}";
+            StateHasChanged();
+        });
+    }
+
+    private void ClearCallbackLog()
+    {
+        _callbackLog = string.Empty;
+    }
+
+    private RenderFragment RenderDrawerContents => __builder =>
+    {
+        <div class="flex flex-col max-w-md mx-auto w-full p-4 pt-5 overflow-y-auto">
+            <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-popover-foreground/20 mb-8"></div>
+            <h2 class="text-2xl font-medium text-popover-foreground mb-2">Callback Demo</h2>
+            <p class="text-sm text-popover-foreground mb-6">
+                Interact with this drawer to see events logged in the event log above. Try dragging, closing, or waiting for animations to complete.
+            </p>
+
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-medium text-popover-foreground mb-2">Available Callbacks:</h3>
+                    <ul class="text-sm text-popover-foreground space-y-1 list-disc list-inside">
+                        <li><code class="bg-popover/50 px-1 rounded">OnOpenChange</code> - When drawer opens/closes</li>
+                        <li><code class="bg-popover/50 px-1 rounded">OnClose</code> - When drawer closes</li>
+                        <li><code class="bg-popover/50 px-1 rounded">OnDrag</code> - While dragging</li>
+                        <li><code class="bg-popover/50 px-1 rounded">OnRelease</code> - After releasing drag</li>
+                        <li><code class="bg-popover/50 px-1 rounded">OnAnimationEnd</code> - When animation completes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    };
+}

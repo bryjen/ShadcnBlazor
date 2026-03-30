@@ -46,108 +46,147 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     /// Content rendered as the anchor/trigger element.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? Anchor { get; set; }
 
     /// <summary>
     /// Content rendered inside the popover panel.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
     /// Whether the popover is open.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool Open { get; set; }
 
     /// <summary>
     /// Callback invoked when the open state changes.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<bool> OpenChanged { get; set; }
 
     /// <summary>
     /// Whether clicking outside closes the popover.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool CloseOnOutsideClick { get; set; }
 
     /// <summary>
     /// Whether to lock body scroll while the popover is open.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool LockScroll { get; set; }
 
     /// <summary>
     /// Whether to animate open/close transitions.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool Animate { get; set; } = true;
 
     /// <summary>
     /// Duration of the close animation in milliseconds.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public int ExitAnimationDurationMs { get; set; } = 140;
 
     /// <summary>
     /// Where the popover is anchored relative to the trigger.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public PopoverPlacement AnchorOrigin { get; set; } = PopoverPlacement.BottomLeft;
 
     /// <summary>
     /// Transform origin for the popover content.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public PopoverPlacement TransformOrigin { get; set; } = PopoverPlacement.TopLeft;
 
     /// <summary>
     /// How the popover width is determined.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public PopoverWidthMode WidthMode { get; set; } = PopoverWidthMode.None;
 
     /// <summary>
     /// Whether to clamp the popover within the viewport.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Behavior)]
     public bool ClampList { get; set; }
 
     /// <summary>
     /// CSS classes for the anchor element.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string AnchorClass { get; set; } = string.Empty;
 
     /// <summary>
     /// Additional attributes for the anchor element.
     /// </summary>
     [Parameter(CaptureUnmatchedValues = true)]
+    [Category(ComponentCategory.Common)]
     public Dictionary<string, object>? AnchorAttributes { get; set; }
 
     /// <summary>
     /// CSS classes for the popover panel.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public string PopoverClass { get; set; } = string.Empty;
 
     /// <summary>
     /// Additional attributes for the popover panel.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public Dictionary<string, object>? PopoverAttributes { get; set; }
 
     /// <summary>
     /// Gap in pixels between the popover and its anchor. Applied in the direction away from the anchor (respects flip).
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Appearance)]
     public int Offset { get; set; }
+
+    /// <summary>
+    /// A secondary offset along the alignment axis, independent of sideOffset.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public int AlignOffset { get; set; }
+
+    /// <summary>
+    /// Hide the popover when the anchor element is scrolled completely out of the viewport.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public bool HideWhenDetached { get; set; }
+
+    /// <summary>
+    /// Callback invoked when interaction occurs outside the popover.
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public EventCallback<InteractOutsideEventArgs> OnInteractOutside { get; set; }
 
     /// <summary>
     /// Value for aria-haspopup on the trigger. Use "menu" for dropdown menus, "listbox" for selects, "dialog" for dialogs.
     /// </summary>
     [Parameter]
+    [Category(ComponentCategory.Common)]
     public string AriaHasPopup { get; set; } = "dialog";
 
     private string AnchorId => $"anchor-{_popoverId}";
@@ -233,7 +272,9 @@ public partial class Popover : ComponentBase, IAsyncDisposable
                 ClampList = ClampList,
                 PopoverClass = PopoverClass,
                 PopoverAttributes = PopoverAttributes,
-                Offset = Offset
+                Offset = Offset,
+                AlignOffset = AlignOffset,
+                HideWhenDetached = HideWhenDetached
             });
 
             _isRegistered = true;
@@ -257,7 +298,17 @@ public partial class Popover : ComponentBase, IAsyncDisposable
         {
             if (_visualOpen)
             {
-                await PopoverService.ConnectAsync(AnchorId, _popoverId);
+                var options = new
+                {
+                    placement = PopoverHostItem.ToFloatingPlacement(TransformOrigin),
+                    anchorPlacement = PopoverHostItem.ToFloatingPlacement(AnchorOrigin),
+                    widthMode = WidthMode.ToString().ToLowerInvariant(),
+                    clampList = ClampList,
+                    offset = Offset,
+                    alignOffset = AlignOffset,
+                    hideWhenDetached = HideWhenDetached
+                };
+                await PopoverService.ConnectAsync(AnchorId, _popoverId, options);
             }
             else
             {
@@ -272,19 +323,33 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>
-    /// Handles pointer down events outside the popover for close-on-outside-click behavior.
+    /// Handles interaction events outside the popover (click or focus).
     /// </summary>
     [JSInvokable]
-    public async Task HandleOutsidePointerDown()
+    public async Task HandleInteractOutside(InteractOutsideEventType eventType)
     {
-        if (!_visualOpen || !CloseOnOutsideClick)
+        if (!_visualOpen)
         {
             return;
         }
 
-        if (OpenChanged.HasDelegate)
+        var args = new InteractOutsideEventArgs { EventType = eventType };
+        if (OnInteractOutside.HasDelegate)
         {
-            await OpenChanged.InvokeAsync(false);
+            await OnInteractOutside.InvokeAsync(args);
+        }
+
+        if (args.Handled)
+        {
+            return;
+        }
+
+        if (CloseOnOutsideClick)
+        {
+            if (OpenChanged.HasDelegate)
+            {
+                await OpenChanged.InvokeAsync(false);
+            }
         }
     }
 

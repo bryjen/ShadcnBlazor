@@ -5,7 +5,7 @@ using ShadcnBlazor.Components.Shared.Models.Enums;
 namespace ShadcnBlazor.Components.Radio;
 
 /// <summary>
-/// Base class for Radio and RadioCard, providing selection state and group coordination.
+/// Base class for RadioItem and RadioCard, providing selection state and group coordination.
 /// </summary>
 public abstract class RadioSelectableComponentBase : ShadcnComponentBase
 {
@@ -14,18 +14,6 @@ public abstract class RadioSelectableComponentBase : ShadcnComponentBase
     /// </summary>
     [CascadingParameter]
     internal RadioGroup? ParentGroup { get; set; }
-
-    /// <summary>
-    /// Whether this option is checked (when not in a group).
-    /// </summary>
-    [Parameter]
-    public bool Checked { get; set; }
-
-    /// <summary>
-    /// Callback invoked when checked state changes (when not in a group).
-    /// </summary>
-    [Parameter]
-    public EventCallback<bool> CheckedChanged { get; set; }
 
     /// <summary>
     /// The value of this option when selected.
@@ -46,6 +34,12 @@ public abstract class RadioSelectableComponentBase : ShadcnComponentBase
     public bool Disabled { get; set; }
 
     /// <summary>
+    /// Whether this option is in an invalid state.
+    /// </summary>
+    [Parameter]
+    public bool Invalid { get; set; }
+
+    /// <summary>
     /// Whether this option is inside a RadioGroup.
     /// </summary>
     protected bool IsInGroup => ParentGroup is not null;
@@ -53,9 +47,13 @@ public abstract class RadioSelectableComponentBase : ShadcnComponentBase
     /// <summary>
     /// Whether this option is currently selected.
     /// </summary>
-    protected bool IsChecked => IsInGroup
-        ? Value is not null && string.Equals(ParentGroup!.Value, Value, StringComparison.Ordinal)
-        : Checked;
+    protected bool IsChecked =>
+        IsInGroup && Value is not null && string.Equals(ParentGroup!.Value, Value, StringComparison.Ordinal);
+
+    /// <summary>
+    /// Whether this option is invalid (from self or parent group).
+    /// </summary>
+    protected bool IsInvalid => Invalid || (ParentGroup?.IsInvalid ?? false);
 
     /// <summary>
     /// Whether this option is disabled (either directly or via parent group).
@@ -68,7 +66,7 @@ public abstract class RadioSelectableComponentBase : ShadcnComponentBase
     protected Size EffectiveSize => ParentGroup?.Size ?? Size;
 
     /// <summary>
-    /// Selects this option (updates group value or Checked).
+    /// Selects this option (updates group value).
     /// </summary>
     protected async Task SelectAsync()
     {
@@ -84,12 +82,6 @@ public abstract class RadioSelectableComponentBase : ShadcnComponentBase
                 await ParentGroup!.SetValueAsync(Value);
             }
             return;
-        }
-
-        if (!Checked)
-        {
-            Checked = true;
-            await CheckedChanged.InvokeAsync(Checked);
         }
     }
 }

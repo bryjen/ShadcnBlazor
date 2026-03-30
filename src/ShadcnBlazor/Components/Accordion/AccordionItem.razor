@@ -56,15 +56,7 @@
 
     private IReadOnlyDictionary<string, object>? GetAttributes()
     {
-        var merged = new Dictionary<string, object>(StringComparer.Ordinal)
-        {
-            ["role"] = "region",
-            ["aria-labelledby"] = _itemContext.TriggerId
-        };
-        if (AdditionalAttributes is not null)
-            foreach (var kv in AdditionalAttributes)
-                merged[kv.Key] = kv.Value;
-        return merged;
+        return AdditionalAttributes;
     }
 
     internal sealed class AccordionItemContext

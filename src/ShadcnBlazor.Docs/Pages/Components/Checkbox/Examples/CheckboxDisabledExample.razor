@@ -1,4 +1,7 @@
-<Checkbox @bind-Checked="_enabled" Disabled="true">Enable notifications</Checkbox>
+<div class="flex items-center gap-2">
+    <Checkbox Id="notifications" @bind-Value="_enabled" Disabled="true" />
+    <Label For="notifications">Enable notifications</Label>
+</div>
 
 @code {
     private bool _enabled;

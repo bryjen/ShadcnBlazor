@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Shared;
 
 namespace ShadcnBlazor.Components.Accordion;
@@ -8,20 +8,20 @@ namespace ShadcnBlazor.Components.Accordion;
 /// A vertically stacked set of interactive headings that each reveal a section of content.
 /// Use with <see cref="AccordionItem"/>, <see cref="AccordionTrigger"/>, and <see cref="AccordionContent"/>.
 /// </summary>
-public partial class Accordion : ShadcnComponentBase
+public partial class Accordion : ShadcnComponentBase, IAsyncDisposable
 {
     /// <summary>
     /// The content of the accordion, typically one or more <see cref="AccordionItem"/> components.
     /// </summary>
     [Parameter]
-    [Category("Content")]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
     /// Whether only one item can be open at a time (<see cref="AccordionType.Single"/>) or multiple items (<see cref="AccordionType.Multiple"/>).
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public AccordionType Type { get; set; } = AccordionType.Single;
 
     /// <summary>
@@ -29,7 +29,7 @@ public partial class Accordion : ShadcnComponentBase
     /// Defaults to true so clicking an open item closes it. Set to false to require at least one item to remain open.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public bool Collapsible { get; set; } = true;
 
     /// <summary>
@@ -38,7 +38,7 @@ public partial class Accordion : ShadcnComponentBase
     /// Used when <see cref="Type"/> is <see cref="AccordionType.Single"/>.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public string? DefaultValue { get; set; }
 
     /// <summary>
@@ -47,7 +47,7 @@ public partial class Accordion : ShadcnComponentBase
     /// Used when <see cref="Type"/> is <see cref="AccordionType.Multiple"/>.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public IEnumerable<string>? DefaultValues { get; set; }
 
     /// <summary>
@@ -56,7 +56,7 @@ public partial class Accordion : ShadcnComponentBase
     /// Used when <see cref="Type"/> is <see cref="AccordionType.Single"/>.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public string? Value { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ public partial class Accordion : ShadcnComponentBase
     /// Used when <see cref="Type"/> is <see cref="AccordionType.Multiple"/>.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public IEnumerable<string>? Values { get; set; }
 
     /// <summary>
@@ -73,7 +73,7 @@ public partial class Accordion : ShadcnComponentBase
     /// Used when <see cref="Type"/> is <see cref="AccordionType.Single"/>.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<string?> ValueChanged { get; set; }
 
     /// <summary>
@@ -81,12 +81,14 @@ public partial class Accordion : ShadcnComponentBase
     /// Used when <see cref="Type"/> is <see cref="AccordionType.Multiple"/>.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<IEnumerable<string>> ValuesChanged { get; set; }
 
     private string? _localValue;
     private HashSet<string> _localValues = [];
     private AccordionContext _context = null!;
+    private ElementReference _rootRef;
+    private IJSObjectReference? _jsModule;
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -103,6 +105,37 @@ public partial class Accordion : ShadcnComponentBase
             _localValue = Value;
         if (Type == AccordionType.Multiple && IsControlledMultiple)
             _localValues = Values?.ToHashSet(StringComparer.Ordinal) ?? [];
+    }
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _jsModule = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "/_content/ShadcnBlazor/Components/Accordion/Accordion.razor.js");
+            await _jsModule.InvokeVoidAsync("initialize", _rootRef);
+        }
+    }
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync()
+    {
+        if (_jsModule is not null)
+        {
+            try
+            {
+                await _jsModule.InvokeVoidAsync("destroy", _rootRef);
+                await _jsModule.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore if the JS runtime is already gone.
+            }
+        }
     }
 
     private bool IsControlledSingle => ValueChanged.HasDelegate;

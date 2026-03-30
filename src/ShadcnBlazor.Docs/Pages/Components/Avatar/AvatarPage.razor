@@ -9,10 +9,21 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Avatar">
+    <UnderHeader>
+        <div class="w-fit">
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessible</span>
+            </Badge>
+        </div>
+    </UnderHeader>
+
+    <ChildContent>
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Avatar" />
+
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg.</p>
+        <p>The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg. For screen reader accessibility, provide an <code>AriaLabel</code> when displaying fallback content (e.g., initials).</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBasicExample })">
             <AvatarBasicExample />
         </ComponentPreview>
@@ -20,47 +31,62 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Fallback" Id="fallback">
-            <p class="mb-3">When <code>Src</code> is not set or the image fails to load, the Avatar shows <code>ChildContent</code> or initials derived from <code>Alt</code>.</p>
+            <p>When <code>Src</code> is not set or the image fails to load, the Avatar shows <code>ChildContent</code> or initials derived from <code>Alt</code>.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarFallbackExample })">
                 <AvatarFallbackExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Badge" Id="badge">
-            <p class="mb-3">Use the <code>AvatarBadge</code> component via the <code>Badge</code> parameter to add a status indicator at the bottom right of the avatar. Use the <code>Class</code> parameter to customize colors (e.g. <code>bg-green-600 dark:bg-green-800</code>).</p>
+            <p>Use the <code>AvatarBadge</code> component via the <code>Badge</code> parameter to add a status indicator at the bottom right of the avatar. Use the <code>Class</code> parameter to customize colors (e.g. <code>bg-green-600 dark:bg-green-800</code>).</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBadgeExample })">
                 <AvatarBadgeExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Sizes" Id="sizes">
-            <p class="mb-3">Use the <code>Size</code> parameter to change the size of the avatar: <code>Size.Sm</code>, <code>Size.Md</code>, or <code>Size.Lg</code>.</p>
+            <p>Use the <code>Size</code> parameter to change the size of the avatar: <code>Size.Sm</code>, <code>Size.Md</code>, or <code>Size.Lg</code>.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarSizeExample })">
                 <AvatarSizeExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Avatar Group" Id="avatar-group">
-            <p class="mb-3">Use the <code>AvatarGroup</code> component to display multiple avatars with overlapping styling. Set <code>Size</code> to match your avatars and use <code>Class</code> for additional styling (e.g. <code>grayscale</code>).</p>
+            <p>Use the <code>AvatarGroup</code> component to display multiple avatars with overlapping styling. Set <code>Size</code> to match your avatars and use <code>Class</code> for additional styling (e.g. <code>grayscale</code>).</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarGroupExample })">
                 <AvatarGroupExample />
             </ComponentPreview>
         </DocsSubSection>
 
         <DocsSubSection Title="Dropdown" Id="dropdown">
-            <p class="mb-3">You can use the <code>Avatar</code> component as a trigger for a dropdown menu. Wrap it in <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and add <code>DropdownMenuContent</code> for the menu items.</p>
+            <p>You can use the <code>Avatar</code> component as a trigger for a dropdown menu. Wrap it in <code>DropdownMenuTrigger</code> with <code>AsChild="true"</code> and add <code>DropdownMenuContent</code> for the menu items.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarDropdownExample })">
                 <AvatarDropdownExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>
+
+    <DocsSection Title="Accessibility" Id="accessibility">
+        <p><code>Avatar</code> components automatically set <code>role="img"</code> when displaying fallback content (initials or custom content). For screen readers, provide <code>AriaLabel</code> with a descriptive label (e.g., "Profile picture of Jane Smith"). When using <code>AvatarBadge</code>, set its <code>AriaLabel</code> to describe the status (e.g., "Online").</p>
+        <p>For interactive avatars (buttons, dropdowns), wrap the Avatar in a <code>&lt;button&gt;</code> or use it as a trigger with interactive components for proper keyboard navigation and focus management.</p>
+        <p><code>AvatarGroup</code> with multiple avatars should include an <code>AriaLabel</code> describing the collection (e.g., "Team members", "Assignees").</p>
+    </DocsSection>
+    </ChildContent>
 </ComponentDocPage>
 
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Avatar");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
+    private const string InstallCommand = "shadcnblazor component add avatar";
+
+    private List<RenderFragment> Features => new()
     {
-        ["shell"] = "shadcnblazor component add avatar",
+        __builder => { <div>Automatic image fallback with accessible alt text</div> },
+        __builder => { <div>ARIA labels for fallback content and semantic avatars</div> },
+        __builder => { <div>Status badges with role="status" and aria-label support</div> },
+        __builder => { <div>Avatar groups with role="group" for accessible collections</div> },
+        __builder => { <div>Works with dropdowns and interactive elements</div> },
     };
 }
+
+

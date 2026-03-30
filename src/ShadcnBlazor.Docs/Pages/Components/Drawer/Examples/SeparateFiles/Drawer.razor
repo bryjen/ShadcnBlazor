@@ -1,0 +1,64 @@
+@* Self-contained drawer with form state *@
+<DrawerRoot @ref="_drawer"
+            OnClose="@(async () => _tcs.SetResult(null))">
+    <DrawerPortal>
+        <DrawerOverlay />
+        <DrawerContent>
+            <div class="p-4 bg-popover rounded-t-[10px] flex-1">
+                <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-8"></div>
+                <div class="max-w-md mx-auto">
+                    <h3 class="font-medium mb-4 text-popover-foreground">Add Repository</h3>
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <span class="text-xs font-bold text-muted-foreground">Repository URL:</span>
+                            <Input Placeholder="https://github.com/user/repo" @bind-Value="_model.BaseUrl" />
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-muted-foreground">Branch:</span>
+                            <Input Placeholder="main" @bind-Value="_model.Branch" />
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <Button Variant="@Variant.Outline" Class="flex-1" OnClick="@(() => Cancel())">Close</Button>
+                        <Button Variant="@Variant.Default" Class="flex-1" OnClick="@(() => Submit())">Done</Button>
+                    </div>
+                </div>
+            </div>
+        </DrawerContent>
+    </DrawerPortal>
+</DrawerRoot>
+
+@code {
+    public class FormModel
+    {
+        public string BaseUrl { get; set; } = string.Empty;
+        public string Branch { get; set; } = string.Empty;
+    }
+
+    private DrawerRoot _drawer = null!;
+    private FormModel _model = new();
+    private TaskCompletionSource<FormModel?> _tcs = new();
+
+    public Task<FormModel?> Show()
+    {
+        // Reset model state
+        _model = new();
+
+        // Open drawer and return task
+        _drawer.OpenAsync();
+        _tcs = new TaskCompletionSource<FormModel?>();
+        return _tcs.Task;
+    }
+
+    private async Task Cancel()
+    {
+        _tcs.SetResult(null);
+        await _drawer.CloseAsync();
+    }
+
+    private async Task Submit()
+    {
+        _tcs.SetResult(_model);
+        await _drawer.CloseAsync();
+    }
+}

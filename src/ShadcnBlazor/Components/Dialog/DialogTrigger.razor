@@ -1,0 +1,27 @@
+@inherits ShadcnComponentBase
+
+<span @onclick="OnClick"
+      @onkeydown="OnKeyDown"
+      class="@MergeCss("contents")"
+      @attributes="AdditionalAttributes">
+    @ChildContent
+</span>
+
+@code {
+    /// <summary>Trigger element (typically a Button). Supports Enter and Space keys.</summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter]
+    private DialogContext? Context { get; set; }
+
+    private void OnClick() => Context?.OpenDialog();
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " ")
+        {
+            Context?.OpenDialog();
+        }
+    }
+}

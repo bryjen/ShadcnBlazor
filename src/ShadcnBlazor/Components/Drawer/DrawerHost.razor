@@ -1,0 +1,67 @@
+@implements IAsyncDisposable
+@using ShadcnBlazor.Services
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@inject DrawerComponentRegistry Registry
+
+@foreach (var (id, fragment) in _fragments)
+{
+    <div id="@id" style="display:none">
+        @fragment
+    </div>
+}
+
+@code {
+    private readonly Dictionary<string, RenderFragment> _fragments = new();
+    private DotNetObjectReference<DrawerHost>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeVoidAsync("window.Vaul.setHostRef", _dotNetRef);
+            }
+            catch (JSDisconnectedException) { }
+            catch (OperationCanceledException) { }
+            catch (JSException) { }
+            catch (Exception) { }
+        }
+    }
+
+    /// <summary>
+    /// Shows a component in the Drawer host by its fragment ID and container ID.
+    /// </summary>
+    [JSInvokable]
+    public async Task ShowComponent(string fragmentId, string containerId)
+    {
+        var fragment = Registry.TryGet(fragmentId);
+        if (fragment is null) return;
+
+        _fragments[containerId] = fragment;
+        StateHasChanged();
+
+        // Give Blazor a chance to render (JS will wait for DOM element to appear via MutationObserver)
+        await Task.Delay(1);
+    }
+
+    /// <summary>
+    /// Removes a component from the Drawer host by its container ID.
+    /// </summary>
+    [JSInvokable]
+    public void RemoveComponent(string containerId)
+    {
+        if (_fragments.Remove(containerId))
+        {
+            StateHasChanged();
+        }
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        _dotNetRef?.Dispose();
+        return ValueTask.CompletedTask;
+    }
+}

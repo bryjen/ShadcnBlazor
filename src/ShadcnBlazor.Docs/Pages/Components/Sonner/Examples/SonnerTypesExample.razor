@@ -1,0 +1,17 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowDefault">Default</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowSuccess">Success</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowInfo">Info</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowWarning">Warning</Button>
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowError">Error</Button>
+</div>
+
+@code {
+    private async Task ShowDefault() => await SonnerService.Show("Event has been created.");
+    private async Task ShowSuccess() => await SonnerService.Success("Success!");
+    private async Task ShowInfo() => await SonnerService.Show("Info message.");
+    private async Task ShowWarning() => await SonnerService.Warning("Warning: Proceed with caution.");
+    private async Task ShowError() => await SonnerService.Error("Something went wrong.");
+}

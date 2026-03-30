@@ -1,0 +1,8 @@
+<Field FieldId="inline" Orientation="FieldOrientation.Horizontal">
+    <FieldLabel>Email</FieldLabel>
+    <Input id="inline" @bind-Value="_email" Placeholder="your.email@example.com" Type="email" />
+</Field>
+
+@code {
+    private string _email = "";
+}

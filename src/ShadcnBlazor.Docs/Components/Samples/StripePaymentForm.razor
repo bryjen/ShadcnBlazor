@@ -1,0 +1,286 @@
+﻿@using TailwindMerge
+@using System.Text.Json
+@using ShadcnBlazor.Docs.Components.Custom.RadioExpandable
+
+<div class="flex flex-col gap-6 w-full">
+    <div class="flex flex-col">
+        <span class="text-base font-bold">Checkout</span>
+        <span class="text-xs text-muted-foreground">Please enter your payment information to continue.</span>
+    </div>
+    @Render
+</div>
+
+@code {
+    [Inject]
+    public required TwMerge TwMerge { get; set; }
+
+    private string _paymentMethodValue = nameof(PaymentMethod.Card);
+    private enum PaymentMethod
+    {
+        Card,
+        Installments
+    }
+
+    private string _fasterCheckoutValue = string.Empty;
+    private const string FasterCheckoutStr = "fastercheckout";
+    private bool FasterCheckoutCheckboxToggled => _fasterCheckoutValue == FasterCheckoutStr;
+
+    private string GetFasterCheckoutAccordionItemClasses()
+    {
+        var openClass = FasterCheckoutCheckboxToggled ? " border-l-primary" : string.Empty;
+        var @class = $"pl-2 border-b-0 transition-all duration-250 ease-in border-l-2 border-l-border {openClass}";
+        return TwMerge.Merge(@class) ?? @class;
+    }
+
+    private RenderFragment Render => __builder =>
+    {
+        <RadioExpandable @bind-Value="_paymentMethodValue">
+            <RadioExpandableItem Value="@(nameof(PaymentMethod.Card))">
+                <RadioExpandableTrigger>
+                    <div class="w-full flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <LuCreditCard class="size-6 text-foreground"/>
+                            <Label Class="ml-2">Card</Label>
+                        </div>
+                        <div class="@GetCardSvgsClass()">
+                            <img src="https://js.stripe.com/v3/fingerprinted/img/visa-729c05c240c4bdb47b03ac81d9945bfe.svg" alt="Visa" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                            <img src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg" alt="MasterCard" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                            <img src="https://js.stripe.com/v3/fingerprinted/img/amex-a49b82f46c5cd6a96a6e418a6ca1717c.svg" alt="American Express" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                        </div>
+                    </div>
+                </RadioExpandableTrigger>
+                <RadioExpandableContent>
+                    @RenderCardForm
+                </RadioExpandableContent>
+            </RadioExpandableItem>
+            <RadioExpandableItem Value="@(nameof(PaymentMethod.Installments))">
+                <RadioExpandableTrigger>
+                    <svg
+                        role="img"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        class="size-5 text-foreground"
+                    >
+                        <title>Klarna</title>
+                        <path d="M4.592 2v20H0V2h4.592zm11.46 0c0 4.194-1.583 8.105-4.415 11.068l-.278.283L17.702 22h-5.668l-6.893-9.4 1.779-1.332c2.858-2.14 4.535-5.378 4.637-8.924L11.562 2h4.49zM21.5 17a2.5 2.5 0 110 5 2.5 2.5 0 010-5z"/>
+                    </svg>
+                    <Label Class="ml-2">Klarna</Label>
+                </RadioExpandableTrigger>
+                <RadioExpandableContent>
+                    <div class="px-4 pt-2">
+                        Pay now, or in 4 interest-free payments of CA$1.25.
+                        <br/>
+                        <span class="font-semibold text-primary hover:underline cursor-pointer">
+                            Learn More
+                        </span>
+                    </div>
+                </RadioExpandableContent>
+            </RadioExpandableItem>
+        </RadioExpandable>
+
+        <Accordion @bind-Value="_fasterCheckoutValue">
+            <AccordionItem Value="@(FasterCheckoutStr)" Class="@GetFasterCheckoutAccordionItemClasses()">
+                <AccordionTrigger NoChevron Class="px-2 py-2 !no-underline cursor-pointer transition-all duration-200 hover:bg-card/50">
+                    <div class="flex gap-2 items-start pointer-events-none">
+                        <Checkbox Id="fastercheckout" Value="@FasterCheckoutCheckboxToggled"
+                                  AdditionalAttributes="@(new Dictionary<string, object> { { "tabindex", "-1" } })"/>
+                        <div class="flex flex-col gap-1 -mt-1">
+                            <Label For="fastercheckout" Class="text-sm font-semibold">
+                                Save my information for faster checkouts
+                            </Label>
+                            <span class="text-xs text-muted-foreground">
+                                Pay securely at COMPANYNAME and everywhere Link is accepted.
+                            </span>
+                        </div>
+                    </div>
+                </AccordionTrigger>
+                <AccordionContent InnerClass="pb-0">
+                    @RenderFasterCheckoutForm
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+
+        <div class="grid grid-cols-2 gap-2">
+            <Button Size="@Size.Sm" Type="@ButtonType.Submit" Class="w-full flex-1" form="credit-form">
+                Pay
+            </Button>
+            <Button Size="@Size.Sm" Type="@ButtonType.Submit" Variant="Variant.Outline" Class="w-full flex-1" form="credit-form">
+                Reset
+            </Button>
+        </div>
+    };
+
+    private string GetCardSvgsClass()
+    {
+        var openClass = _paymentMethodValue == nameof(PaymentMethod.Card) ? "opacity-0" : string.Empty;
+        var classes = $"flex items-center gap-1.5 transition-all duration-300 opacity-100 {openClass}";
+        return TwMerge.Merge(classes) ?? classes;
+    }
+
+#region CardForm
+    private string GetCardFormPersistentClasses() {
+        var openClass = _paymentMethodValue == nameof(PaymentMethod.Card) ? " opacity-100" : string.Empty;
+        var classes = $"p-0 transition-all duration-300 opacity-0 {openClass}";
+        classes = TwMerge.Merge(classes) ?? classes;
+        return classes;
+    }
+
+    private RenderFragment RenderCardForm => __builder =>
+    {
+        var classes = GetCardFormPersistentClasses();
+        <EditForm id="credit-form" Model="@_model" OnValidSubmit="@OnSubmit" Context="formContext" novalidate class="pb-4">
+            <DataAnnotationsValidator />
+
+            <!-- Card Details -->
+            <div class="@classes">
+                <!-- Card Number -->
+                <div class="px-4 pt-2">
+                    <Field For="@(() => _model.CardNumber)" FieldId="card-number" Class="gap-0">
+                        <div class="flex gap-2 justify-between">
+                            <Label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)] mb-1">
+                                Card information*
+                            </Label>
+                            <FieldError class="text-xs"/>
+                        </div>
+                        <div class="relative">
+                            <Input id="card-number" type="text" @bind-Value="_model.CardNumber" Placeholder="1234 1234 1234 1234"
+                                   Class="p-4 rounded-t-[var(--radius)] rounded-b-none shadow-none"/>
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                                <img src="https://js.stripe.com/v3/fingerprinted/img/visa-729c05c240c4bdb47b03ac81d9945bfe.svg" alt="Visa" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                                <img src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg" alt="MasterCard" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                                <img src="https://js.stripe.com/v3/fingerprinted/img/amex-a49b82f46c5cd6a96a6e418a6ca1717c.svg" alt="American Express" class="h-5 w-auto opacity-50 hover:opacity-100 transition-opacity">
+                            </div>
+                        </div>
+                    </Field>
+
+                    <!-- Expiration & CVC -->
+                    <div class="grid grid-cols-2">
+                        <Field For="@(() => _model.ExpirationDate)" FieldId="expiration" class="w-full gap-0">
+                            <Input id="expiration" type="text" @bind-Value="_model.ExpirationDate" Placeholder="MM / YY"
+                                   Class="p-4 rounded-bl-[var(--radius)] rounded-t-none rounded-r-none" />
+                            <FieldError class="text-xs"/>
+                        </Field>
+
+                        <div class="relative w-full">
+                            <Field For="@(() => _model.Cvc)" FieldId="cvc" class="h-full gap-0">
+                                <Input id="cvc" type="text" @bind-Value="_model.Cvc" Placeholder="CVC"
+                                       Class="p-4 rounded-br-[var(--radius)] rounded-t-none rounded-l-none" />
+                                <FieldError class="text-xs text-right"/>
+                            </Field>
+                            <LuCreditCard class="absolute right-3 top-3 text-[var(--muted-foreground)] size-4"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cardholder Name -->
+                <div class="px-4 py-4">
+                    <Field For="@(() => _model.CardholderName)" FieldId="cardholder" Class="gap-0">
+                        <div class="flex gap-2 justify-between">
+                            <label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)] mb-1">
+                                Cardholder name*
+                            </label>
+                            <FieldError class="text-xs"/>
+                        </div>
+                        <Input id="cardholder" type="text" @bind-Value="_model.CardholderName" Placeholder="Full name on card" />
+                    </Field>
+                </div>
+
+                <!-- Country & ZIP -->
+                <div class="px-4">
+                    <Field For="@(() => _model.Country)" FieldId="country" Class="gap-0">
+                        <div class="flex gap-2 justify-between mb-1">
+                            <label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)]">
+                                Country or region*
+                            </label>
+                            <FieldError class="text-xs"/>
+                        </div>
+                        <Combobox @bind-Value="_model.Country"
+                                  Placeholder="Search countries..."
+                                  TriggerClass="rounded-t-[var(--radius)] rounded-b-none shadow-none border-b-none">
+                            @foreach (var group in _countryGroups)
+                            {
+                                <SelectGroup>
+                                    <SelectLabel Text="@group.Region" />
+                                    @foreach (var country in group.Countries)
+                                    {
+                                        <SelectItem Text="@country" Value="@country">@country</SelectItem>
+                                    }
+                                    @if (group != _countryGroups.Last())
+                                    {
+                                        <SelectSeparator />
+                                    }
+                                </SelectGroup>
+                            }
+                        </Combobox>
+                    </Field>
+
+                    <Field For="@(() => _model.Zip)" FieldId="zip" Class="gap-0">
+                        <Input id="zip" type="text" @bind-Value="_model.Zip" Placeholder="ZIP"
+                               Class="rounded-b-[var(--radius)] rounded-t-none -mt-px" />
+                        <FieldError class="text-xs"/>
+                    </Field>
+                </div>
+            </div>
+
+        </EditForm>
+    };
+#endregion
+
+#region FasterCheckoutThing
+    private string GetFasterCheckoutFormPersistentClasses() {
+        var openClass = FasterCheckoutCheckboxToggled ? " opacity-100" : string.Empty;
+        var classes = $"flex flex-col gap-4 px-4 pt-2 transition-all duration-300 opacity-0 {openClass}";
+        classes = TwMerge.Merge(classes) ?? classes;
+        return classes;
+    }
+
+    private RenderFragment RenderFasterCheckoutForm => __builder =>
+    {
+        var classes = GetFasterCheckoutFormPersistentClasses();
+        <EditForm id="faster-checkout-form" Model="@_model" OnValidSubmit="@OnSubmit" Context="formContext" novalidate class="pb-4">
+            <DataAnnotationsValidator />
+
+            <div class="@classes">
+                <Field For="@(() => _model.CardholderName)" FieldId="phone" Class="gap-0">
+                    <div class="flex gap-2 justify-between">
+                        <Label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)] mb-1">
+                            Phone Number*
+                        </Label>
+                        <FieldError class="text-xs"/>
+                    </div>
+                    <Input id="phone" type="tel" @bind-Value="_model.CardholderName" Placeholder="(250) 555-0199" />
+                </Field>
+
+                <Field For="@(() => _model.CardholderName)" FieldId="email" Class="gap-0">
+                    <div class="flex gap-2 justify-between">
+                        <Label class="block text-xs font-semibold tracking-wider text-[var(--muted-foreground)] mb-1">
+                            Phone Number*
+                        </Label>
+                        <FieldError class="text-xs"/>
+                    </div>
+                    <Input id="email" type="tel" @bind-Value="_model.CardholderName" Placeholder="(250) 555-0199" />
+                </Field>
+            </div>
+
+        </EditForm>
+    };
+#endregion
+
+    private RenderFragment SubmitSonner => __builder =>
+    {
+        var json = JsonSerializer.Serialize(_model, new JsonSerializerOptions { WriteIndented = true });
+        var highlightedJson = System.Text.RegularExpressions.Regex.Replace(
+            System.Net.WebUtility.HtmlEncode(json),
+            @"(?<q>&quot;[^&]*&quot;)",
+            "<span style=\"color: oklch(0.809 0.105 251.813);\">$0</span>"
+        );
+
+        <div class="flex flex-col gap-4 min-w-0">
+            <p class="font-medium text-foreground">You submitted the following values:</p>
+            <div style="width: 100%; height: 12rem; overflow-x: auto; overflow-y: hidden; background-color: var(--card-dark); border: 1px solid var(--border-dark); border-radius: var(--radius); padding: 0.75rem; font-size: 0.875rem; font-family: var(--font-mono); color: var(--foreground); white-space: pre;">
+                @((MarkupString)highlightedJson)
+            </div>
+        </div>
+    };
+}

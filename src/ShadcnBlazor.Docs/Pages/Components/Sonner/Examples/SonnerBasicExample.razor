@@ -1,0 +1,10 @@
+@inject SonnerService SonnerService
+
+<Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="HandleClick">Show Toast</Button>
+
+@code {
+    private async Task HandleClick()
+    {
+        await SonnerService.Show("Event has been created.");
+    }
+}

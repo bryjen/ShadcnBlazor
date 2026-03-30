@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ShadcnBlazor.Components.Shared;
@@ -16,55 +15,59 @@ public partial class Button : ShadcnComponentBase
     /// The content rendered inside the button.
     /// </summary>
     [Parameter]
-    [Category("Content")]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <summary>
     /// The visual style variant of the button.
     /// </summary>
     [Parameter]
-    [Category("Appearance")]
+    [Category(ComponentCategory.Appearance)]
     public Variant Variant { get; set; } = Variant.Default;
 
     /// <summary>
     /// The size of the button.
     /// </summary>
     [Parameter]
-    [Category("Appearance")]
+    [Category(ComponentCategory.Appearance)]
     public Size Size { get; set; } = Size.Md;
 
     /// <summary>
     /// The button state. When Loading, the button is disabled with aria-busy. When Disabled, the button is disabled. When null, normal.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public ButtonState? State { get; set; }
 
     /// <summary>
     /// The HTML button type (button, submit, or reset).
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public ButtonType Type { get; set; } = ButtonType.Button;
 
     /// <summary>
     /// Callback fired when the button is clicked.
     /// </summary>
     [Parameter]
-    [Category("Behavior")]
+    [Category(ComponentCategory.Behavior)]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// ARIA label for screen readers. Required for icon-only buttons or to provide additional context (e.g., "Delete item", "Submit form").
+    /// </summary>
+    [Parameter]
+    [Category(ComponentCategory.Common)]
+    public string? AriaLabel { get; set; }
 
     [CascadingParameter]
     private PopoverTriggerContext? PopoverTriggerContext { get; set; }
-
-    [CascadingParameter]
-    private FormValidationContext? FormValidationContext { get; set; }
 
     private bool IsDisabled => State is ButtonState.Loading or ButtonState.Disabled;
 
     private IReadOnlyDictionary<string, object>? GetAttributes()
     {
-        var hasContext = PopoverTriggerContext is not null || FormValidationContext is not null || State is not null;
+        var hasContext = PopoverTriggerContext is not null || State is not null;
         if (!hasContext)
             return AdditionalAttributes;
 
@@ -81,13 +84,6 @@ public partial class Button : ShadcnComponentBase
             merged["aria-haspopup"] = PopoverTriggerContext.AriaHasPopup;
             if (!string.IsNullOrEmpty(PopoverTriggerContext.PopoverId))
                 merged["aria-controls"] = PopoverTriggerContext.PopoverId;
-        }
-
-        if (FormValidationContext is not null)
-        {
-            merged["aria-invalid"] = FormValidationContext.Invalid;
-            if (!string.IsNullOrEmpty(FormValidationContext.ErrorMessageId))
-                merged["aria-errormessage"] = FormValidationContext.ErrorMessageId;
         }
 
         if (AdditionalAttributes is not null)

@@ -15,6 +15,7 @@ public partial class ContextMenu : ComponentBase
 
     /// <summary>The trigger and content of the context menu.</summary>
     [Parameter]
+    [Category(ComponentCategory.Content)]
     public RenderFragment? ChildContent { get; set; }
 
     /// <inheritdoc />

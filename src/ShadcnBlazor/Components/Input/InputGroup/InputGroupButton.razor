@@ -1,0 +1,7 @@
+@using ShadcnBlazor.Components.Button
+@inherits ShadcnComponentBase
+
+<Button Variant="Variant.Ghost" Size="Size.Sm" Type="ButtonType.Button"
+        class="@GetClass()" @onclick="OnClick" @attributes="AdditionalAttributes">
+    @ChildContent
+</Button>

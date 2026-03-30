@@ -1,0 +1,53 @@
+@using ShadcnBlazor.Components.Button
+@using ShadcnBlazor.Components.Input
+@using ShadcnBlazor.Components.Label
+
+<div class="border border-border rounded-lg p-6 bg-card text-card-foreground shadow-sm">
+    <div class="space-y-4">
+        <div class="space-y-1">
+            <p class="text-sm font-semibold">Standard Demo</p>
+            <p class="text-xs text-muted-foreground">Reproducing the canonical shadcn example.</p>
+        </div>
+
+        <Popover @bind-Open="_open" Offset="8">
+            <Anchor>
+                <Button Variant="Variant.Outline" OnClick="Toggle">
+                    Open Popover
+                </Button>
+            </Anchor>
+            <ChildContent>
+                <div class="w-72 bg-popover text-popover-foreground rounded-lg border border-border shadow-md p-4 space-y-4">
+                    <div class="space-y-1">
+                        <h4 class="font-medium leading-none">Dimensions</h4>
+                        <p class="text-sm text-muted-foreground leading-tight">
+                            Set the dimensions for the layer.
+                        </p>
+                    </div>
+                    <div class="grid gap-2">
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label For="width" class="text-xs">Width</Label>
+                            <Input id="width" Value="100%" class="col-span-2 h-8 text-xs" />
+                        </div>
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label For="max-width" class="text-xs">Max. width</Label>
+                            <Input id="max-width" Value="300px" class="col-span-2 h-8 text-xs" />
+                        </div>
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label For="height" class="text-xs">Height</Label>
+                            <Input id="height" Value="25px" class="col-span-2 h-8 text-xs" />
+                        </div>
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label For="max-height" class="text-xs">Max. height</Label>
+                            <Input id="max-height" Value="none" class="col-span-2 h-8 text-xs" />
+                        </div>
+                    </div>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
+
+@code {
+    private bool _open;
+    private void Toggle() => _open = !_open;
+}

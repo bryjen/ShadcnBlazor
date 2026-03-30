@@ -1,0 +1,34 @@
+﻿<DialogRoot @ref="_dialog">
+    <DialogTrigger>
+        <Button Variant="@Variant.Default">Open Dialog</Button>
+    </DialogTrigger>
+    <DialogContent Unstyled Class="p-0 flex flex-col bg-popover border border-border rounded-lg w-[22.5vw]">
+        <div class="flex flex-col px-4 pt-2">
+            <div class="h-fit flex justify-between gap-2">
+                <span class="font-bold text-foreground">Edit Profile</span>
+                <Button Size="@Size.Sm" Variant="@Variant.Ghost" Class="size-6" OnClick="@(() => _dialog.CloseAsync())">
+                    <LuX class="size-4"/>
+                </Button>
+            </div>
+            <span class="text-sm text-muted-foreground">Make changes to your profile here. Click save when you're done.</span>
+        </div>
+        <div class="space-y-4 px-4 mt-4 mb-6">
+            <div>
+                <span class="text-xs font-bold text-muted-foreground">Repository URL:</span>
+                <Input Placeholder="https://github.com/user/repo" />
+            </div>
+            <div>
+                <span class="text-xs font-bold text-muted-foreground">Branch:</span>
+                <Input Placeholder="main" />
+            </div>
+        </div>
+        <div class="bg-accent/50 flex justify-end gap-2 p-4 rounded-b-lg">
+            <Button Variant="@Variant.Outline" OnClick="@(() => _dialog.CloseAsync())">Close</Button>
+            <Button Variant="@Variant.Default" OnClick="@(() => _dialog.CloseAsync())">Done</Button>
+        </div>
+    </DialogContent>
+</DialogRoot>
+
+@code {
+    private DialogRoot _dialog = null!;
+}

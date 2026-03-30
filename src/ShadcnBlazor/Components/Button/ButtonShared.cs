@@ -28,7 +28,7 @@ internal static class ButtonStyles
         var variantClasses = variant switch
         {
             Variant.Default => "bg-primary text-primary-foreground hover:bg-primary/90",
-            Variant.Destructive => "bg-destructive/60 text-white hover:bg-destructive/90 focus-visible:ring-destructive/40",
+            Variant.Destructive => "bg-destructive/25 text-destructive hover:bg-destructive/35 focus-visible:ring-destructive/40",
             Variant.Outline => "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground bg-input/30 border-input hover:bg-input/50",
             Variant.Secondary => "bg-secondary text-secondary-foreground hover:bg-secondary/80",
             Variant.Ghost => "hover:bg-accent hover:text-accent-foreground hover:bg-accent/50",
@@ -37,9 +37,9 @@ internal static class ButtonStyles
 
         var sizeClasses = size switch
         {
-            Size.Sm => "h-5 gap-1 rounded-md px-1.75 py-0.75 text-[0.6rem] has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-2.5",
-            Size.Md => "h-7 rounded-md gap-1.5 px-2.75 py-1.25 has-[>svg]:px-2.25 [&_svg:not([class*='size-'])]:size-3",
-            Size.Lg => "h-8 rounded-md px-3.5 py-1.75 has-[>svg]:px-2.75 [&_svg:not([class*='size-'])]:size-3.5",
+            Size.Sm => "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
+            Size.Md => "h-9 px-4 py-2 has-[>svg]:px-3",
+            Size.Lg => "h-10 rounded-md px-6 has-[>svg]:px-4",
         };
 
         return mergeCallback([baseClasses, variantClasses, sizeClasses, stateClasses, @class]);

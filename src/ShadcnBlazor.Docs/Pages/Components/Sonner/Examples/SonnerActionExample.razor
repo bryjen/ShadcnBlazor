@@ -1,0 +1,26 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="@Variant.Secondary" OnClick="ShowSuccessAction">Success with Undo</Button>
+    <Button Variant="@Variant.Destructive" OnClick="ShowErrorAction">Error with Retry</Button>
+</div>
+
+@code {
+    private async Task ShowSuccessAction()
+    {
+        await SonnerService.SuccessWithAction(
+            "Post published successfully.",
+            "Undo",
+            async () => await SonnerService.Show("Action undone!")
+        );
+    }
+
+    private async Task ShowErrorAction()
+    {
+        await SonnerService.ErrorWithAction(
+            "Failed to save changes.",
+            "Retry",
+            async () => await SonnerService.Show("Retrying...")
+        );
+    }
+}

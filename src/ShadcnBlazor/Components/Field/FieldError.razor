@@ -1,0 +1,13 @@
+@inherits ShadcnComponentBase
+
+@if (HasError)
+{
+    <div
+        id="@ErrorMessageId"
+        role="alert"
+        data-slot="field-error"
+        class="@GetClass()"
+        @attributes="AdditionalAttributes">
+        @FirstError
+    </div>
+}

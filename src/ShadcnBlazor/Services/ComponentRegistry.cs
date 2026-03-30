@@ -5,23 +5,23 @@ using ShadcnBlazor.Components.Badge;
 using ShadcnBlazor.Components.Button;
 using ShadcnBlazor.Components.Card;
 using ShadcnBlazor.Components.Checkbox;
-using ShadcnBlazor.Components.DataTable;
-using ShadcnBlazor.Components.Dialog;
 using ShadcnBlazor.Components.Dialog.Services;
 using ShadcnBlazor.Components.DropdownMenu;
+using ShadcnBlazor.Components.Field;
 using ShadcnBlazor.Components.Input;
+using ShadcnBlazor.Components.Label;
 using ShadcnBlazor.Components.Popover;
 using ShadcnBlazor.Components.Popover.Services;
-using ShadcnBlazor.Components.Radio;
-using ShadcnBlazor.Components.Select;
 using ShadcnBlazor.Components.Shared.Services;
 using ShadcnBlazor.Components.Shared.Services.Interop;
 using ShadcnBlazor.Components.Skeleton;
-using ShadcnBlazor.Components.Slider;
 using ShadcnBlazor.Components.Switch;
 using ShadcnBlazor.Components.Textarea;
 using ShadcnBlazor.Components.ToggleButton;
 using ShadcnBlazor.Components.Tooltip;
+using ShadcnBlazor.Components.FocusTrap;
+using ShadcnBlazor.Components.FocusTrap.Services;
+using ShadcnBlazor.Components.Sonner.Services;
 using ShadcnBlazor.Services.Models;
 
 namespace ShadcnBlazor.Services;
@@ -41,6 +41,9 @@ public static class ComponentRegistry
             .Concat([nameof(Shared)])
             .ToArray();
 
+    /// <summary>
+    /// Gets the list of all registered components in the library.
+    /// </summary>
     public static readonly ComponentDefinition[] AllComponents =
     [
         new()
@@ -51,15 +54,11 @@ public static class ComponentRegistry
             [
                 new CopyCssAction("shadcn_blazor_in.css"),
                 new CopyCssAction("shadcn_blazor_out.css"),
-                new CopyJsAction("focus-scope.js"),
                 new CopyJsAction("key-interceptor.js"),
                 new AddCssLinksToRootAction(),
                 new AddNugetDependencyAction("TailwindMerge.NET", "1.2.0"),
                 new AddProgramServiceAction("TailwindMerge.Extensions", "AddTailwindMerge()"),
-                new AddToServicesAction(nameof(FocusScopeInterop)),
-                new AddToServicesAction(nameof(IFocusScopeService), nameof(FocusScopeService)),
                 new AddToServicesAction(nameof(KeyInterceptorInterop)),
-                new AddToServicesAction(nameof(IKeyInterceptorService), nameof(KeyInterceptorService)),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Shared",
                     "ShadcnBlazor.Components.Shared.Models",
@@ -99,7 +98,7 @@ public static class ComponentRegistry
             Description = "Small label or count indicator with variant styling (default, secondary, outline, destructive).", 
             Dependencies = CreateDeps()
         },
-        new() 
+        new()
         {
             Name = nameof(Button), 
             Description = "Clickable button with variants (default, destructive, outline, secondary, ghost, link) and sizes.", 
@@ -116,31 +115,40 @@ public static class ComponentRegistry
             Description = "Container for content with header, body, and footer sections.", 
             Dependencies = CreateDeps(),
         },
+        new()
+        {
+            Name = nameof(Field),
+            Description = "Compose labels, controls, helper text, and validation into accessible form fields.",
+            Dependencies = CreateDeps(nameof(Label))
+        },
+        new()
+        {
+            Name = nameof(Label),
+            Description = "Accessible label associated with a form control.",
+            Dependencies = CreateDeps()
+        },
         new() 
         {
             Name = nameof(Checkbox), 
             Description = "Checkbox input for boolean or multi-select form values.", 
-            Dependencies = CreateDeps()
+            Dependencies = CreateDeps(),
         },
         new()
         {
-            Name = nameof(Dialog),
-            Description = "Imperative dialog service; show dialogs via IDialogService.Show. Requires DialogProvider in layout.",
+            Name = "Dialog",
+            Description = "Declarative dialog component using DialogRoot, DialogTrigger, DialogContent, and related composable pieces.",
             Dependencies = CreateDeps(),
             RequiredActions =
             [
-                new AddToServicesAction(nameof(IDialogService), nameof(DialogService)),
                 new AddToServicesAction(nameof(DialogInterop)),
-                new AddToServicesAction(nameof(IDialogJsService), nameof(DialogJsService)),
-                new AddToServicesAction(nameof(ScrollLockInterop)),
                 new AddToServicesAction(nameof(ScrollLockService)),
                 new CopyJsAction("dialog.js"),
                 new CopyJsAction("scroll-lock.js"),
                 new MergeToImportsAction([
                     "ShadcnBlazor.Components.Dialog",
-                    "ShadcnBlazor.Components.Dialog.Declarative",
-                    "ShadcnBlazor.Components.Dialog.Models"]),
+                    "ShadcnBlazor.Components.Dialog.Services"]),
             ],
+            Tags = []
         },
         new()
         {
@@ -151,7 +159,8 @@ public static class ComponentRegistry
             [
                 new CopyJsAction("context-menu.js"),
                 new MergeToImportsAction(["ShadcnBlazor.Components.ContextMenu"]),
-            ]
+            ],
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
@@ -163,12 +172,13 @@ public static class ComponentRegistry
         {
             Name = nameof(DropdownMenu),
             Description = "Dropdown menu with trigger and content; requires PopoverProvider in layout.",
-            Dependencies = CreateDeps(nameof(Popover))
+            Dependencies = CreateDeps(nameof(Popover)),
+            Tags = [ComponentDefinition.Tag.WorkRequired]
         },
         new()
         {
-            Name = nameof(Input), 
-            Description = "Single-line text input with variant styling.", 
+            Name = nameof(Input),
+            Description = "Single-line text input with variant styling.",
             Dependencies = CreateDeps(),
         },
         new()
@@ -186,8 +196,8 @@ public static class ComponentRegistry
         },
         new()
         {
-            Name = nameof(Radio), 
-            Description = "Radio and RadioCard options for single selection within a RadioGroup.", 
+            Name = "Radio Group",
+            Description = "RadioGroup with RadioItem and RadioCard options for single selection.",
             Dependencies = CreateDeps()
         },
         new()
@@ -208,13 +218,7 @@ public static class ComponentRegistry
             Description = "Loading placeholder with pulse animation.", 
             Dependencies = CreateDeps(),
         },
-        new() 
-        {
-            Name = nameof(Slider), 
-            Description = "Single-thumb slider for selecting a value within a min/max range.", 
-            Dependencies = CreateDeps(),
-        },
-        new() 
+        new()
         {
             Name = nameof(Switch), 
             Description = "Toggle switch for boolean on/off values.", 
@@ -232,10 +236,53 @@ public static class ComponentRegistry
             Description = "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
             Dependencies = CreateDeps(),
         },
-        new() 
+        new()
         {
-            Name = nameof(Tooltip), 
+            Name = nameof(Tooltip),
             Description = "Hover-triggered tooltip with pointer; requires PopoverProvider in layout.", Dependencies = CreateDeps(nameof(Popover))
+        },
+        new()
+        {
+            Name = "Sonner",
+            Description = "An opinionated toast component for Blazor.",
+            RequiredActions =
+            [
+                new AddToServicesAction(nameof(SonnerService)),
+                new AddToServicesAction(nameof(SonnerComponentRegistry)),
+            ]
+        },
+        new()
+        {
+            Name = nameof(FocusTrap),
+            Description = "Traps focus within a container using the focus-trap library.",
+            Dependencies = CreateDeps(),
+            RequiredActions =
+            [
+                new AddToServicesAction(nameof(FocusJsInterop)),
+                new AddToServicesAction(nameof(FocusService)),
+                new MergeToImportsAction([
+                    "ShadcnBlazor.Components.FocusTrap",
+                    "ShadcnBlazor.Components.FocusTrap.Models",
+                    "ShadcnBlazor.Components.FocusTrap.Services"
+                ]),
+            ]
+        },
+        new()
+        {
+            Name = "Drawer",
+            Description = "Declarative drawer component for Blazor using Vaul.",
+            Dependencies = CreateDeps(),
+            RequiredActions =
+            [
+                new AddToServicesAction(nameof(DrawerComponentRegistry)),
+                new AddToServicesAction(nameof(ScrollLockService)),
+                new CopyJsAction("vaul-interop.iife.js"),
+                new MergeToImportsAction([
+                    "ShadcnBlazor.Components.Drawer",
+                    "ShadcnBlazor.Services"
+                ]),
+            ],
+            Tags = []
         },
     ];
 }

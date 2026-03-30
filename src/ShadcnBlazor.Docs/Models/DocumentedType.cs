@@ -17,7 +17,9 @@ public class DocumentedProperty
     public string Summary { get; init; } = string.Empty;
     public string Remarks { get; init; } = string.Empty;
     public string Category { get; init; } = string.Empty;
+    public int Order { get; init; } = int.MaxValue;
     public string DefaultValue { get; init; } = string.Empty;
+    public bool IsInherited { get; init; } = false;
 }
 
 public class DocumentedMethod
@@ -26,6 +28,7 @@ public class DocumentedMethod
     public string Summary { get; init; } = string.Empty;
     public string ReturnType { get; init; } = string.Empty;
     public string Returns { get; init; } = string.Empty;
+    public bool IsInherited { get; init; } = false;
 }
 
 public class DocumentedEvent
@@ -33,4 +36,5 @@ public class DocumentedEvent
     public string Name { get; init; } = string.Empty;
     public string Type { get; init; } = string.Empty;
     public string Summary { get; init; } = string.Empty;
+    public bool IsInherited { get; init; } = false;
 }

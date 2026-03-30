@@ -1,0 +1,8 @@
+@using ShadcnBlazor.Components.Input
+@inherits ShadcnComponentBase
+
+<Input data-slot="input-group-control"
+       Value="@Value" ValueChanged="ValueChanged"
+       Type="@Type" Placeholder="@Placeholder" Disabled="@Disabled"
+       class="@GetClass()"
+       @attributes="AdditionalAttributes" />

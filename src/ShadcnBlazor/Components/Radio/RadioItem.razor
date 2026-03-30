@@ -1,0 +1,25 @@
+@inherits RadioSelectableComponentBase
+
+<button
+    id="@Id"
+    type="button"
+    role="radio"
+    aria-checked="@GetAriaChecked()"
+    aria-invalid="@(IsInvalid ? "true" : "false")"
+    data-slot="radio"
+    data-state="@(IsChecked ? "checked" : "unchecked")"
+    data-size="@EffectiveSize"
+    class="@GetClass()"
+    disabled="@IsDisabled"
+    @onclick="HandleClick"
+    @attributes="AdditionalAttributes">
+    <span
+        data-slot="radio-indicator"
+        class="@GetIndicatorClass()">
+        <span class="@GetDotClass()"></span>
+    </span>
+</button>
+
+
+
+

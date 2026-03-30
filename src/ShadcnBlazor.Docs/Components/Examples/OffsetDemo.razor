@@ -1,0 +1,32 @@
+@using ShadcnBlazor.Components.Button
+
+<div class="border border-border rounded-lg p-3 bg-card text-card-foreground shadow-sm">
+    <div class="flex items-center justify-between gap-4">
+        <div>
+            <p class="text-sm font-semibold">@Label</p>
+            <p class="text-xs text-muted-foreground mt-1 text-[11px]">Gap: @Offset px</p>
+        </div>
+        <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" Offset="@Offset">
+            <Anchor>
+                <Button Variant="Variant.Secondary" Size="Size.Sm" OnClick="Toggle">
+                    View
+                </Button>
+            </Anchor>
+            <ChildContent>
+                <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm">
+                    <p class="font-semibold text-xs">Offset: @Offset px</p>
+                    <p class="text-xs text-muted-foreground mt-1 italic">Notice the spacing from anchor.</p>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
+
+@code {
+    private bool _open;
+
+    [Parameter] public required string Label { get; set; }
+    [Parameter] public required int Offset { get; set; }
+
+    private void Toggle() => _open = !_open;
+}

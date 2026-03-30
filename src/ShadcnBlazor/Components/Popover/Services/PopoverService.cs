@@ -1,12 +1,14 @@
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Popover.Models;
+using ShadcnBlazor.Components.Shared.Configuration;
 
 namespace ShadcnBlazor.Components.Popover.Services;
 
 /// <summary>
 /// Implementation of <see cref="IPopoverService"/> for popover JavaScript interop.
 /// </summary>
+[RegisterService(serviceType: typeof(IPopoverService))]
 public class PopoverService : IPopoverService, IAsyncDisposable
 {
     private readonly PopoverInterop _popoverInterop;
@@ -85,7 +87,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async Task ConnectAsync(string anchorId, string popoverId)
+    public async Task ConnectAsync(string anchorId, string popoverId, object options)
     {
         await InitializeAsync(
             _options.ContainerClass,
@@ -93,7 +95,7 @@ public class PopoverService : IPopoverService, IAsyncDisposable
             _options.OverflowPadding,
             _options.BaseZIndex);
 
-        await _popoverInterop.ConnectAsync(anchorId, popoverId);
+        await _popoverInterop.ConnectAsync(anchorId, popoverId, options);
     }
 
     /// <inheritdoc />

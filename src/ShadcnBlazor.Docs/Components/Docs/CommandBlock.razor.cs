@@ -9,61 +9,42 @@ public partial class CommandBlock : ShadcnComponentBase
     [Inject]
     private IJSRuntime JsRuntime { get; set; } = null!;
 
-    /// <summary>
-    /// Header name (tab label) to value (command) pairs. Keys become the toggle labels, values are displayed and copied.
-    /// </summary>
     [Parameter]
-    public IReadOnlyDictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
+    public string Command { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Key of the option to select by default. If null, uses the first option.
-    /// </summary>
-    [Parameter]
-    public string? DefaultOption { get; set; }
-
-    private string? SelectedKey { get; set; }
+    private readonly string _codeId = $"command-block-{Guid.NewGuid():N}";
     private bool _copied;
-
-    protected override void OnInitialized()
-    {
-        UpdateSelectedOption();
-    }
+    private string? _lastCommand;
+    private bool _highlighted;
 
     protected override void OnParametersSet()
     {
-        UpdateSelectedOption();
-    }
-
-    private void UpdateSelectedOption()
-    {
-        if (Options.Count == 0)
+        if (!string.Equals(_lastCommand, Command, StringComparison.Ordinal))
         {
-            SelectedKey = null;
-            return;
-        }
-
-        if (DefaultOption != null && Options.ContainsKey(DefaultOption))
-        {
-            SelectedKey = DefaultOption;
-            return;
-        }
-
-        if (SelectedKey == null || !Options.ContainsKey(SelectedKey))
-        {
-            SelectedKey = Options.Keys.First();
+            _lastCommand = Command;
+            _highlighted = false;
         }
     }
 
-    private void SelectOption(string key)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        SelectedKey = key;
-        StateHasChanged();
+        if (_highlighted)
+        {
+            return;
+        }
+
+        await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.highlightElement", _codeId);
+        _highlighted = true;
     }
 
     private async Task CopyCommandAsync()
     {
-        if (SelectedKey == null || !Options.TryGetValue(SelectedKey, out var value)) return;
-        await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.copyToClipboard", value);
+        if (string.IsNullOrWhiteSpace(Command))
+        {
+            return;
+        }
+
+        await JsRuntime.InvokeVoidAsync("shadcnDocsCodeblock.copyToClipboard", Command);
         _copied = true;
         StateHasChanged();
         await Task.Delay(2000);

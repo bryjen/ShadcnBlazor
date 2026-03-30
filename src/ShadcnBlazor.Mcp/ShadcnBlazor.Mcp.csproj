@@ -9,7 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
     <PackageReference Include="ModelContextProtocol" Version="0.3.*" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>

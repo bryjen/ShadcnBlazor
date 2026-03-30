@@ -7,22 +7,13 @@
 @using ShadcnBlazor.Docs.Pages.Components.MultiSelect.Examples
 
 <ComponentDocPage Metadata="@Metadata"
-                  InstallOptions="@InstallOptions"
+                  InstallCommand="@InstallCommand"
                   ApiDoc="@ApiDocumentation.MultiSelect">
     <UnderHeader>
         <div class="w-fit">
-            <Tooltip>
-                <Anchor>
-                    <div @onclick="@(_ => NavigateToWaiAriaPage())">
-                        <Badge Size="@Size.Md" Class="cursor-pointer w-full h-full">
-                            <span class="font-semibold">WAI-ARIA Compliant*</span>
-                        </Badge>
-                    </div>
-                </Anchor>
-                <ChildContent>
-                    <span class="text-[0.7rem] text-center text-muted-foreground">Excludes browser and OS-intercepted behaviors*</span>
-                </ChildContent>
-            </Tooltip>
+            <Badge Size="@Size.Md">
+                <span class="font-semibold">Accessibility-friendly</span>
+            </Badge>
         </div>
     </UnderHeader>
 
@@ -31,7 +22,7 @@
 
         <DocsSection Title="Examples" Id="examples">
             <DocsSubSection Title="Usage" Id="usage">
-                <p class="mb-3">The MultiSelect component displays a dropdown for choosing multiple values from a list. Use <code>Values</code> and <code>ValuesChanged</code> (or <code>@@bind-Values</code>) for two-way binding. The dropdown stays open after each selection — click outside or press Escape to close. Requires <code>PopoverProvider</code> in your layout.</p>
+                <p>The MultiSelect component displays a dropdown for choosing multiple values from a list. Use <code>Values</code> and <code>ValuesChanged</code> (or <code>@@bind-Values</code>) for two-way binding. The dropdown stays open after each selection — click outside or press Escape to close. Requires <code>PopoverProvider</code> in your layout.</p>
                 <ComponentPreview CodeFiles="@(new[] { Snippets.Components_MultiSelect_Examples_MultiSelectBasicExample })">
                     <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                         <MultiSelectBasicExample />
@@ -40,7 +31,7 @@
             </DocsSubSection>
 
             <DocsSubSection Title="Search &amp; Clear" Id="search-clear">
-                <p class="mb-3">Enable <code>Search</code> to add a filter input at the top of the dropdown. Enable <code>ClearButton</code> to add a divider and Clear button at the bottom that resets all selected values.</p>
+                <p>Enable <code>Search</code> to add a filter input at the top of the dropdown. Enable <code>ClearButton</code> to add a divider and Clear button at the bottom that resets all selected values.</p>
                 <ComponentPreview CodeFiles="@(new[] { Snippets.Components_MultiSelect_Examples_MultiSelectSearchExample })">
                     <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                         <MultiSelectSearchExample />
@@ -52,18 +43,9 @@
 </ComponentDocPage>
 
 @code {
-    [Inject]
-    public IJSRuntime JsRuntime { get; set; } = null!;
-
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("MultiSelect");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add multiselect",
-    };
-
-    private async Task NavigateToWaiAriaPage() =>
-        await JsRuntime.InvokeVoidAsync("open", "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/", "_blank");
+    private const string InstallCommand = "shadcnblazor component add multiselect";
 
     private List<RenderFragment> Features => new()
     {
@@ -79,3 +61,5 @@
         __builder => { <div>Configurable display text (up to N selected, then "+X more")</div> },
     };
 }
+
+

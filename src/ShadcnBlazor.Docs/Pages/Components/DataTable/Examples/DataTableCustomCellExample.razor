@@ -1,23 +1,25 @@
 @using ShadcnBlazor.Components.DataTable
 
-<DataTable T="Person" Items="SamplePeople" Hover Label="People — custom cells">
-    <Columns>
-        <DataTableColumn T="Person" Title="Name" Field="x => x.Name" Sortable />
-        <DataTableColumn T="Person" Title="Status">
-            <CellTemplate>
-                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium @StatusBadgeClass(context.Status)">
-                    @context.Status
-                </span>
-            </CellTemplate>
-        </DataTableColumn>
-        <DataTableColumn T="Person" Title="Joined">
-            <CellTemplate>
-                <span class="text-muted-foreground">@RelativeDate(context.Joined)</span>
-            </CellTemplate>
-        </DataTableColumn>
-        <DataTableColumn T="Person" Title="Score" Field="x => x.Score" Sortable />
-    </Columns>
-</DataTable>
+<div class="flex flex-col">
+    <DataTable T="Person" Items="SamplePeople" Hover Label="People — custom cells">
+        <Columns>
+            <DataTableColumn T="Person" Title="Name" Field="x => x.Name" Sortable />
+            <DataTableColumn T="Person" Title="Status">
+                <CellTemplate>
+                    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium @StatusBadgeClass(context.Status)">
+                        @context.Status
+                    </span>
+                </CellTemplate>
+            </DataTableColumn>
+            <DataTableColumn T="Person" Title="Joined">
+                <CellTemplate>
+                    <span class="text-muted-foreground">@RelativeDate(context.Joined)</span>
+                </CellTemplate>
+            </DataTableColumn>
+            <DataTableColumn T="Person" Title="Score" Field="x => x.Score" Sortable />
+        </Columns>
+    </DataTable>
+</div>
 
 @code {
     private record Person(string Name, string Status, DateTime Joined, int Score);

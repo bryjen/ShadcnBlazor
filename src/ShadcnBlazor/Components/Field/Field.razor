@@ -1,0 +1,18 @@
+@inherits ShadcnComponentBase
+
+<div
+    role="group"
+    data-slot="field"
+    data-invalid="@(IsInvalid ? "true" : null)"
+    data-disabled="@(Disabled ? "true" : null)"
+    data-orientation="@Orientation.ToString().ToLower()"
+    class="@GetClass()"
+    @attributes="AdditionalAttributes">
+    <CascadingValue Value="this">
+        <CascadingValue Value="EditContext">
+            <CascadingValue Value="_fieldContext">
+                @ChildContent
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+</div>

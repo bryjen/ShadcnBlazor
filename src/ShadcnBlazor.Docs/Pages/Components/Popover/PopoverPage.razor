@@ -9,10 +9,10 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Popover">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Popover component displays a floating panel anchored to a trigger. Use <code>Anchor</code> for the trigger element and <code>ChildContent</code> for the panel. Requires <code>PopoverProvider</code> in your layout (already present in the docs). Bind <code>Open</code> for controlled state.</p>
+        <p>The Popover component displays a floating panel anchored to a trigger. Use <code>Anchor</code> for the trigger element and <code>ChildContent</code> for the panel. Requires <code>PopoverProvider</code> in your layout (already present in the docs). Bind <code>Open</code> for controlled state.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverBasicExample })">
             <PopoverBasicExample />
         </ComponentPreview>
@@ -20,7 +20,7 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Placement" Id="placement">
-            <p class="mb-3">Use <code>AnchorOrigin</code> and <code>TransformOrigin</code> to control where the popover appears relative to the trigger.</p>
+            <p>Use <code>AnchorOrigin</code> and <code>TransformOrigin</code> to control where the popover appears relative to the trigger.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverPlacementExample })">
                 <PopoverPlacementExample />
             </ComponentPreview>
@@ -31,8 +31,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Popover");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add popover",
-    };
+    private const string InstallCommand = "shadcnblazor component add popover";
 }
+
+

@@ -5,13 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RestorePackagesWithLockFile>false</RestorePackagesWithLockFile>
-        <PublishTrimmed>false</PublishTrimmed>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <BlazorWasmPrerenderingBaseHref>/</BlazorWasmPrerenderingBaseHref>
-        <!-- Explicitly list all routes to pre-render (relative to prerenderer server, NOT including base href) -->
-        <BlazorWasmPrerenderingUrlPathToExplicitFetch>/;/components;/introduction;/cli;/customize;/playground;/samples;/samples/ai-chat;/components/icons;/components/typography;/components/accordion;/components/alert;/components/avatar;/components/badge;/components/button;/components/card;/components/checkbox;/components/combobox;/components/contextmenu;/components/datatable;/components/dialog;/components/dropdownmenu;/components/input;/components/multiselect;/components/popover;/components/radio;/components/select;/components/skeleton;/components/slider;/components/switch;/components/tabs;/components/textarea;/components/togglebutton;/components/tooltip</BlazorWasmPrerenderingUrlPathToExplicitFetch>
+        <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
 
     <ItemGroup>
@@ -52,9 +46,9 @@
         <Delete Files="Models\Generated\Snippets.generated.cs" Condition="Exists('Models\Generated\Snippets.generated.cs')" />
         <Delete Files="Models\Snippets.generated.cs" Condition="Exists('Models\Snippets.generated.cs')" />
     </Target>
-    
+
+
     <ItemGroup>
-        <PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
         <PackageReference Include="EasyAppDev.Blazor.Icons.Lucide" Version="2.0.4" />
         <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
         <PackageReference Include="Markdig" Version="0.45.0" />
@@ -77,5 +71,4 @@
       <None Include="wwwroot\themes\vtron.css" />
       <None Include="wwwroot\themes\zen-inspired-theme.css" />
     </ItemGroup>
-    
 </Project>

@@ -11,9 +11,12 @@ public sealed record DataTableRequest(int Page, int PageSize, string? SortColumn
 /// <summary>The result returned by a server-side data provider.</summary>
 public sealed record DataTableResult<T>(IReadOnlyList<T> Items, int TotalCount);
 
+/// <summary>Defines the interaction model used by the data table.</summary>
 public enum DataTableInteractionMode
 {
+    /// <summary>Standard table semantics and interaction.</summary>
     Table,
+    /// <summary>Grid semantics with focusable row navigation.</summary>
     Grid,
 }
 
@@ -37,6 +40,7 @@ file sealed class ObjectComparer : IComparer<object?>
     }
 }
 
+/// <summary>Displays data in tabular or grid form with sorting, paging, and optional server mode.</summary>
 public partial class DataTable<T> : ShadcnComponentBase
 {
     private DataTableContext<T> _context = new();
@@ -55,48 +59,103 @@ public partial class DataTable<T> : ShadcnComponentBase
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
 
     /// <summary>Items for client-side mode. Ignored when <see cref="DataProvider"/> is set.</summary>
-    [Parameter] public IReadOnlyList<T> Items { get; set; } = [];
+    [Parameter]
+    [Category(ComponentCategory.Items)]
+    public IReadOnlyList<T> Items { get; set; } = [];
 
     /// <summary>
     /// When set, the table operates in server-side mode. The delegate is called whenever the
     /// page, page size, or sort changes. <see cref="Items"/> is ignored in this mode.
     /// </summary>
-    [Parameter] public Func<DataTableRequest, Task<DataTableResult<T>>>? DataProvider { get; set; }
+    [Parameter]
+    [Category(ComponentCategory.Items)]
+    public Func<DataTableRequest, Task<DataTableResult<T>>>? DataProvider { get; set; }
 
-    [Parameter] public RenderFragment? Columns { get; set; }
-    [Parameter] public RenderFragment? ToolBarContent { get; set; }
-    [Parameter] public RenderFragment? EmptyContent { get; set; }
-    [Parameter] public bool IsLoading { get; set; }
-    [Parameter] public EventCallback<T> OnRowClick { get; set; }
-    [Parameter] public bool Dense { get; set; }
-    [Parameter] public bool Hover { get; set; } = true;
-    [Parameter] public bool Striped { get; set; }
-    [Parameter] public int PageSize { get; set; } = 10;
-    [Parameter] public int[] PageSizeOptions { get; set; } = [5, 10, 25, 50];
-    [Parameter] public string? Label { get; set; }
-    [Parameter] public DataTableInteractionMode InteractionMode { get; set; }
-    [Parameter] public bool EnableDebugLogging { get; set; }
+    /// <summary>Column definitions.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment? Columns { get; set; }
+    /// <summary>Optional toolbar content rendered above the table.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment? ToolBarContent { get; set; }
+    /// <summary>Content displayed when there are no rows.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment? EmptyContent { get; set; }
+    /// <summary>Shows loading placeholders.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public bool IsLoading { get; set; }
+    /// <summary>Callback invoked when a row is clicked or activated.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public EventCallback<T> OnRowClick { get; set; }
+    /// <summary>Renders a compact table layout.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public bool Dense { get; set; }
+    /// <summary>Enables row hover styling.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public bool Hover { get; set; } = true;
+    /// <summary>Alternates row striping.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public bool Striped { get; set; }
+    /// <summary>Number of rows per page.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public int PageSize { get; set; } = 10;
+    /// <summary>Available page-size options.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public int[] PageSizeOptions { get; set; } = [5, 10, 25, 50];
+    /// <summary>Accessible label for the table.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Common)]
+    public string? Label { get; set; }
+    /// <summary>Interaction model for the table.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public DataTableInteractionMode InteractionMode { get; set; }
+    /// <summary>Writes debug information to the console.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Common)]
+    public bool EnableDebugLogging { get; set; }
 
     // Multi-selection
-    [Parameter] public bool MultiSelection { get; set; }
-    [Parameter] public HashSet<T> SelectedItems { get; set; } = [];
-    [Parameter] public EventCallback<HashSet<T>> SelectedItemsChanged { get; set; }
+    /// <summary>Enables multi-row selection.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public bool MultiSelection { get; set; }
+    /// <summary>Currently selected items.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Data)]
+    public HashSet<T> SelectedItems { get; set; } = [];
+    /// <summary>Callback invoked when the selection changes.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public EventCallback<HashSet<T>> SelectedItemsChanged { get; set; }
 
     private bool IsServerMode => DataProvider is not null;
     private bool ShowSkeleton => IsLoading || _isServerLoading;
 
+    /// <inheritdoc />
     protected override void OnInitialized()
     {
         _currentPageSize = PageSize;
         _context.Changed += () => InvokeAsync(StateHasChanged);
     }
 
+    /// <inheritdoc />
     protected override async Task OnInitializedAsync()
     {
         if (IsServerMode)
             await FetchFromProviderAsync();
     }
 
+    /// <inheritdoc />
     protected override void OnParametersSet()
     {
         // In server mode the parent controls resets via ResetAsync(); don't clobber the page.
@@ -106,6 +165,7 @@ public partial class DataTable<T> : ShadcnComponentBase
         EnsureFocusedRowForCurrentPage(requestFocus: false);
     }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_pendingFocusAbsoluteIndex is not int absolute)

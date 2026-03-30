@@ -1,0 +1,45 @@
+@using ShadcnBlazor.Components.Drawer
+
+<DrawerRoot Title="Nested Drawers." Description="Nesting drawers creates a stacking effect.">
+    <DrawerTrigger>
+        <Button Variant="@Variant.Outline">Open Drawer</Button>
+    </DrawerTrigger>
+    <DrawerPortal>
+        <DrawerOverlay />
+        <DrawerContent DisableBaseClass="true" Class="bg-popover flex flex-col rounded-t-[10px] fixed outline-none z-50 bottom-0 left-0 right-0 h-[60vh] max-h-[96%]">
+            <div class="p-4 flex-1 overflow-y-auto">
+                <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-8"></div>
+                <div class="max-w-md mx-auto">
+                    <h3 class="font-medium mb-4 text-popover-foreground">Nested Drawers.</h3>
+                    <p class="text-muted-foreground mb-2">
+                        Nesting drawers creates a stacking effect. All you need to do is use
+                        <code>DrawerNestedRoot</code> instead of <code>DrawerRoot</code>.
+                    </p>
+                    <p class="text-muted-foreground mb-2">
+                        You can nest as many drawers as you want.
+                    </p>
+
+                    <DrawerNestedRoot Title="This drawer is nested." Description="Pulling it scales the one underneath.">
+                        <DrawerTrigger>
+                            <Button Class="mt-4 w-full">Open Second Drawer</Button>
+                        </DrawerTrigger>
+                        <DrawerPortal>
+                            <DrawerOverlay />
+                            <DrawerContent DisableBaseClass="true" Class="bg-popover flex flex-col rounded-t-[10px] fixed outline-none z-50 bottom-0 left-0 right-0 h-[50vh] max-h-[94%]">
+                                <div class="p-4 flex-1 overflow-y-auto">
+                                    <div class="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-8"></div>
+                                    <div class="max-w-md mx-auto">
+                                        <h3 class="font-medium mb-4 text-popover-foreground">This drawer is nested.</h3>
+                                        <p class="text-muted-foreground mb-2">
+                                            If you pull this drawer down a bit, it will scale the drawer underneath it as well.
+                                        </p>
+                                    </div>
+                                </div>
+                            </DrawerContent>
+                        </DrawerPortal>
+                    </DrawerNestedRoot>
+                </div>
+            </div>
+        </DrawerContent>
+    </DrawerPortal>
+</DrawerRoot>

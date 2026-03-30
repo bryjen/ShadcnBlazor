@@ -2,7 +2,7 @@
 
 @inherits ShadcnComponentBase
 
-<DialogRoot>
+<DialogRoot @ref="dialog">
     <div id="command-trigger" @onclick="OnTriggerClick" @onkeydown="OnTriggerKeyDown">
         <DialogTrigger>
         @if (ChildContent is not null)
@@ -67,18 +67,16 @@
                             var selectedClasses = "bg-card border-border text-foreground";
                             var @class = MergeCss(baseClasses, isSelected ? selectedClasses : string.Empty);
 
-                            <DialogClose AdditionalAttributes="@(new Dictionary<string, object> { ["tabindex"] = "-1" })" class="w-full">
-                                <button id="@id"
-                                        role="option"
-                                        aria-selected="@isSelected.ToString().ToLower()"
-                                        tabindex="-1"
-                                        class="@(@class)"
-                                        @onmouseover="@(_ => HandleHover(id))"
-                                        @onclick="@(_ => NavigateToPage(commandItem))">
-                                    @icon
-                                    <span class="font-semibold text-sm">@commandItem.SearchString()</span>
-                                </button>
-                            </DialogClose>
+                            <button id="@id"
+                                    role="option"
+                                    aria-selected="@isSelected.ToString().ToLower()"
+                                    tabindex="-1"
+                                    class="w-full @(@class)"
+                                    @onmouseover="@(_ => HandleHover(id))"
+                                    @onclick="@(async _ => { NavigateToPage(commandItem); await (dialog?.CloseAsync() ?? Task.CompletedTask); })">
+                                @icon
+                                <span class="font-semibold text-sm">@commandItem.SearchString()</span>
+                            </button>
                         }
                     </div>
                     <div class="h-px my-2 bg-border w-full"></div>

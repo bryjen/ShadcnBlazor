@@ -39,7 +39,7 @@
 
 @code {
     [Inject]
-    private IKeyInterceptorService KeyInterceptor { get; set; } = null!;
+    private KeyInterceptorService KeyInterceptor { get; set; } = null!;
 
     private readonly string _elementId = "key-interceptor-demo-" + Guid.NewGuid().ToString("N")[..8];
     private DotNetObjectReference<KeyInterceptorSample>? _dotNetRef;

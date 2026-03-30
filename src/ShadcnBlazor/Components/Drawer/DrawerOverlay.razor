@@ -1,0 +1,33 @@
+@inherits ShadcnComponentBase
+@using ShadcnBlazor.Services
+
+@code {
+    private const string BaseClass = "fixed inset-0 bg-black/40 z-30";
+
+    /// <summary>Whether to disable the default base overlay class.</summary>
+    [Parameter]
+    public bool DisableBaseClass { get; set; }
+
+    [CascadingParameter]
+    private DrawerRoot? Root { get; set; }
+
+    private string GetFinalClass() => DisableBaseClass ? Class : MergeCss(BaseClass);
+
+    protected override void OnInitialized()
+    {
+        Root?.RegisterOverlay(new DrawerOverlayOptions
+        {
+            ClassName = GetFinalClass(),
+            DisableBaseClass = true
+        });
+    }
+
+    protected override void OnParametersSet()
+    {
+        Root?.RegisterOverlay(new DrawerOverlayOptions
+        {
+            ClassName = GetFinalClass(),
+            DisableBaseClass = true
+        });
+    }
+}

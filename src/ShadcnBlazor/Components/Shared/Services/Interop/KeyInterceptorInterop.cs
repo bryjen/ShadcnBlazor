@@ -1,4 +1,5 @@
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Shared.Configuration;
 using ShadcnBlazor.Components.Shared.Models.Options;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,6 +8,7 @@ namespace ShadcnBlazor.Components.Shared.Services.Interop;
 /// <summary>
 /// JavaScript interop for key interception (connect, disconnect, update key options).
 /// </summary>
+[RegisterService]
 public class KeyInterceptorInterop : IAsyncDisposable
 {
     /// <summary>
@@ -14,7 +16,7 @@ public class KeyInterceptorInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/_content/ShadcnBlazor/js/key-interceptor.js",
+        "/_content/ShadcnBlazor/Components/Shared/Stubs/KeyInterceptorStub.razor.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;

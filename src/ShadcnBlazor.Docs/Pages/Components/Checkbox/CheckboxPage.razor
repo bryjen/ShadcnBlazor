@@ -9,10 +9,10 @@
 @using ShadcnBlazor.Docs.Services
 
 <ComponentDocPage Metadata="@Metadata"
-                 InstallOptions="@InstallOptions"
+                 InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Checkbox">
     <DocsSection Title="Usage" Id="usage">
-        <p class="mb-3">The Checkbox component provides a boolean or multi-select form input. Use <code>ChildContent</code> for the label. Bind <code>Checked</code> for two-way state, or use <code>CheckedChanged</code> for one-way updates.</p>
+        <p>The Checkbox component is a standalone control that should be paired with a <code>Label</code> component for proper labeling. Use the <code>Id</code> parameter on the checkbox and the <code>For</code> parameter on the label to associate them. Bind <code>Value</code> for two-way state, or use <code>ValueChanged</code> for one-way updates.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxBasicExample })">
             <CheckboxBasicExample />
         </ComponentPreview>
@@ -20,37 +20,37 @@
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="With Label" Id="with-label">
-            <p class="mb-3">Place the label text in <code>ChildContent</code>. The entire label is clickable to toggle the checkbox.</p>
+            <p>Pair the checkbox with a <code>Label</code> component using matching <code>Id</code> and <code>For</code> attributes. Wrap them together in a flex container for proper layout.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxLabelExample })">
                 <CheckboxLabelExample />
             </ComponentPreview>
         </DocsSubSection>
-        <DocsSubSection Title="Grouping" Id="grouping">
-            <p class="mb-3">Use a container with multiple <code>Checkbox</code> components. Bind each via <code>Checked</code> and <code>CheckedChanged</code> to a shared collection (e.g. <code>HashSet&lt;string&gt;</code>) in the parent. No separate group component—the layout and parent state define the group.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxGroupingExample })">
-                <CheckboxGroupingExample />
-            </ComponentPreview>
-        </DocsSubSection>
-        <DocsSubSection Title="Alignment" Id="alignment">
-            <p class="mb-3">Use the <code>Alignment</code> parameter to control how the checkbox aligns with its label when the label wraps to multiple lines. Options are <code>VerticalAlignment.Top</code>, <code>VerticalAlignment.Center</code> (default), and <code>VerticalAlignment.Bottom</code>.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxAlignmentExample })">
-                <CheckboxAlignmentExample />
-            </ComponentPreview>
-        </DocsSubSection>
-        <DocsSubSection Title="Alignment with label and description" Id="alignment-with-description">
-            <p class="mb-3">Use <code>Alignment="VerticalAlignment.Top"</code> when you have a main label with a description underneath. The checkbox aligns with the top of the label so it stays visually anchored to the primary text.</p>
+        <DocsSubSection Title="With Description" Id="with-description">
+            <p>Add a description below the label by nesting the label and description text in a flex column. Align the checkbox to the start of the group using <code>items-start</code>.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxAlignmentWithDescriptionExample })">
                 <CheckboxAlignmentWithDescriptionExample />
             </ComponentPreview>
         </DocsSubSection>
+        <DocsSubSection Title="In a Field" Id="in-field">
+            <p>Use the checkbox within a <code>Field</code> component for structured form layout with labels and descriptions. The <code>FieldDescription</code> provides helper text below the label.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxInFieldExample })">
+                <CheckboxInFieldExample />
+            </ComponentPreview>
+        </DocsSubSection>
+        <DocsSubSection Title="Grouping" Id="grouping">
+            <p>Use multiple checkboxes in a flex column to create a checkbox group. Bind each via <code>Value</code> and <code>ValueChanged</code> to a shared collection (e.g. <code>HashSet&lt;string&gt;</code>) to track selections.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxGroupingExample })">
+                <CheckboxGroupingExample />
+            </ComponentPreview>
+        </DocsSubSection>
         <DocsSubSection Title="Disabled" Id="disabled">
-            <p class="mb-3">Use the <code>Disabled</code> parameter to prevent interaction. The checkbox is dimmed and cannot be toggled.</p>
+            <p>Use the <code>Disabled</code> parameter to prevent interaction. The checkbox is dimmed and cannot be toggled.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxDisabledExample })">
                 <CheckboxDisabledExample />
             </ComponentPreview>
         </DocsSubSection>
         <DocsSubSection Title="Invalid state" Id="invalid">
-            <p class="mb-3">Set <code>Invalid="true"</code> to show the invalid state. The checkbox gets a red border and ring, and the label text turns red. Use this when validation fails (e.g. a required checkbox that must be checked before submit).</p>
+            <p>Set <code>Invalid="true"</code> to show the invalid state. The checkbox gets a red border and ring. Add <code>Class="text-destructive"</code> to the label to show error styling.</p>
             <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxInvalidExample })">
                 <CheckboxInvalidExample />
             </ComponentPreview>
@@ -61,8 +61,7 @@
 @code {
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Checkbox");
 
-    private static readonly Dictionary<string, string> InstallOptions = new()
-    {
-        ["shell"] = "shadcnblazor component add checkbox",
-    };
+    private const string InstallCommand = "shadcnblazor component add checkbox";
 }
+
+

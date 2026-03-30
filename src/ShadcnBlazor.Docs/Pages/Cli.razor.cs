@@ -5,32 +5,11 @@ namespace ShadcnBlazor.Docs.Pages;
 
 public partial class Cli : ComponentBase
 {
-    private static readonly IReadOnlyDictionary<string, string> _cliRootCommands = new Dictionary<string, string>
-    {
-        ["shell"] = "shadcnblazor [command]"
-    };
-
-    private static readonly IReadOnlyDictionary<string, string> _cliNewCommands = new Dictionary<string, string>
-    {
-        ["shell"] = "shadcnblazor new --wasm --proj MyApp"
-    };
-
-    private static readonly IReadOnlyDictionary<string, string> _cliRepairCommands = new Dictionary<string, string>
-    {
-        ["shell"] = "shadcnblazor repair"
-    };
-
-    private static readonly IReadOnlyDictionary<string, string> _cliComponentCommands = new Dictionary<string, string>
-    {
-        ["single"] = "shadcnblazor component add [component]",
-        ["all"] = "shadcnblazor component add --all"
-    };
-
-    private static readonly IReadOnlyDictionary<string, string> _cliAddCommands = new Dictionary<string, string>
-    {
-        ["single"] = "shadcnblazor component add [component]",
-        ["all"] = "shadcnblazor component add --all [--overwrite] [--silent]"
-    };
+    private const string _cliRootCommand = "shadcnblazor [command]";
+    private const string _cliNewCommand = "shadcnblazor new --wasm --proj MyApp";
+    private const string _cliRepairCommand = "shadcnblazor repair";
+    private const string _cliComponentCommand = "shadcnblazor component add [component]";
+    private const string _cliAddCommand = "shadcnblazor component add [component]";
 
     private CodeFile _sampleJson = new()
     {
@@ -106,22 +85,11 @@ public partial class Cli : ComponentBase
         Contents =
             """
             Dialog/
-            ├── Declarative/
-            │   ├── DialogRoot.razor
-            │   ├── DialogContent.razor
-            │   ├── DialogTrigger.razor
-            │   └── ... (5 more files)
-            ├── Models/
-            │   ├── DialogOptions.cs
-            │   ├── DialogResult.cs
-            │   └── ... (4 more files)
-            ├── Services/
-            │   ├── DialogService.cs
-            │   └── IDialogService.cs
-            ├── Dialog.razor
-            ├── DialogProvider.razor
-            ├── DialogReference.cs
-            └── ... (3 more files)
+            ├── DialogRoot.razor
+            ├── DialogContent.razor
+            ├── DialogTrigger.razor
+            ├── DialogContext.cs
+            └── Dialog.razor.js
             """
     };
     

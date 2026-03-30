@@ -1,0 +1,370 @@
+@page "/forms/prerequisites"
+
+@using ShadcnBlazor.Docs.Components.Docs.CodeBlock
+@using ShadcnBlazor.Docs.Pages.Forms.Prerequisites.Examples
+
+<PageTitle>Forms Prerequisites - ShadcnBlazor</PageTitle>
+<HeadContent>
+    <meta name="description" content="Learn Blazor forms fundamentals: EditForm, validation, built-in input components, and security considerations." />
+</HeadContent>
+
+<TocPageBase>
+<div class="flex flex-col gap-8 min-w-0">
+    <div class="flex flex-col gap-1">
+        <h1>Prerequisites</h1>
+        <p>
+            Understanding Blazor's form fundamentals.
+        </p>
+    </div>
+
+    <DocsSection Title="Two Approaches to Forms" Id="two-approaches">
+        <p>Blazor supports two patterns for handling forms:</p>
+        <ul>
+            <li><strong>Native HTML <code>&lt;form&gt;</code>:</strong>
+                Use the native <code>&lt;form&gt;</code> element with <code>@@onsubmit</code> and <code>@@formname</code>. Suitable for simple scenarios or when you need full control over form lifecycle. Requires manual antiforgery token handling.</li>
+
+            <li><strong><code>EditForm</code> component: </strong>
+                <code>EditForm</code> is a built-in Blazor component that has first class Blazor support for model binding, validation, and submit handling.</li>
+        </ul>
+
+        <p>
+            Below are two provided examples of forms from the <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/?view=aspnetcore-10.0" target="_blank">documentation</a> page:
+        </p>
+
+        <div class="flex flex-col gap-6 my-6">
+            <div>
+                <p>Plain HTML Form</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_Prerequisites_Examples_StarshipPlainFormExample })">
+                    <StarshipPlainFormExample />
+                </ComponentPreview>
+            </div>
+            <div>
+                <p>EditForm Component</p>
+                <ComponentPreview CodeFiles="@(new[] { Snippets.Forms_Prerequisites_Examples_Starship1Example })">
+                    <Starship1Example />
+                </ComponentPreview>
+            </div>
+        </div>
+
+        <p>
+            They are rather simple, and essentially functionally equivalent.
+            The advantage of <code>EditForm</code> becomes more apparent when you add validation, error display, and field state tracking:
+        </p>
+    </DocsSection>
+
+    <DocsSection Title="EditForm Basics" Id="editform-basics">
+        <DocsSubSection Title="Required parameters" Id="editform-parameters">
+            <p>Every <code>EditForm</code> requires:</p>
+            <ul>
+                <li><code>Model</code> or <code>EditContext</code> — never both at once. <code>Model</code> is simpler; <code>EditContext</code> gives more control.</li>
+                <li><code>FormName</code> — a unique string identifier for the form. Required for proper binding with <code>[SupplyParameterFromForm]</code> attributes.</li>
+            </ul>
+            <CodeBlock CodeFiles="@(new[] { _editformBasicsSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="SSR model binding" Id="editform-binding">
+            <p>In SSR scenarios, add the <code>[SupplyParameterFromForm]</code> attribute to your model property so Blazor automatically binds form data during server-side rendering.</p>
+            <CodeBlock CodeFiles="@(new[] { _supplyParameterSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Initializing the model" Id="editform-initialization">
+            <p>Initialize the model in <code>OnInitialized</code> using the null-coalescing pattern to avoid recreating it on every re-render.</p>
+            <CodeBlock CodeFiles="@(new[] { _modelInitSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Submit callbacks" Id="editform-callbacks">
+            <p>Choose one of three submit callbacks depending on your validation needs:</p>
+            <ul>
+                <li><code>OnSubmit</code> — fires on every submit, regardless of validation state. Use for custom validation logic.</li>
+                <li><code>OnValidSubmit</code> — fires only if all validations pass. Most common choice.</li>
+                <li><code>OnInvalidSubmit</code> — fires only if validation fails. Useful for logging or custom error handling.</li>
+            </ul>
+            <CodeBlock CodeFiles="@(new[] { _submitCallbacksSnippet })" />
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Built-in Input Components" Id="input-components">
+        <p>Blazor provides a set of input components that plug into <code>EditForm</code> and support <code>@@bind-Value</code> and validation:</p>
+
+        <div class="overflow-x-auto mb-4">
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b border-border">
+                        <th class="text-left py-2 px-3 font-semibold">Component</th>
+                        <th class="text-left py-2 px-3 font-semibold">Renders as</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputText</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="text"&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputTextArea</code></td>
+                        <td class="py-2 px-3"><code>&lt;textarea&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputNumber&lt;T&gt;</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="number"&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputDate&lt;T&gt;</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="date"&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputCheckbox</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="checkbox"&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputSelect&lt;T&gt;</code></td>
+                        <td class="py-2 px-3"><code>&lt;select&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputRadio&lt;T&gt;</code> / <code>InputRadioGroup&lt;T&gt;</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="radio"&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputFile</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="file"&gt;</code></td>
+                    </tr>
+                    <tr class="border-b border-border hover:bg-muted/30">
+                        <td class="py-2 px-3"><code>InputHidden</code></td>
+                        <td class="py-2 px-3"><code>&lt;input type="hidden"&gt;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>All input components accept arbitrary HTML attributes and support <code>@@bind-Value</code>. <code>InputNumber&lt;T&gt;</code> also supports <code>type="range"</code> for sliders.</p>
+    </DocsSection>
+
+    <DocsSection Title="Model Binding and EditContext" Id="model-binding">
+        <p>Every <code>EditForm</code> creates or accepts an <code>EditContext</code>, which tracks field modification state and manages validation messages. When you provide a <code>Model</code>, the <code>EditContext</code> is created automatically.</p>
+        <CodeBlock CodeFiles="@(new[] { _editcontextSnippet })" />
+        <p><code>EditContext</code> supports binding to:</p>
+        <ul>
+            <li>Primitives (<code>string</code>, <code>int</code>, <code>bool</code>, etc.)</li>
+            <li>Collections (<code>List&lt;T&gt;</code>, <code>T[]</code>, etc.)</li>
+            <li>Complex types (nested objects)</li>
+            <li>Enums and recursive types</li>
+        </ul>
+    </DocsSection>
+
+    <DocsSection Title="Validation" Id="validation">
+        <DocsSubSection Title="Data annotations" Id="data-annotations">
+            <p>Add <code>&lt;DataAnnotationsValidator /&gt;</code> to wire up validation attributes from your model.</p>
+            <CodeBlock CodeFiles="@(new[] { _dataAnnotationsSnippet })" />
+            <p>Common attributes: <code>[Required]</code>, <code>[StringLength]</code>, <code>[Range]</code>, <code>[EmailAddress]</code>, <code>[Phone]</code>, <code>[Url]</code>.</p>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Displaying validation messages" Id="displaying-messages">
+            <p>Use <code>&lt;ValidationSummary /&gt;</code> to list all errors, or <code>&lt;ValidationMessage For="..."&gt;</code> for per-field errors.</p>
+            <CodeBlock CodeFiles="@(new[] { _validationMessagesSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Custom validation" Id="custom-validation">
+            <p>Subscribe to <code>editContext.OnValidationRequested</code> and push validation errors to a <code>ValidationMessageStore</code>.</p>
+            <CodeBlock CodeFiles="@(new[] { _customValidationSnippet })" />
+        </DocsSubSection>
+
+        <DocsSubSection Title="Important: Client-side validation requires a circuit" Id="client-validation-caveat">
+            <p>Client-side validation runs only while a <strong>SignalR circuit is active</strong>. In static SSR forms without interactivity, validation happens server-side on submit. If you need immediate feedback, enable <code>InteractiveAuto</code> or higher render mode.</p>
+        </DocsSubSection>
+
+        <DocsSubSection Title="What’s not supported" Id="unsupported-validation">
+            <p>The <code>[Remote]</code> attribute and jQuery validation plugins are <strong>not</strong> supported in Blazor.</p>
+        </DocsSubSection>
+    </DocsSection>
+
+    <DocsSection Title="Antiforgery" Id="antiforgery">
+        <p><code>EditForm</code> adds an antiforgery token automatically. If you use a plain <code>&lt;form&gt;</code>, add <code>&lt;AntiforgeryToken /&gt;</code> manually.</p>
+        <CodeBlock CodeFiles="@(new[] { _antiforgerySnippet })" />
+        <p>Disabling antiforgery is possible with <code>[RequireAntiforgeryToken(required: false)]</code>, but not recommended.</p>
+    </DocsSection>
+
+    <DocsSection Title="Clearing and Resetting Forms" Id="clearing-forms">
+        <p>Reset a form by replacing the model or rebuilding the <code>EditContext</code>. No need to call <code>StateHasChanged</code> when done inside an event handler.</p>
+        <CodeBlock CodeFiles="@(new[] { _clearingSnippet })" />
+    </DocsSection>
+
+    <DocsSection Title="Security: Overposting" Id="overposting">
+        <p>In static SSR, binding directly to database entities can allow attackers to overpost extra fields. Example: a user form with <code>IsAdmin</code> field exposed. Use a separate DTO or view model instead, then map it to your database entity on the server.</p>
+        <CodeBlock CodeFiles="@(new[] { _dtoSnippet })" />
+    </DocsSection>
+
+    <DocsSection Title="Enhanced Form Handling" Id="enhanced-forms">
+        <p>Add the <code>Enhance</code> parameter to <code>EditForm</code> (or <code>data-enhance</code> to plain <code>&lt;form&gt;</code>) for SPA-like form submissions without a full page reload.</p>
+        <CodeBlock CodeFiles="@(new[] { _enhancedSnippet })" />
+        <p><strong>Note:</strong> Enhanced form handling only works with Blazor endpoints and requires a render mode with interactivity.</p>
+    </DocsSection>
+
+    <DocsSection Title="Next Steps" Id="next-steps">
+        <p>Now that you understand Blazor forms fundamentals, explore how to build forms with ShadcnBlazor:</p>
+        <ul>
+            <li><a href="/forms/basic" class="text-primary hover:underline">Basic Forms</a> — Learn how to use <code>EditForm</code>, <code>Field</code>, and ShadcnBlazor input components.</li>
+            <li><a href="/forms/advanced" class="text-primary hover:underline">Advanced</a> — Syntactic sugar, error controls, and third-party validation.</li>
+        </ul>
+    </DocsSection>
+</div>
+</TocPageBase>
+
+@code {
+    private static readonly CodeFile _editformBasicsSnippet = CodeFile.Create(
+        "<EditForm Model=\"@_model\" FormName=\"contact-form\" OnValidSubmit=\"@HandleSubmit\">\n" +
+        "    <DataAnnotationsValidator />\n" +
+        "    <!-- inputs here -->\n" +
+        "    <button type=\"submit\">Submit</button>\n" +
+        "</EditForm>\n\n" +
+        "@code {\n" +
+        "    private ContactModel _model = new();\n" +
+        "}\n",
+        "razor", "EditFormBasics.razor");
+
+    private static readonly CodeFile _supplyParameterSnippet = CodeFile.Create(
+        "@page \"/contact\"\n" +
+        "\n" +
+        "@code {\n" +
+        "    [SupplyParameterFromForm]\n" +
+        "    public ContactModel? ContactForm { get; set; }\n" +
+        "\n" +
+        "    protected override void OnInitialized()\n" +
+        "    {\n" +
+        "        ContactForm ??= new();\n" +
+        "    }\n" +
+        "}\n",
+        "csharp", "SupplyParameterFromForm.cs");
+
+    private static readonly CodeFile _modelInitSnippet = CodeFile.Create(
+        "@code {\n" +
+        "    private ContactModel _model = null!;\n" +
+        "\n" +
+        "    protected override void OnInitialized()\n" +
+        "    {\n" +
+        "        _model ??= new();\n" +
+        "    }\n" +
+        "}\n",
+        "csharp", "ModelInit.cs");
+
+    private static readonly CodeFile _submitCallbacksSnippet = CodeFile.Create(
+        "<!-- On every submit, regardless of validation -->\n" +
+        "<EditForm ... OnSubmit=\"@HandleSubmit\" />\n\n" +
+        "<!-- Only if all validations pass -->\n" +
+        "<EditForm ... OnValidSubmit=\"@HandleValidSubmit\" />\n\n" +
+        "<!-- Only if validation fails -->\n" +
+        "<EditForm ... OnInvalidSubmit=\"@HandleInvalidSubmit\" />\n",
+        "razor", "SubmitCallbacks.razor");
+
+    private static readonly CodeFile _editcontextSnippet = CodeFile.Create(
+        "private ContactModel _model = new();\n" +
+        "private EditContext _editContext = null!;\n\n" +
+        "protected override void OnInitialized()\n" +
+        "{\n" +
+        "    _editContext = new EditContext(_model);\n" +
+        "}\n\n" +
+        "// Pass EditContext instead of Model for more control\n" +
+        "<EditForm EditContext=\"@_editContext\" FormName=\"contact\">\n" +
+        "    <!-- inputs here -->\n" +
+        "</EditForm>\n",
+        "csharp", "EditContextSetup.cs");
+
+    private static readonly CodeFile _dataAnnotationsSnippet = CodeFile.Create(
+        "public sealed class ContactModel\n" +
+        "{\n" +
+        "    [Required]\n" +
+        "    [StringLength(100, MinimumLength = 3)]\n" +
+        "    public string? Name { get; set; }\n\n" +
+        "    [Required]\n" +
+        "    [EmailAddress]\n" +
+        "    public string? Email { get; set; }\n\n" +
+        "    [Range(18, 120)]\n" +
+        "    public int Age { get; set; }\n" +
+        "}\n\n" +
+        "<EditForm Model=\"@_model\" OnValidSubmit=\"@HandleSubmit\">\n" +
+        "    <DataAnnotationsValidator />\n" +
+        "    <!-- inputs here -->\n" +
+        "</EditForm>\n",
+        "csharp", "DataAnnotations.cs");
+
+    private static readonly CodeFile _validationMessagesSnippet = CodeFile.Create(
+        "<!-- All errors in one place -->\n" +
+        "<ValidationSummary />\n\n" +
+        "<!-- Per-field error -->\n" +
+        "<Field For=\"() => _model.Email\">\n" +
+        "    <FieldLabel>Email</FieldLabel>\n" +
+        "    <Input @bind-Value=\"_model.Email\" />\n" +
+        "    <ValidationMessage For=\"() => _model.Email\" />\n" +
+        "</Field>\n",
+        "razor", "ValidationMessages.razor");
+
+    private static readonly CodeFile _customValidationSnippet = CodeFile.Create(
+        "@code {\n" +
+        "    private ContactModel _model = new();\n" +
+        "    private EditContext _editContext = null!;\n\n" +
+        "    protected override void OnInitialized()\n" +
+        "    {\n" +
+        "        _editContext = new EditContext(_model);\n" +
+        "        _editContext.OnValidationRequested += HandleValidationRequested;\n" +
+        "    }\n\n" +
+        "    private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs e)\n" +
+        "    {\n" +
+        "        var messageStore = new ValidationMessageStore(_editContext);\n" +
+        "        if (_model.Email?.Contains(\\\"@\\\") != true)\n" +
+        "        {\n" +
+        "            messageStore.Add(() => _model.Email, \\\"Email must contain @\\\");\n" +
+        "        }\n" +
+        "    }\n\n" +
+        "    public void Dispose()\n" +
+        "    {\n" +
+        "        _editContext.OnValidationRequested -= HandleValidationRequested;\n" +
+        "    }\n" +
+        "}\n",
+        "csharp", "CustomValidation.cs");
+
+    private static readonly CodeFile _antiforgerySnippet = CodeFile.Create(
+        "<!-- EditForm adds antiforgery automatically -->\n" +
+        "<EditForm Model=\"@_model\" FormName=\"contact\">\n" +
+        "    <!-- token is added automatically -->\n" +
+        "</EditForm>\n\n" +
+        "<!-- Plain form requires manual token -->\n" +
+        "<form method=\"post\" @onsubmit=\"@HandleSubmit\">\n" +
+        "    <AntiforgeryToken />\n" +
+        "    <!-- inputs here -->\n" +
+        "</form>\n",
+        "razor", "Antiforgery.razor");
+
+    private static readonly CodeFile _clearingSnippet = CodeFile.Create(
+        "// Option A: Replace the model\n" +
+        "_model = new ContactModel();\n\n" +
+        "// Option B: Rebuild the EditContext\n" +
+        "_editContext = new EditContext(new ContactModel());\n",
+        "csharp", "ClearingForms.cs");
+
+    private static readonly CodeFile _dtoSnippet = CodeFile.Create(
+        "// Separate DTO for form binding\n" +
+        "public sealed class ContactFormDto\n" +
+        "{\n" +
+        "    public string? Name { get; set; }\n" +
+        "    public string? Email { get; set; }\n" +
+        "}\n\n" +
+        "// On submit, map to domain model\n" +
+        "private async Task HandleSubmit()\n" +
+        "{\n" +
+        "    var contact = new Contact\n" +
+        "    {\n" +
+        "        Name = _form.Name,\n" +
+        "        Email = _form.Email,\n" +
+        "        CreatedAt = DateTime.UtcNow\n" +
+        "    };\n" +
+        "    await _db.Contacts.AddAsync(contact);\n" +
+        "}\n",
+        "csharp", "DtoMapping.cs");
+
+    private static readonly CodeFile _enhancedSnippet = CodeFile.Create(
+        "<EditForm Model=\"@_model\" FormName=\"contact\" Enhance>\n" +
+        "    <DataAnnotationsValidator />\n" +
+        "    <!-- inputs here -->\n" +
+        "    <button type=\"submit\">Submit</button>\n" +
+        "</EditForm>\n",
+        "razor", "EnhancedForm.razor");
+}
+

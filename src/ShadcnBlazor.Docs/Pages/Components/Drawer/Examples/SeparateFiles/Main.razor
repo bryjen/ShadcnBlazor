@@ -1,0 +1,28 @@
+@using System.Text.Json
+
+<Drawer @ref="_drawer"></Drawer>
+
+<div class="space-y-6">
+    <Button OnClick="@OnButtonClick">
+        <LuGitBranch size="size-4"/>
+        Add Repository
+    </Button>
+
+    <div>
+        <span class="font-bold">Form Model:</span>
+        <br/>
+        <span class="whitespace-pre text-muted-foreground text-xs font-mono">
+            @JsonSerializer.Serialize(_model, new JsonSerializerOptions { WriteIndented = true})
+        </span>
+    </div>
+</div>
+
+@code {
+    private Drawer _drawer = null!;
+    private Drawer.FormModel? _model;
+
+    private async Task OnButtonClick()
+    {
+        _model = await _drawer.Show();
+    }
+}

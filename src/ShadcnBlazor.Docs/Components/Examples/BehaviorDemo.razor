@@ -1,0 +1,48 @@
+@using ShadcnBlazor.Components.Popover
+@using ShadcnBlazor.Components.Button
+
+<div class="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+    <div class="space-y-1.5 mb-3">
+        <p class="text-sm font-semibold">@Title</p>
+        <p class="text-xs text-muted-foreground">@Description</p>
+    </div>
+    <Popover
+        @bind-Open="_open"
+        AnchorOrigin="PopoverPlacement.BottomLeft"
+        CloseOnOutsideClick="@CloseOnOutsideClick"
+        Animate="@Animate"
+        LockScroll="@LockScroll"
+        ClampList="@ClampList"
+        HideWhenDetached="@HideWhenDetached"
+        Offset="8">
+        <Anchor>
+            <Button Variant="Variant.Secondary" Size="Size.Sm" OnClick="Toggle">
+                Test Behavior
+            </Button>
+        </Anchor>
+        <ChildContent>
+            <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm space-y-2">
+                <p class="font-bold border-b border-border pb-1">@Title</p>
+                <div class="text-[11px] space-y-1">
+                    <p>Outside Click: @(CloseOnOutsideClick ? "Enabled" : "Disabled")</p>
+                    <p>Animated: @(Animate ? "Yes" : "No")</p>
+                </div>
+            </div>
+        </ChildContent>
+    </Popover>
+</div>
+
+@code {
+    private bool _open;
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public bool CloseOnOutsideClick { get; set; } = false;
+    [Parameter] public bool Animate { get; set; } = true;
+    [Parameter] public bool LockScroll { get; set; } = false;
+    [Parameter] public bool ClampList { get; set; } = false;
+    [Parameter] public bool HideWhenDetached { get; set; } = false;
+    [Parameter] public bool ShowOutsideClickHint { get; set; } = false;
+
+    private void Toggle() => _open = !_open;
+}

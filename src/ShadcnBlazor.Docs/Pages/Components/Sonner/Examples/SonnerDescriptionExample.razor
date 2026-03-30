@@ -1,0 +1,15 @@
+@inject SonnerService SonnerService
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="@Variant.Outline" Size="@Size.Sm" OnClick="ShowWithDescription">Show Toast</Button>
+</div>
+
+@code {
+    private async Task ShowWithDescription()
+    {
+        await SonnerService.Show(
+            "Event has been created.",
+            SonnerOptions.Default with { Description = "Today at 2:30 PM" }
+        );
+    }
+}

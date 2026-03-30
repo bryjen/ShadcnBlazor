@@ -1,0 +1,273 @@
+@using ShadcnBlazor.Services
+@using ShadcnBlazor.Components.Shared.Services
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+@inject DrawerComponentRegistry ComponentRegistry
+@inject ScrollLockService ScrollLock
+
+<CascadingValue Value="this" IsFixed="true">
+    <CascadingValue Value="Direction" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</CascadingValue>
+
+@code {
+    /// <summary>
+    /// The content of the drawer root, containing the trigger and potential overlay/content areas.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Whether the drawer can be dismissed by clicking outside or dragging.</summary>
+    [Parameter]
+    public bool Dismissible { get; set; } = true;
+
+    /// <summary>Whether the drawer is modal.</summary>
+    [Parameter]
+    public bool Modal { get; set; } = true;
+
+    /// <summary>The direction the drawer opens from.</summary>
+    [Parameter]
+    public DrawerDirection Direction { get; set; } = DrawerDirection.Bottom;
+
+    /// <summary>Snap points for the drawer.</summary>
+    [Parameter]
+    public object[]? SnapPoints { get; set; }
+
+    /// <summary>The active snap point.</summary>
+    [Parameter]
+    public object? ActiveSnapPoint { get; set; }
+
+    /// <summary>Accessible title for the drawer.</summary>
+    [Parameter]
+    public string? Title { get; set; }
+
+    /// <summary>Accessible description for the drawer.</summary>
+    [Parameter]
+    public string? Description { get; set; }
+
+    /// <summary>Callback invoked when the drawer's open state changes.</summary>
+    [Parameter]
+    public EventCallback<bool> OnOpenChange { get; set; }
+
+    /// <summary>Callback invoked when the drawer closes.</summary>
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private DrawerOverlayOptions? _overlayOptions;
+    private DrawerContentOptions? _contentOptions;
+    private RenderFragment? _drawerContent;
+    private string? _drawerId;
+    private DotNetObjectReference<DrawerCallbackReceiver>? _callbackReference;
+
+    internal void RegisterOverlay(DrawerOverlayOptions options)
+    {
+        _overlayOptions = options;
+    }
+
+    internal void RegisterContent(DrawerContentOptions options, RenderFragment? content)
+    {
+        _contentOptions = options;
+        _drawerContent = content;
+    }
+
+    /// <summary>
+    /// Opens the drawer.
+    /// </summary>
+    public async Task OpenAsync()
+    {
+        if (_drawerContent == null) return;
+
+        var fragmentId = ComponentRegistry.Register(_drawerContent);
+        var componentIdentifier = GetComponentIdentifier(typeof(DrawerComponentHost));
+
+        var receiver = new DrawerCallbackReceiver(
+            new DrawerCallbacks
+            {
+                OnOpenChange = async open => await OnOpenChange.InvokeAsync(open),
+                OnClose = async () =>
+                {
+                    _drawerId = null;
+                    await OnClose.InvokeAsync();
+                }
+            },
+            ReleaseCallbacksAsync);
+
+        _callbackReference = DotNetObjectReference.Create(receiver);
+
+        try
+        {
+            var options = new DrawerOptions
+            {
+                Drawer = new DrawerOptionsInner
+                {
+                    Dismissible = Dismissible,
+                    Modal = Modal,
+                    Direction = Direction.ToString().ToLower(),
+                    SnapPoints = SnapPoints,
+                    ActiveSnapPoint = ActiveSnapPoint
+                },
+                Overlay = _overlayOptions,
+                Content = _contentOptions,
+                Title = Title ?? "Drawer",
+                Description = Description ?? "Drawer content",
+                A11yHidden = true
+            };
+
+            var jsOptions = BuildOptions(options);
+            var drawerId = await JSRuntime.InvokeAsync<string?>(
+                "window.Vaul.openComponent",
+                componentIdentifier,
+                fragmentId,
+                jsOptions,
+                _callbackReference);
+
+            if (drawerId is null)
+            {
+                ComponentRegistry.Remove(fragmentId);
+                _callbackReference.Dispose();
+                return;
+            }
+
+            receiver.DrawerId = drawerId;
+            _drawerId = drawerId;
+            await LockDrawerAsync(drawerId);
+        }
+        catch
+        {
+            ComponentRegistry.Remove(fragmentId);
+            _callbackReference?.Dispose();
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Closes the drawer.
+    /// </summary>
+    public async Task CloseAsync()
+    {
+        if (_drawerId != null)
+        {
+            try
+            {
+                await JSRuntime.InvokeAsync<object>("window.Vaul.close", _drawerId);
+            }
+            catch
+            {
+                // Ignore JS errors
+            }
+            finally
+            {
+                await UnlockDrawerAsync(_drawerId);
+                _drawerId = null;
+            }
+        }
+    }
+
+    private async Task ReleaseCallbacksAsync(string drawerId)
+    {
+        _callbackReference?.Dispose();
+        _callbackReference = null;
+        await UnlockDrawerAsync(drawerId);
+    }
+
+    private async ValueTask LockDrawerAsync(string drawerId)
+    {
+        try
+        {
+            await ScrollLock.LockAsync();
+        }
+        catch
+        {
+            // Ignore scroll lock errors
+        }
+    }
+
+    private async ValueTask UnlockDrawerAsync(string drawerId)
+    {
+        try
+        {
+            await ScrollLock.UnlockAsync();
+        }
+        catch
+        {
+            // Ignore scroll lock errors
+        }
+    }
+
+    private static Dictionary<string, object?>? BuildOptions(DrawerOptions? options)
+    {
+        if (options is null)
+        {
+            return null;
+        }
+
+        var result = new Dictionary<string, object?>();
+
+        if (options.Drawer is not null)
+        {
+            var drawer = new Dictionary<string, object?>();
+            if (options.Drawer.Dismissible.HasValue)
+                drawer["dismissible"] = options.Drawer.Dismissible;
+            if (options.Drawer.Modal.HasValue)
+                drawer["modal"] = options.Drawer.Modal;
+            if (!string.IsNullOrEmpty(options.Drawer.Direction))
+                drawer["direction"] = options.Drawer.Direction.ToLower();
+            if (options.Drawer.SnapPoints != null)
+                drawer["snapPoints"] = options.Drawer.SnapPoints;
+            if (options.Drawer.ActiveSnapPoint != null)
+                drawer["activeSnapPoint"] = options.Drawer.ActiveSnapPoint;
+
+            if (drawer.Count > 0)
+                result["drawer"] = drawer;
+        }
+
+        if (options.Overlay is not null)
+        {
+            var overlay = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(options.Overlay.ClassName))
+                overlay["className"] = options.Overlay.ClassName;
+            if (overlay.Count > 0)
+                result["overlay"] = overlay;
+        }
+
+        if (options.Content is not null)
+        {
+            var content = new Dictionary<string, object?>();
+            if (!string.IsNullOrEmpty(options.Content.ClassName))
+                content["className"] = options.Content.ClassName;
+            if (content.Count > 0)
+                result["content"] = content;
+        }
+
+        if (!string.IsNullOrEmpty(options.Title))
+            result["title"] = options.Title;
+        if (!string.IsNullOrEmpty(options.Description))
+            result["description"] = options.Description;
+        if (options.A11yHidden.HasValue)
+            result["a11yHidden"] = options.A11yHidden;
+
+        return result.Count > 0 ? result : null;
+    }
+
+    private static string GetComponentIdentifier(Type componentType)
+    {
+        var assemblyName = componentType.Assembly.GetName().Name ?? string.Empty;
+        var typeName = componentType.FullName ?? componentType.Name;
+        return $"{assemblyName}::{typeName}";
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        try
+        {
+            if (_drawerId is not null)
+            {
+                await CloseAsync();
+            }
+        }
+        catch { }
+
+        _callbackReference?.Dispose();
+    }
+}

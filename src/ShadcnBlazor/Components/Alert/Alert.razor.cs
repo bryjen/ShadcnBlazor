@@ -12,10 +12,34 @@ namespace ShadcnBlazor.Components.Alert;
 public partial class Alert : ShadcnComponentBase
 {
     /// <summary>The content of the alert.</summary>
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment? ChildContent { get; set; }
 
     /// <summary>The visual style variant of the alert.</summary>
-    [Parameter] public AlertVariant Variant { get; set; } = AlertVariant.Default;
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public AlertVariant Variant { get; set; } = AlertVariant.Default;
+
+    /// <summary>Controls how the alert is announced to assistive technologies.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Behavior)]
+    public AlertAnnouncement Announcement { get; set; } = AlertAnnouncement.Alert;
+
+    private string? AriaRole => Announcement switch
+    {
+        AlertAnnouncement.Alert => "alert",
+        AlertAnnouncement.Status => "status",
+        _ => null,
+    };
+
+    private string? AriaLive => Announcement switch
+    {
+        AlertAnnouncement.Status => "polite",
+        _ => null,
+    };
+
+    private string? AriaAtomic => Announcement == AlertAnnouncement.None ? null : "true";
 
     private string GetClass()
     {
@@ -43,5 +67,20 @@ public enum AlertVariant
 
     /// <summary>Destructive/error styling for alerts or warnings.</summary>
     Destructive,
+}
+
+/// <summary>
+/// Announcement modes for the Alert component.
+/// </summary>
+public enum AlertAnnouncement
+{
+    /// <summary>Announce immediately with an assertive live region.</summary>
+    Alert,
+
+    /// <summary>Announce politely (non-interruptive).</summary>
+    Status,
+
+    /// <summary>No automatic announcement.</summary>
+    None,
 }
 

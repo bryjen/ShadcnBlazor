@@ -1,0 +1,13 @@
+﻿@namespace ShadcnBlazor.Components.Sonner
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("import", "./_content/ShadcnBlazor/Components/Sonner/Stubs/SonnerStub.razor.js");
+        }
+    }
+
+    [Inject] private IJSRuntime JS { get; set; } = null!;
+}

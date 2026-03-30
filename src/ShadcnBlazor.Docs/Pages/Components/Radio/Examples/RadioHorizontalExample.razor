@@ -1,10 +1,20 @@
 <RadioGroup @bind-Value="_choice" Vertical="false">
-    <Radio Value="a">Option A</Radio>
-    <Radio Value="b">Option B</Radio>
-    <Radio Value="c">Option C</Radio>
+    <div class="flex items-center gap-2">
+        <RadioItem Id="opt-a" Value="a" />
+        <Label For="opt-a">Option A</Label>
+    </div>
+    <div class="flex items-center gap-2">
+        <RadioItem Id="opt-b" Value="b" />
+        <Label For="opt-b">Option B</Label>
+    </div>
+    <div class="flex items-center gap-2">
+        <RadioItem Id="opt-c" Value="c" />
+        <Label For="opt-c">Option C</Label>
+    </div>
 </RadioGroup>
 <p class="text-sm text-muted-foreground mt-2">Selected: @_choice</p>
 
 @code {
     private string? _choice = "b";
 }
+

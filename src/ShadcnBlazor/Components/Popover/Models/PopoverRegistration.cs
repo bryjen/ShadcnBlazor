@@ -19,4 +19,14 @@ internal sealed class PopoverRegistration
     /// Gap in pixels between the popover and its anchor. Applied in the direction away from the anchor.
     /// </summary>
     public int Offset { get; init; }
+
+    /// <summary>
+    /// A secondary offset along the alignment axis, independent of sideOffset.
+    /// </summary>
+    public int AlignOffset { get; init; }
+
+    /// <summary>
+    /// Hide the popover when the anchor element is scrolled completely out of the viewport.
+    /// </summary>
+    public bool HideWhenDetached { get; init; }
 }

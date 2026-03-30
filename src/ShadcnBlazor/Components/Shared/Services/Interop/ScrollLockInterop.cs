@@ -1,10 +1,12 @@
 using Microsoft.JSInterop;
+using ShadcnBlazor.Components.Shared.Configuration;
 
 namespace ShadcnBlazor.Components.Shared.Services.Interop;
 
 /// <summary>
 /// JavaScript interop for locking and unlocking body scroll (e.g. when a modal is open).
 /// </summary>
+[RegisterService]
 public class ScrollLockInterop : IAsyncDisposable
 {
     /// <summary>
@@ -12,7 +14,7 @@ public class ScrollLockInterop : IAsyncDisposable
     /// </summary>
     public static readonly string[] DefaultModulePaths =
     [
-        "/_content/ShadcnBlazor/js/scroll-lock.js",
+        "/_content/ShadcnBlazor/Components/Shared/Stubs/ScrollLockStub.razor.js",
     ];
 
     private readonly IJSRuntime _jsRuntime;
@@ -24,7 +26,7 @@ public class ScrollLockInterop : IAsyncDisposable
     /// Creates a new <see cref="ScrollLockInterop"/> instance.
     /// </summary>
     /// <param name="jsRuntime">The JavaScript runtime for interop calls.</param>
-    /// <param name="modulePaths">Paths to try when loading the scroll-lock module (e.g. <c>/_content/ShadcnBlazor/js/scroll-lock.js</c>). Uses <see cref="DefaultModulePaths"/> if null or empty.</param>
+    /// <param name="modulePaths">Paths to try when loading the scroll-lock module. Uses <see cref="DefaultModulePaths"/> if null or empty.</param>
     public ScrollLockInterop(IJSRuntime jsRuntime, string[]? modulePaths = null)
     {
         _jsRuntime = jsRuntime;
