@@ -1,0 +1,80 @@
+@using ShadcnBlazor.Components.Popover.Models
+
+<div class="space-y-12">
+    <!-- Placement Example -->
+    <div class="space-y-4">
+        <div class="space-y-1">
+            <h3 class="text-lg font-semibold tracking-tight">Placement</h3>
+            <p class="text-sm text-muted-foreground">Select a position relative to the anchor.</p>
+        </div>
+        <div class="rounded-xl border border-border bg-card p-12 shadow-sm">
+            <div class="grid grid-cols-3 gap-3 w-fit mx-auto">
+                <!-- Top row -->
+                <PopoverPlacementExample Placement="PopoverPlacement.TopLeft" Label="Top Left" />
+                <PopoverPlacementExample Placement="PopoverPlacement.TopCenter" Label="Top" />
+                <PopoverPlacementExample Placement="PopoverPlacement.TopRight" Label="Top Right" />
+
+                <!-- Middle row -->
+                <PopoverPlacementExample Placement="PopoverPlacement.CenterLeft" Label="Left" />
+                <div class="flex items-center justify-center w-24 h-24 bg-muted/30 rounded-lg border border-border border-dashed text-[10px] text-muted-foreground font-bold uppercase tracking-widest bg-stripes">
+                    Anchor
+                </div>
+                <PopoverPlacementExample Placement="PopoverPlacement.CenterRight" Label="Right" />
+
+                <!-- Bottom row -->
+                <PopoverPlacementExample Placement="PopoverPlacement.BottomLeft" Label="Bottom Left" />
+                <PopoverPlacementExample Placement="PopoverPlacement.BottomCenter" Label="Bottom" />
+                <PopoverPlacementExample Placement="PopoverPlacement.BottomRight" Label="Bottom Right" />
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Width Mode Example -->
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Width Mode</h3>
+                <p class="text-sm text-muted-foreground">Control how popover width relates to the anchor.</p>
+            </div>
+            <div class="space-y-3">
+                <WidthModeExample Mode="PopoverWidthMode.None" Label="Standard" />
+                <WidthModeExample Mode="PopoverWidthMode.Relative" Label="Match Anchor" />
+                <WidthModeExample Mode="PopoverWidthMode.Adaptive" Label="Min-Width Anchor" />
+            </div>
+        </div>
+
+        <!-- Offset Example -->
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Offsets</h3>
+                <p class="text-sm text-muted-foreground">Adjust spacing and secondary alignment.</p>
+            </div>
+            <div class="space-y-3">
+                <OffsetExample Offset="12" Label="12px Gap" />
+                <AlignOffsetExample AlignOffset="32" Label="32px Alignment Offset" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Behavior & Interaction -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Behavior</h3>
+                <p class="text-sm text-muted-foreground">Configure visibility and interaction constraints.</p>
+            </div>
+            <div class="space-y-3">
+                <BehaviorExample Title="Outside Click" Description="Closes when clicking outside" CloseOnOutsideClick="true" />
+                <BehaviorExample Title="Auto-Hide" Description="Hides if anchor leaves viewport" HideWhenDetached="true" />
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-semibold tracking-tight">Custom Interaction</h3>
+                <p class="text-sm text-muted-foreground">Handle outside interaction with custom logic.</p>
+            </div>
+            <InteractOutsideExample />
+        </div>
+    </div>
+</div>

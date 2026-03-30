@@ -1,0 +1,31 @@
+@using ShadcnBlazor.Components.Button
+
+<div class="border border-border rounded-lg p-3 bg-card text-card-foreground shadow-sm">
+    <div class="flex items-center justify-between gap-4">
+        <div>
+            <p class="text-sm font-semibold">@Label</p>
+            <p class="text-xs text-muted-foreground mt-1 text-[11px]">Secondary alignment offset.</p>
+        </div>
+        <Popover @bind-Open="_open" AnchorOrigin="PopoverPlacement.BottomCenter" Offset="8" AlignOffset="@AlignOffset">
+            <Anchor>
+                <Button Variant="Variant.Outline" Size="Size.Sm" OnClick="Toggle">
+                    Try
+                </Button>
+            </Anchor>
+            <ChildContent>
+                <div class="p-3 bg-popover text-popover-foreground rounded-md border border-border shadow-lg text-sm">
+                    <p class="font-semibold text-xs">AlignOffset: @AlignOffset px</p>
+                </div>
+            </ChildContent>
+        </Popover>
+    </div>
+</div>
+
+@code {
+    private bool _open;
+
+    [Parameter] public required string Label { get; set; }
+    [Parameter] public int AlignOffset { get; set; }
+
+    private void Toggle() => _open = !_open;
+}

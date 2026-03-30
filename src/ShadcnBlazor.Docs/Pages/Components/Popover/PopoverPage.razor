@@ -23,13 +23,63 @@
 
         <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
 
-    
-
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Placement" Id="placement">
             <p>Use <code>AnchorOrigin</code> and <code>TransformOrigin</code> to control where the popover appears relative to the trigger.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverPlacementExample })">
-                <PopoverPlacementExample />
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverPlacementGridExample })">
+                <PopoverPlacementGridExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Dimensions" Id="dimensions">
+            <p>Set specific width and height constraints on the popover panel content, reproducing the canonical shadcn/ui Dimensions example.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverDimensionsExample })">
+                <PopoverDimensionsExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Width Mode" Id="width-mode">
+            <p>
+                Control how the popover width relates to its anchor using <code>WidthMode</code>:
+                <code>None</code> (default) lets content flow naturally, <code>Relative</code> matches the anchor width exactly,
+                and <code>Adaptive</code> sets the minimum width to the anchor while allowing growth.
+            </p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverWidthModeExample })">
+                <PopoverWidthModeExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Offset" Id="offset">
+            <p>Use <code>Offset</code> to add a gap between the popover and its anchor.</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverOffsetExample })">
+                <PopoverOffsetExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Align Offset" Id="align-offset">
+            <p>Use <code>AlignOffset</code> to shift the popover along the secondary axis (perpendicular to the main offset direction).</p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverAlignOffsetExample })">
+                <PopoverAlignOffsetExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Behavior" Id="behavior">
+            <p>
+                Configure visibility and interaction constraints with <code>CloseOnOutsideClick</code>
+                and <code>HideWhenDetached</code> (auto-hides the popover if its anchor scrolls out of the viewport).
+            </p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverBehaviorExample })">
+                <PopoverBehaviorExample />
+            </ComponentPreview>
+        </DocsSubSection>
+
+        <DocsSubSection Title="Custom Interaction" Id="interact-outside">
+            <p>
+                Use <code>OnInteractOutside</code> to intercept and optionally cancel outside-click dismissal with custom logic.
+                Set <code>args.Handled = true</code> to prevent the popover from closing.
+            </p>
+            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_InteractOutsideExample })">
+                <InteractOutsideExample />
             </ComponentPreview>
         </DocsSubSection>
     </DocsSection>

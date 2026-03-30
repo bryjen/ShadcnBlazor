@@ -1,0 +1,19 @@
+@using ShadcnBlazor.Components.Popover.Models
+
+<div class="rounded-xl border border-border bg-card p-12 shadow-sm">
+    <div class="grid grid-cols-3 gap-3 w-fit mx-auto">
+        <PopoverPlacementExample Placement="PopoverPlacement.TopLeft" Label="Top Left" />
+        <PopoverPlacementExample Placement="PopoverPlacement.TopCenter" Label="Top" />
+        <PopoverPlacementExample Placement="PopoverPlacement.TopRight" Label="Top Right" />
+
+        <PopoverPlacementExample Placement="PopoverPlacement.CenterLeft" Label="Left" />
+        <div class="flex items-center justify-center w-24 h-24 bg-muted/30 rounded-lg border border-border border-dashed text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+            Anchor
+        </div>
+        <PopoverPlacementExample Placement="PopoverPlacement.CenterRight" Label="Right" />
+
+        <PopoverPlacementExample Placement="PopoverPlacement.BottomLeft" Label="Bottom Left" />
+        <PopoverPlacementExample Placement="PopoverPlacement.BottomCenter" Label="Bottom" />
+        <PopoverPlacementExample Placement="PopoverPlacement.BottomRight" Label="Bottom Right" />
+    </div>
+</div>
