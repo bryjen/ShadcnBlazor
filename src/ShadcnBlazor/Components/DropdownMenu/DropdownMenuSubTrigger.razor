@@ -4,10 +4,10 @@
      tabindex="-1"
      aria-haspopup="menu"
      aria-expanded="@(Context?.Open ?? false)"
-     class="@MergeCss("dropdown-menu-item", Context?.Open == true ? "dropdown-menu-sub-trigger-open" : null, Class)"
+     class="@GetSubTriggerClass()"
      @attributes="AdditionalAttributes">
     @ChildContent
-    <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto size-4 pointer-events-none shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="m9 18 6-6-6-6"/>
     </svg>
 </div>
@@ -22,12 +22,20 @@
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    private RenderFragment TriggerFragment => @<div role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="@(Context?.Open ?? false)" class="@MergeCss("dropdown-menu-item", Context?.Open == true ? "dropdown-menu-sub-trigger-open" : null, Class)" @attributes="AdditionalAttributes">
+    private RenderFragment TriggerFragment => @<div role="menuitem" tabindex="-1" aria-haspopup="menu" aria-expanded="@(Context?.Open ?? false)" class="@GetSubTriggerClass()" @attributes="AdditionalAttributes">
         @ChildContent
-        <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto size-4 pointer-events-none shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m9 18 6-6-6-6"/>
         </svg>
     </div>;
+
+    private string GetSubTriggerClass()
+    {
+        var baseClasses = "w-full flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground";
+        if (Context?.Open == true)
+            baseClasses += " bg-accent text-accent-foreground";
+        return MergeCss(baseClasses, Class);
+    }
 
     protected override void OnInitialized()
     {

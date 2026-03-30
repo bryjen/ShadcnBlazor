@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Field">
-    <DocsSection Title="Usage" Id="usage">
-        <p>Use <code>Field</code> to wrap a label, control, description, and error message in a consistent layout. For simple inputs, start with a single Field.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Field_Examples_FieldBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Field_Examples_FieldBasicExample })">
             <FieldBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Field" />
+
+        <DocsSection Title="About" Id="about">
+            <p>Use <code>Field</code> to wrap a label, control, description, and error message in a consistent layout. For simple inputs, start with a single Field.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Grouped fields" Id="grouped-fields">
@@ -50,5 +57,14 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Field");
 
     private const string InstallCommand = "shadcnblazor component add field";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Form control grouping (Label, Control, Description)</div> },
+        __builder => { <div>Accessible ARIA linking between elements</div> },
+        __builder => { <div>Automatic error state messaging from EditContext</div> },
+        __builder => { <div>Horizontal and vertical orientation support</div> },
+    };
 }
+
 

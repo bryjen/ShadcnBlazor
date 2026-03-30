@@ -10,23 +10,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.DataTable">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessible</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="DataTable" />
-
-        <DocsSection Title="Usage" Id="usage">
-        <p>Basic data table with items and columns. Use <code>Items</code> to provide data, <code>Columns</code> to define columns with a <code>Field</code> expression or <code>CellTemplate</code> for custom rendering. Set <code>Hover</code> for row hover effect and <code>Label</code> for accessibility.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_DataTable_Examples_DataTableBasicExample })">
             <DataTableBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="DataTable" />
+
+        <DocsSection Title="About" Id="about">
+            <p>Basic data table with items and columns. Use <code>Items</code> to provide data, <code>Columns</code> to define columns with a <code>Field</code> expression or <code>CellTemplate</code> for custom rendering. Set <code>Hover</code> for row hover effect and <code>Label</code> for accessibility.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+        
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Sortable Columns" Id="sortable">
@@ -114,15 +112,14 @@
 
     private List<RenderFragment> Features => new()
     {
-        __builder => { <div>Sortable columns with click-to-sort headers</div> },
-        __builder => { <div>Custom cell templates for flexible rendering</div> },
-        __builder => { <div>Multi-selection with checkboxes and bulk actions</div> },
-        __builder => { <div>Grid mode with keyboard navigation (Arrow, Space, Enter, Home/End)</div> },
-        __builder => { <div>Toolbar for filtering, search, and custom actions</div> },
-        __builder => { <div>Loading states with skeleton rows and empty states</div> },
-        __builder => { <div>Dense, striped, and hover visual variants</div> },
-        __builder => { <div>Async data loading with automatic re-render</div> },
+        __builder => { <div>Sortable columns and custom cell rendering</div> },
+        __builder => { <div>Multi-selection with checkboxes</div> },
+        __builder => { <div>Grid mode with keyboard navigation</div> },
+        __builder => { <div>Toolbar for filtering and custom actions</div> },
+        __builder => { <div>Async loading and empty states support</div> },
     };
 }
+
+
 
 

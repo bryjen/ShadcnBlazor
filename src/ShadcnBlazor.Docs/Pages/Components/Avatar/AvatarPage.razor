@@ -11,23 +11,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Avatar">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessible</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Avatar" />
-
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg. For screen reader accessibility, provide an <code>AriaLabel</code> when displaying fallback content (e.g., initials).</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Avatar_Examples_AvatarBasicExample })">
             <AvatarBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Avatar" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Avatar component displays user avatars. Use <code>Src</code> for an image URL, or <code>ChildContent</code> for a text fallback when the image is missing or loading. Set <code>Size</code> for Sm, Md, or Lg. For screen reader accessibility, provide an <code>AriaLabel</code> when displaying fallback content (e.g., initials).</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Fallback" Id="fallback">
@@ -88,5 +86,7 @@
         __builder => { <div>Works with dropdowns and interactive elements</div> },
     };
 }
+
+
 
 

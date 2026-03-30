@@ -11,23 +11,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Card">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Composable</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Card" />
-
-        <DocsSection Title="Usage" Id="usage">
-            <p>Build cards by composing child components. <code>Card</code> is the container, <code>CardHeader</code>, <code>CardTitle</code>, <code>CardDescription</code>, <code>CardContent</code>, <code>CardFooter</code>, and <code>CardAction</code> are semantic sections you combine as needed.</p>
-            <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Card_Examples_CardBasicExample })">
                 <CardBasicExample />
             </ComponentPreview>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Card" />
+
+        <DocsSection Title="About" Id="about">
+            <p>Build cards by composing child components. <code>Card</code> is the container, <code>CardHeader</code>, <code>CardTitle</code>, <code>CardDescription</code>, <code>CardContent</code>, <code>CardFooter</code>, and <code>CardAction</code> are semantic sections you combine as needed.</p>
         </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+        
 
         <DocsSection Title="Examples" Id="examples">
             <DocsSubSection Title="Card Structure" Id="structure">
@@ -82,5 +80,7 @@
         __builder => { <div>Works with images, forms, and interactive content</div> },
     };
 }
+
+
 
 

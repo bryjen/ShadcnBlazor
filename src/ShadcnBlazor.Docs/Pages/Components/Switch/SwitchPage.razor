@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Switch">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Switch component is a toggle for boolean on/off values. Use <code>ChildContent</code> for the label. Bind <code>Checked</code> for two-way state, or use <code>CheckedChanged</code> for one-way updates.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Switch_Examples_SwitchBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Switch_Examples_SwitchBasicExample })">
             <SwitchBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Switch" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Switch component is a toggle for boolean on/off values. Use <code>ChildContent</code> for the label. Bind <code>Checked</code> for two-way state, or use <code>CheckedChanged</code> for one-way updates.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Sizes" Id="sizes">
@@ -32,6 +39,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Switch");
 
     private const string InstallCommand = "shadcnblazor component add switch";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Two-state binary toggling (on/off)</div> },
+        __builder => { <div>Smooth visual animation transitions</div> },
+        __builder => { <div>Form field integration capabilities</div> },
+        __builder => { <div>Keyboard and screen reader support</div> },
+    };
 }
+
 
 

@@ -9,24 +9,21 @@
 <ComponentDocPage Metadata="@Metadata"
                   InstallCommand="@InstallCommand"
                   ApiDoc="@ApiDocumentation.Select">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessibility-friendly</span>
-            </Badge>
-        </div>
-    </UnderHeader>
     
     <ChildContent>
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Select_Examples_SelectBasicExample })">
+            <SelectBasicExample/>
+        </ComponentPreview>
+
         <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Select" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Select component displays a dropdown for choosing a single value from a list. Use <code>Value</code> and <code>ValueChanged</code> (or <code>@@bind-Value</code>) for two-way binding. Provide <code>Items</code> as a collection of <code>SelectOption&lt;T&gt;</code>. Use <code>new SelectOption&lt;T&gt;(value, text, Disabled: true)</code> to disable individual items. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
         
         <DocsSection Title="Examples" Id="examples">
-            <DocsSubSection Title="Usage" Id="usage">
-                <p>The Select component displays a dropdown for choosing a single value from a list. Use <code>Value</code> and <code>ValueChanged</code> (or <code>@@bind-Value</code>) for two-way binding. Provide <code>Items</code> as a collection of <code>SelectOption&lt;T&gt;</code>. Use <code>new SelectOption&lt;T&gt;(value, text, Disabled: true)</code> to disable individual items. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
-                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Select_Examples_SelectBasicExample })">
-                    <SelectBasicExample/>
-                </ComponentPreview>
-            </DocsSubSection>
 
             <DocsSubSection Title="Declarative" Id="declarative">
                 <p>Use child components when you want to declare options inline. <code>SelectItem</code>, <code>SelectLabel</code>, <code>SelectSeparator</code>, and <code>SelectGroup</code> map to the same selection/keyboard/scroll behavior as the <code>Items</code> mode.</p>
@@ -46,15 +43,13 @@
 
     private List<RenderFragment> Features => new()
     {
-        __builder => { <div>Custom rendering (<code>RenderItem</code>) and sizing/layout options (<code>Size</code>, <code>PopoverFitContent</code>, <code>MaxVisibleItems</code>)</div> },
-        __builder => { <div>Controlled/uncontrolled (<code>@@bind-Value</code>, <code>ValueChanged</code>)</div> },
-        __builder => { <div>Two option modes: <code>Items</code> or declarative children</div> },
-        __builder => { <div>Full keyboard support (arrows, Home/End, PageUp/PageDown, Enter/Escape, Tab)</div> },
-        __builder => { <div>ARIA-compliant combobox/listbox/option semantics</div> },
-        __builder => { <div>Disabled support (select + per-item)</div> },
-        __builder => { <div>Typeahead support (single-character jump)</div> },
-        __builder => { <div>Placeholder + selected value display</div> },
+        __builder => { <div>Controlled and uncontrolled state support</div> },
+        __builder => { <div>Items property or declarative options</div> },
+        __builder => { <div>Custom rendering and layout constraints</div> },
+        __builder => { <div>Full keyboard navigation and ARIA semantics</div> },
+        __builder => { <div>Typeahead support and placeholder display</div> },
     };
 }
+
 
 

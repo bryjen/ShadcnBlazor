@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Textarea">
-    <DocsSection Title="Textarea" Id="textarea">
-        <p>The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Textarea_Examples_TextareaBasicExample })">
             <TextareaBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Textarea" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Textarea component provides a multi-line text input. Use <code>Value</code> and <code>ValueChanged</code> for two-way binding. Set <code>Placeholder</code>, <code>Rows</code>, and <code>Disabled</code> as needed.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Rows" Id="rows">
@@ -55,6 +62,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Textarea");
 
     private const string InstallCommand = "shadcnblazor component add textarea";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Standard multiline text input mapping</div> },
+        __builder => { <div>Auto-sizing and row-count capabilities</div> },
+        __builder => { <div>Composable slots for headers and footers</div> },
+        __builder => { <div>Seamless integration with form validation</div> },
+    };
 }
+
 
 

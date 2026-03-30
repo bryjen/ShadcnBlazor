@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Popover">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Popover component displays a floating panel anchored to a trigger. Use <code>Anchor</code> for the trigger element and <code>ChildContent</code> for the panel. Requires <code>PopoverProvider</code> in your layout (already present in the docs). Bind <code>Open</code> for controlled state.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Popover_Examples_PopoverBasicExample })">
             <PopoverBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Popover" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Popover component displays a floating panel anchored to a trigger. Use <code>Anchor</code> for the trigger element and <code>ChildContent</code> for the panel. Requires <code>PopoverProvider</code> in your layout (already present in the docs). Bind <code>Open</code> for controlled state.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Placement" Id="placement">
@@ -32,6 +39,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Popover");
 
     private const string InstallCommand = "shadcnblazor component add popover";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Floating contextual overlay panels</div> },
+        __builder => { <div>Advanced positioning via Floating UI</div> },
+        __builder => { <div>Click outside and escape key to close</div> },
+        __builder => { <div>Focus management and intelligent trapping</div> },
+    };
 }
+
 
 

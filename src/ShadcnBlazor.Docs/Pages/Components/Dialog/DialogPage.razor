@@ -9,12 +9,19 @@
 
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand">
-    <DocsSection Title="Usage" Id="usage">
-        <p>Compose dialogs inline using <code>DialogRoot</code>, <code>DialogTrigger</code>, and <code>DialogContent</code>. Use <code>@@ref</code> on <code>DialogRoot</code> to access <code>OpenDialog()</code> and <code>CloseAsync()</code> methods for explicit control.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Dialog_Examples_DialogShowcase })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Dialog_Examples_DialogShowcase })">
             <DialogShowcase />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Dialog" />
+
+        <DocsSection Title="About" Id="about">
+            <p>Compose dialogs inline using <code>DialogRoot</code>, <code>DialogTrigger</code>, and <code>DialogContent</code>. Use <code>@@ref</code> on <code>DialogRoot</code> to access <code>OpenDialog()</code> and <code>CloseAsync()</code> methods for explicit control.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Separate Files" Id="separate-files">
         <ComponentPreview CodeFiles="@(new[] {
@@ -53,6 +60,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Dialog");
 
     private const string InstallCommand = "shadcnblazor component add dialog";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Modal window behavior with overlay backdrop</div> },
+        __builder => { <div>Focus trapping and escape key support</div> },
+        __builder => { <div>Flexible content areas (Header, Footer, Body)</div> },
+        __builder => { <div>Customizable sizing and positioning</div> },
+    };
 }
+
 
 

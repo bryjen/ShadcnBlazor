@@ -9,24 +9,21 @@
 <ComponentDocPage Metadata="@Metadata"
                   InstallCommand="@InstallCommand"
                   ApiDoc="@ApiDocumentation.Combobox">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessibility-friendly</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Combobox_Examples_ComboboxBasicExample })">
+            <ComboboxBasicExample />
+        </ComponentPreview>
+
         <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Combobox" />
 
+        <DocsSection Title="About" Id="about">
+            <p>The Combobox is a searchable single-select dropdown. Type to filter the list in real time. Use <code>@@bind-Value</code> for two-way binding. Provide options via <code>Items</code> or declarative children. Requires <code>PopoverProvider</code> in your layout.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
         <DocsSection Title="Examples" Id="examples">
-            <DocsSubSection Title="Usage" Id="usage">
-                <p>The Combobox is a searchable single-select dropdown. Type to filter the list in real time. Use <code>@@bind-Value</code> for two-way binding. Provide options via <code>Items</code> or declarative children. Requires <code>PopoverProvider</code> in your layout.</p>
-                <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Combobox_Examples_ComboboxBasicExample })">
-                    <ComboboxBasicExample />
-                </ComponentPreview>
-            </DocsSubSection>
 
             <DocsSubSection Title="Declarative" Id="declarative">
                 <p>Use <code>SelectItem</code>, <code>SelectLabel</code>, <code>SelectSeparator</code>, and <code>SelectGroup</code> as child content for inline option declaration. When search text is active, labels and separators are hidden so the filtered results are clean.</p>
@@ -46,14 +43,12 @@
     private List<RenderFragment> Features => new()
     {
         __builder => { <div>Real-time text filtering as you type</div> },
-        __builder => { <div>Controlled (<code>@@bind-Value</code>, <code>ValueChanged</code>)</div> },
-        __builder => { <div>Two option modes: <code>Items</code> or declarative children</div> },
-        __builder => { <div>Keyboard navigation (arrows, Enter, Escape, Tab)</div> },
-        __builder => { <div>ARIA-compliant combobox/listbox semantics (<code>aria-autocomplete="list"</code>)</div> },
-        __builder => { <div>Disabled support (trigger + per-item)</div> },
-        __builder => { <div>"No results" empty state</div> },
-        __builder => { <div>Placeholder + selected-value display</div> },
+        __builder => { <div>Controlled state support (<code>@@bind-Value</code>)</div> },
+        __builder => { <div>Items property or declarative options</div> },
+        __builder => { <div>Full keyboard navigation and ARIA semantics</div> },
+        __builder => { <div>Disabled and empty state support</div> },
     };
 }
+
 
 

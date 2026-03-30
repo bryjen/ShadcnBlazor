@@ -1,6 +1,6 @@
 @inherits ShadcnComponentBase
 
-<div role="presentation" class="@MergeCss("px-2 py-1.5 text-sm font-medium", Class)" @attributes="AdditionalAttributes">
+<div role="presentation" data-inset="@Inset" class="@GetLabelClass()" @attributes="AdditionalAttributes">
     @ChildContent
 </div>
 
@@ -10,4 +10,18 @@
     /// </summary>
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// When true, adds left padding to accommodate a checkbox/radio indicator.
+    /// </summary>
+    [Parameter]
+    public bool Inset { get; set; }
+
+    private string GetLabelClass()
+    {
+        var baseClasses = "px-2 py-1.5 text-sm font-medium";
+        if (Inset)
+            baseClasses += " pl-8";
+        return MergeCss(baseClasses, Class);
+    }
 }

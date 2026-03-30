@@ -2,6 +2,8 @@
 
 <button type="button"
         role="menuitem"
+        data-inset="@Inset"
+        data-variant="@Variant.ToString().ToLower()"
         disabled="@Disabled"
         class="@GetItemClass()"
         @onclick="HandleClick"
@@ -36,6 +38,18 @@
     public bool Disabled { get; set; }
 
     /// <summary>
+    /// Item variant (default or destructive).
+    /// </summary>
+    [Parameter]
+    public DropdownMenuItemVariant Variant { get; set; } = DropdownMenuItemVariant.Default;
+
+    /// <summary>
+    /// When true, adds left padding to accommodate a checkbox/radio indicator.
+    /// </summary>
+    [Parameter]
+    public bool Inset { get; set; }
+
+    /// <summary>
     /// Callback when the item is clicked.
     /// </summary>
     [Parameter]
@@ -43,10 +57,20 @@
 
     private string GetItemClass()
     {
-        var baseClass = "dropdown-menu-item";
+        var baseClasses = "relative w-full flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none border-0 bg-transparent text-inherit hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground";
+
         if (Disabled)
-            baseClass += " dropdown-menu-item-disabled";
-        return MergeCss(baseClass, Class);
+            baseClasses += " pointer-events-none opacity-50";
+
+        if (Inset)
+            baseClasses += " pl-8";
+
+        if (Variant == DropdownMenuItemVariant.Destructive)
+        {
+            baseClasses += " text-destructive hover:bg-destructive/10 hover:text-destructive focus:bg-destructive/10 focus:text-destructive dark:hover:bg-destructive/20 dark:focus:bg-destructive/20 [&_svg]:text-destructive";
+        }
+
+        return MergeCss(baseClasses, Class);
     }
 
     private async Task HandleClick(MouseEventArgs args)

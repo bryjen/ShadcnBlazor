@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Skeleton">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Skeleton component displays a loading placeholder with a pulse animation. Use the <code>Class</code> parameter to customize the shape (e.g., <code>h-12 w-12 rounded-full</code> for avatars, <code>h-4 w-[250px]</code> for text lines).</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Skeleton_Examples_SkeletonBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Skeleton_Examples_SkeletonBasicExample })">
             <SkeletonBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Skeleton" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Skeleton component displays a loading placeholder with a pulse animation. Use the <code>Class</code> parameter to customize the shape (e.g., <code>h-12 w-12 rounded-full</code> for avatars, <code>h-4 w-[250px]</code> for text lines).</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Shapes" Id="shapes">
@@ -32,6 +39,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Skeleton");
 
     private const string InstallCommand = "shadcnblazor component add skeleton";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Visual placeholder for loading states</div> },
+        __builder => { <div>Automatic pulse animation effect</div> },
+        __builder => { <div>Flexible sizing and configurable shapes</div> },
+        __builder => { <div>Easily composable in UI layouts</div> },
+    };
 }
+
 
 

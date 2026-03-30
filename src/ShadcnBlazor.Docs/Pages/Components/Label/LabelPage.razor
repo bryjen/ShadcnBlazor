@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Label">
-    <DocsSection Title="Usage" Id="usage">
-        <p>Use <code>Label</code> to associate text with a form control via <code>for</code>/<code>id</code>. Clicking the label focuses the control.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Label_Examples_LabelBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Label_Examples_LabelBasicExample })">
             <LabelBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Label" />
+
+        <DocsSection Title="About" Id="about">
+            <p>Use <code>Label</code> to associate text with a form control via <code>for</code>/<code>id</code>. Clicking the label focuses the control.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Label in Field" Id="label-in-field">
         <p>For composed form fields, use <code>Field</code> and <code>FieldLabel</code>. It includes layout, description, and error slots.</p>
@@ -34,5 +41,14 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Label");
 
     private const string InstallCommand = "shadcnblazor component add label";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Accessible form control labeling</div> },
+        __builder => { <div>Automatic <code>for</code> attribute binding</div> },
+        __builder => { <div>Built-in asterisk for required fields</div> },
+        __builder => { <div>Consistent typography styling</div> },
+    };
 }
+
 

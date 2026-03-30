@@ -12,12 +12,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.DropdownMenu">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The DropdownMenu component displays a menu triggered by a button or custom trigger. Use <code>DropdownMenuTrigger</code> with <code>AsChild</code> to render a custom trigger (e.g., <code>Button</code>), <code>DropdownMenuContent</code> for the panel, and <code>DropdownMenuGroup</code>, <code>DropdownMenuLabel</code>, <code>DropdownMenuItem</code>, and <code>DropdownMenuSeparator</code> to structure the menu. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuBasicExample })">
             <DropdownMenuBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="DropdownMenu" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The DropdownMenu component displays a menu triggered by a button or custom trigger. Use <code>DropdownMenuTrigger</code> with <code>AsChild</code> to render a custom trigger (e.g., <code>Button</code>), <code>DropdownMenuContent</code> for the panel, and <code>DropdownMenuGroup</code>, <code>DropdownMenuLabel</code>, <code>DropdownMenuItem</code>, and <code>DropdownMenuSeparator</code> to structure the menu. Requires <code>PopoverProvider</code> in your layout (already present in the docs).</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
     <DocsSection Title="Shortcuts" Id="shortcuts">
         <p>Add <code>DropdownMenuShortcut</code> to show keyboard hints.</p>
         <ComponentPreview CodeFiles="@(new[] { Snippets.Components_DropdownMenu_Examples_DropdownMenuShortcutsExample })">
@@ -78,6 +85,16 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("DropdownMenu");
 
     private const string InstallCommand = "shadcnblazor component add dropdownmenu";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Triggered contextual menus with grouping</div> },
+        __builder => { <div>Support for nested submenus and dividers</div> },
+        __builder => { <div>Controlled positioning via Floating UI</div> },
+        __builder => { <div>Keyboard navigation and shortcuts support</div> },
+        __builder => { <div>Radio and Checkbox item variants</div> },
+    };
 }
+
 
 

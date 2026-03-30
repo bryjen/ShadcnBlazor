@@ -11,23 +11,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Badge">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessible</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Badge" />
-
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> to <code>default</code>, <code>secondary</code>, <code>destructive</code>, <code>outline</code>, or <code>ghost</code>. Set <code>Size</code> for Sm, Md, or Lg. For semantic badges (status, counts), provide <code>AriaLabel</code> for screen readers.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Badge_Examples_BadgeBasicExample })">
             <BadgeBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Badge" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Badge component displays small labels or count indicators. Use <code>ChildContent</code> for the label text. Set <code>Variant</code> to <code>default</code>, <code>secondary</code>, <code>destructive</code>, <code>outline</code>, or <code>ghost</code>. Set <code>Size</code> for Sm, Md, or Lg. For semantic badges (status, counts), provide <code>AriaLabel</code> for screen readers.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Variants" Id="variants">
@@ -87,5 +85,7 @@
         __builder => { <div>BadgeLink provides keyboard and focus support</div> },
     };
 }
+
+
 
 

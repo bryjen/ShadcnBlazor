@@ -9,23 +9,21 @@
 <ComponentDocPage Metadata="@Metadata"
                   InstallCommand="@InstallCommand"
                   ApiDoc="@ApiDocumentation.FocusTrap">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessible</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="FocusTrap" />
-
-    <DocsSection Title="Usage" Id="usage">
-        <p>The <code>FocusTrap</code> component is used to lock the keyboard focus within a specific DOM element. This is essential for building accessible modals and overlays. It is powered by the <code>focus-trap</code> library.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_FocusTrap_Examples_FocusTrapBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_FocusTrap_Examples_FocusTrapBasicExample })">
             <FocusTrapBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="FocusTrap" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The <code>FocusTrap</code> component is used to lock the keyboard focus within a specific DOM element. This is essential for building accessible modals and overlays. It is powered by the <code>focus-trap</code> library.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Initial Focus" Id="initial-focus">
@@ -61,3 +59,5 @@
         __builder => { <div>JS Interop handled automatically by the component</div> },
     };
 }
+
+

@@ -11,16 +11,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Alert">
-    <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Alert" />
-
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Alert component displays important messages or notifications. Use <code>ChildContent</code> to render your message. Set <code>Variant</code> to <code>AlertVariant.Default</code> or <code>AlertVariant.Destructive</code> for different styling. Use <code>Announcement</code> to control how the alert is announced (<code>Alert</code>, <code>Status</code>, or <code>None</code>).</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Alert_Examples_AlertBasicExample })">
             <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                 <AlertBasicExample />
             </div>
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Alert" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Alert component displays important messages or notifications. Use <code>ChildContent</code> to render your message. Set <code>Variant</code> to <code>AlertVariant.Default</code> or <code>AlertVariant.Destructive</code> for different styling. Use <code>Announcement</code> to control how the alert is announced (<code>Alert</code>, <code>Status</code>, or <code>None</code>).</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Icons" Id="icons">
@@ -74,5 +79,6 @@
         __builder => { <div>Utility-friendly styling via class overrides</div> },
     };
 }
+
 
 

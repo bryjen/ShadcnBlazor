@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.RadioGroup">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The <code>RadioGroup</code> component provides single selection within a group. Place <code>RadioItem</code> options inside a <code>RadioGroup</code> and bind <code>Value</code> for the selected option. Pair each item with a <code>Label</code> (or <code>FieldLabel</code>) using matching <code>Id</code> and <code>For</code> attributes.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Radio_Examples_RadioBasicExample })">
             <RadioBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Radio" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The <code>RadioGroup</code> component provides single selection within a group. Place <code>RadioItem</code> options inside a <code>RadioGroup</code> and bind <code>Value</code> for the selected option. Pair each item with a <code>Label</code> (or <code>FieldLabel</code>) using matching <code>Id</code> and <code>For</code> attributes.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="With Description" Id="with-description">
@@ -56,6 +63,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Radio Group");
 
     private const string InstallCommand = "shadcnblazor component add radio-group";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Single selection from grouped options</div> },
+        __builder => { <div>Keyboard navigation (arrows support)</div> },
+        __builder => { <div>Clear visual state indication for selection</div> },
+        __builder => { <div>Seamless integration with RadioGroup container</div> },
+    };
 }
+
 
 

@@ -11,23 +11,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Button">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessible</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Button" />
-
-    <DocsSection Title="Usage" Id="usage">
-        <p>Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components. For icon-only buttons, provide <code>AriaLabel</code> for screen reader users.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Button_Examples_ButtonBasicExample })">
             <ButtonBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Button" />
+
+        <DocsSection Title="About" Id="about">
+            <p>Basic button with text content. Use <code>ChildContent</code> to render anything inside—text, markup, or components. For icon-only buttons, provide <code>AriaLabel</code> for screen reader users.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Size" Id="size">
@@ -116,5 +114,7 @@
         __builder => { <div>ButtonGroup with semantic grouping and aria-label</div> },
     };
 }
+
+
 
 

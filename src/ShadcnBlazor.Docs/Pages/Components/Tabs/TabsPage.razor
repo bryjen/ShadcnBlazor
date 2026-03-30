@@ -9,17 +9,24 @@
 
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand">
-    <DocsSection Title="Usage" Id="usage">
-        <p>
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsBasicExample })">
+            <TabsBasicExample />
+        </ComponentPreview>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Tabs" />
+
+        <DocsSection Title="About" Id="about">
+            <p>
             The Tabs component displays one panel of content at a time.
             Use <code>TabsList</code> to hold the triggers and <code>TabsContent</code> for each panel.
             Each trigger and content requires a matching <code>Value</code>.
             Set <code>DefaultValue</code> to pre-select a tab.
         </p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Tabs_Examples_TabsBasicExample })">
-            <TabsBasicExample />
-        </ComponentPreview>
-    </DocsSection>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Disabled" Id="disabled">
@@ -56,6 +63,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Tabs");
 
     private const string InstallCommand = "shadcnblazor component add tabs";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Content organized into interchangeable panels</div> },
+        __builder => { <div>Controlled and uncontrolled activation state</div> },
+        __builder => { <div>Automatic ARIA role attribute bindings</div> },
+        __builder => { <div>Horizontal and vertical orientations support</div> },
+    };
 }
+
 
 

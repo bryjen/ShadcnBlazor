@@ -19,7 +19,10 @@
         @RenderNavButton("Forms", "forms", [])
         @RenderNavButton("Samples", "samples", [])
         @RenderNavButton("CLI", "cli", [])
-        @RenderNavButton("MCP", "mcp", [ComponentDefinition.Tag.Alpha])  @* just reusing component tags *@
+        @if (Environment.IsDevelopment())
+        {
+            @RenderNavButton("MCP", "mcp", [ComponentDefinition.Tag.Alpha])  @* just reusing component tags *@
+        }
     </div>
 
     <div class="w-full flex flex-col gap-1">

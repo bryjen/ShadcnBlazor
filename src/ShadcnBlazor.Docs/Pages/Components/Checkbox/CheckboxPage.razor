@@ -11,12 +11,19 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Checkbox">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Checkbox component is a standalone control that should be paired with a <code>Label</code> component for proper labeling. Use the <code>Id</code> parameter on the checkbox and the <code>For</code> parameter on the label to associate them. Bind <code>Value</code> for two-way state, or use <code>ValueChanged</code> for one-way updates.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Checkbox_Examples_CheckboxBasicExample })">
             <CheckboxBasicExample />
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Checkbox" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Checkbox component is a standalone control that should be paired with a <code>Label</code> component for proper labeling. Use the <code>Id</code> parameter on the checkbox and the <code>For</code> parameter on the label to associate them. Bind <code>Value</code> for two-way state, or use <code>ValueChanged</code> for one-way updates.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="With Label" Id="with-label">
@@ -62,6 +69,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Checkbox");
 
     private const string InstallCommand = "shadcnblazor component add checkbox";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Two-state toggling (checked/unchecked)</div> },
+        __builder => { <div>Intermediate/indeterminate state support (<code>IsIndeterminate</code>)</div> },
+        __builder => { <div>Form validation integration with EditForm</div> },
+        __builder => { <div>Full keyboard accessibility</div> },
+    };
 }
+
 
 

@@ -11,14 +11,21 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Slider">
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for single-thumb mode or <code>Values</code> for multi-thumb mode.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderBasicExample })">
+    <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Slider_Examples_SliderBasicExample })">
             <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                 <SliderBasicExample />
             </div>
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Slider" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Slider component lets users select a value within a range. Use <code>Min</code>, <code>Max</code>, and <code>Step</code> to define the range. Bind <code>Value</code> for single-thumb mode or <code>Values</code> for multi-thumb mode.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Range" Id="range">
@@ -63,6 +70,15 @@
     private static readonly ComponentMetadata Metadata = ComponentRegistryService.GetMetadata("Slider");
 
     private const string InstallCommand = "shadcnblazor component add slider";
+
+    private List<RenderFragment> Features => new()
+    {
+        __builder => { <div>Range selection via dragging thumbs</div> },
+        __builder => { <div>Step increment snapping and limits</div> },
+        __builder => { <div>Keyboard support for fine tuning</div> },
+        __builder => { <div>Optional multiple thumbs for ranges</div> },
+    };
 }
+
 
 

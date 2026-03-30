@@ -372,6 +372,10 @@
     width: calc(var(--spacing) * 3);
     height: calc(var(--spacing) * 3);
   }
+  .size-3\.5 {
+    width: calc(var(--spacing) * 3.5);
+    height: calc(var(--spacing) * 3.5);
+  }
   .size-4 {
     width: calc(var(--spacing) * 4);
     height: calc(var(--spacing) * 4);
@@ -431,6 +435,9 @@
   }
   .h-px {
     height: 1px;
+  }
+  .max-h-\(--radix-dropdown-menu-content-available-height\) {
+    max-height: var(--radix-dropdown-menu-content-available-height);
   }
   .max-h-60 {
     max-height: calc(var(--spacing) * 60);
@@ -534,6 +541,9 @@
   .caption-bottom {
     caption-side: bottom;
   }
+  .origin-\(--radix-dropdown-menu-content-transform-origin\) {
+    transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+  }
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -546,6 +556,9 @@
   }
   .animate-pulse {
     animation: var(--animate-pulse);
+  }
+  .cursor-default {
+    cursor: default;
   }
   .cursor-grab {
     cursor: grab;
@@ -703,6 +716,9 @@
   }
   .rounded-none {
     border-radius: 0;
+  }
+  .rounded-sm {
+    border-radius: calc(var(--radius) - 4px);
   }
   .rounded-xl {
     border-radius: calc(var(--radius) + 4px);
@@ -992,6 +1008,9 @@
   .pr-7 {
     padding-right: calc(var(--spacing) * 7);
   }
+  .pr-8 {
+    padding-right: calc(var(--spacing) * 8);
+  }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
   }
@@ -1006,6 +1025,9 @@
   }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
+  }
+  .pl-8 {
+    padding-left: calc(var(--spacing) * 8);
   }
   .text-center {
     text-align: center;
@@ -1072,6 +1094,9 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+  .text-accent-foreground {
+    color: var(--accent-foreground);
+  }
   .text-card-foreground {
     color: var(--card-foreground);
   }
@@ -1083,6 +1108,9 @@
   }
   .text-foreground {
     color: var(--foreground);
+  }
+  .text-inherit {
+    color: inherit;
   }
   .text-muted-foreground {
     color: var(--muted-foreground);
@@ -1169,6 +1197,14 @@
   }
   .ring-offset-background {
     --tw-ring-offset-color: var(--background);
+  }
+  .outline-hidden {
+    --tw-outline-style: none;
+    outline-style: none;
+    @media (forced-colors: active) {
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+    }
   }
   .outline {
     outline-style: var(--tw-outline-style);
@@ -1421,6 +1457,16 @@
       }
     }
   }
+  .hover\:bg-destructive\/10 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--destructive);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--destructive) 10%, transparent);
+        }
+      }
+    }
+  }
   .hover\:bg-destructive\/35 {
     &:hover {
       @media (hover: hover) {
@@ -1508,6 +1554,13 @@
       }
     }
   }
+  .hover\:text-destructive {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--destructive);
+      }
+    }
+  }
   .hover\:text-foreground {
     &:hover {
       @media (hover: hover) {
@@ -1528,6 +1581,29 @@
         --tw-shadow: var(--shadow-md);
         box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
       }
+    }
+  }
+  .focus\:bg-accent {
+    &:focus {
+      background-color: var(--accent);
+    }
+  }
+  .focus\:bg-destructive\/10 {
+    &:focus {
+      background-color: var(--destructive);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--destructive) 10%, transparent);
+      }
+    }
+  }
+  .focus\:text-accent-foreground {
+    &:focus {
+      color: var(--accent-foreground);
+    }
+  }
+  .focus\:text-destructive {
+    &:focus {
+      color: var(--destructive);
     }
   }
   .focus\:ring-2 {
@@ -1944,6 +2020,28 @@
       background-color: transparent;
     }
   }
+  .dark\:hover\:bg-destructive\/20 {
+    @media (prefers-color-scheme: dark) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--destructive);
+          @supports (color: color-mix(in lab, red, red)) {
+            background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
+          }
+        }
+      }
+    }
+  }
+  .dark\:focus\:bg-destructive\/20 {
+    @media (prefers-color-scheme: dark) {
+      &:focus {
+        background-color: var(--destructive);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--destructive) 20%, transparent);
+        }
+      }
+    }
+  }
   .dark\:has-data-\[state\=checked\]\:bg-primary\/10 {
     @media (prefers-color-scheme: dark) {
       &:has(*[data-state="checked"]) {
@@ -1984,10 +2082,20 @@
       flex-shrink: 0;
     }
   }
+  .\[\&_svg\]\:text-destructive {
+    & svg {
+      color: var(--destructive);
+    }
+  }
   .\[\&_svg\:not\(\[class\*\=\'size-\'\]\)\]\:size-4 {
     & svg:not([class*='size-']) {
       width: calc(var(--spacing) * 4);
       height: calc(var(--spacing) * 4);
+    }
+  }
+  .\[\&_svg\:not\(\[class\*\=\'text-\'\]\)\]\:text-muted-foreground {
+    & svg:not([class*='text-']) {
+      color: var(--muted-foreground);
     }
   }
   .\[\&_tr\:last-child\]\:border-0 {
@@ -2616,55 +2724,6 @@
     .context-menu-panel[data-state="open"] {
       animation: none;
     }
-  }
-  .dropdown-menu-item {
-    position: relative;
-    display: flex;
-    cursor: default;
-    user-select: none;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 0.125rem;
-    padding: 0.375rem 0.5rem;
-    font-size: 0.875rem;
-    outline: none;
-    border: none;
-    width: 100%;
-    background: transparent;
-    color: inherit;
-    text-align: left;
-  }
-  .dropdown-menu-item:hover:not(.dropdown-menu-item-disabled), .dropdown-menu-item:focus:not(.dropdown-menu-item-disabled) {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
-  }
-  .dropdown-menu-item-disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  .dropdown-menu-checkbox-item, .dropdown-menu-radio-item {
-    padding-left: 2rem;
-    padding-right: 0.5rem;
-  }
-  .dropdown-menu-checkbox-indicator, .dropdown-menu-radio-indicator {
-    pointer-events: none;
-    position: absolute;
-    left: 0.5rem;
-    display: flex;
-    width: 1rem;
-    height: 1rem;
-    align-items: center;
-    justify-content: center;
-  }
-  .dropdown-menu-shortcut {
-    margin-left: auto;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    color: var(--muted-foreground);
-  }
-  .dropdown-menu-sub-trigger-open {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
   }
   .shadcn-scroll-lock {
     overflow: hidden !important;

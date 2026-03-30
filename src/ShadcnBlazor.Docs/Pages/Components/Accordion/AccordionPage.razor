@@ -11,25 +11,23 @@
 <ComponentDocPage Metadata="@Metadata"
                  InstallCommand="@InstallCommand"
                  ApiDoc="@ApiDocumentation.Accordion">
-    <UnderHeader>
-        <div class="w-fit">
-            <Badge Size="@Size.Md">
-                <span class="font-semibold">Accessibility-friendly</span>
-            </Badge>
-        </div>
-    </UnderHeader>
 
     <ChildContent>
-        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Accordion" />
-
-    <DocsSection Title="Usage" Id="usage">
-        <p>The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
-        <ComponentPreview CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionBasicExample })">
+        <ComponentPreview DisableHide AllowVerticalScroll InnerClass="max-h-[35vh]" CodeFiles="@(new[] { Snippets.Components_Accordion_Examples_AccordionBasicExample })">
             <div class="w-full lg:mx-[clamp(5%,10%,10%)]">
                 <AccordionBasicExample/>
             </div>
         </ComponentPreview>
-    </DocsSection>
+
+        <FeaturesSection Title="Features" Id="features" Features="@Features" SourceLink="Accordion" />
+
+        <DocsSection Title="About" Id="about">
+            <p>The Accordion displays vertically stacked headings that reveal content when clicked. Use <code>AccordionItem</code>, <code>AccordionTrigger</code>, and <code>AccordionContent</code> to build each section. Each item requires a unique <code>Value</code>.</p>
+        </DocsSection>
+
+        <InstallationCommand InstallCommand="@InstallCommand" Metadata="@Metadata" />
+
+    
 
     <DocsSection Title="Examples" Id="examples">
         <DocsSubSection Title="Multiple" Id="multiple">
@@ -75,14 +73,14 @@
 
     private List<RenderFragment> Features => new()
     {
-        __builder => { <div>Single or multiple open items (<code>AccordionType.Single</code>/<code>AccordionType.Multiple</code>)</div> },
-        __builder => { <div>Controlled/uncontrolled state (<code>Value</code>, <code>Values</code>, <code>ValueChanged</code>, <code>ValuesChanged</code>)</div> },
-        __builder => { <div>Optional non-collapsible single mode (<code>Collapsible="false"</code>)</div> },
-        __builder => { <div>Full keyboard support (Arrow keys, Home/End)</div> },
-        __builder => { <div>WAI-ARIA compliant structure (heading + button + region)</div> },
+        __builder => { <div>Single or multiple open items</div> },
+        __builder => { <div>Controlled and uncontrolled state support</div> },
+        __builder => { <div>Optional non-collapsible single mode</div> },
+        __builder => { <div>Full keyboard support and ARIA compliance</div> },
         __builder => { <div>Disabled items support</div> },
-        __builder => { <div>Works seamlessly in cards and layout containers</div> },
     };
 }
+
+
 
 
