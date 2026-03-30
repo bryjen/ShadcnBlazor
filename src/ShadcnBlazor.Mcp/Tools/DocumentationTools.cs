@@ -5,7 +5,7 @@ using ShadcnBlazor.Mcp.Services;
 namespace ShadcnBlazor.Mcp.Tools;
 
 [McpServerToolType]
-public class DocumentationTools(DocumentationReaderService docService)
+public class DocumentationTools(DocumentationReaderService docService, SnippetExampleService snippets)
 {
     [McpServerTool, Description("Get ShadcnBlazor conventions: base class usage, parameter categories, two-way binding patterns, required providers, and CSS utilities.")]
     public string GetConventions() => docService.GetConventions();
@@ -13,7 +13,11 @@ public class DocumentationTools(DocumentationReaderService docService)
     [McpServerTool, Description("Get Razor usage examples for a specific ShadcnBlazor component.")]
     public object GetExamples([Description("Component name (e.g. 'Button', 'Dialog')")] string componentName)
     {
-        var examples = docService.GetExamples(componentName);
+        var examples = docService.GetExamples(componentName)
+            .Concat(snippets.GetComponentExamples(componentName))
+            .GroupBy(e => e.RazorSnippet, StringComparer.Ordinal)
+            .Select(g => g.First())
+            .ToList();
         if (!examples.Any())
             return new { message = $"No examples found for '{componentName}'.", examples = Array.Empty<object>() };
 

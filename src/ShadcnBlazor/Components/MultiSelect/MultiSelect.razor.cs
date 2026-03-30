@@ -259,38 +259,39 @@ public partial class MultiSelect<T>
     {
         var baseClasses = string.Join(" ", [
             "flex w-full items-center justify-between gap-2 rounded-md border border-input",
-            "bg-input/30 shadow-xs hover:bg-input/50",
-            "transition-all duration-200 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
-            "[&>svg]:size-4 [&>svg]:shrink-0",
+            "bg-transparent shadow-xs",
+            "transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+            "whitespace-nowrap dark:bg-input/30 dark:hover:bg-input/50",
+            "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4",
         ]);
         var sizeClasses = Size switch
         {
-            Size.Sm => "h-6 px-1.75 py-0.75 text-[0.6rem]",
-            Size.Md => "h-7 px-2.5 py-1 text-sm",
-            Size.Lg => "h-8 px-2.75 py-1.25 text-base md:text-sm",
-            _ => "h-7 px-2.5 py-1 text-sm",
+            Size.Sm => "h-8 px-3 py-2 text-sm",
+            Size.Md => "h-9 px-3 py-2 text-sm",
+            Size.Lg => "h-10 px-3 py-2 text-base md:text-sm",
+            _ => "h-9 px-3 py-2 text-sm",
         };
         return MergeCss(baseClasses, sizeClasses, TriggerClass);
     }
 
     private string GetOptionClass(bool isSelected, bool isActive, bool isDisabled)
     {
-        var selectedClasses = isSelected ? "bg-primary/10" : string.Empty;
-        var activeClasses = isActive ? "duration-0 bg-primary/30" : string.Empty;
+        var selectedClasses = isSelected ? "bg-primary/20 ring-1 ring-inset ring-primary" : string.Empty;
+        var activeClasses = isActive ? "duration-0 bg-primary/10" : string.Empty;
         var disabledClasses = isDisabled ? "cursor-not-allowed opacity-50" : string.Empty;
         var baseClasses = string.Join(" ", [
-            "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm",
-            "outline-none focus-visible:outline-none transition-colors",
+            "relative flex w-full items-center gap-2 rounded-sm pr-8 pl-2 py-1.5 text-sm",
+            "outline-hidden select-none focus:bg-primary/20 focus:ring-1 focus:ring-primary transition-colors",
         ]);
-        var interactiveClasses = isDisabled ? string.Empty : "cursor-pointer";
-        return MergeCss(selectedClasses, activeClasses, disabledClasses, interactiveClasses, baseClasses);
+        var interactiveClasses = isDisabled ? string.Empty : "cursor-default";
+        return MergeCss(activeClasses, selectedClasses, disabledClasses, interactiveClasses, baseClasses);
     }
 
     private string GetActionClass(bool isActive) =>
         MergeCss(
-            isActive ? "duration-0 bg-accent" : string.Empty,
-            "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground",
-            "cursor-pointer outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+            isActive ? "duration-0 bg-primary/10" : string.Empty,
+            "relative flex w-full items-center gap-2 rounded-sm pr-8 pl-2 py-1.5 text-sm text-muted-foreground",
+            "cursor-default outline-hidden select-none transition-colors focus:bg-primary/20 focus:ring-1 focus:ring-primary"
         );
 #endregion
 }

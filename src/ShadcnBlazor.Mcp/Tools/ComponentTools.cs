@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
+using ShadcnBlazor.Docs.Models;
 using ModelContextProtocol.Server;
 using ShadcnBlazor.Mcp.Services;
 using ShadcnBlazor.Services.Models;
@@ -8,7 +9,11 @@ using ShadcnBlazor.Services.Models;
 namespace ShadcnBlazor.Mcp.Tools;
 
 [McpServerToolType]
-public class ComponentTools(ComponentRegistryService registry)
+public class ComponentTools(
+    ComponentRegistryService registry,
+    DocumentationReaderService docs,
+    ApiDocumentationService apiDocs,
+    SnippetExampleService snippets)
 {
     [McpServerTool, Description("List all available ShadcnBlazor components with their names, descriptions, and tags.")]
     public object ListComponents()
@@ -29,7 +34,12 @@ public class ComponentTools(ComponentRegistryService registry)
         if (comp is null)
             return new { error = $"Component '{name}' not found. Use list_components to see available components." };
 
-        var parameters = GetComponentParameters(comp.Name);
+        var docType = apiDocs.Get(comp.Name);
+        var parameters = GetComponentParameters(comp.Name, docType);
+        var examples = MergeExamples(
+            docs.GetExamples(comp.Name),
+            snippets.GetComponentExamples(comp.Name)
+        );
 
         return new
         {
@@ -39,6 +49,31 @@ public class ComponentTools(ComponentRegistryService registry)
             tags = comp.Tags.Select(t => t.ToString()).ToArray(),
             dependencies = comp.Dependencies,
             parameters,
+            documentation = new
+            {
+                summary = docType?.Summary ?? string.Empty,
+                methods = docType?.Methods.Select(m => new
+                {
+                    name = m.Name,
+                    summary = m.Summary,
+                    returnType = m.ReturnType,
+                    returns = m.Returns,
+                    isInherited = m.IsInherited
+                }).ToList() ?? [],
+                events = docType?.Events.Select(e => new
+                {
+                    name = e.Name,
+                    type = e.Type,
+                    summary = e.Summary,
+                    isInherited = e.IsInherited
+                }).ToList() ?? []
+            },
+            examples = examples.Select(e => new
+            {
+                name = e.Name,
+                description = e.Description,
+                razorSnippet = e.RazorSnippet
+            }).ToList(),
             requiredActions = comp.RequiredActions.Select(a => a.GetType().Name).ToArray()
         };
     }
@@ -81,24 +116,40 @@ public class ComponentTools(ComponentRegistryService registry)
         };
     }
 
-    private static List<object> GetComponentParameters(string componentName)
+    private static List<object> GetComponentParameters(string componentName, DocumentedType? docType)
     {
         var assembly = typeof(ShadcnBlazor.Components.Button.Button).Assembly;
         var type = FindComponentType(assembly, componentName);
         if (type is null) return [];
 
+        var docProps = docType?.Properties ?? Array.Empty<DocumentedProperty>();
+        var docByName = docProps.ToDictionary(p => p.Name, p => p, StringComparer.OrdinalIgnoreCase);
+
         return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Where(p => p.GetCustomAttribute<ParameterAttribute>() is not null)
             .Select(p =>
             {
-                var desc = p.GetCustomAttribute<DescriptionAttribute>()?.Description ?? string.Empty;
-                var category = p.GetCustomAttribute<CategoryAttribute>()?.Category.ToString() ?? "General";
+                docByName.TryGetValue(p.Name, out var docProp);
+
+                var desc = p.GetCustomAttribute<DescriptionAttribute>()?.Description
+                           ?? docProp?.Summary
+                           ?? string.Empty;
+                var category = p.GetCustomAttribute<CategoryAttribute>()?.Category.ToString()
+                               ?? docProp?.Category
+                               ?? "General";
                 return (object)new
                 {
                     name = p.Name,
                     type = GetFriendlyTypeName(p.PropertyType),
                     category,
-                    description = desc
+                    description = desc,
+                    remarks = docProp?.Remarks ?? string.Empty,
+                    defaultValue = docProp?.DefaultValue ?? string.Empty,
+                    order = docProp?.Order ?? int.MaxValue,
+                    isRequired = p.GetCustomAttribute<EditorRequiredAttribute>() is not null,
+                    isCascading = p.GetCustomAttribute<CascadingParameterAttribute>() is not null,
+                    isEventCallback = IsEventCallback(p.PropertyType),
+                    isInherited = docProp?.IsInherited ?? p.DeclaringType != type
                 };
             })
             .ToList();
@@ -133,5 +184,28 @@ public class ComponentTools(ComponentRegistryService registry)
             "Object" => "object",
             _ => type.Name
         };
+    }
+
+    private static bool IsEventCallback(Type type)
+    {
+        if (type.Name == "EventCallback")
+            return true;
+
+        if (!type.IsGenericType)
+            return false;
+
+        var genericDef = type.GetGenericTypeDefinition();
+        return genericDef.Name.StartsWith("EventCallback", StringComparison.Ordinal);
+    }
+
+    private static List<ComponentExample> MergeExamples(
+        IEnumerable<ComponentExample> fromDocs,
+        IEnumerable<ComponentExample> fromSnippets)
+    {
+        return fromDocs
+            .Concat(fromSnippets)
+            .GroupBy(e => e.RazorSnippet, StringComparer.Ordinal)
+            .Select(g => g.First())
+            .ToList();
     }
 }

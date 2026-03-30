@@ -41,7 +41,7 @@
                    data-size="@Size.ToString().ToLower()"
                    placeholder="@(Value is null ? Placeholder : string.Empty)"
                    value="@GetDisplayValue()"
-                   class="@GetTriggerClass() pr-7 w-full"
+                   class="@GetTriggerClass()"
                    disabled="@Disabled"
                    @oninput="HandleSearchInput"
                    @onkeydown="HandleComboboxKeyDown"
@@ -55,7 +55,7 @@
         </div>
     </Anchor>
     <ChildContent>
-        <div class="@GetContentClass() rounded-lg border border-input bg-popover text-popover-foreground shadow-lg p-1 min-w-[8rem]">
+        <div class="@GetContentClass() relative z-50 origin-top-left rounded-md border border-border bg-popover text-popover-foreground shadow-md min-w-[8rem] overflow-hidden">
             @if (!string.IsNullOrEmpty(Label))
             {
                 <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">@Label</div>
@@ -63,7 +63,7 @@
             <div id="@_listboxId"
                  role="listbox"
                  aria-label="@GetAriaLabel()"
-                 class="max-h-60 overflow-y-auto overflow-x-hidden">
+                 class="p-1 max-h-60 overflow-y-auto overflow-x-hidden">
                 @{
                     var nodes = GetRenderNodes();
                 }
@@ -84,7 +84,7 @@
 
                     if (node.Kind == SelectNodeKind.Separator)
                     {
-                        <div class="my-1 h-px bg-border" role="separator"></div>
+                        <div class="pointer-events-none -mx-1 my-1 h-px bg-border" role="separator"></div>
                         continue;
                     }
 
@@ -109,16 +109,14 @@
                         }
                         else
                         {
-                            @if (isSelected)
-                            {
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 shrink-0">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                            }
-                            else
-                            {
-                                <span class="size-4 shrink-0"></span>
-                            }
+                            <span class="absolute right-2 flex size-3.5 items-center justify-center">
+                                @if (isSelected)
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                }
+                            </span>
                             <span class="@(PopoverFitContent ? "whitespace-nowrap" : "truncate")">@node.Text</span>
                         }
                     </button>

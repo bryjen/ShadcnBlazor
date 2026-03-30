@@ -37,20 +37,20 @@ jobs:
           echo "PATH: $PATH"
 
       - name: Install npm dependencies
-        working-directory: ./sonner-interop
+        working-directory: ./interop/sonner-interop
         run: npm ci
 
       - name: Build Sonner bundle
-        working-directory: ./sonner-interop
+        working-directory: ./interop/sonner-interop
         run: |
           chmod +x node_modules/.bin/vite
           npm run build
 
       - name: Verify Sonner bundle
         run: |
-          if [ -f ./sonner-interop/dist/sonner-interop.iife.js ]; then
+          if [ -f ./interop/sonner-interop/dist/sonner-interop.iife.js ]; then
             echo "✓ Sonner bundle built successfully"
-            ls -lh ./sonner-interop/dist/sonner-interop.iife.js
+            ls -lh ./interop/sonner-interop/dist/sonner-interop.iife.js
           else
             echo "✗ Sonner bundle NOT found!"
             exit 1

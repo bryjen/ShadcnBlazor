@@ -1,8 +1,9 @@
-<Select T="string"
-        Label="Framework"
-        @bind-Value="_framework"
-        Placeholder="Select a framework"
-        MaxVisibleItems="6">
+<div class="w-48">
+    <Select T="string"
+            Label="Framework"
+            @bind-Value="_framework"
+            Placeholder="Select a framework"
+            MaxVisibleItems="6">
     <SelectGroup>
         <SelectLabel Text="Frontend" />
         <SelectItem Value='@("react")' Text="React" />
@@ -16,7 +17,8 @@
         <SelectItem Value='@("node")' Text="Node.js" />
         <SelectItem Value='@("rails")' Text="Rails (Disabled)" Disabled="true" />
     </SelectGroup>
-</Select>
+    </Select>
+</div>
 
 @code {
     private string? _framework = "dotnet";

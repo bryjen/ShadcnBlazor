@@ -15,6 +15,8 @@ public class McpServerIntegrationTests
     private ComponentRegistryService _registry = null!;
     private ThemeTokenReaderService _theme = null!;
     private DocumentationReaderService _docs = null!;
+    private ApiDocumentationService _apiDocs = null!;
+    private SnippetExampleService _snippets = null!;
     private AccessibilitySpecReaderService _a11y = null!;
 
     private ComponentTools _componentTools = null!;
@@ -30,11 +32,13 @@ public class McpServerIntegrationTests
         _registry = new ComponentRegistryService();
         _theme = new ThemeTokenReaderService();
         _docs = new DocumentationReaderService();
+        _apiDocs = new ApiDocumentationService();
+        _snippets = new SnippetExampleService();
         _a11y = new AccessibilitySpecReaderService();
 
-        _componentTools = new ComponentTools(_registry);
+        _componentTools = new ComponentTools(_registry, _docs, _apiDocs, _snippets);
         _themeTools = new ThemeTools(_theme);
-        _docTools = new DocumentationTools(_docs);
+        _docTools = new DocumentationTools(_docs, _snippets);
         _a11yTools = new AccessibilityTools(_a11y);
     }
 

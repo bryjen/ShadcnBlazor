@@ -1,4 +1,6 @@
-<Select T="string" Label="Model" @bind-Value="_model" Items="@_modelOptions" Placeholder="Select a model" />
+<div class="w-48">
+    <Select T="string" Label="Model" @bind-Value="_model" Items="@_modelOptions" Placeholder="Select a model" />
+</div>
 
 @code {
     private string? _model = "sonnet";
