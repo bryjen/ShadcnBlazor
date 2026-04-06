@@ -20,6 +20,40 @@ public enum DataTableInteractionMode
     Grid,
 }
 
+/// <summary>Provides pagination state and navigation methods for custom pagination UI.</summary>
+public sealed class DataTablePaginationContext
+{
+    /// <summary>Current zero-based page index.</summary>
+    public int CurrentPage { get; init; }
+    /// <summary>Number of items per page.</summary>
+    public int PageSize { get; init; }
+    /// <summary>Total number of pages.</summary>
+    public int TotalPages { get; init; }
+    /// <summary>Total number of items across all pages.</summary>
+    public int TotalItems { get; init; }
+    /// <summary>Number of currently selected items (when MultiSelection is enabled).</summary>
+    public int SelectedCount { get; init; }
+    /// <summary>True if currently on the first page.</summary>
+    public bool IsFirstPage { get; init; }
+    /// <summary>True if currently on the last page.</summary>
+    public bool IsLastPage { get; init; }
+    /// <summary>Available page size options.</summary>
+    public int[] PageSizeOptions { get; init; } = [];
+
+    /// <summary>Navigate to the first page.</summary>
+    public Func<Task> FirstPageAsync { get; init; } = null!;
+    /// <summary>Navigate to the previous page.</summary>
+    public Func<Task> PrevPageAsync { get; init; } = null!;
+    /// <summary>Navigate to the next page.</summary>
+    public Func<Task> NextPageAsync { get; init; } = null!;
+    /// <summary>Navigate to the last page.</summary>
+    public Func<Task> LastPageAsync { get; init; } = null!;
+    /// <summary>Navigate to a specific zero-based page index.</summary>
+    public Func<int, Task> GoToPageAsync { get; init; } = null!;
+    /// <summary>Change the page size.</summary>
+    public Func<int, Task> ChangePageSizeAsync { get; init; } = null!;
+}
+
 file sealed class ObjectComparer : IComparer<object?>
 {
     public static readonly ObjectComparer Instance = new();
@@ -83,6 +117,10 @@ public partial class DataTable<T> : ShadcnComponentBase
     [Parameter]
     [Category(ComponentCategory.Content)]
     public RenderFragment? EmptyContent { get; set; }
+    /// <summary>Custom pagination content. When provided, replaces the default pagination footer.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Content)]
+    public RenderFragment<DataTablePaginationContext>? PaginationContent { get; set; }
     /// <summary>Shows loading placeholders.</summary>
     [Parameter]
     [Category(ComponentCategory.Behavior)]
@@ -123,6 +161,10 @@ public partial class DataTable<T> : ShadcnComponentBase
     [Parameter]
     [Category(ComponentCategory.Common)]
     public bool EnableDebugLogging { get; set; }
+    /// <summary>Shows the pagination footer. Defaults to true.</summary>
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public bool ShowPagination { get; set; } = true;
 
     // Multi-selection
     /// <summary>Enables multi-row selection.</summary>
@@ -140,6 +182,10 @@ public partial class DataTable<T> : ShadcnComponentBase
 
     private bool IsServerMode => DataProvider is not null;
     private bool ShowSkeleton => IsLoading || _isServerLoading;
+
+    [Parameter]
+    [Category(ComponentCategory.Appearance)]
+    public string OuterTableContainerClass { get; set; } = string.Empty;
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -423,6 +469,38 @@ public partial class DataTable<T> : ShadcnComponentBase
             await FetchFromProviderAsync();
     }
 
+    private async Task GoToPageAsync(int pageNumber)
+    {
+        var targetPage = Math.Clamp(pageNumber, 0, Math.Max(0, TotalPages - 1));
+        if (targetPage == _currentPage) return;
+
+        _currentPage = targetPage;
+        EnsureFocusedRowForCurrentPage(requestFocus: true);
+
+        if (IsServerMode)
+            await FetchFromProviderAsync();
+        else
+            await InvokeAsync(StateHasChanged);
+    }
+
+    private DataTablePaginationContext GetPaginationContext() => new()
+    {
+        CurrentPage = _currentPage,
+        PageSize = _currentPageSize,
+        TotalPages = TotalPages,
+        TotalItems = IsServerMode ? _serverTotalCount : Items.Count,
+        SelectedCount = SelectedItems.Count,
+        IsFirstPage = _currentPage == 0,
+        IsLastPage = _currentPage >= TotalPages - 1,
+        PageSizeOptions = PageSizeOptions,
+        FirstPageAsync = FirstPage,
+        PrevPageAsync = PrevPage,
+        NextPageAsync = NextPage,
+        LastPageAsync = LastPage,
+        GoToPageAsync = GoToPageAsync,
+        ChangePageSizeAsync = OnPageSizeChanged
+    };
+
     private void OnRowFocus(int localIdx)
     {
         if (!IsGridMode)
@@ -511,7 +589,8 @@ public partial class DataTable<T> : ShadcnComponentBase
             LogDebug($"Row click set focus abs={_focusedRowAbsoluteIndex}");
         }
 
-        if (MultiSelection)
+        // Only toggle selection on row click if there's no custom row click handler
+        if (MultiSelection && !OnRowClick.HasDelegate)
             await ToggleItem(item);
 
         await OnRowClick.InvokeAsync(item);

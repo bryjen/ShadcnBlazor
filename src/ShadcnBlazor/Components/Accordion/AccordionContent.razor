@@ -1,4 +1,5 @@
 @namespace ShadcnBlazor.Components.Accordion
+@using Microsoft.JSInterop
 @inherits ShadcnComponentBase
 @implements IAsyncDisposable
 @inject IJSRuntime JS
@@ -88,6 +89,15 @@
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
         if (jsModule is not null)
-            await jsModule.DisposeAsync();
+        {
+            try
+            {
+                await jsModule.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // Circuit disconnected, JS interop unavailable during disposal
+            }
+        }
     }
 }

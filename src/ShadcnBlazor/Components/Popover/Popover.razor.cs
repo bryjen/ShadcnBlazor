@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using ShadcnBlazor.Components.Popover.Models;
 using ShadcnBlazor.Components.Popover.Services;
+using ShadcnBlazor.Components.Shared;
 using ShadcnBlazor.Components.Shared.Models.Accessibility;
 using ShadcnBlazor.Components.Shared.Services;
+using TailwindMerge;
 
 namespace ShadcnBlazor.Components.Popover;
 
@@ -189,6 +191,12 @@ public partial class Popover : ComponentBase, IAsyncDisposable
     [Category(ComponentCategory.Common)]
     public string AriaHasPopup { get; set; } = "dialog";
 
+    /// <summary>
+    /// Injected TailwindMerge service for merging Tailwind CSS classes.
+    /// </summary>
+    [Inject]
+    public required TwMerge TwMerge { get; set; }
+
     private string AnchorId => $"anchor-{_popoverId}";
 
     private PopoverTriggerContext _popoverTriggerContext => new()
@@ -207,8 +215,14 @@ public partial class Popover : ComponentBase, IAsyncDisposable
                 return "popover-anchor inline-flex w-fit max-w-max";
             }
 
-            return $"popover-anchor inline-flex w-fit max-w-max {AnchorClass}";
+            return MergeCss("popover-anchor inline-flex w-fit max-w-max", AnchorClass);
         }
+    }
+
+    private string MergeCss(params string[] classes)
+    {
+        var joined = string.Join(" ", classes);
+        return TwMerge.Merge(joined) ?? joined;
     }
 
     /// <inheritdoc />

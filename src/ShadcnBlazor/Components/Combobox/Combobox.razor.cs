@@ -60,9 +60,6 @@ public partial class Combobox<T> : SelectBase<T>, IDisposable
 #endregion
 
 #region EditForm Integration
-    [Inject]
-    private IJSRuntime JS { get; set; } = null!;
-
     [CascadingParameter]
     private EditContext? EditContext { get; set; }
 
@@ -271,7 +268,7 @@ public partial class Combobox<T> : SelectBase<T>, IDisposable
         // Prevent form submission on Enter when combobox is focused
         if (e.Key == "Enter")
         {
-            await JS.InvokeVoidAsync("eval", "event.preventDefault()");
+            await JsRuntime.InvokeVoidAsync("eval", "event.preventDefault()");
         }
 
         await HandleTriggerKeyDown(e);
