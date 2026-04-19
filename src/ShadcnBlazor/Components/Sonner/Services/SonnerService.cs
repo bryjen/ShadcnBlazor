@@ -135,12 +135,13 @@ internal class SonnerActionOptions
 [RegisterService]
 public class SonnerService
 {
-    private readonly IJSRuntime _jsRuntime;
     private readonly SonnerComponentRegistry _componentRegistry;
     private int _callbackCounter = 0;
     private Dictionary<string, Func<ValueTask>> _callbacks = new();
     private bool _initialized = false;
     private readonly object _initLock = new();
+
+    protected readonly IJSRuntime JsRuntime;
 
     /// <summary>
     /// Creates a new SonnerService.
@@ -149,7 +150,7 @@ public class SonnerService
     /// <param name="componentRegistry">Registry for component toast fragments.</param>
     public SonnerService(IJSRuntime jsRuntime, SonnerComponentRegistry componentRegistry)
     {
-        _jsRuntime = jsRuntime;
+        JsRuntime = jsRuntime;
         _componentRegistry = componentRegistry;
     }
 
@@ -159,9 +160,6 @@ public class SonnerService
     /// </summary>
     private async ValueTask EnsureInitializedAsync()
     {
-        if (_initialized)
-            return;
-
         lock (_initLock)
         {
             if (_initialized)
@@ -173,17 +171,23 @@ public class SonnerService
         try
         {
             var reference = DotNetObjectReference.Create(this);
-            await _jsRuntime.InvokeAsync<object>("InitializeSonnerCallbacks", reference);
+            await JsRuntime.InvokeAsync<object>("InitializeSonnerCallbacks", reference);
         }
         catch (JSDisconnectedException)
         {
             // Expected during circuit shutdown.
-            _initialized = false;
+            lock (_initLock)
+            {
+                _initialized = false;
+            }
         }
         catch (OperationCanceledException)
         {
             // Operation was cancelled.
-            _initialized = false;
+            lock (_initLock)
+            {
+                _initialized = false;
+            }
         }
     }
 
@@ -260,7 +264,7 @@ public class SonnerService
         try
         {
             var serializedOptions = SerializeOptions(options);
-            await _jsRuntime.InvokeAsync<object>($"window.Sonner.{method}", cancellationToken, message, serializedOptions);
+            await JsRuntime.InvokeAsync<object>($"window.Sonner.{method}", cancellationToken, message, serializedOptions);
         }
         catch (JSDisconnectedException) { }
         catch (OperationCanceledException) { }
@@ -282,14 +286,14 @@ public class SonnerService
 
         try
         {
-            promiseId = await _jsRuntime.InvokeAsync<string>("window.Sonner.createPromiseToast", cancellationToken, loadingMsg, successMsg, errorMsg);
+            promiseId = await JsRuntime.InvokeAsync<string>("window.Sonner.createPromiseToast", cancellationToken, loadingMsg, successMsg, errorMsg);
             await promise;
 
             if (promiseId != null)
             {
                 try
                 {
-                    await _jsRuntime.InvokeAsync<object>("window.Sonner.resolvePromiseToast", cancellationToken, promiseId, "Success");
+                    await JsRuntime.InvokeAsync<object>("window.Sonner.resolvePromiseToast", cancellationToken, promiseId, "Success");
                 }
                 catch (JSDisconnectedException) { }
                 catch (OperationCanceledException) { }
@@ -302,7 +306,7 @@ public class SonnerService
             {
                 try
                 {
-                    await _jsRuntime.InvokeAsync<object>("window.Sonner.rejectPromiseToast", cancellationToken, promiseId, "Operation was cancelled");
+                    await JsRuntime.InvokeAsync<object>("window.Sonner.rejectPromiseToast", cancellationToken, promiseId, "Operation was cancelled");
                 }
                 catch (JSDisconnectedException) { }
                 catch (OperationCanceledException) { }
@@ -314,7 +318,7 @@ public class SonnerService
             {
                 try
                 {
-                    await _jsRuntime.InvokeAsync<object>("window.Sonner.rejectPromiseToast", cancellationToken, promiseId, ex.Message);
+                    await JsRuntime.InvokeAsync<object>("window.Sonner.rejectPromiseToast", cancellationToken, promiseId, ex.Message);
                 }
                 catch (JSDisconnectedException) { }
                 catch (OperationCanceledException) { }
@@ -358,7 +362,7 @@ public class SonnerService
         try
         {
             var optionsWithAction = BuildOptionsWithAction(options, actionLabel, callbackId);
-            await _jsRuntime.InvokeAsync<object>($"window.Sonner.{method}", cancellationToken, message, optionsWithAction);
+            await JsRuntime.InvokeAsync<object>($"window.Sonner.{method}", cancellationToken, message, optionsWithAction);
         }
         catch (JSDisconnectedException) { }
         catch (OperationCanceledException) { }
@@ -374,7 +378,7 @@ public class SonnerService
     {
         try
         {
-            await _jsRuntime.InvokeAsync<object>("window.Sonner.dismiss", cancellationToken, toastId);
+            await JsRuntime.InvokeAsync<object>("window.Sonner.dismiss", cancellationToken, toastId);
         }
         catch (JSDisconnectedException) { }
         catch (OperationCanceledException) { }
@@ -431,7 +435,7 @@ public class SonnerService
         try
         {
             var serializedOptions = SerializeOptions(options);
-            var toastId = await _jsRuntime.InvokeAsync<string?>(
+            var toastId = await JsRuntime.InvokeAsync<string?>(
                 $"window.Sonner.{method}",
                 cancellationToken,
                 componentIdentifier,
